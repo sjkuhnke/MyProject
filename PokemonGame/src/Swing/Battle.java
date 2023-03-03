@@ -189,6 +189,7 @@ public class Battle extends JFrame {
 		
 		catchButton.addActionListener(e -> {
 			me.catchPokemon(new Pokemon(foe.id, foe.level));
+			displayParty();
         });
 		
 		System.out.println(me.toString());
@@ -373,6 +374,7 @@ public class Battle extends JFrame {
 			party1.setFont(new Font("Tahoma", Font.PLAIN, 12));
 			party1.setBounds(330, 21, 120, 30);
 			playerPanel.add(party1);
+			party1.setVisible(true);
 			
 		} else {
 			party1.setVisible(false);
@@ -385,6 +387,7 @@ public class Battle extends JFrame {
 			party2.setFont(new Font("Tahoma", Font.PLAIN, 12));
 			party2.setBounds(330, 66, 120, 30);
 			playerPanel.add(party2);
+			party2.setVisible(true);
 			
 		} else {
 			party2.setVisible(false);
@@ -397,6 +400,7 @@ public class Battle extends JFrame {
 			party3.setFont(new Font("Tahoma", Font.PLAIN, 12));
 			party3.setBounds(330, 111, 120, 30);
 			playerPanel.add(party3);
+			party3.setVisible(true);
 			
 		} else {
 			party3.setVisible(false);
@@ -409,6 +413,7 @@ public class Battle extends JFrame {
 			party4.setFont(new Font("Tahoma", Font.PLAIN, 12));
 			party4.setBounds(330, 156, 120, 30);
 			playerPanel.add(party4);
+			party4.setVisible(true);
 			
 		} else {
 			party4.setVisible(false);
@@ -421,6 +426,7 @@ public class Battle extends JFrame {
 			party5.setFont(new Font("Tahoma", Font.PLAIN, 12));
 			party5.setBounds(330, 201, 120, 30);
 			playerPanel.add(party5);
+			party5.setVisible(true);
 			
 		} else {
 			party5.setVisible(false);
@@ -454,9 +460,9 @@ public class Battle extends JFrame {
 	}
 
 	private void updateBars() {
+		healthBar.setMaximum(me.getCurrent().getStat(0));
 		healthBar.setValue(me.getCurrent().getCurrentHP());
 		maxHPLabel.setText(me.getCurrent().getStat(0) + "");
-		healthBar.setMaximum(me.getCurrent().getStat(0));
 		currentHPLabel.setText(me.getCurrent().getCurrentHP() + "");
 		if (healthBar.getPercentComplete() > 0.5) {
 			healthBar.setForeground(new Color(0, 255, 0));

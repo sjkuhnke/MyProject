@@ -2132,13 +2132,13 @@ public class Pokemon implements Serializable {
 		int damage;
 		if (!hit(move.accuracy)) {
 			System.out.println(this.name + " used " + move + "!");
-			System.out.println(this.name + "'s attack missed!");
+			System.out.println(this.name + "'s attack missed!\n");
 			return 0; // Check for miss
 		}
 		
 		if(getImmune(foe, move.mtype)) {
 			System.out.println(this.name + " used " + move + "!");
-			System.out.println("It doesn't effect " + foe.name + "...");
+			System.out.println("It doesn't effect " + foe.name + "...\n");
 			return 0; // Check for miss
 		}
 		
@@ -2176,18 +2176,18 @@ public class Pokemon implements Serializable {
 			damageDouble *= 1.5;
 		}
 		
-		// Convert to int
+		// Convert to integer
 		damage = (int) Math.floor(damageDouble);
 		
 		// Check type effectiveness
 		PType[] resist = getResistances(move.mtype);
 		for (PType type : resist) {
 			if (foe.type1 == type) {
-				System.out.println("It's not very effective...");
+				System.out.println("It's not very effective...\n");
 				damage *= 0.5;
 			}
 			if (foe.type2 == type) {
-				System.out.println("It's not very effective...");
+				System.out.println("It's not very effective...\n");
 				damage *= 0.5;
 			}
 		}
@@ -2196,11 +2196,11 @@ public class Pokemon implements Serializable {
 		for (PType type : weak) {
 			if (foe.type1 == type) {
 				damage *= 2;
-				System.out.println("It's super effective!");
+				System.out.println("It's super effective!\n");
 			}
 			if (foe.type2 == type) {
 				damage *= 2;
-				System.out.println("It's super effective!");
+				System.out.println("It's super effective!\n");
 			}
 		}
 		
@@ -2211,10 +2211,10 @@ public class Pokemon implements Serializable {
 		if (foe.currentHP <= 0) { // Check for kill
 			foe.currentHP = 0;
 			this.exp += foe.level;
-			if (this.exp >= this.expMax) { // Check for levelup
+			if (this.exp >= this.expMax) { // Check for level up
 				this.levelUp();
 			}
-			System.out.println(foe.getName() + " fained!");
+			System.out.println(foe.getName() + " fainted!\n");
 			foe.fainted = true;
 		}
 		
