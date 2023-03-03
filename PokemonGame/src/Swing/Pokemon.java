@@ -2679,7 +2679,7 @@ public class Pokemon implements Serializable {
 			movebank[44] = Move.EARTHQUAKE;
 			movebank[48] = Move.ROLLOUT;
 			movebank[52] = Move.SUPERPOWER;
-			movebank[55] = Move.LEAF_STORM;
+			movebank[54] = Move.LEAF_STORM;
 			break;
 		case 14:
 			movebank = new Move[12];
