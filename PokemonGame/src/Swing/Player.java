@@ -22,7 +22,7 @@ public class Player implements Serializable{
 
 	public Player(int id) {
 		team = new Pokemon[6];
-		box = new Pokemon[100];
+		box = new Pokemon[30];
 		money = 0;
 		current = null;
 		numPokemonTeam = 0;
@@ -42,13 +42,45 @@ public class Player implements Serializable{
 		if (numPokemonTeam < 6) {
             team[numPokemonTeam] = p;
             numPokemonTeam++;
+            System.out.println("Caught " + p.name + ", added to party!");
             if (numPokemonTeam == 1) current = p;
-        } else if (numPokemonBox < 100) {
+        } else if (numPokemonBox < 30) {
             box[numPokemonBox] = p;
             numPokemonBox++;
+            System.out.println("Caught " + p.name + ", sent to box!");
         } else {
-            System.out.println("Cannot catch " + p.getName() + ", box is full");
+            System.out.println("Cannot catch " + p.name + ", box is full");
         }
+	}
+	
+	@Override // implementation
+	public String toString() {
+		return "Party: " + this.PokemonArrayToString(team) + ", Box: " + this.PokemonArrayToString(box);
+	}
+	
+	private String PokemonArrayToString(Pokemon[] arr) {
+	    StringBuilder sb = new StringBuilder();
+	    sb.append("[");
+	    for (int i = 0; i < arr.length ; i++) {
+	        if (arr[i] != null) {
+	        	sb.append(arr[i].getName());
+	        } else { break; }
+	        if (i != arr.length - 1) {
+	            sb.append(", ");
+	        }
+	    }
+	    sb.append("]");
+	    return sb.toString();
+	}
+
+	public void swap(Pokemon pokemon, int index) {
+		System.out.println(current.name + ", come back!");
+		Pokemon lead = current;
+		this.current = pokemon;
+		this.team[0] = pokemon;
+		this.team[index] = lead;
+		System.out.println("Go " + current.name + "!\n");
+		
 	}
 
 }

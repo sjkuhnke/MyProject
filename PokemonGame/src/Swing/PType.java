@@ -1,6 +1,6 @@
 package Swing;
 
-public enum Type {
+public enum PType {
 	NORMAL,
 	ROCK,
 	FIRE,

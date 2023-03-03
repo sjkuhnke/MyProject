@@ -17,8 +17,8 @@ public class Pokemon implements Serializable {
 	public int[] stats;
 	public int level;
 	
-	public Type type1;
-	public Type type2;
+	public PType type1;
+	public PType type2;
 	
 	public Move[] movebank;
 	public Move move1;
@@ -32,6 +32,7 @@ public class Pokemon implements Serializable {
 	public int expMax;
 	
 	public int currentHP;
+	private boolean fainted;
 	
 	public Pokemon(int i, int l) {
 		id = i;
@@ -115,441 +116,444 @@ public class Pokemon implements Serializable {
 		
 	}
 	
+	public boolean isFainted() {
+		return this.fainted;
+	}
 	
 
 	private void setType() {
 		if (id == 1) {
-			this.type1 = Type.GRASS;
+			this.type1 = PType.GRASS;
 			this.type2 = null;
 		} else if (id == 2) {
-			this.type1 = Type.GRASS;
+			this.type1 = PType.GRASS;
 			this.type2 = null;
 		} else if (id == 3) {
-			this.type1 = Type.GRASS;
+			this.type1 = PType.GRASS;
 			this.type2 = null;
 		} else if (id == 4) {
-			this.type1 = Type.FIRE;
+			this.type1 = PType.FIRE;
 			this.type2 = null;
 		} else if (id == 5) {
-			this.type1 = Type.FIRE;
+			this.type1 = PType.FIRE;
 			this.type2 = null;
 		} else if (id == 6) {
-			this.type1 = Type.FIRE;
-			this.type2 = Type.ROCK;
+			this.type1 = PType.FIRE;
+			this.type2 = PType.ROCK;
 		} else if (id == 7) {
-			this.type1 = Type.WATER;
+			this.type1 = PType.WATER;
 			this.type2 = null;
 		} else if (id == 8) {
-			this.type1 = Type.WATER;
+			this.type1 = PType.WATER;
 			this.type2 = null;
 		} else if (id == 9) {
-			this.type1 = Type.WATER;
+			this.type1 = PType.WATER;
 			this.type2 = null;
 		} else if (id == 10) {
-			this.type1 = Type.GRASS;
+			this.type1 = PType.GRASS;
 			this.type2 = null;
 		} else if (id == 11) {
-			this.type1 = Type.GRASS;
+			this.type1 = PType.GRASS;
 			this.type2 = null;
 		} else if (id == 12) {
-			this.type1 = Type.GRASS;
+			this.type1 = PType.GRASS;
 			this.type2 = null;
 		} else if (id == 13) {
-			this.type1 = Type.GRASS;
-			this.type2 = Type.FIGHTING;
+			this.type1 = PType.GRASS;
+			this.type2 = PType.FIGHTING;
 		} else if (id == 14) {
-			this.type1 = Type.NORMAL;
+			this.type1 = PType.NORMAL;
 			this.type2 = null;
 		} else if (id == 15) {
-			this.type1 = Type.NORMAL;
+			this.type1 = PType.NORMAL;
 			this.type2 = null;
 		} else if (id == 16) {
-			this.type1 = Type.NORMAL;
+			this.type1 = PType.NORMAL;
 			this.type2 = null;
 		} else if (id == 17) {
-			this.type1 = Type.NORMAL;
+			this.type1 = PType.NORMAL;
 			this.type2 = null;
 		} else if (id == 18) {
-			this.type1 = Type.ROCK;
-			this.type2 = Type.GROUND;
+			this.type1 = PType.ROCK;
+			this.type2 = PType.GROUND;
 		} else if (id == 19) {
-			this.type1 = Type.ROCK;
-			this.type2 = Type.GROUND;
+			this.type1 = PType.ROCK;
+			this.type2 = PType.GROUND;
 		} else if (id == 20) {
-			this.type1 = Type.ROCK;
-			this.type2 = Type.GROUND;
+			this.type1 = PType.ROCK;
+			this.type2 = PType.GROUND;
 		} else if (id == 21) {
-			this.type1 = Type.ROCK;
+			this.type1 = PType.ROCK;
 			this.type2 = null;
 		} else if (id == 22) {
-			this.type1 = Type.ROCK;
+			this.type1 = PType.ROCK;
 			this.type2 = null;
 		} else if (id == 23) {
-			this.type1 = Type.ROCK;
-			this.type2 = Type.FLYING;
+			this.type1 = PType.ROCK;
+			this.type2 = PType.FLYING;
 		} else if (id == 24) {
-			this.type1 = Type.WATER;
-			this.type2 = Type.DARK;
+			this.type1 = PType.WATER;
+			this.type2 = PType.DARK;
 		} else if (id == 25) {
-			this.type1 = Type.WATER;
-			this.type2 = Type.ELECTRIC;
+			this.type1 = PType.WATER;
+			this.type2 = PType.ELECTRIC;
 		} else if (id == 26) {
-			this.type1 = Type.WATER;
-			this.type2 = Type.FLYING;
+			this.type1 = PType.WATER;
+			this.type2 = PType.FLYING;
 		} else if (id == 27) {
-			this.type1 = Type.WATER;
-			this.type2 = Type.FLYING;
+			this.type1 = PType.WATER;
+			this.type2 = PType.FLYING;
 		} else if (id == 28) {
-			this.type1 = Type.WATER;
-			this.type2 = Type.FLYING;
+			this.type1 = PType.WATER;
+			this.type2 = PType.FLYING;
 		} else if (id == 29) {
-			this.type1 = Type.NORMAL;
-			this.type2 = Type.FLYING;
+			this.type1 = PType.NORMAL;
+			this.type2 = PType.FLYING;
 		} else if (id == 30) {
-			this.type1 = Type.NORMAL;
-			this.type2 = Type.FLYING;
+			this.type1 = PType.NORMAL;
+			this.type2 = PType.FLYING;
 		} else if (id == 31) {
-			this.type1 = Type.WATER;
-			this.type2 = Type.FLYING;
+			this.type1 = PType.WATER;
+			this.type2 = PType.FLYING;
 		} else if (id == 32) {
-			this.type1 = Type.GRASS;
-			this.type2 = Type.FLYING;
+			this.type1 = PType.GRASS;
+			this.type2 = PType.FLYING;
 		} else if (id == 33) {
-			this.type1 = Type.BUG;
-			this.type2 = Type.POISON;
+			this.type1 = PType.BUG;
+			this.type2 = PType.POISON;
 		} else if (id == 34) {
-			this.type1 = Type.WATER;
-			this.type2 = Type.POISON;
+			this.type1 = PType.WATER;
+			this.type2 = PType.POISON;
 		} else if (id == 35) {
-			this.type1 = Type.BUG;
+			this.type1 = PType.BUG;
 			this.type2 = null;
 		} else if (id == 36) {
-			this.type1 = Type.BUG;
-			this.type2 = Type.POISON;
+			this.type1 = PType.BUG;
+			this.type2 = PType.POISON;
 		} else if (id == 37) {
-			this.type1 = Type.GHOST;
-			this.type2 = Type.POISON;
+			this.type1 = PType.GHOST;
+			this.type2 = PType.POISON;
 		} else if (id == 38) {
-			this.type1 = Type.GHOST;
+			this.type1 = PType.GHOST;
 			this.type2 = null;
 		} else if (id == 39) {
-			this.type1 = Type.GHOST;
-			this.type2 = Type.STEEL;
+			this.type1 = PType.GHOST;
+			this.type2 = PType.STEEL;
 		} else if (id == 40) {
-			this.type1 = Type.GHOST;
-			this.type2 = Type.DARK;
+			this.type1 = PType.GHOST;
+			this.type2 = PType.DARK;
 		} else if (id == 41) {
-			this.type1 = Type.GHOST;
-			this.type2 = Type.DARK;
+			this.type1 = PType.GHOST;
+			this.type2 = PType.DARK;
 		} else if (id == 42) {
-			this.type1 = Type.ELECTRIC;
+			this.type1 = PType.ELECTRIC;
 			this.type2 = null;
 		} else if (id == 43) {
-			this.type1 = Type.NORMAL;
-			this.type2 = Type.ELECTRIC;
+			this.type1 = PType.NORMAL;
+			this.type2 = PType.ELECTRIC;
 		} else if (id == 44) {
-			this.type1 = Type.ELECTRIC;
+			this.type1 = PType.ELECTRIC;
 			this.type2 = null;
 		} else if (id == 45) {
-			this.type1 = Type.ELECTRIC;
-			this.type2 = Type.STEEL;;
+			this.type1 = PType.ELECTRIC;
+			this.type2 = PType.STEEL;;
 		} else if (id == 46) {
-			this.type1 = Type.ELECTRIC;
+			this.type1 = PType.ELECTRIC;
 			this.type2 = null;
 		} else if (id == 47) {
-			this.type1 = Type.ELECTRIC;
+			this.type1 = PType.ELECTRIC;
 			this.type2 = null;
 		} else if (id == 48) {
-			this.type1 = Type.BUG;
-			this.type2 = Type.FIGHTING;
+			this.type1 = PType.BUG;
+			this.type2 = PType.FIGHTING;
 		} else if (id == 49) {
-			this.type1 = Type.BUG;
-			this.type2 = Type.FIGHTING;
+			this.type1 = PType.BUG;
+			this.type2 = PType.FIGHTING;
 		} else if (id == 50) {
-			this.type1 = Type.BUG;
-			this.type2 = Type.FIGHTING;
+			this.type1 = PType.BUG;
+			this.type2 = PType.FIGHTING;
 		} else if (id == 51) {
-			this.type1 = Type.FIGHTING;
+			this.type1 = PType.FIGHTING;
 			this.type2 = null;
 		} else if (id == 52) {
-			this.type1 = Type.FIGHTING;
+			this.type1 = PType.FIGHTING;
 			this.type2 = null;
 		} else if (id == 53) {
-			this.type1 = Type.FIGHTING;
+			this.type1 = PType.FIGHTING;
 			this.type2 = null;
 		} else if (id == 54) {
-			this.type1 = Type.FIGHTING;
+			this.type1 = PType.FIGHTING;
 			this.type2 = null;
 		} else if (id == 55) {
-			this.type1 = Type.POISON;
+			this.type1 = PType.POISON;
 			this.type2 = null;
 		} else if (id == 56) {
-			this.type1 = Type.POISON;
+			this.type1 = PType.POISON;
 			this.type2 = null;
 		} else if (id == 57) {
-			this.type1 = Type.POISON;
-			this.type2 = Type.FLYING;
+			this.type1 = PType.POISON;
+			this.type2 = PType.FLYING;
 		} else if (id == 58) {
-			this.type1 = Type.POISON;
-			this.type2 = Type.FLYING;
+			this.type1 = PType.POISON;
+			this.type2 = PType.FLYING;
 		} else if (id == 59) {
-			this.type1 = Type.POISON;
-			this.type2 = Type.GRASS;
+			this.type1 = PType.POISON;
+			this.type2 = PType.GRASS;
 		} else if (id == 60) {
-			this.type1 = Type.POISON;
-			this.type2 = Type.GRASS;
+			this.type1 = PType.POISON;
+			this.type2 = PType.GRASS;
 		} else if (id == 61) {
-			this.type1 = Type.WATER;
-			this.type2 = Type.POISON;
+			this.type1 = PType.WATER;
+			this.type2 = PType.POISON;
 		} else if (id == 62) {
-			this.type1 = Type.WATER;
-			this.type2 = Type.POISON;
+			this.type1 = PType.WATER;
+			this.type2 = PType.POISON;
 		} else if (id == 63) {
-			this.type1 = Type.WATER;
+			this.type1 = PType.WATER;
 			this.type2 = null;
 		} else if (id == 64) {
-			this.type1 = Type.WATER;
-			this.type2 = Type.FIGHTING;
+			this.type1 = PType.WATER;
+			this.type2 = PType.FIGHTING;
 		} else if (id == 65) {
-			this.type1 = Type.WATER;
-			this.type2 = Type.FLYING;
+			this.type1 = PType.WATER;
+			this.type2 = PType.FLYING;
 		} else if (id == 66) {
-			this.type1 = Type.WATER;
-			this.type2 = Type.FLYING;
+			this.type1 = PType.WATER;
+			this.type2 = PType.FLYING;
 		} else if (id == 67) {
-			this.type1 = Type.WATER;
+			this.type1 = PType.WATER;
 			this.type2 = null;
 		} else if (id == 68) {
-			this.type1 = Type.WATER;
+			this.type1 = PType.WATER;
 			this.type2 = null;
 		} else if (id == 69) {
-			this.type1 = Type.WATER;
-			this.type2 = Type.DARK;
+			this.type1 = PType.WATER;
+			this.type2 = PType.DARK;
 		} else if (id == 70) {
-			this.type1 = Type.WATER;
-			this.type2 = Type.DRAGON;
+			this.type1 = PType.WATER;
+			this.type2 = PType.DRAGON;
 		} else if (id == 71) {
-			this.type1 = Type.GROUND;
+			this.type1 = PType.GROUND;
 			this.type2 = null;
 		} else if (id == 72) {
-			this.type1 = Type.GROUND;
+			this.type1 = PType.GROUND;
 			this.type2 = null;
 		} else if (id == 73) {
-			this.type1 = Type.GROUND;
-			this.type2 = Type.FIGHTING;
+			this.type1 = PType.GROUND;
+			this.type2 = PType.FIGHTING;
 		} else if (id == 74) {
-			this.type1 = Type.FIRE;
+			this.type1 = PType.FIRE;
 			this.type2 = null;
 		} else if (id == 75) {
-			this.type1 = Type.FIRE;
-			this.type2 = Type.FIGHTING;
+			this.type1 = PType.FIRE;
+			this.type2 = PType.FIGHTING;
 		} else if (id == 76) {
-			this.type1 = Type.FIRE;
-			this.type2 = Type.FIGHTING;
+			this.type1 = PType.FIRE;
+			this.type2 = PType.FIGHTING;
 		} else if (id == 77) {
-			this.type1 = Type.FIRE;
-			this.type2 = Type.GROUND;
+			this.type1 = PType.FIRE;
+			this.type2 = PType.GROUND;
 		} else if (id == 78) {
-			this.type1 = Type.FIRE;
-			this.type2 = Type.FLYING;
+			this.type1 = PType.FIRE;
+			this.type2 = PType.FLYING;
 		} else if (id == 79) {
-			this.type1 = Type.FIRE;
-			this.type2 = Type.DRAGON;
+			this.type1 = PType.FIRE;
+			this.type2 = PType.DRAGON;
 		} else if (id == 80) {
-			this.type1 = Type.FIRE;
-			this.type2 = Type.STEEL;
+			this.type1 = PType.FIRE;
+			this.type2 = PType.STEEL;
 		} else if (id == 81) {
-			this.type1 = Type.FIRE;
-			this.type2 = Type.STEEL;
+			this.type1 = PType.FIRE;
+			this.type2 = PType.STEEL;
 		} else if (id == 82) {
-			this.type1 = Type.WATER;
-			this.type2 = Type.FLYING;
+			this.type1 = PType.WATER;
+			this.type2 = PType.FLYING;
 		} else if (id == 83) {
-			this.type1 = Type.ELECTRIC;
-			this.type2 = Type.FLYING;
+			this.type1 = PType.ELECTRIC;
+			this.type2 = PType.FLYING;
 		} else if (id == 84) {
-			this.type1 = Type.FIRE;
+			this.type1 = PType.FIRE;
 			this.type2 = null;
 		} else if (id == 85) {
-			this.type1 = Type.FIRE;
-			this.type2 = Type.FLYING;
+			this.type1 = PType.FIRE;
+			this.type2 = PType.FLYING;
 		} else if (id == 86) {
-			this.type1 = Type.DARK;
-			this.type2 = Type.BUG;
+			this.type1 = PType.DARK;
+			this.type2 = PType.BUG;
 		} else if (id == 87) {
-			this.type1 = Type.DARK;
-			this.type2 = Type.BUG;
+			this.type1 = PType.DARK;
+			this.type2 = PType.BUG;
 		} else if (id == 88) {
-			this.type1 = Type.BUG;
-			this.type2 = Type.STEEL;
+			this.type1 = PType.BUG;
+			this.type2 = PType.STEEL;
 		} else if (id == 89) {
-			this.type1 = Type.DARK;
+			this.type1 = PType.DARK;
 			this.type2 = null;
 		} else if (id == 90) {
-			this.type1 = Type.DARK;
+			this.type1 = PType.DARK;
 			this.type2 = null;
 		} else if (id == 91) {
-			this.type1 = Type.DARK;
-			this.type2 = Type.MAGIC;
+			this.type1 = PType.DARK;
+			this.type2 = PType.MAGIC;
 		} else if (id == 92) {
-			this.type1 = Type.ELECTRIC;
+			this.type1 = PType.ELECTRIC;
 			this.type2 = null;
 		} else if (id == 93) {
-			this.type1 = Type.GHOST;
-			this.type2 = Type.FIRE;
+			this.type1 = PType.GHOST;
+			this.type2 = PType.FIRE;
 		} else if (id == 94) {
-			this.type1 = Type.GHOST;
-			this.type2 = Type.FIRE;
+			this.type1 = PType.GHOST;
+			this.type2 = PType.FIRE;
 		} else if (id == 95) {
-			this.type1 = Type.NORMAL;
-			this.type2 = Type.STEEL;
+			this.type1 = PType.NORMAL;
+			this.type2 = PType.STEEL;
 		} else if (id == 96) {
-			this.type1 = Type.NORMAL;
-			this.type2 = Type.STEEL;
+			this.type1 = PType.NORMAL;
+			this.type2 = PType.STEEL;
 		} else if (id == 97) {
-			this.type1 = Type.STEEL;
+			this.type1 = PType.STEEL;
 			this.type2 = null;
 		} else if (id == 98) {
-			this.type1 = Type.STEEL;
+			this.type1 = PType.STEEL;
 			this.type2 = null;
 		} else if (id == 99) {
-			this.type1 = Type.STEEL;
+			this.type1 = PType.STEEL;
 			this.type2 = null;
 		} else if (id == 100) {
-			this.type1 = Type.DRAGON;
+			this.type1 = PType.DRAGON;
 			this.type2 = null;
 		} else if (id == 101) {
-			this.type1 = Type.DRAGON;
+			this.type1 = PType.DRAGON;
 			this.type2 = null;
 		} else if (id == 102) {
-			this.type1 = Type.DRAGON;
-			this.type2 = Type.FLYING;
+			this.type1 = PType.DRAGON;
+			this.type2 = PType.FLYING;
 		} else if (id == 103) {
-			this.type1 = Type.DRAGON;
-			this.type2 = Type.FIGHTING;
+			this.type1 = PType.DRAGON;
+			this.type2 = PType.FIGHTING;
 		} else if (id == 104) {
-			this.type1 = Type.DRAGON;
-			this.type2 = Type.FLYING;
+			this.type1 = PType.DRAGON;
+			this.type2 = PType.FLYING;
 		} else if (id == 105) {
-			this.type1 = Type.DRAGON;
-			this.type2 = Type.FIRE;
+			this.type1 = PType.DRAGON;
+			this.type2 = PType.FIRE;
 		} else if (id == 106) {
-			this.type1 = Type.MAGIC;
+			this.type1 = PType.MAGIC;
 			this.type2 = null;
 		} else if (id == 107) {
-			this.type1 = Type.MAGIC;
+			this.type1 = PType.MAGIC;
 			this.type2 = null;
 		} else if (id == 108) {
-			this.type1 = Type.MAGIC;
-			this.type2 = Type.FIRE;
+			this.type1 = PType.MAGIC;
+			this.type2 = PType.FIRE;
 		} else if (id == 109) {
-			this.type1 = Type.MAGIC;
+			this.type1 = PType.MAGIC;
 			this.type2 = null;
 		} else if (id == 110) {
-			this.type1 = Type.MAGIC;
+			this.type1 = PType.MAGIC;
 			this.type2 = null;
 		} else if (id == 111) {
-			this.type1 = Type.MAGIC;
+			this.type1 = PType.MAGIC;
 			this.type2 = null;
 		} else if (id == 112) {
-			this.type1 = Type.NORMAL;
+			this.type1 = PType.NORMAL;
 			this.type2 = null;
 		} else if (id == 113) {
-			this.type1 = Type.GRASS;
+			this.type1 = PType.GRASS;
 			this.type2 = null;
 		} else if (id == 114) {
-			this.type1 = Type.FIRE;
+			this.type1 = PType.FIRE;
 			this.type2 = null;
 		} else if (id == 115) {
-			this.type1 = Type.WATER;
+			this.type1 = PType.WATER;
 			this.type2 = null;
 		} else if (id == 116) {
-			this.type1 = Type.POISON;
+			this.type1 = PType.POISON;
 			this.type2 = null;
 		} else if (id == 117) {
-			this.type1 = Type.ELECTRIC;
+			this.type1 = PType.ELECTRIC;
 			this.type2 = null;
 		} else if (id == 118) {
-			this.type1 = Type.ROCK;
+			this.type1 = PType.ROCK;
 			this.type2 = null;
 		} else if (id == 119) {
-			this.type1 = Type.DARK;
+			this.type1 = PType.DARK;
 			this.type2 = null;
 		} else if (id == 120) {
-			this.type1 = Type.STEEL;
+			this.type1 = PType.STEEL;
 			this.type2 = null;
 		} else if (id == 121) {
-			this.type1 = Type.FIGHTING;
+			this.type1 = PType.FIGHTING;
 			this.type2 = null;
 		} else if (id == 122) {
-			this.type1 = Type.DRAGON;
+			this.type1 = PType.DRAGON;
 			this.type2 = null;
 		} else if (id == 123) {
-			this.type1 = Type.MAGIC;
+			this.type1 = PType.MAGIC;
 			this.type2 = null;
 		} else if (id == 124) {
-			this.type1 = Type.GRASS;
+			this.type1 = PType.GRASS;
 			this.type2 = null;
 		} else if (id == 125) {
-			this.type1 = Type.GRASS;
+			this.type1 = PType.GRASS;
 			this.type2 = null;
 		} else if (id == 126) {
-			this.type1 = Type.GRASS;
+			this.type1 = PType.GRASS;
 			this.type2 = null;
 		} else if (id == 127) {
-			this.type1 = Type.FIRE;
+			this.type1 = PType.FIRE;
 			this.type2 = null;
 		} else if (id == 128) {
-			this.type1 = Type.FIRE;
+			this.type1 = PType.FIRE;
 			this.type2 = null;
 		} else if (id == 129) {
-			this.type1 = Type.FIRE;
+			this.type1 = PType.FIRE;
 			this.type2 = null;
 		} else if (id == 130) {
-			this.type1 = Type.WATER;
+			this.type1 = PType.WATER;
 			this.type2 = null;
 		} else if (id == 131) {
-			this.type1 = Type.WATER;
+			this.type1 = PType.WATER;
 			this.type2 = null;
 		} else if (id == 132) {
-			this.type1 = Type.WATER;
+			this.type1 = PType.WATER;
 			this.type2 = null;
 		} else if (id == 133) {
-			this.type1 = Type.ELECTRIC;
-			this.type2 = Type.DRAGON;
+			this.type1 = PType.ELECTRIC;
+			this.type2 = PType.DRAGON;
 		} else if (id == 134) {
-			this.type1 = Type.FIRE;
-			this.type2 = Type.DRAGON;
+			this.type1 = PType.FIRE;
+			this.type2 = PType.DRAGON;
 		} else if (id == 135) {
-			this.type1 = Type.NORMAL;
-			this.type2 = Type.MAGIC;
+			this.type1 = PType.NORMAL;
+			this.type2 = PType.MAGIC;
 		} else if (id == 136) {
-			this.type1 = Type.BUG;
-			this.type2 = Type.MAGIC;
+			this.type1 = PType.BUG;
+			this.type2 = PType.MAGIC;
 		} else if (id == 137) {
-			this.type1 = Type.FLYING;
-			this.type2 = Type.MAGIC;
+			this.type1 = PType.FLYING;
+			this.type2 = PType.MAGIC;
 		} else if (id == 138) {
-			this.type1 = Type.NORMAL;
-			this.type2 = Type.MAGIC;
+			this.type1 = PType.NORMAL;
+			this.type2 = PType.MAGIC;
 		} else if (id == 139) {
-			this.type1 = Type.BUG;
-			this.type2 = Type.MAGIC;
+			this.type1 = PType.BUG;
+			this.type2 = PType.MAGIC;
 		} else if (id == 140) {
-			this.type1 = Type.FLYING;
-			this.type2 = Type.MAGIC;
+			this.type1 = PType.FLYING;
+			this.type2 = PType.MAGIC;
 		} else if (id == 141) {
-			this.type1 = Type.POISON;
-			this.type2 = Type.FIRE;
+			this.type1 = PType.POISON;
+			this.type2 = PType.FIRE;
 		} else if (id == 142) {
-			this.type1 = Type.POISON;
-			this.type2 = Type.WATER;
+			this.type1 = PType.POISON;
+			this.type2 = PType.WATER;
 		} else if (id == 143) {
-			this.type1 = Type.POISON;
-			this.type2 = Type.FIRE;
+			this.type1 = PType.POISON;
+			this.type2 = PType.FIRE;
 		} else if (id == 144) {
-			this.type1 = Type.POISON;
-			this.type2 = Type.WATER;
+			this.type1 = PType.POISON;
+			this.type2 = PType.WATER;
 		}
 		
 	}
@@ -2135,8 +2139,8 @@ public class Pokemon implements Serializable {
 
 	
 	public int move(Pokemon foe, Move move) {
-		if (this.currentHP == 0) return 0;
-		if (foe.currentHP == 0) return 0;
+		if (this.fainted) return 0;
+		if (foe.fainted) return 0;
 
 		int attackStat;
 		int defenseStat;
@@ -2147,7 +2151,7 @@ public class Pokemon implements Serializable {
 			return 0; // Check for miss
 		}
 		
-		if(getImmune(foe, move.type)) {
+		if(getImmune(foe, move.mtype)) {
 			System.out.println(this.name + " used " + move + "!");
 			System.out.println("It doesn't effect " + foe.name + "...");
 			return 0; // Check for miss
@@ -2178,8 +2182,8 @@ public class Pokemon implements Serializable {
 		damageDouble *= rollAmt;
 		
 		// Stab
-		if (move.type == this.type1) damageDouble *= 1.5;
-		if (move.type == this.type2) damageDouble *= 1.5;
+		if (move.mtype == this.type1) damageDouble *= 1.5;
+		if (move.mtype == this.type2) damageDouble *= 1.5;
 		
 		// Crit Check
 		if (critCheck(move)) {
@@ -2191,8 +2195,8 @@ public class Pokemon implements Serializable {
 		damage = (int) Math.floor(damageDouble);
 		
 		// Check type effectiveness
-		Type[] resist = getResistances(move.type);
-		for (Type type : resist) {
+		PType[] resist = getResistances(move.mtype);
+		for (PType type : resist) {
 			if (foe.type1 == type) {
 				System.out.println("It's not very effective...");
 				damage *= 0.5;
@@ -2203,8 +2207,8 @@ public class Pokemon implements Serializable {
 			}
 		}
 		// Check type effectiveness
-		Type[] weak = getWeaknesses(move.type);
-		for (Type type : weak) {
+		PType[] weak = getWeaknesses(move.mtype);
+		for (PType type : weak) {
 			if (foe.type1 == type) {
 				damage *= 2;
 				System.out.println("It's super effective!");
@@ -2226,17 +2230,18 @@ public class Pokemon implements Serializable {
 				this.levelUp();
 			}
 			System.out.println(foe.getName() + " fained!");
+			foe.fainted = true;
 		}
 		
 		
 		return damage;
 	}
 
-	private boolean getImmune(Pokemon p, Type type) {
+	private boolean getImmune(Pokemon p, PType type) {
 		switch(type) {
         case NORMAL: 
-        	if (p.type1 == Type.GHOST) return true;
-        	if (p.type2 == Type.GHOST) return true;
+        	if (p.type1 == PType.GHOST) return true;
+        	if (p.type2 == PType.GHOST) return true;
         	return false;
         case ROCK: 
             return false;
@@ -2247,34 +2252,34 @@ public class Pokemon implements Serializable {
 		case DRAGON:
 			return false;
 		case ELECTRIC:
-			if (p.type1 == Type.GROUND) return true;
-        	if (p.type2 == Type.GROUND) return true;
+			if (p.type1 == PType.GROUND) return true;
+        	if (p.type2 == PType.GROUND) return true;
             return false;
 		case FIGHTING:
-			if (p.type1 == Type.GHOST) return true;
-        	if (p.type2 == Type.GHOST) return true;
+			if (p.type1 == PType.GHOST) return true;
+        	if (p.type2 == PType.GHOST) return true;
             return false;
 		case FIRE:
 			return false;
 		case FLYING:
 			return false;
 		case GHOST:
-			if (p.type1 == Type.NORMAL) return true;
-        	if (p.type2 == Type.NORMAL) return true;
+			if (p.type1 == PType.NORMAL) return true;
+        	if (p.type2 == PType.NORMAL) return true;
             return false;
 		case GRASS:
 			return false;
 		case GROUND:
-			if (p.type1 == Type.FLYING) return true;
-        	if (p.type2 == Type.FLYING) return true;
+			if (p.type1 == PType.FLYING) return true;
+        	if (p.type2 == PType.FLYING) return true;
 			return false;
 		case MAGIC:
-			if (p.type1 == Type.DARK) return true;
-        	if (p.type2 == Type.DARK) return true;
+			if (p.type1 == PType.DARK) return true;
+        	if (p.type2 == PType.DARK) return true;
         	return false;
 		case POISON:
-			if (p.type1 == Type.STEEL) return true;
-        	if (p.type2 == Type.STEEL) return true;
+			if (p.type1 == PType.STEEL) return true;
+        	if (p.type2 == PType.STEEL) return true;
 			return false;
 		case STEEL:
 			return false;
@@ -2311,6 +2316,7 @@ public class Pokemon implements Serializable {
 		}
 	
 	public void heal() {
+		this.fainted = false;
 		this.currentHP = this.getStat(0);
 		this.status = Status.HEALTHY;
 		System.out.println(this.name + " healed!");
@@ -2321,97 +2327,97 @@ public class Pokemon implements Serializable {
 	 * @param type - type to check what other types resist it
 	 * @return Array of types that resist type
 	 */
-	public Type[] getResistances(Type type) {
-	    ArrayList<Type> resistantTypes = new ArrayList<>();
+	public PType[] getResistances(PType type) {
+	    ArrayList<PType> resistantTypes = new ArrayList<>();
 	    switch(type) {
 	        case NORMAL: 
-	        	resistantTypes.add(Type.ROCK);
-	            resistantTypes.add(Type.STEEL);
+	        	resistantTypes.add(PType.ROCK);
+	            resistantTypes.add(PType.STEEL);
 	            break;
 	        case ROCK: 
-	            resistantTypes.add(Type.FIGHTING);
-	            resistantTypes.add(Type.GROUND);
-	            resistantTypes.add(Type.STEEL);
+	            resistantTypes.add(PType.FIGHTING);
+	            resistantTypes.add(PType.GROUND);
+	            resistantTypes.add(PType.STEEL);
 	            break;
 			case BUG:
-				resistantTypes.add(Type.FIRE);
-	            resistantTypes.add(Type.FIGHTING);
-	            resistantTypes.add(Type.POISON);
-	            resistantTypes.add(Type.FLYING);
-	            resistantTypes.add(Type.GHOST);
-	            resistantTypes.add(Type.STEEL);
+				resistantTypes.add(PType.FIRE);
+	            resistantTypes.add(PType.FIGHTING);
+	            resistantTypes.add(PType.POISON);
+	            resistantTypes.add(PType.FLYING);
+	            resistantTypes.add(PType.GHOST);
+	            resistantTypes.add(PType.STEEL);
 	            break;
 			case DARK:
-				resistantTypes.add(Type.FIGHTING);
-	            resistantTypes.add(Type.DARK);
+				resistantTypes.add(PType.FIGHTING);
+	            resistantTypes.add(PType.DARK);
 	            break;
 			case DRAGON:
-				resistantTypes.add(Type.STEEL);
+				resistantTypes.add(PType.STEEL);
 	            break;
 			case ELECTRIC:
-				resistantTypes.add(Type.ELECTRIC);
-	            resistantTypes.add(Type.GRASS);
-	            resistantTypes.add(Type.DRAGON);
+				resistantTypes.add(PType.ELECTRIC);
+	            resistantTypes.add(PType.GRASS);
+	            resistantTypes.add(PType.DRAGON);
 	            break;
 			case FIGHTING:
-				resistantTypes.add(Type.BUG);
-	            resistantTypes.add(Type.POISON);
-	            resistantTypes.add(Type.FLYING);
-	            resistantTypes.add(Type.MAGIC);
+				resistantTypes.add(PType.BUG);
+	            resistantTypes.add(PType.POISON);
+	            resistantTypes.add(PType.FLYING);
+	            resistantTypes.add(PType.MAGIC);
 	            break;
 			case FIRE:
-				resistantTypes.add(Type.FIRE);
-	            resistantTypes.add(Type.WATER);
-	            resistantTypes.add(Type.ROCK);
-	            resistantTypes.add(Type.DRAGON);
+				resistantTypes.add(PType.FIRE);
+	            resistantTypes.add(PType.WATER);
+	            resistantTypes.add(PType.ROCK);
+	            resistantTypes.add(PType.DRAGON);
 	            break;
 			case FLYING:
-				resistantTypes.add(Type.ELECTRIC);
-	            resistantTypes.add(Type.ROCK);
-	            resistantTypes.add(Type.STEEL);
+				resistantTypes.add(PType.ELECTRIC);
+	            resistantTypes.add(PType.ROCK);
+	            resistantTypes.add(PType.STEEL);
 	            break;
 			case GHOST:
-				resistantTypes.add(Type.DARK);
+				resistantTypes.add(PType.DARK);
 	            break;
 			case GRASS:
-				resistantTypes.add(Type.FIRE);
-	            resistantTypes.add(Type.GRASS);
-	            resistantTypes.add(Type.POISON);
-	            resistantTypes.add(Type.FLYING);
-	            resistantTypes.add(Type.BUG);
-	            resistantTypes.add(Type.DRAGON);
-	            resistantTypes.add(Type.STEEL);
+				resistantTypes.add(PType.FIRE);
+	            resistantTypes.add(PType.GRASS);
+	            resistantTypes.add(PType.POISON);
+	            resistantTypes.add(PType.FLYING);
+	            resistantTypes.add(PType.BUG);
+	            resistantTypes.add(PType.DRAGON);
+	            resistantTypes.add(PType.STEEL);
 	            break;
 			case GROUND:
-				resistantTypes.add(Type.GRASS);
-	            resistantTypes.add(Type.BUG);
+				resistantTypes.add(PType.GRASS);
+	            resistantTypes.add(PType.BUG);
 				break;
 			case MAGIC:
-				resistantTypes.add(Type.ELECTRIC);
-	            resistantTypes.add(Type.MAGIC);
-	            resistantTypes.add(Type.STEEL);
+				resistantTypes.add(PType.ELECTRIC);
+	            resistantTypes.add(PType.MAGIC);
+	            resistantTypes.add(PType.STEEL);
 				break;
 			case POISON:
-				resistantTypes.add(Type.POISON);
-	            resistantTypes.add(Type.GROUND);
-	            resistantTypes.add(Type.ROCK);
-	            resistantTypes.add(Type.GHOST);
+				resistantTypes.add(PType.POISON);
+	            resistantTypes.add(PType.GROUND);
+	            resistantTypes.add(PType.ROCK);
+	            resistantTypes.add(PType.GHOST);
 				break;
 			case STEEL:
-				resistantTypes.add(Type.FIRE);
-	            resistantTypes.add(Type.WATER);
-	            resistantTypes.add(Type.ELECTRIC);
-	            resistantTypes.add(Type.STEEL);
+				resistantTypes.add(PType.FIRE);
+	            resistantTypes.add(PType.WATER);
+	            resistantTypes.add(PType.ELECTRIC);
+	            resistantTypes.add(PType.STEEL);
 				break;
 			case WATER:
-				resistantTypes.add(Type.WATER);
-	            resistantTypes.add(Type.GRASS);
-	            resistantTypes.add(Type.DRAGON);
+				resistantTypes.add(PType.WATER);
+	            resistantTypes.add(PType.GRASS);
+	            resistantTypes.add(PType.DRAGON);
 				break;
 			default:
 				break;
 	    }
-	    Type[] toReturn = new Type[resistantTypes.size()]; // this will probably error for NORMAl since size() returns 0.
+	    PType[] toReturn = new PType[resistantTypes.size()]; // this will probably error for NORMAl since size() returns 0.
 	    return resistantTypes.toArray(toReturn);
 	}
 	
@@ -2420,87 +2426,87 @@ public class Pokemon implements Serializable {
 	 * @param type - type to check what other types are weak to it
 	 * @return Array of types that are weak to type
 	 */
-	public Type[] getWeaknesses(Type type) {
-	    ArrayList<Type> resistantTypes = new ArrayList<>();
+	public PType[] getWeaknesses(PType type) {
+	    ArrayList<PType> resistantTypes = new ArrayList<>();
 	    switch(type) {
 	        case NORMAL:
 	            break;
 	        case ROCK: 
-	            resistantTypes.add(Type.FIRE);
-	            resistantTypes.add(Type.FLYING);
-	            resistantTypes.add(Type.BUG);
+	            resistantTypes.add(PType.FIRE);
+	            resistantTypes.add(PType.FLYING);
+	            resistantTypes.add(PType.BUG);
 	            break;
 			case BUG:
-				resistantTypes.add(Type.GRASS);
-	            resistantTypes.add(Type.MAGIC);
-	            resistantTypes.add(Type.DARK);
+				resistantTypes.add(PType.GRASS);
+	            resistantTypes.add(PType.MAGIC);
+	            resistantTypes.add(PType.DARK);
 	            break;
 			case DARK:
-				resistantTypes.add(Type.MAGIC);
-	            resistantTypes.add(Type.GHOST);
+				resistantTypes.add(PType.MAGIC);
+	            resistantTypes.add(PType.GHOST);
 	            break;
 			case DRAGON:
-				resistantTypes.add(Type.DRAGON);
+				resistantTypes.add(PType.DRAGON);
 	            break;
 			case ELECTRIC:
-				resistantTypes.add(Type.WATER);
-	            resistantTypes.add(Type.FLYING);
+				resistantTypes.add(PType.WATER);
+	            resistantTypes.add(PType.FLYING);
 	            break;
 			case FIGHTING:
-				resistantTypes.add(Type.NORMAL);
-	            resistantTypes.add(Type.ROCK);
-	            resistantTypes.add(Type.DRAGON);
-	            resistantTypes.add(Type.DARK);
-	            resistantTypes.add(Type.STEEL);
+				resistantTypes.add(PType.NORMAL);
+	            resistantTypes.add(PType.ROCK);
+	            resistantTypes.add(PType.DRAGON);
+	            resistantTypes.add(PType.DARK);
+	            resistantTypes.add(PType.STEEL);
 	            break;
 			case FIRE:
-				resistantTypes.add(Type.GRASS);
-	            resistantTypes.add(Type.BUG);
-	            resistantTypes.add(Type.STEEL);
+				resistantTypes.add(PType.GRASS);
+	            resistantTypes.add(PType.BUG);
+	            resistantTypes.add(PType.STEEL);
 	            break;
 			case FLYING:
-				resistantTypes.add(Type.GRASS);
-	            resistantTypes.add(Type.BUG);
-	            resistantTypes.add(Type.FIGHTING);
+				resistantTypes.add(PType.GRASS);
+	            resistantTypes.add(PType.BUG);
+	            resistantTypes.add(PType.FIGHTING);
 	            break;
 			case GHOST:
-				resistantTypes.add(Type.GHOST);
-				resistantTypes.add(Type.MAGIC);
+				resistantTypes.add(PType.GHOST);
+				resistantTypes.add(PType.MAGIC);
 	            break;
 			case GRASS:
-				resistantTypes.add(Type.WATER);
-	            resistantTypes.add(Type.ROCK);
-	            resistantTypes.add(Type.GROUND);
+				resistantTypes.add(PType.WATER);
+	            resistantTypes.add(PType.ROCK);
+	            resistantTypes.add(PType.GROUND);
 	            break;
 			case GROUND:
-				resistantTypes.add(Type.ELECTRIC);
-	            resistantTypes.add(Type.FIRE);
-	            resistantTypes.add(Type.POISON);
-	            resistantTypes.add(Type.ROCK);
-	            resistantTypes.add(Type.STEEL);
+				resistantTypes.add(PType.ELECTRIC);
+	            resistantTypes.add(PType.FIRE);
+	            resistantTypes.add(PType.POISON);
+	            resistantTypes.add(PType.ROCK);
+	            resistantTypes.add(PType.STEEL);
 				break;
 			case MAGIC:
-				resistantTypes.add(Type.NORMAL);
-	            resistantTypes.add(Type.FIGHTING);
-	            resistantTypes.add(Type.POISON);
-	            resistantTypes.add(Type.DRAGON);
+				resistantTypes.add(PType.NORMAL);
+	            resistantTypes.add(PType.FIGHTING);
+	            resistantTypes.add(PType.POISON);
+	            resistantTypes.add(PType.DRAGON);
 				break;
 			case POISON:
-				resistantTypes.add(Type.GRASS);
+				resistantTypes.add(PType.GRASS);
 				break;
 			case STEEL:
-				resistantTypes.add(Type.ROCK);
-	            resistantTypes.add(Type.DRAGON);
+				resistantTypes.add(PType.ROCK);
+	            resistantTypes.add(PType.DRAGON);
 				break;
 			case WATER:
-				resistantTypes.add(Type.FIRE);
-	            resistantTypes.add(Type.ROCK);
-	            resistantTypes.add(Type.GROUND);
+				resistantTypes.add(PType.FIRE);
+	            resistantTypes.add(PType.ROCK);
+	            resistantTypes.add(PType.GROUND);
 				break;
 			default:
 				break;
 	    }
-	    Type[] toReturn = new Type[resistantTypes.size()]; // this will probably error for NORMAl since size() returns 0.
+	    PType[] toReturn = new PType[resistantTypes.size()]; // this will probably error for NORMAl since size() returns 0.
 	    return resistantTypes.toArray(toReturn);
 	}
 	
