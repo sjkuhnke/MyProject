@@ -122,7 +122,7 @@ public class Battle extends JFrame {
 		
 		healButton.addActionListener(e -> {
 			for (Pokemon member : me.team) {
-				member.heal();
+				if (member != null) member.heal();
 			}
 			updateCurrent();
 			updateBars();
@@ -232,19 +232,19 @@ public class Battle extends JFrame {
 		
 		// Add action listeners to buttons
         move1.addActionListener(e -> {
-        	turn(me.getCurrent(),foe,me.getCurrent().move1,foe.randomMove());
+        	turn(me.getCurrent(),foe,me.getCurrent().moveset[0],foe.randomMove());
         });
 
         move2.addActionListener(e -> {
-        	turn(me.getCurrent(),foe,me.getCurrent().move2,foe.randomMove());
+        	turn(me.getCurrent(),foe,me.getCurrent().moveset[1],foe.randomMove());
         });
 
         move3.addActionListener(e -> {
-        	turn(me.getCurrent(),foe,me.getCurrent().move3,foe.randomMove());
+        	turn(me.getCurrent(),foe,me.getCurrent().moveset[2],foe.randomMove());
         });
 
         move4.addActionListener(e -> {
-        	turn(me.getCurrent(),foe,me.getCurrent().move4,foe.randomMove());
+        	turn(me.getCurrent(),foe,me.getCurrent().moveset[3],foe.randomMove());
         });
         
         slashLabel = new JLabel("/");
@@ -303,34 +303,34 @@ public class Battle extends JFrame {
 	}
 
 	private void setMoveButtons() {
-		if (me.getCurrent().move1 != null) {
-        	move1.setText(me.getCurrent().move1.toString());
+		if (me.getCurrent().moveset[0] != null) {
+        	move1.setText(me.getCurrent().moveset[0].toString());
         	move1.setFont(new Font("Tahoma", Font.PLAIN, 9));
-        	move1.setBackground(me.getCurrent().move1.mtype.getColor());
+        	move1.setBackground(me.getCurrent().moveset[0].mtype.getColor());
         } else {
         	move1.setText("No Move");
         	move1.setVisible(false);
         }
-        if (me.getCurrent().move2 != null) {
-        	move2.setText(me.getCurrent().move2.toString());
+        if (me.getCurrent().moveset[1] != null) {
+        	move2.setText(me.getCurrent().moveset[1].toString());
         	move2.setFont(new Font("Tahoma", Font.PLAIN, 9));
-        	move2.setBackground(me.getCurrent().move2.mtype.getColor());
+        	move2.setBackground(me.getCurrent().moveset[1].mtype.getColor());
         } else {
         	move2.setText("No Move");
         	move2.setVisible(false);
         }
-        if (me.getCurrent().move3 != null) {
-        	move3.setText(me.getCurrent().move3.toString());
+        if (me.getCurrent().moveset[2] != null) {
+        	move3.setText(me.getCurrent().moveset[2].toString());
         	move3.setFont(new Font("Tahoma", Font.PLAIN, 9));
-        	move3.setBackground(me.getCurrent().move3.mtype.getColor());
+        	move3.setBackground(me.getCurrent().moveset[2].mtype.getColor());
         } else {
         	move3.setText("No Move");
         	move3.setVisible(false);
         }
-        if (me.getCurrent().move4 != null) {
-        	move4.setText(me.getCurrent().move4.toString());
+        if (me.getCurrent().moveset[3] != null) {
+        	move4.setText(me.getCurrent().moveset[3].toString());
         	move4.setFont(new Font("Tahoma", Font.PLAIN, 9));
-        	move4.setBackground(me.getCurrent().move4.mtype.getColor());
+        	move4.setBackground(me.getCurrent().moveset[3].mtype.getColor());
         } else {
         	move4.setText("No Move");
         	move4.setVisible(false);

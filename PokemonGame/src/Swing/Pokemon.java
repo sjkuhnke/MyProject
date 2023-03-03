@@ -10,7 +10,7 @@ public class Pokemon implements Serializable {
 	 */
 	private static final long serialVersionUID = 7087373480262097882L;
 	
-	public int id;
+	protected int id;
 	public String name;
 	
 	public int[] baseStats;
@@ -20,11 +20,8 @@ public class Pokemon implements Serializable {
 	public PType type1;
 	public PType type2;
 	
-	public Move[] movebank;
-	public Move move1;
-	public Move move2;
-	public Move move3;
-	public Move move4;
+	private Move[] movebank;
+	public Move[] moveset;
 	
 	public Status status;
 	
@@ -50,7 +47,7 @@ public class Pokemon implements Serializable {
 		exp = 0;
 		
 		currentHP = this.getStat(0);
-		
+		moveset = new Move[4];
 		setMoveBank();
 		setMoves();
 		
@@ -59,25 +56,17 @@ public class Pokemon implements Serializable {
 	}
 	
 	public void setMoves() {
-		int movesAssigned = 0;
-		for (int i = movebank.length - 1; i >= 0 && movesAssigned < 4; i--) {
-	        if (movebank[i] != null && level >= i + 1) {
-	            if (move4 == null) {
-	                move4 = movebank[i];
-	            } else if (move3 == null) {
-	                move3 = movebank[i];
-	            } else if (move2 == null) {
-	                move2 = movebank[i];
-	            } else if (move1 == null) {
-	                move1 = movebank[i];
-	            }
-	            movesAssigned++;
-	        }
-	    }
+		int index = 0;
+		for (int i = 0; i < level && i < movebank.length; i++) {
+			if (movebank[i] != null) {
+				moveset[index] = movebank[i];
+				index++;
+			}
+			if (index >= 4) index = 0;
+		}
 	}
 	
 	public Move randomMove() {
-	    Move[] moveset = {this.move1, this.move2, this.move3, this.move4};
 	    ArrayList<Move> validMoves = new ArrayList<>();
 
 	    // Add all non-null moves to the validMoves list
@@ -93,7 +82,7 @@ public class Pokemon implements Serializable {
 	    return validMoves.get(index);
 	}
 
-	public Pokemon(int i, int l, Move m1, Move m2, Move m3, Move m4) {
+	public Pokemon(int i, int l, Move[] set) {
 		id = i;
 		name = getName();
 		
@@ -109,10 +98,7 @@ public class Pokemon implements Serializable {
 		exp = 0;
 		
 		setMoveBank();
-		move1 = m1;
-		move2 = m2;
-		move3 = m3;
-		move4 = m4;
+		moveset = set;
 		
 	}
 	
@@ -576,12 +562,11 @@ public class Pokemon implements Serializable {
 	    }
 	    
 	    String moveString = "";
-	    Move[] moves = {move1, move2, move3, move4};
 	    
-	    for (int i = 0; i < moves.length; i++) {
-	    	if (moves[i] != null) {
-	    		moveString += moves[i].toString();
-	    		if (i != moves.length - 1) {
+	    for (int i = 0; i < moveset.length; i++) {
+	    	if (moveset[i] != null) {
+	    		moveString += moveset[i].toString();
+	    		if (i != moveset.length - 1) {
 	    			moveString += " / ";
 	    		}
 	    	}
@@ -921,15 +906,15 @@ public class Pokemon implements Serializable {
 	
 	private Pokemon checkEvo() {
 		if (id == 1 && level >= 15) {
-			Pokemon result = new Pokemon(2, level, this.move1, this.move2, this.move3, this.move4);
+			Pokemon result = new Pokemon(2, level, this.moveset);
 			System.out.println(this.name + " evolved into " + result.name + "!");
 			return result;
 		} else if (id == 2 && level >= 35) {
-			Pokemon result = new Pokemon(3, level, this.move1, this.move2, this.move3, this.move4);
+			Pokemon result = new Pokemon(3, level, this.moveset);
 			System.out.println(this.name + " evolved into " + result.name + "!");
 			return result;
 		} else if (id == 2 && level >= 35) {
-			Pokemon result = new Pokemon(3, level, this.move1, this.move2, this.move3, this.move4);
+			Pokemon result = new Pokemon(3, level, this.moveset);
 			System.out.println(this.name + " evolved into " + result.name + "!");
 			return result;
 		}
