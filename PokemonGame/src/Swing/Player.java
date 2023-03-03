@@ -8,13 +8,13 @@ public class Player implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = -2851052666892205583L;
-	transient int id;
-	transient Pokemon[] team;
-	transient Pokemon[] box;
-	transient int money;
-	transient static Pokemon current;
-	transient int numPokemonTeam;
-	transient int numPokemonBox;
+	public int id;
+	public Pokemon[] team;
+	public Pokemon[] box;
+	public int money;
+	public Pokemon current;
+	public int numPokemonTeam;
+	public int numPokemonBox;
 	
 	public Player() {
 		this(genID());
@@ -34,8 +34,8 @@ public class Player implements Serializable{
 	    return random.nextInt();
 	}
 	
-	public static Pokemon getCurrent() {
-		return current;
+	public Pokemon getCurrent() {
+		return this.current;
 	}
 	
 	public void catchPokemon(Pokemon p) {

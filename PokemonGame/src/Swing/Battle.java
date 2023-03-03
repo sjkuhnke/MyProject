@@ -91,32 +91,32 @@ public class Battle extends JFrame {
 		setContentPane(playerPanel);
 		playerPanel.setLayout(null);
 		
-		JLabel lblNewLabel = new JLabel(Player.getCurrent().getName() + "  lv " + Player.getCurrent().getLevel());
+		JLabel lblNewLabel = new JLabel(me.getCurrent().getName() + "  lv " + me.getCurrent().getLevel());
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel.setBounds(133, 140, 164, 20);
 		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		playerPanel.add(lblNewLabel);
 		
-		if (Player.getCurrent().move1 != null) {
-        	move1 = new JButton(Player.getCurrent().move1.toString());
+		if (me.getCurrent().move1 != null) {
+        	move1 = new JButton(me.getCurrent().move1.toString());
         } else {
         	move1 = new JButton("No Move");
         	move1.setVisible(false);
         }
-        if (Player.getCurrent().move2 != null) {
-        	move2 = new JButton(Player.getCurrent().move2.toString());
+        if (me.getCurrent().move2 != null) {
+        	move2 = new JButton(me.getCurrent().move2.toString());
         } else {
         	move2 = new JButton("No Move");
         	move2.setVisible(false);
         }
-        if (Player.getCurrent().move3 != null) {
-        	move3 = new JButton(Player.getCurrent().move3.toString());
+        if (me.getCurrent().move3 != null) {
+        	move3 = new JButton(me.getCurrent().move3.toString());
         } else {
         	move3 = new JButton("No Move");
         	move3.setVisible(false);
         }
-        if (Player.getCurrent().move4 != null) {
-        	move4 = new JButton(Player.getCurrent().move4.toString());
+        if (me.getCurrent().move4 != null) {
+        	move4 = new JButton(me.getCurrent().move4.toString());
         } else {
         	move4 = new JButton("No Move");
         	move4.setVisible(false);
@@ -136,25 +136,25 @@ public class Battle extends JFrame {
 
         // add action listeners to buttons
         move1.addActionListener(e -> {
-        	turn(Player.getCurrent(),foe,Player.getCurrent().move1,foe.randomMove());
+        	turn(me.getCurrent(),foe,me.getCurrent().move1,foe.randomMove());
         });
 
         move2.addActionListener(e -> {
-        	turn(Player.getCurrent(),foe,Player.getCurrent().move2,foe.randomMove());
+        	turn(me.getCurrent(),foe,me.getCurrent().move2,foe.randomMove());
         });
 
         move3.addActionListener(e -> {
-        	turn(Player.getCurrent(),foe,Player.getCurrent().move3,foe.randomMove());
+        	turn(me.getCurrent(),foe,me.getCurrent().move3,foe.randomMove());
         });
 
         move4.addActionListener(e -> {
-        	turn(Player.getCurrent(),foe,Player.getCurrent().move4,foe.randomMove());
+        	turn(me.getCurrent(),foe,me.getCurrent().move4,foe.randomMove());
         });
 		
-		healthBar = new JProgressBar(0, Player.getCurrent().getStat(0));
+		healthBar = new JProgressBar(0, me.getCurrent().getStat(0));
 		healthBar.setBackground(UIManager.getColor("Button.darkShadow"));
 		healthBar.setFont(new Font("Tahoma", Font.PLAIN, 11));
-		healthBar.setValue(Player.getCurrent().getCurrentHP());
+		healthBar.setValue(me.getCurrent().getCurrentHP());
 		if (healthBar.getPercentComplete() > 0.5) {
 			healthBar.setForeground(new Color(0, 255, 0));
 		} else if (healthBar.getPercentComplete() <= 0.5 && healthBar.getPercentComplete() > 0.25) {
@@ -166,13 +166,13 @@ public class Battle extends JFrame {
 		healthBar.setBounds(143, 171, 146, 14);
 		playerPanel.add(healthBar);
 		
-		progressBar = new JProgressBar(0, Player.getCurrent().expMax);
+		progressBar = new JProgressBar(0, me.getCurrent().expMax);
 		progressBar.setForeground(new Color(0, 128, 255));
-		progressBar.setValue(Player.getCurrent().exp);
+		progressBar.setValue(me.getCurrent().exp);
 		progressBar.setBounds(143, 186, 146, 7);
 		playerPanel.add(progressBar);
 		
-		lblNewLabel_1 = new JLabel(Player.getCurrent().getCurrentHP() + "");
+		lblNewLabel_1 = new JLabel(me.getCurrent().getCurrentHP() + "");
 		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 9));
 		lblNewLabel_1.setBounds(162, 192, 46, 14);
@@ -184,7 +184,7 @@ public class Battle extends JFrame {
 		lblNewLabel_2.setBounds(207, 192, 21, 14);
 		playerPanel.add(lblNewLabel_2);
 		
-		lblNewLabel_3 = new JLabel(Player.getCurrent().getStat(0) + "");
+		lblNewLabel_3 = new JLabel(me.getCurrent().getStat(0) + "");
 		lblNewLabel_3.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_3.setFont(new Font("Tahoma", Font.PLAIN, 9));
 		lblNewLabel_3.setBounds(225, 192, 46, 14);
@@ -246,8 +246,8 @@ public class Battle extends JFrame {
 	}
 
 	private void updateBars() {
-		healthBar.setValue(Player.getCurrent().getCurrentHP());
-		lblNewLabel_1.setText(Player.getCurrent().getCurrentHP() + "");
+		healthBar.setValue(me.getCurrent().getCurrentHP());
+		lblNewLabel_1.setText(me.getCurrent().getCurrentHP() + "");
 		if (healthBar.getPercentComplete() > 0.5) {
 			healthBar.setForeground(new Color(0, 255, 0));
 		} else if (healthBar.getPercentComplete() <= 0.5 && healthBar.getPercentComplete() > 0.25) {
@@ -256,7 +256,7 @@ public class Battle extends JFrame {
 			healthBar.setForeground(new Color(255, 0, 0));
 		}
 		
-		progressBar.setValue(Player.getCurrent().exp);
+		progressBar.setValue(me.getCurrent().exp);
 		
 		progressBar_1.setValue(foe.getCurrentHP());
 		if (progressBar_1.getPercentComplete() > 0.5) {

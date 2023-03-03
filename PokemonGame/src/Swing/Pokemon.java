@@ -10,28 +10,28 @@ public class Pokemon implements Serializable {
 	 */
 	private static final long serialVersionUID = 7087373480262097882L;
 	
-	transient int id;
-	transient String name;
+	public int id;
+	public String name;
 	
-	transient int[] baseStats;
-	transient int[] stats;
-	transient int level;
+	public int[] baseStats;
+	public int[] stats;
+	public int level;
 	
-	transient Type type1;
-	transient Type type2;
+	public Type type1;
+	public Type type2;
 	
-	transient Move[] movebank;
-	transient Move move1;
-	transient Move move2;
-	transient Move move3;
-	transient Move move4;
+	public Move[] movebank;
+	public Move move1;
+	public Move move2;
+	public Move move3;
+	public Move move4;
 	
-	transient Status status;
+	public Status status;
 	
-	transient int exp;
-	transient int expMax;
+	public int exp;
+	public int expMax;
 	
-	transient int currentHP;
+	public int currentHP;
 	
 	public Pokemon(int i, int l) {
 		id = i;
