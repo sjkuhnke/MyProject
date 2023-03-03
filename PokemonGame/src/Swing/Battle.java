@@ -306,7 +306,7 @@ public class Battle extends JFrame {
 		if (me.getCurrent().move1 != null) {
         	move1.setText(me.getCurrent().move1.toString());
         	move1.setFont(new Font("Tahoma", Font.PLAIN, 9));
-        	move1.setBackground(getColor(me.getCurrent().move1));
+        	move1.setBackground(me.getCurrent().move1.mtype.getColor());
         } else {
         	move1.setText("No Move");
         	move1.setVisible(false);
@@ -314,7 +314,7 @@ public class Battle extends JFrame {
         if (me.getCurrent().move2 != null) {
         	move2.setText(me.getCurrent().move2.toString());
         	move2.setFont(new Font("Tahoma", Font.PLAIN, 9));
-        	move2.setBackground(getColor(me.getCurrent().move2));
+        	move2.setBackground(me.getCurrent().move2.mtype.getColor());
         } else {
         	move2.setText("No Move");
         	move2.setVisible(false);
@@ -322,7 +322,7 @@ public class Battle extends JFrame {
         if (me.getCurrent().move3 != null) {
         	move3.setText(me.getCurrent().move3.toString());
         	move3.setFont(new Font("Tahoma", Font.PLAIN, 9));
-        	move3.setBackground(getColor(me.getCurrent().move3));
+        	move3.setBackground(me.getCurrent().move3.mtype.getColor());
         } else {
         	move3.setText("No Move");
         	move3.setVisible(false);
@@ -330,7 +330,7 @@ public class Battle extends JFrame {
         if (me.getCurrent().move4 != null) {
         	move4.setText(me.getCurrent().move4.toString());
         	move4.setFont(new Font("Tahoma", Font.PLAIN, 9));
-        	move4.setBackground(getColor(me.getCurrent().move4));
+        	move4.setBackground(me.getCurrent().move4.mtype.getColor());
         } else {
         	move4.setText("No Move");
         	move4.setVisible(false);
@@ -480,42 +480,6 @@ public class Battle extends JFrame {
 		
 	}
 	
-	public Color getColor(Move m) {
-		if (m.mtype == PType.NORMAL) {
-			return new Color(168, 167, 122);
-		} else if (m.mtype == PType.FIRE) {
-			return new Color(238, 129, 48);
-		} else if (m.mtype == PType.WATER) {
-			return new Color(99, 144, 240);
-		} else if (m.mtype == PType.ELECTRIC) {
-			return new Color(247, 208, 44);
-		} else if (m.mtype == PType.GRASS) {
-			return new Color(122, 199, 76);
-		} else if (m.mtype == PType.MAGIC) {
-			return new Color(251, 6, 153);
-		} else if (m.mtype == PType.FIGHTING) {
-			return new Color(194, 46, 40);
-		} else if (m.mtype == PType.POISON) {
-			return new Color(163, 62, 161);
-		} else if (m.mtype == PType.GROUND) {
-			return new Color(226, 191, 101);
-		} else if (m.mtype == PType.FLYING) {
-			return new Color(169, 143, 243);
-		} else if (m.mtype == PType.BUG) {
-			return new Color(166, 185, 26);
-		} else if (m.mtype == PType.ROCK) {
-			return new Color(182, 161, 54);
-		} else if (m.mtype == PType.GHOST) {
-			return new Color(115, 87, 151);
-		} else if (m.mtype == PType.DRAGON) {
-			return new Color(111, 53, 252);
-		} else if (m.mtype == PType.DARK) {
-			return new Color(112, 87, 70);
-		} else if (m.mtype == PType.STEEL) {
-			return new Color(183, 183, 206);
-		}
-		return null;
-	}
 	
 	private static final class JGradientButton extends JButton{
 		/**
