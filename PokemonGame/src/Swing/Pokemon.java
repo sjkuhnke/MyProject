@@ -3105,4 +3105,9 @@ public class Pokemon implements Serializable {
 		}
 		
 	}
+
+	public void faint() {
+		this.fainted = true;
+		
+	}
 }

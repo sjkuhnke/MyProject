@@ -52,6 +52,8 @@ public class Battle extends JFrame {
 	 */
 	public static void main(String[] args) {
 	    foe = new Pokemon(10, 5);
+	    foe.currentHP = 0;
+	    foe.faint();
 
 	    try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("player.dat"))) {
 	        me = (Player) ois.readObject();
@@ -69,7 +71,7 @@ public class Battle extends JFrame {
 	            try {
 	                Battle frame = new Battle();
 	                frame.addWindowListener(new WindowAdapter() {
-	                    @Override
+	                    @Override // implementation
 	                    public void windowClosing(WindowEvent e) {
 	                        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("player.dat"))) {
 	                            oos.writeObject(me);
@@ -92,8 +94,6 @@ public class Battle extends JFrame {
 		initialize();
 		
 		updateFoe();
-		playerPanel.add(foeText);
-		playerPanel.add(foeHealthBar);
 		
 		JButton catchButton = new JButton("CATCH!");
 		catchButton.setFont(new Font("Tahoma", Font.BOLD, 11));
@@ -139,6 +139,7 @@ public class Battle extends JFrame {
 				updateFoe();
 			}
         });
+		
 		party1 = new JButton();
 		party2 = new JButton();
 		party3 = new JButton();
@@ -188,11 +189,12 @@ public class Battle extends JFrame {
 		
 		
 		catchButton.addActionListener(e -> {
-			me.catchPokemon(new Pokemon(foe.id, foe.level));
+			me.catchPokemon(foe);
 			displayParty();
         });
 		
 		System.out.println(me.toString());
+		System.out.println(me.getCurrent().exp);
 	}
 	
 	private void initialize() {
@@ -290,6 +292,9 @@ public class Battle extends JFrame {
 		foeText = new JLabel("");
 		foeText.setText(foe.getName() + "  lv " + foe.getLevel());
 		foeHealthBar = new JProgressBar(0, 100);
+		
+		playerPanel.add(foeText);
+		playerPanel.add(foeHealthBar);
 	}
 
 	private void updateCurrent() {
@@ -308,6 +313,7 @@ public class Battle extends JFrame {
         	move1.setText(me.getCurrent().moveset[0].toString());
         	move1.setFont(new Font("Tahoma", Font.PLAIN, 9));
         	move1.setBackground(me.getCurrent().moveset[0].mtype.getColor());
+        	move1.setVisible(true);
         } else {
         	move1.setText("No Move");
         	move1.setVisible(false);
@@ -316,6 +322,7 @@ public class Battle extends JFrame {
         	move2.setText(me.getCurrent().moveset[1].toString());
         	move2.setFont(new Font("Tahoma", Font.PLAIN, 9));
         	move2.setBackground(me.getCurrent().moveset[1].mtype.getColor());
+        	move2.setVisible(true);
         } else {
         	move2.setText("No Move");
         	move2.setVisible(false);
@@ -324,6 +331,7 @@ public class Battle extends JFrame {
         	move3.setText(me.getCurrent().moveset[2].toString());
         	move3.setFont(new Font("Tahoma", Font.PLAIN, 9));
         	move3.setBackground(me.getCurrent().moveset[2].mtype.getColor());
+        	move3.setVisible(true);
         } else {
         	move3.setText("No Move");
         	move3.setVisible(false);
@@ -332,6 +340,7 @@ public class Battle extends JFrame {
         	move4.setText(me.getCurrent().moveset[3].toString());
         	move4.setFont(new Font("Tahoma", Font.PLAIN, 9));
         	move4.setBackground(me.getCurrent().moveset[3].mtype.getColor());
+        	move4.setVisible(true);
         } else {
         	move4.setText("No Move");
         	move4.setVisible(false);
@@ -498,7 +507,7 @@ public class Battle extends JFrame {
 	        setContentAreaFilled(false);
 	    }
 
-	    @Override
+	    @Override // implementation
 	    protected void paintComponent(Graphics g){
 	        Graphics2D g2 = (Graphics2D)g.create();
 	        g2.setPaint(new GradientPaint(

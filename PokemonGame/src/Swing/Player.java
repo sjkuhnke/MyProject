@@ -39,6 +39,7 @@ public class Player implements Serializable{
 	}
 	
 	public void catchPokemon(Pokemon p) {
+		if (p.isFainted()) return;
 		if (numPokemonTeam < 6) {
             team[numPokemonTeam] = p;
             numPokemonTeam++;
