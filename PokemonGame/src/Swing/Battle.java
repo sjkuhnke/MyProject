@@ -51,6 +51,9 @@ public class Battle extends JFrame {
 	private JButton fightButton;
 	private JButton healButton;
 	
+	private JLabel userStages;
+	private JLabel foeStages;
+	
 	/**
 	 * Launch the application.
 	 */
@@ -61,6 +64,9 @@ public class Battle extends JFrame {
 
 	    try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("player.dat"))) {
 	        me = (Player) ois.readObject();
+	        for (Pokemon p : me.team) {
+	        	if (p != null) p.clearVolatile();
+	        }
 	        ois.close();
 	    } catch (IOException | ClassNotFoundException e) {
 	        // If there's an error reading the file, create a new Player object
@@ -104,6 +110,16 @@ public class Battle extends JFrame {
 		
 		idInput = createJTextField(3, 31, 53, 27, 20);
 		levelInput = createJTextField(2, 71, 53, 27, 20);
+		
+		// TEST
+		userStages = new JLabel("");
+		userStages.setText(intArrayToString(me.getCurrent().statStages));
+		userStages.setBounds(497, 98, 119, 14);
+		playerPanel.add(userStages);
+		foeStages = new JLabel("");
+		foeStages.setText(intArrayToString(foe.statStages));
+		foeStages.setBounds(497, 78, 119, 14);
+		playerPanel.add(foeStages);
 		
 		catchButton.addActionListener(e -> {
 			me.catchPokemon(new Pokemon(foe.id, foe.getLevel()));
@@ -182,7 +198,7 @@ public class Battle extends JFrame {
 		
 		System.out.println(me.toString());
 	}
-	
+
 	private void initialize() {
 		
 		// Initializing panel
@@ -468,7 +484,8 @@ public class Battle extends JFrame {
 		me.current = newP;
 		updateBars();
 		updateCurrent();
-		
+		userStages.setText(intArrayToString(me.getCurrent().statStages));
+		foeStages.setText(intArrayToString(foe.statStages));
 		
 	}
 
@@ -500,6 +517,18 @@ public class Battle extends JFrame {
 		
 	}
 	
+	private String intArrayToString(int[] arr) {
+	    StringBuilder sb = new StringBuilder();
+	    sb.append("[");
+	    for (int i = 0; i < arr.length; i++) {
+	        sb.append(arr[i]);
+	        if (i != arr.length - 1) {
+	            sb.append(", ");
+	        }
+	    }
+	    sb.append("]");
+	    return sb.toString();
+	}
 	
 	private static final class JGradientButton extends JButton{
 		/**

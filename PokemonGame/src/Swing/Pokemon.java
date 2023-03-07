@@ -24,7 +24,7 @@ public class Pokemon implements Serializable {
 	private Move[] movebank;
 	public Move[] moveset;
 	
-	public Status status;
+	private Status status;
 	
 	public int exp;
 	public int expMax;
@@ -35,8 +35,7 @@ public class Pokemon implements Serializable {
 	private boolean charged;
 	private int confusionCounter;
 	@SuppressWarnings("unused") private int sleepCounter;
-
-	private int perishCount;
+	@SuppressWarnings("unused") private int perishCount;
 	
 	public Pokemon(int i, int l) {
 		id = i;
@@ -773,6 +772,8 @@ public class Pokemon implements Serializable {
 	private Pokemon checkEvo() {
 		if (id == 1 && level >= 15) {
 			Pokemon result = new Pokemon(2, level, this.moveset);
+			int hpDif = this.getStat(0) - this.currentHP;
+			result.currentHP -= hpDif;
 			System.out.println(this.name + " evolved into " + result.name + "!");
 			return result;
 		} else if (id == 2 && level >= 35) {
@@ -783,6 +784,8 @@ public class Pokemon implements Serializable {
 			return result;
 		} else if (id == 2 && level >= 35) {
 			Pokemon result = new Pokemon(3, level, this.moveset);
+			int hpDif = this.getStat(0) - this.currentHP;
+			result.currentHP -= hpDif;
 			System.out.println(this.name + " evolved into " + result.name + "!");
 			return result;
 		}
@@ -1994,8 +1997,8 @@ public class Pokemon implements Serializable {
 	public Pokemon move(Pokemon foe, Move move) {
 		if (this.fainted || foe.fainted) return this;
 
-		int attackStat;
-		int defenseStat;
+		double attackStat;
+		double defenseStat;
 		int damage;
 		
 		if (this.status == Status.CONFUSED) {
@@ -2058,477 +2061,7 @@ public class Pokemon implements Serializable {
 		System.out.println(this.name + " used " + move + "!");
 		
 		if (move.cat == 2) {
-			if (move == Move.AGILITY) {
-				this.statStages[4] += 2;
-				if (this.statStages[4] > 6) {
-					this.statStages[4] = 6;
-					System.out.println(this.name + "'s Speed won't go any higher!\n");
-				} else {
-					System.out.println(this.name + "'s Speed sharply rose!\n");
-				}
-			} else if (move == Move.AQUA_RING) {
-//				// TODO
-//				System.out.println(this.name + " surrounded itself in a veil of water!");
-			} else if (move == Move.AUTOMOTIZE) {
-				this.statStages[4] += 2;
-				if (this.statStages[4] > 6) {
-					this.statStages[4] = 6;
-					System.out.println(this.name + "'s Speed won't go any higher!\n");
-				} else {
-					System.out.println(this.name + "'s Speed sharply rose!\n");
-				}
-			} else if (move == Move.AUTO_SHOT) {
-//				// TODO
-//				System.out.println(this.name + " upgraded its weapon!");
-			} else if (move == Move.BAWL) {
-				foe.statStages[0] -= 2;
-				if (foe.statStages[0] < -6) {
-				    foe.statStages[0] = -6;
-				    System.out.println(foe.name + "'s Attack won't go any lower!\n");
-				} else {
-					System.out.println(foe.name + "'s Attack harshly fell!\n");
-				}
-			} else if (move == Move.BLACK_DUST) {
-				foe.statStages[5] -= 2;
-				if (foe.statStages[5] < -6) {
-				    foe.statStages[5] = -6;
-				    System.out.println(foe.name + "'s Accuracy won't go any lower!\n");
-				} else {
-					System.out.println(foe.name + "'s Accuracy harshly fell!\n");
-				}
-			} else if (move == Move.CHARGE) {
-				System.out.println(this.name + " became charged with power!");
-				this.charged = true;
-				this.statStages[3] += 1;
-				if (this.statStages[3] > 6) {
-					this.statStages[3] = 6;
-					System.out.println(this.name + "'s Special Defense won't go any higher!\n");
-				} else {
-					System.out.println(this.name + "'s Special Defense rose!\n");
-				}
-			} else if (move == Move.CHARM) {
-				foe.statStages[0] -= 2;
-				if (foe.statStages[0] < -6) {
-				    foe.statStages[0] = -6;
-				    System.out.println(foe.name + "'s Attack won't go any lower!\n");
-				} else {
-					System.out.println(foe.name + "'s Attack harshly fell!\n");
-				}
-			} else if (move == Move.CONFUSE_RAY) {
-				if (foe.status == Status.HEALTHY) {
-					foe.status = Status.CONFUSED;
-					foe.confusionCounter = (int)(Math.random() * 4) + 1;
-					System.out.println(foe.name + " became confused!\n");
-				} else {
-					System.out.println("But it failed!\n");
-				}
-			} else if (move == Move.CURSE) {
-				if (foe.status == Status.HEALTHY) {
-					foe.status = Status.CURSED;
-					System.out.println(foe.name + " was afflicted with a curse!\n");
-					this.currentHP -= (this.getStat(0) / 2);
-					if (this.currentHP <= 0) {
-						this.currentHP = 0;
-						this.fainted = true;
-						System.out.println(this.name + " fainted!\n");
-					}
-				} else {
-					System.out.println("But it failed!\n");
-				}
-			} else if (move == Move.DARK_VOID) {
-				if (foe.status == Status.HEALTHY) {
-					foe.status = Status.ASLEEP;
-					foe.sleepCounter = (int)(Math.random() * 3) + 1;
-					System.out.println(foe.name + " fell asleep!\n");
-				} else {
-					System.out.println("But it failed!\n");
-				}
-			} else if (move == Move.DEFENSE_CURL) {
-				this.statStages[1] += 1;
-				if (this.statStages[1] > 6) {
-					this.statStages[1] = 6;
-					System.out.println(this.name + "'s Defense won't go any higher!\n");
-				} else {
-					System.out.println(this.name + "'s Defense rose!\n");
-				}
-			} else if (move == Move.DESTINY_BOND) {
-//				// TODO
-//				System.out.println(this.name + " is ready to take its attacker down with it!");
-			} else if (move == Move.DISAPPEAR) {
-//				// TODO
-//				System.out.println(this.name + " vanished!");
-			} else if (move == Move.DOUBLE_TEAM) {
-				this.statStages[6] += 1;
-				if (this.statStages[6] > 6) {
-					this.statStages[6] = 6;
-					System.out.println(this.name + "'s Evasion won't go any higher!\n");
-				} else {
-					System.out.println(this.name + "'s Evasion rose!\n");
-				}
-			} else if (move == Move.DRAGON_DANCE) {
-				this.statStages[0] += 1;
-				this.statStages[4] += 1;
-				if (this.statStages[0] > 6) {
-					this.statStages[0] = 6;
-					System.out.println(this.name + "'s Attack won't go any higher!\n");
-				} else {
-					System.out.println(this.name + "'s Attack rose!\n");
-				}
-				if (this.statStages[4] > 6) {
-					this.statStages[4] = 6;
-					System.out.println(this.name + "'s Speed won't go any higher!\n");
-				} else {
-					System.out.println(this.name + "'s Speed rose!\n");
-				}
-			} else if (move == Move.FLASH) {
-				foe.statStages[5] -= 1;
-				if (foe.statStages[5] < -6) {
-				    foe.statStages[5] = -6;
-				    System.out.println(foe.name + "'s Accuracy won't go any lower!\n");
-				} else {
-					System.out.println(foe.name + "'s Accuracy fell!\n");
-				}
-			} else if (move == Move.FORESIGHT) {
-				if (foe.type1 == PType.GHOST) foe.type1 = PType.NORMAL;
-				if (foe.type2 == PType.GHOST) foe.type2 = PType.NORMAL;
-				System.out.println(this.name + " identified " + foe.name + "!\n");
-			} else if (move == Move.GLARE) {
-				if (foe.type1 == PType.ELECTRIC || foe.type2 == PType.ELECTRIC) {
-					System.out.println("It doesn't effect " + foe.name + "...");
-					return this;
-				}
-				if (foe.status == Status.HEALTHY) {
-					foe.status = Status.PARALYZED;
-					System.out.println(foe.name + " was paralyzed!\n");
-				} else {
-					System.out.println("But it failed!\n");
-				}
-			} else if (move == Move.GROWL) {
-				foe.statStages[0] -= 1;
-				if (foe.statStages[0] < -6) {
-				    foe.statStages[0] = -6;
-				    System.out.println(foe.name + "'s Attack won't go any lower!\n");
-				} else {
-					System.out.println(foe.name + "'s Attack fell!\n");
-				}
-			} else if (move == Move.GROWTH) {
-				this.statStages[0] += 1;
-				this.statStages[2] += 1;
-				if (this.statStages[0] > 6) {
-					this.statStages[0] = 6;
-					System.out.println(this.name + "'s Attack won't go any higher!\n");
-				} else {
-					System.out.println(this.name + "'s Attack rose!\n");
-				}
-				if (this.statStages[2] > 6) {
-					this.statStages[2] = 6;
-					System.out.println(this.name + "'s Special Attack won't go any higher!\n");
-				} else {
-					System.out.println(this.name + "'s Special Attack rose!\n");
-				}
-			} else if (move == Move.HARDEN) {
-				this.statStages[1] += 1;
-				if (this.statStages[1] > 6) {
-					this.statStages[1] = 6;
-					System.out.println(this.name + "'s Defense won't go any higher!\n");
-				} else {
-					System.out.println(this.name + "'s Defense rose!\n");
-				}
-			} else if (move == Move.HAZE) {
-				this.statStages = new int[7];
-				foe.statStages = new int[7];
-				System.out.println(this.name + "All stat changes were eliminated!\n");
-			} else if (move == Move.HYPNOSIS) {
-				if (foe.status == Status.HEALTHY) {
-					foe.status = Status.ASLEEP;
-					foe.sleepCounter = (int)(Math.random() * 3) + 1;
-					System.out.println(foe.name + " fell asleep!\n");
-				} else {
-					System.out.println("But it failed!\n");
-				}
-			} else if (move == Move.IGNITE) {
-				if (foe.type1 == PType.FIRE || foe.type2 == PType.FIRE) {
-					System.out.println("It doesn't effect " + foe.name + "...");
-					return this;
-				}
-				if (foe.status == Status.HEALTHY) {
-					foe.status = Status.BURNED;
-					System.out.println(foe.name + " was burned!\n");
-				} else {
-					System.out.println("But it failed!\n");
-				}
-			} else if (move == Move.IRON_DEFENSE) {
-				this.statStages[1] += 2;
-				if (this.statStages[1] > 6) {
-					this.statStages[1] = 6;
-					System.out.println(this.name + "'s Defense won't go any higher!\n");
-				} else {
-					System.out.println(this.name + "'s Defense sharply rose!\n");
-				}
-			} else if (move == Move.LEECH_SEED) {
-				if (foe.status == Status.HEALTHY) {
-					foe.status = Status.LEECHED;
-					System.out.println(foe.name + " was seeded!\n");
-				} else {
-					System.out.println("But it failed!\n");
-				}
-			} else if (move == Move.LEER) {
-				foe.statStages[1] -= 1;
-				if (foe.statStages[1] < -6) {
-				    foe.statStages[1] = -6;
-				    System.out.println(foe.name + "'s Defense won't go any lower!\n");
-				} else {
-					System.out.println(foe.name + "'s Defense fell!\n");
-				}
-			} else if (move == Move.LOCK_ON) {
-//				// TODO
-//				System.out.println(this.name + " took aim at " + foe.name + "!\n");
-			} else if (move == Move.MAGIC_REFLECT) {
-//				// TODO
-			} else if (move == Move.MAGNET_RISE) {
-//				// TODO
-//				System.out.println(this.name + " floated with electromagnetism!\n");
-			} else if (move == Move.METAL_SOUND) {
-				foe.statStages[3] -= 2;
-				if (foe.statStages[3] < -6) {
-				    foe.statStages[3] = -6;
-				    System.out.println(foe.name + "'s Special Defense won't go any lower!\n");
-				} else {
-					System.out.println(foe.name + "'s Special Defense harshly fell!\n");
-				}
-			} else if (move == Move.MINIMIZE) {
-				this.statStages[6] += 2;
-				if (this.statStages[6] > 6) {
-					this.statStages[6] = 6;
-					System.out.println(this.name + "'s Evasion won't go any higher!\n");
-				} else {
-					System.out.println(this.name + "'s Evasion sharply rose!\n");
-				}
-			} else if (move == Move.MOONLIGHT) {
-				if (this.currentHP == this.getStat(0)) {
-					System.out.println(this.name + "'s HP is full!\n");
-				} else {
-					this.currentHP += (this.getStat(0) / 2);
-					if (this.currentHP > this.getStat(0)) this.currentHP = this.getStat(0);
-					System.out.println(this.name + " restored HP.\n");
-				}
-			} else if (move == Move.MUD_SPORT) {
-				System.out.println(this.name + " electric's power was weakened!\n");
-			} else if (move == Move.NIGHTMARE) {
-//				if (foe.status == Status.ASLEEP) { TODO
-//					foe.status = Status.NIGHTMARE;
-//					System.out.println(foe.name + " had a nightmare!\n");
-//				} else {
-//					System.out.println("But it failed!\n");
-//				}
-			} else if (move == Move.ODOR_SLEUTH) {
-				if (foe.type1 == PType.GHOST) foe.type1 = PType.NORMAL;
-				if (foe.type2 == PType.GHOST) foe.type2 = PType.NORMAL;
-				System.out.println(this.name + " identified " + foe.name + "!\n");
-			} else if (move == Move.PERISH_SONG) {
-//				if (foe.status == Status.HEALTHY) { TODO
-//				foe.status = Status.PERISH;
-//				this.perishCount = 3;
-//				foe.perishCount = 3;
-//				}
-			} else if (move == Move.PHASE_SHIFT) {
-//				// TODO
-			} else if (move == Move.POISON_GAS) {
-				if (foe.type1 == PType.POISON || foe.type2 == PType.POISON) {
-					System.out.println("It doesn't effect " + foe.name + "...");
-					return this;
-				}
-				if (foe.status == Status.HEALTHY) {
-					foe.status = Status.POISONED;
-					System.out.println(foe.name + " was poisoned!\n");
-				} else {
-					System.out.println("But it failed!\n");
-				}
-			} else if (move == Move.POISON_POWDER) {
-				if (foe.type1 == PType.POISON || foe.type2 == PType.POISON) {
-					System.out.println("It doesn't effect " + foe.name + "...");
-					return this;
-				}
-				if (foe.status == Status.HEALTHY) {
-					foe.status = Status.POISONED;
-					System.out.println(foe.name + " was poisoned!\n");
-				} else {
-					System.out.println("But it failed!\n");
-				}
-			} else if (move == Move.PROTECT) {
-//				// TODO
-			} else if (move == Move.REBOOT) {
-				if (this.status != Status.HEALTHY) System.out.println(this.name + " became healthy!\n");
-				this.status = Status.HEALTHY;
-				this.statStages[4] += 1;
-				if (this.statStages[4] > 6) {
-					this.statStages[4] = 6;
-					System.out.println(this.name + "'s Speed won't go any higher!\n");
-				} else {
-					System.out.println(this.name + "'s Speed rose!\n");
-				}
-			} else if (move == Move.ROOST) {
-				if (this.currentHP == this.getStat(0)) {
-					System.out.println(this.name + "'s HP is full!\n");
-				} else {
-					this.currentHP += (this.getStat(0) / 2);
-					if (this.currentHP > this.getStat(0)) this.currentHP = this.getStat(0);
-					System.out.println(this.name + " restored HP.\n");
-				}
-			} else if (move == Move.SAND_ATTACK) {
-				foe.statStages[5] -= 1;
-				if (foe.statStages[5] < -6) {
-				    foe.statStages[5] = -6;
-				    System.out.println(foe.name + "'s Accuracy won't go any lower!\n");
-				} else {
-					System.out.println(foe.name + "'s Accuracy fell!\n");
-				}
-			} else if (move == Move.SCARY_FACE) {
-				foe.statStages[4] -= 2;
-				if (foe.statStages[4] < -6) {
-				    foe.statStages[4] = -6;
-				    System.out.println(foe.name + "'s Speed won't go any lower!\n");
-				} else {
-					System.out.println(foe.name + "'s Speed harshly fell!\n");
-				}
-			} else if (move == Move.SCREECH) {
-				foe.statStages[1] -= 2;
-				if (foe.statStages[1] < -6) {
-				    foe.statStages[1] = -6;
-				    System.out.println(foe.name + "'s Defense won't go any lower!\n");
-				} else {
-					System.out.println(foe.name + "'s Defense harshly fell!\n");
-				}
-			} else if (move == Move.SLEEP_POWDER) {
-				if (foe.status == Status.HEALTHY) {
-					foe.status = Status.ASLEEP;
-					foe.sleepCounter = (int)(Math.random() * 3) + 1;
-					System.out.println(foe.name + " fell asleep!\n");
-				} else {
-					System.out.println("But it failed!\n");
-				}
-			} else if (move == Move.SMOKESCREEN) {
-				foe.statStages[5] -= 1;
-				if (foe.statStages[5] < -6) {
-				    foe.statStages[5] = -6;
-				    System.out.println(foe.name + "'s Accuracy won't go any lower!\n");
-				} else {
-					System.out.println(foe.name + "'s Accuracy fell!\n");
-				}
-			} else if (move == Move.STARE) {
-				foe.statStages[0] += 1;
-				if (foe.statStages[0] > 6) {
-					foe.statStages[0] = 6;
-					System.out.println(foe.name + "'s Attack won't go any higher!\n");
-				} else {
-					System.out.println(foe.name + "'s Attack rose!\n");
-				}
-				if (foe.status == Status.HEALTHY) {
-					foe.status = Status.CONFUSED;
-					foe.confusionCounter = (int)(Math.random() * 4) + 1;
-					System.out.println(foe.name + " became confused!\n");
-				}
-			} else if (move == Move.STRING_SHOT) {
-				foe.statStages[4] -= 2;
-				if (foe.statStages[4] < -6) {
-				    foe.statStages[4] = -6;
-				    System.out.println(foe.name + "'s Speed won't go any lower!\n");
-				} else {
-					System.out.println(foe.name + "'s Speed harshly fell!\n");
-				}
-			} else if (move == Move.SUNNY_DAY) {
-//				// TODO
-			} else if (move == Move.SUPERSONIC) {
-				if (foe.status == Status.HEALTHY) {
-					foe.status = Status.CONFUSED;
-					foe.confusionCounter = (int)(Math.random() * 4) + 1;
-					System.out.println(foe.name + " became confused!\n");
-				} else {
-					System.out.println("But it failed!\n");
-				}
-			} else if (move == Move.SWAGGER) {
-				foe.statStages[0] += 2;
-				if (foe.statStages[0] > 6) {
-					foe.statStages[0] = 6;
-					System.out.println(foe.name + "'s Attack won't go any higher!\n");
-				} else {
-					System.out.println(foe.name + "'s Attack sharply rose!\n");
-				}
-				if (foe.status == Status.HEALTHY) {
-					foe.status = Status.CONFUSED;
-					foe.confusionCounter = (int)(Math.random() * 4) + 1;
-					System.out.println(foe.name + " became confused!\n");
-				}
-			} else if (move == Move.SYNTHESIS) {
-				if (this.currentHP == this.getStat(0)) {
-					System.out.println(this.name + "'s HP is full!\n");
-				} else {
-					this.currentHP += (this.getStat(0) / 2);
-					if (this.currentHP > this.getStat(0)) this.currentHP = this.getStat(0);
-					System.out.println(this.name + " restored HP.\n");
-				}
-			} else if (move == Move.TAIL_WHIP) {
-				foe.statStages[1] -= 1;
-				if (foe.statStages[1] < -6) {
-				    foe.statStages[1] = -6;
-				    System.out.println(foe.name + "'s Defense won't go any lower!\n");
-				} else {
-					System.out.println(foe.name + "'s Defense fell!\n");
-				}
-			} else if (move == Move.TAILWIND) {
-//				// TODO
-			} else if (move == Move.TAKE_OVER) {
-//				// TODO
-			} else if (move == Move.TAUNT) {
-//				// TODO
-			} else if (move == Move.THUNDER_WAVE) {
-				if (foe.type1 == PType.ELECTRIC || foe.type2 == PType.ELECTRIC) {
-					System.out.println("It doesn't effect " + foe.name + "...");
-					return this;
-				}
-				if (foe.status == Status.HEALTHY) {
-					foe.status = Status.PARALYZED;
-					System.out.println(foe.name + " was paralyzed!\n");
-				} else {
-					System.out.println("But it failed!\n");
-				}
-			} else if (move == Move.TORMENT) {
-//				// TODO
-			} else if (move == Move.TOXIC) {
-				if (foe.type1 == PType.POISON || foe.type2 == PType.POISON) {
-					System.out.println("It doesn't effect " + foe.name + "...");
-					return this;
-				}
-				if (foe.status == Status.HEALTHY) {
-					foe.status = Status.POISONED;
-					System.out.println(foe.name + " was poisoned!\n");
-				} else {
-					System.out.println("But it failed!\n");
-				}
-			} else if (move == Move.TOXIC_SPIKES) {
-//				// TODO
-			} else if (move == Move.WHIRLWIND) {
-//				// TODO
-			} else if (move == Move.WILL_O_WISP) {
-				if (foe.type1 == PType.FIRE || foe.type2 == PType.FIRE) {
-					System.out.println("It doesn't effect " + foe.name + "...");
-					return this;
-				}
-				if (foe.status == Status.HEALTHY) {
-					foe.status = Status.BURNED;
-					System.out.println(foe.name + " was burned!\n");
-				} else {
-					System.out.println("But it failed!\n");
-				}
-			} if (move == Move.ROCK_POLISH) {
-				this.statStages[4] += 2;
-				if (this.statStages[4] > 6) {
-					this.statStages[4] = 6;
-					System.out.println(this.name + "'s Speed won't go any higher!\n");
-				} else {
-					System.out.println(this.name + "'s Speed sharply rose!\n");
-				}
-			}
+			statusEffect(foe, move);
 			return this;
 		}
 		
@@ -2619,36 +2152,526 @@ public class Pokemon implements Serializable {
 		return user;
 	}
 	
+	private void statusEffect(Pokemon foe, Move move) {
+		if (move == Move.AGILITY) {
+			this.statStages[4] += 2;
+			if (this.statStages[4] > 6) {
+				this.statStages[4] = 6;
+				System.out.println(this.name + "'s Speed won't go any higher!\n");
+			} else {
+				System.out.println(this.name + "'s Speed sharply rose!\n");
+			}
+		} else if (move == Move.AQUA_RING) {
+//			// TODO
+//			System.out.println(this.name + " surrounded itself in a veil of water!");
+		} else if (move == Move.AUTOMOTIZE) {
+			this.statStages[4] += 2;
+			if (this.statStages[4] > 6) {
+				this.statStages[4] = 6;
+				System.out.println(this.name + "'s Speed won't go any higher!\n");
+			} else {
+				System.out.println(this.name + "'s Speed sharply rose!\n");
+			}
+		} else if (move == Move.AUTO_SHOT) {
+//			// TODO
+//			System.out.println(this.name + " upgraded its weapon!");
+		} else if (move == Move.BAWL) {
+			foe.statStages[0] -= 2;
+			if (foe.statStages[0] < -6) {
+			    foe.statStages[0] = -6;
+			    System.out.println(foe.name + "'s Attack won't go any lower!\n");
+			} else {
+				System.out.println(foe.name + "'s Attack harshly fell!\n");
+			}
+		} else if (move == Move.BLACK_DUST) {
+			foe.statStages[5] -= 2;
+			if (foe.statStages[5] < -6) {
+			    foe.statStages[5] = -6;
+			    System.out.println(foe.name + "'s Accuracy won't go any lower!\n");
+			} else {
+				System.out.println(foe.name + "'s Accuracy harshly fell!\n");
+			}
+		} else if (move == Move.CHARGE) {
+			System.out.println(this.name + " became charged with power!");
+			this.charged = true;
+			this.statStages[3] += 1;
+			if (this.statStages[3] > 6) {
+				this.statStages[3] = 6;
+				System.out.println(this.name + "'s Special Defense won't go any higher!\n");
+			} else {
+				System.out.println(this.name + "'s Special Defense rose!\n");
+			}
+		} else if (move == Move.CHARM) {
+			foe.statStages[0] -= 2;
+			if (foe.statStages[0] < -6) {
+			    foe.statStages[0] = -6;
+			    System.out.println(foe.name + "'s Attack won't go any lower!\n");
+			} else {
+				System.out.println(foe.name + "'s Attack harshly fell!\n");
+			}
+		} else if (move == Move.CONFUSE_RAY) {
+			if (foe.status == Status.HEALTHY) {
+				foe.status = Status.CONFUSED;
+				foe.confusionCounter = (int)(Math.random() * 4) + 1;
+				System.out.println(foe.name + " became confused!\n");
+			} else {
+				System.out.println("But it failed!\n");
+			}
+		} else if (move == Move.CURSE) {
+			if (foe.status == Status.HEALTHY) {
+				foe.status = Status.CURSED;
+				System.out.println(foe.name + " was afflicted with a curse!\n");
+				this.currentHP -= (this.getStat(0) / 2);
+				if (this.currentHP <= 0) {
+					this.currentHP = 0;
+					this.fainted = true;
+					System.out.println(this.name + " fainted!\n");
+				}
+			} else {
+				System.out.println("But it failed!\n");
+			}
+		} else if (move == Move.DARK_VOID) {
+			if (foe.status == Status.HEALTHY) {
+				foe.status = Status.ASLEEP;
+				foe.sleepCounter = (int)(Math.random() * 3) + 1;
+				System.out.println(foe.name + " fell asleep!\n");
+			} else {
+				System.out.println("But it failed!\n");
+			}
+		} else if (move == Move.DEFENSE_CURL) {
+			this.statStages[1] += 1;
+			if (this.statStages[1] > 6) {
+				this.statStages[1] = 6;
+				System.out.println(this.name + "'s Defense won't go any higher!\n");
+			} else {
+				System.out.println(this.name + "'s Defense rose!\n");
+			}
+		} else if (move == Move.DESTINY_BOND) {
+//			// TODO
+//			System.out.println(this.name + " is ready to take its attacker down with it!");
+		} else if (move == Move.DISAPPEAR) {
+//			// TODO
+//			System.out.println(this.name + " vanished!");
+		} else if (move == Move.DOUBLE_TEAM) {
+			this.statStages[6] += 1;
+			if (this.statStages[6] > 6) {
+				this.statStages[6] = 6;
+				System.out.println(this.name + "'s Evasion won't go any higher!\n");
+			} else {
+				System.out.println(this.name + "'s Evasion rose!\n");
+			}
+		} else if (move == Move.DRAGON_DANCE) {
+			this.statStages[0] += 1;
+			this.statStages[4] += 1;
+			if (this.statStages[0] > 6) {
+				this.statStages[0] = 6;
+				System.out.println(this.name + "'s Attack won't go any higher!\n");
+			} else {
+				System.out.println(this.name + "'s Attack rose!\n");
+			}
+			if (this.statStages[4] > 6) {
+				this.statStages[4] = 6;
+				System.out.println(this.name + "'s Speed won't go any higher!\n");
+			} else {
+				System.out.println(this.name + "'s Speed rose!\n");
+			}
+		} else if (move == Move.FLASH) {
+			foe.statStages[5] -= 1;
+			if (foe.statStages[5] < -6) {
+			    foe.statStages[5] = -6;
+			    System.out.println(foe.name + "'s Accuracy won't go any lower!\n");
+			} else {
+				System.out.println(foe.name + "'s Accuracy fell!\n");
+			}
+		} else if (move == Move.FORESIGHT) {
+			if (foe.type1 == PType.GHOST) foe.type1 = PType.NORMAL;
+			if (foe.type2 == PType.GHOST) foe.type2 = PType.NORMAL;
+			System.out.println(this.name + " identified " + foe.name + "!\n");
+		} else if (move == Move.GLARE) {
+			if (foe.type1 == PType.ELECTRIC || foe.type2 == PType.ELECTRIC) {
+				System.out.println("It doesn't effect " + foe.name + "...");
+			}
+			if (foe.status == Status.HEALTHY) {
+				foe.status = Status.PARALYZED;
+				System.out.println(foe.name + " was paralyzed!\n");
+			} else {
+				System.out.println("But it failed!\n");
+			}
+		} else if (move == Move.GROWL) {
+			foe.statStages[0] -= 1;
+			if (foe.statStages[0] < -6) {
+			    foe.statStages[0] = -6;
+			    System.out.println(foe.name + "'s Attack won't go any lower!\n");
+			} else {
+				System.out.println(foe.name + "'s Attack fell!\n");
+			}
+		} else if (move == Move.GROWTH) {
+			this.statStages[0] += 1;
+			this.statStages[2] += 1;
+			if (this.statStages[0] > 6) {
+				this.statStages[0] = 6;
+				System.out.println(this.name + "'s Attack won't go any higher!\n");
+			} else {
+				System.out.println(this.name + "'s Attack rose!\n");
+			}
+			if (this.statStages[2] > 6) {
+				this.statStages[2] = 6;
+				System.out.println(this.name + "'s Special Attack won't go any higher!\n");
+			} else {
+				System.out.println(this.name + "'s Special Attack rose!\n");
+			}
+		} else if (move == Move.HARDEN) {
+			this.statStages[1] += 1;
+			if (this.statStages[1] > 6) {
+				this.statStages[1] = 6;
+				System.out.println(this.name + "'s Defense won't go any higher!\n");
+			} else {
+				System.out.println(this.name + "'s Defense rose!\n");
+			}
+		} else if (move == Move.HAZE) {
+			this.statStages = new int[7];
+			foe.statStages = new int[7];
+			System.out.println(this.name + "All stat changes were eliminated!\n");
+		} else if (move == Move.HYPNOSIS) {
+			if (foe.status == Status.HEALTHY) {
+				foe.status = Status.ASLEEP;
+				foe.sleepCounter = (int)(Math.random() * 3) + 1;
+				System.out.println(foe.name + " fell asleep!\n");
+			} else {
+				System.out.println("But it failed!\n");
+			}
+		} else if (move == Move.IGNITE) {
+			if (foe.type1 == PType.FIRE || foe.type2 == PType.FIRE) {
+				System.out.println("It doesn't effect " + foe.name + "...");
+				return;
+			}
+			if (foe.status == Status.HEALTHY) {
+				foe.status = Status.BURNED;
+				System.out.println(foe.name + " was burned!\n");
+			} else {
+				System.out.println("But it failed!\n");
+			}
+		} else if (move == Move.IRON_DEFENSE) {
+			this.statStages[1] += 2;
+			if (this.statStages[1] > 6) {
+				this.statStages[1] = 6;
+				System.out.println(this.name + "'s Defense won't go any higher!\n");
+			} else {
+				System.out.println(this.name + "'s Defense sharply rose!\n");
+			}
+		} else if (move == Move.LEECH_SEED) {
+			if (foe.status == Status.HEALTHY) {
+				foe.status = Status.LEECHED;
+				System.out.println(foe.name + " was seeded!\n");
+			} else {
+				System.out.println("But it failed!\n");
+			}
+		} else if (move == Move.LEER) {
+			foe.statStages[1] -= 1;
+			if (foe.statStages[1] < -6) {
+			    foe.statStages[1] = -6;
+			    System.out.println(foe.name + "'s Defense won't go any lower!\n");
+			} else {
+				System.out.println(foe.name + "'s Defense fell!\n");
+			}
+		} else if (move == Move.LOCK_ON) {
+//			// TODO
+//			System.out.println(this.name + " took aim at " + foe.name + "!\n");
+		} else if (move == Move.MAGIC_REFLECT) {
+//			// TODO
+		} else if (move == Move.MAGNET_RISE) {
+//			// TODO
+//			System.out.println(this.name + " floated with electromagnetism!\n");
+		} else if (move == Move.METAL_SOUND) {
+			foe.statStages[3] -= 2;
+			if (foe.statStages[3] < -6) {
+			    foe.statStages[3] = -6;
+			    System.out.println(foe.name + "'s Special Defense won't go any lower!\n");
+			} else {
+				System.out.println(foe.name + "'s Special Defense harshly fell!\n");
+			}
+		} else if (move == Move.MINIMIZE) {
+			this.statStages[6] += 2;
+			if (this.statStages[6] > 6) {
+				this.statStages[6] = 6;
+				System.out.println(this.name + "'s Evasion won't go any higher!\n");
+			} else {
+				System.out.println(this.name + "'s Evasion sharply rose!\n");
+			}
+		} else if (move == Move.MOONLIGHT) {
+			if (this.currentHP == this.getStat(0)) {
+				System.out.println(this.name + "'s HP is full!\n");
+			} else {
+				this.currentHP += (this.getStat(0) / 2);
+				if (this.currentHP > this.getStat(0)) this.currentHP = this.getStat(0);
+				System.out.println(this.name + " restored HP.\n");
+			}
+		} else if (move == Move.MUD_SPORT) {
+			System.out.println(this.name + " electric's power was weakened!\n");
+		} else if (move == Move.NIGHTMARE) {
+//			if (foe.status == Status.ASLEEP) { TODO
+//				foe.status = Status.NIGHTMARE;
+//				System.out.println(foe.name + " had a nightmare!\n");
+//			} else {
+//				System.out.println("But it failed!\n");
+//			}
+		} else if (move == Move.ODOR_SLEUTH) {
+			if (foe.type1 == PType.GHOST) foe.type1 = PType.NORMAL;
+			if (foe.type2 == PType.GHOST) foe.type2 = PType.NORMAL;
+			System.out.println(this.name + " identified " + foe.name + "!\n");
+		} else if (move == Move.PERISH_SONG) {
+//			if (foe.status == Status.HEALTHY) { TODO
+//			foe.status = Status.PERISH;
+//			this.perishCount = 3;
+//			foe.perishCount = 3;
+//			}
+		} else if (move == Move.PHASE_SHIFT) {
+//			// TODO
+		} else if (move == Move.POISON_GAS) {
+			if (foe.type1 == PType.POISON || foe.type2 == PType.POISON) {
+				System.out.println("It doesn't effect " + foe.name + "...");
+				return;
+			}
+			if (foe.status == Status.HEALTHY) {
+				foe.status = Status.POISONED;
+				System.out.println(foe.name + " was poisoned!\n");
+			} else {
+				System.out.println("But it failed!\n");
+			}
+		} else if (move == Move.POISON_POWDER) {
+			if (foe.type1 == PType.POISON || foe.type2 == PType.POISON) {
+				System.out.println("It doesn't effect " + foe.name + "...");
+				return;
+			}
+			if (foe.status == Status.HEALTHY) {
+				foe.status = Status.POISONED;
+				System.out.println(foe.name + " was poisoned!\n");
+			} else {
+				System.out.println("But it failed!\n");
+			}
+		} else if (move == Move.PROTECT) {
+//			// TODO
+		} else if (move == Move.REBOOT) {
+			if (this.status != Status.HEALTHY) System.out.println(this.name + " became healthy!\n");
+			this.status = Status.HEALTHY;
+			this.statStages[4] += 1;
+			if (this.statStages[4] > 6) {
+				this.statStages[4] = 6;
+				System.out.println(this.name + "'s Speed won't go any higher!\n");
+			} else {
+				System.out.println(this.name + "'s Speed rose!\n");
+			}
+		} else if (move == Move.ROOST) {
+			if (this.currentHP == this.getStat(0)) {
+				System.out.println(this.name + "'s HP is full!\n");
+			} else {
+				this.currentHP += (this.getStat(0) / 2);
+				if (this.currentHP > this.getStat(0)) this.currentHP = this.getStat(0);
+				System.out.println(this.name + " restored HP.\n");
+			}
+		} else if (move == Move.SAND_ATTACK) {
+			foe.statStages[5] -= 1;
+			if (foe.statStages[5] < -6) {
+			    foe.statStages[5] = -6;
+			    System.out.println(foe.name + "'s Accuracy won't go any lower!\n");
+			} else {
+				System.out.println(foe.name + "'s Accuracy fell!\n");
+			}
+		} else if (move == Move.SCARY_FACE) {
+			foe.statStages[4] -= 2;
+			if (foe.statStages[4] < -6) {
+			    foe.statStages[4] = -6;
+			    System.out.println(foe.name + "'s Speed won't go any lower!\n");
+			} else {
+				System.out.println(foe.name + "'s Speed harshly fell!\n");
+			}
+		} else if (move == Move.SCREECH) {
+			foe.statStages[1] -= 2;
+			if (foe.statStages[1] < -6) {
+			    foe.statStages[1] = -6;
+			    System.out.println(foe.name + "'s Defense won't go any lower!\n");
+			} else {
+				System.out.println(foe.name + "'s Defense harshly fell!\n");
+			}
+		} else if (move == Move.SLEEP_POWDER) {
+			if (foe.status == Status.HEALTHY) {
+				foe.status = Status.ASLEEP;
+				foe.sleepCounter = (int)(Math.random() * 3) + 1;
+				System.out.println(foe.name + " fell asleep!\n");
+			} else {
+				System.out.println("But it failed!\n");
+			}
+		} else if (move == Move.SMOKESCREEN) {
+			foe.statStages[5] -= 1;
+			if (foe.statStages[5] < -6) {
+			    foe.statStages[5] = -6;
+			    System.out.println(foe.name + "'s Accuracy won't go any lower!\n");
+			} else {
+				System.out.println(foe.name + "'s Accuracy fell!\n");
+			}
+		} else if (move == Move.STARE) {
+			foe.statStages[0] += 1;
+			if (foe.statStages[0] > 6) {
+				foe.statStages[0] = 6;
+				System.out.println(foe.name + "'s Attack won't go any higher!\n");
+			} else {
+				System.out.println(foe.name + "'s Attack rose!\n");
+			}
+			if (foe.status == Status.HEALTHY) {
+				foe.status = Status.CONFUSED;
+				foe.confusionCounter = (int)(Math.random() * 4) + 1;
+				System.out.println(foe.name + " became confused!\n");
+			}
+		} else if (move == Move.STRING_SHOT) {
+			foe.statStages[4] -= 2;
+			if (foe.statStages[4] < -6) {
+			    foe.statStages[4] = -6;
+			    System.out.println(foe.name + "'s Speed won't go any lower!\n");
+			} else {
+				System.out.println(foe.name + "'s Speed harshly fell!\n");
+			}
+		} else if (move == Move.SUNNY_DAY) {
+//			// TODO
+		} else if (move == Move.SUPERSONIC) {
+			if (foe.status == Status.HEALTHY) {
+				foe.status = Status.CONFUSED;
+				foe.confusionCounter = (int)(Math.random() * 4) + 1;
+				System.out.println(foe.name + " became confused!\n");
+			} else {
+				System.out.println("But it failed!\n");
+			}
+		} else if (move == Move.SWAGGER) {
+			foe.statStages[0] += 2;
+			if (foe.statStages[0] > 6) {
+				foe.statStages[0] = 6;
+				System.out.println(foe.name + "'s Attack won't go any higher!\n");
+			} else {
+				System.out.println(foe.name + "'s Attack sharply rose!\n");
+			}
+			if (foe.status == Status.HEALTHY) {
+				foe.status = Status.CONFUSED;
+				foe.confusionCounter = (int)(Math.random() * 4) + 1;
+				System.out.println(foe.name + " became confused!\n");
+			}
+		} else if (move == Move.SYNTHESIS) {
+			if (this.currentHP == this.getStat(0)) {
+				System.out.println(this.name + "'s HP is full!\n");
+			} else {
+				this.currentHP += (this.getStat(0) / 2);
+				if (this.currentHP > this.getStat(0)) this.currentHP = this.getStat(0);
+				System.out.println(this.name + " restored HP.\n");
+			}
+		} else if (move == Move.TAIL_WHIP) {
+			foe.statStages[1] -= 1;
+			if (foe.statStages[1] < -6) {
+			    foe.statStages[1] = -6;
+			    System.out.println(foe.name + "'s Defense won't go any lower!\n");
+			} else {
+				System.out.println(foe.name + "'s Defense fell!\n");
+			}
+		} else if (move == Move.TAILWIND) {
+//			// TODO
+		} else if (move == Move.TAKE_OVER) {
+//			// TODO
+		} else if (move == Move.TAUNT) {
+//			// TODO
+		} else if (move == Move.THUNDER_WAVE) {
+			if (foe.type1 == PType.ELECTRIC || foe.type2 == PType.ELECTRIC) {
+				System.out.println("It doesn't effect " + foe.name + "...");
+				return;
+			}
+			if (foe.status == Status.HEALTHY) {
+				foe.status = Status.PARALYZED;
+				System.out.println(foe.name + " was paralyzed!\n");
+			} else {
+				System.out.println("But it failed!\n");
+			}
+		} else if (move == Move.TORMENT) {
+//			// TODO
+		} else if (move == Move.TOXIC) {
+			if (foe.type1 == PType.POISON || foe.type2 == PType.POISON) {
+				System.out.println("It doesn't effect " + foe.name + "...");
+				return;
+			}
+			if (foe.status == Status.HEALTHY) {
+				foe.status = Status.POISONED;
+				System.out.println(foe.name + " was poisoned!\n");
+			} else {
+				System.out.println("But it failed!\n");
+			}
+		} else if (move == Move.TOXIC_SPIKES) {
+//			// TODO
+		} else if (move == Move.WHIRLWIND) {
+//			// TODO
+		} else if (move == Move.WILL_O_WISP) {
+			if (foe.type1 == PType.FIRE || foe.type2 == PType.FIRE) {
+				System.out.println("It doesn't effect " + foe.name + "...");
+				return;
+			}
+			if (foe.status == Status.HEALTHY) {
+				foe.status = Status.BURNED;
+				System.out.println(foe.name + " was burned!\n");
+			} else {
+				System.out.println("But it failed!\n");
+			}
+		} if (move == Move.ROCK_POLISH) {
+			this.statStages[4] += 2;
+			if (this.statStages[4] > 6) {
+				this.statStages[4] = 6;
+				System.out.println(this.name + "'s Speed won't go any higher!\n");
+			} else {
+				System.out.println(this.name + "'s Speed sharply rose!\n");
+			}
+		}
+		return;
+	}
+
 	public double asModifier(int index) {
 		double modifier = 1;
 		if (index <= 4) {
-			switch(statStages[index]) {
+			switch(this.statStages[index]) {
 			case -6:
 				modifier = 2.0/8.0;
+				break;
 			case -5:
 				modifier = 2.0/7.0;
+				break;
 			case -4:
 				modifier = 2.0/6.0;
+				break;
 			case -3:
 				modifier = 2.0/5.0;
+				break;
 			case -2:
 				modifier = 2.0/4.0;
+				break;
 			case -1:
 				modifier = 2.0/3.0;
+				break;
 			case 0:
 				modifier = 2.0/2.0;
+				break;
 			case 1:
 				modifier = 3.0/2.0;
+				break;
 			case 2:
 				modifier = 4.0/2.0;
+				break;
 			case 3:
 				modifier = 5.0/2.0;
+				break;
 			case 4:
 				modifier = 6.0/2.0;
+				break;
 			case 5:
 				modifier = 7.0/2.0;
+				break;
 			case 6:
 				modifier = 8.0/2.0;
+				break;
+			default:
+				modifier = 1;
+				break;
 			}
 		} else {
 			int accev = statStages[index];
@@ -2656,30 +2679,46 @@ public class Pokemon implements Serializable {
 			switch(accev) {
 			case -6:
 				modifier = 3.0/9.0;
+				break;
 			case -5:
 				modifier = 3.0/8.0;
+				break;
 			case -4:
 				modifier = 3.0/7.0;
+				break;
 			case -3:
 				modifier = 3.0/6.0;
+				break;
 			case -2:
 				modifier = 3.0/5.0;
+				break;
 			case -1:
 				modifier = 3.0/4.0;
+				break;
 			case 0:
 				modifier = 3.0/3.0;
+				break;
 			case 1:
 				modifier = 4.0/3.0;
+				break;
 			case 2:
 				modifier = 5.0/3.0;
+				break;
 			case 3:
 				modifier = 6.0/3.0;
+				break;
 			case 4:
 				modifier = 7.0/3.0;
+				break;
 			case 5:
 				modifier = 8.0/3.0;
+				break;
 			case 6:
 				modifier = 9.0/3.0;
+				break;
+			default:
+				modifier = 1;
+				break;
 			}
 		}
 		return modifier;
