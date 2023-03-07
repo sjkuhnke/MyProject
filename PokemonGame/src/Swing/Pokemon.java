@@ -32,11 +32,13 @@ public class Pokemon implements Serializable {
 	
 	public int currentHP;
 	private boolean fainted;
-
+	
+	private boolean aquaRing;
 	private boolean charged;
 	private int confusionCounter;
 	@SuppressWarnings("unused") private int sleepCounter;
-	@SuppressWarnings("unused") private int perishCount;
+	private int perishCount;
+	
 	
 	public Pokemon(int i, int l) {
 		id = i;
@@ -2011,28 +2013,13 @@ public class Pokemon implements Serializable {
 				System.out.println(this.name + " is confused!");
 				if (Math.random() < 1.0/3.0) {
 			        // user hits themselves
-					System.out.println(this.name + " hit itself in confusion!");
+					System.out.println(this.name + " hit itself in confusion!\n");
 					attackStat = this.getStat(1);
 					defenseStat = this.getStat(2);
 					attackStat *= this.asModifier(0);
 					defenseStat *= this.asModifier(1);
-					
-					double num = 2* (double) this.level / 5 + 2;
-					double stat = (double) attackStat / (double) defenseStat / 50;
-					double damageDouble = Math.floor(num * 40 * stat);
-					damageDouble += 2;
-					
-					Random roll = new Random();
-					double rollAmt = roll.nextInt(16);
-					rollAmt += 85;
-					rollAmt /= 100;
-					
-					// Roll
-					damageDouble *= rollAmt;
-					// Convert to integer
-					damage = (int) Math.floor(damageDouble);
+					damage = calc(attackStat, defenseStat, 40, this.level);
 					this.currentHP -= damage;
-					
 					if (this.currentHP <= 0) {
 						this.currentHP = 0;
 						this.fainted = true;
@@ -2044,6 +2031,10 @@ public class Pokemon implements Serializable {
 					confusionCounter--;
 				}
 			}
+		}
+		if (this.status == Status.PARALYZED && Math.random() < 0.25) {
+			System.out.println(this.name + " is fully paralyzed!\n");
+			return this;
 		}
 		
 		if (move.accuracy < 100 && !hit(move.accuracy)) {
@@ -2073,6 +2064,7 @@ public class Pokemon implements Serializable {
 			defenseStat = foe.getStat(2);
 			attackStat *= this.asModifier(0);
 			defenseStat *= foe.asModifier(1);
+			if (this.status == Status.BURNED) attackStat /= 2;
 		} else {
 			attackStat = this.getStat(3);
 			defenseStat = foe.getStat(4);
@@ -2080,34 +2072,20 @@ public class Pokemon implements Serializable {
 			defenseStat *= foe.asModifier(3);
 		}
 		
-		double num = 2* (double) this.level / 5 + 2;
-		double stat = (double) attackStat / (double) defenseStat / 50;
-		double damageDouble = Math.floor(num * move.basePower * stat);
-		damageDouble += 2;
-		
-		Random roll = new Random();
-		double rollAmt = roll.nextInt(16);
-		rollAmt += 85;
-		rollAmt /= 100;
-		
-		// Roll
-		damageDouble *= rollAmt;
+		damage = calc(attackStat, defenseStat, move.basePower, this.level);
 		
 		// Stab
-		if (move.mtype == this.type1) damageDouble *= 1.5;
-		if (move.mtype == this.type2) damageDouble *= 1.5;
+		if (move.mtype == this.type1) damage *= 1.5;
+		if (move.mtype == this.type2) damage *= 1.5;
 		
 		// Charged
-		if (move.mtype == PType.ELECTRIC && this.charged) damageDouble *= 2;
+		if (move.mtype == PType.ELECTRIC && this.charged) damage *= 2;
 		
 		// Crit Check
 		if (critCheck(move)) {
 			System.out.print("Crit! ");
-			damageDouble *= 1.5;
+			damage *= 1.5;
 		}
-		
-		// Convert to integer
-		damage = (int) Math.floor(damageDouble);
 		
 		// Check type effectiveness
 		PType[] resist = getResistances(move.mtype);
@@ -2138,6 +2116,24 @@ public class Pokemon implements Serializable {
 		
 		Pokemon user = this;
 		
+		if (move == Move.NIGHT_SHADE || move == Move.SEISMIC_TOSS) {
+			damage = this.level;
+		}
+		
+		if (move == Move.ABSORB || move == Move.DREAM_EATER || move == Move.GIGA_DRAIN || move == Move.MEGA_DRAIN || move == Move.LEECH_LIFE) {
+			int healAmount;
+			if (damage >= foe.currentHP) {
+				healAmount = Math.max((int) Math.ceil(foe.currentHP / 2.0), 1);
+			} else {
+				healAmount = Math.max((int) Math.ceil(damage / 2.0), 1);
+			}
+			
+			this.currentHP += healAmount;
+			if (this.currentHP > this.getStat(0)) this.currentHP = this.getStat(0);
+			System.out.println(this.name + " restored HP.\n");
+		}
+		
+		damage = Math.max(damage, 1);
 		// Damage foe
 		foe.currentHP -= damage;
 		if (foe.currentHP <= 0) { // Check for kill
@@ -2153,7 +2149,7 @@ public class Pokemon implements Serializable {
 		
 		return user;
 	}
-	
+
 	private void statusEffect(Pokemon foe, Move move) {
 		if (move == Move.AGILITY) {
 			this.statStages[4] += 2;
@@ -2164,8 +2160,11 @@ public class Pokemon implements Serializable {
 				System.out.println(this.name + "'s Speed sharply rose!\n");
 			}
 		} else if (move == Move.AQUA_RING) {
-//			// TODO
-//			System.out.println(this.name + " surrounded itself in a veil of water!");
+			if (!this.aquaRing) {
+			    this.aquaRing = true;
+			} else {
+			    System.out.println("But it failed!\n");
+			}
 		} else if (move == Move.AUTOMOTIZE) {
 			this.statStages[4] += 2;
 			if (this.statStages[4] > 6) {
@@ -2422,9 +2421,8 @@ public class Pokemon implements Serializable {
 			if (foe.type2 == PType.GHOST) foe.type2 = PType.NORMAL;
 			System.out.println(this.name + " identified " + foe.name + "!\n");
 		} else if (move == Move.PERISH_SONG) {
-//			this.perishCount = 3;
-//			foe.perishCount = 3;
-//			}
+			this.perishCount = (this.perishCount == 0) ? 3 : this.perishCount;
+			foe.perishCount = (foe.perishCount == 0) ? 3 : foe.perishCount;
 		} else if (move == Move.PHASE_SHIFT) {
 //			// TODO
 		} else if (move == Move.POISON_GAS) {
@@ -2600,10 +2598,6 @@ public class Pokemon implements Serializable {
 			} else {
 				System.out.println("But it failed!\n");
 			}
-		} else if (move == Move.TOXIC_SPIKES) {
-//			// TODO
-		} else if (move == Move.WHIRLWIND) {
-//			// TODO
 		} else if (move == Move.WILL_O_WISP) {
 			if (foe.type1 == PType.FIRE || foe.type2 == PType.FIRE) {
 				System.out.println("It doesn't effect " + foe.name + "...");
@@ -3149,7 +3143,7 @@ public class Pokemon implements Serializable {
 			movebank[18] = Move.HEADBUTT;
 			movebank[23] = Move.BRANCH_WHACK;
 			movebank[28] = Move.LEAF_BALL;
-			//movebank[35] = Move.MEAN_LOOK; TODO
+			movebank[35] = Move.GLARE;
 			movebank[44] = Move.FAINT_ATTACK;
 			movebank[54] = Move.LEAF_STORM;
 			break;
@@ -3351,14 +3345,15 @@ public class Pokemon implements Serializable {
 			movebank[14] = Move.WING_ATTACK;
 			break;
 		case 27:
-			movebank = new Move[33];movebank[0] = Move.TACKLE;
+			movebank = new Move[33];
+			movebank[0] = Move.TACKLE;
 			movebank[4] = Move.SAND_ATTACK;
 			movebank[6] = Move.FORESIGHT;
 			movebank[9] = Move.GUST;
 			movebank[12] = Move.PECK;
 			movebank[14] = Move.WING_ATTACK;
 			movebank[17] = Move.QUICK_ATTACK;
-			movebank[19] = Move.WHIRLWIND;
+			movebank[19] = Move.AIR_CUTTER;
 			movebank[23] = Move.TWISTER;
 			movebank[27] = Move.AGILITY;
 			movebank[32] = Move.ROOST;
@@ -3372,7 +3367,7 @@ public class Pokemon implements Serializable {
 			movebank[12] = Move.PECK;
 			movebank[14] = Move.WING_ATTACK;
 			movebank[17] = Move.QUICK_ATTACK;
-			movebank[19] = Move.WHIRLWIND;
+			movebank[19] = Move.AIR_CUTTER;
 			movebank[23] = Move.TWISTER;
 			movebank[27] = Move.AGILITY;
 			movebank[32] = Move.ROOST;
@@ -3382,56 +3377,340 @@ public class Pokemon implements Serializable {
 			movebank[54] = Move.BRAVE_BIRD;
 			break;
 		case 29:
+			movebank = new Move[15];
+			movebank[0] = Move.SAND_ATTACK;
+			movebank[9] = Move.PECK;
+			movebank[14] = Move.WING_ATTACK;
 			break;
 		case 30:
+			movebank = new Move[55];
+			movebank[0] = Move.SAND_ATTACK;
+			movebank[9] = Move.PECK;
+			movebank[14] = Move.WING_ATTACK;
+			movebank[17] = Move.GUST;
+			movebank[20] = Move.TWISTER;
+			movebank[25] = Move.FURY_ATTACK;
+			movebank[32] = Move.AGILITY;
+			movebank[39] = Move.ROOST;
+			movebank[49] = Move.MIRROR_MOVE;
+			movebank[54] = Move.DRILL_PECK;
 			break;
 		case 31:
+			movebank = new Move[40];
+			movebank[0] = Move.TACKLE;
+			movebank[2] = Move.LEER;
+			movebank[5] = Move.SAND_ATTACK;
+			movebank[9] = Move.GUST;
+			movebank[12] = Move.PECK;
+			movebank[16] = Move.WATER_GUN;
+			movebank[20] = Move.HEADBUTT;
+			movebank[29] = Move.WING_ATTACK;
+			movebank[39] = Move.DRILL_PECK;
 			break;
 		case 32:
+			movebank = new Move[45];
+			movebank[0] = Move.SCRATCH;
+			movebank[4] = Move.LEAF_SLAP;
+			movebank[9] = Move.GUST;
+			movebank[15] = Move.LEAF_KOBE;
+			movebank[16] = Move.PECK;
+			movebank[21] = Move.LEAF_GUST;
+			movebank[29] = Move.LEAF_BALL;
+			movebank[34] = Move.WING_ATTACK;
+			movebank[44] = Move.DRILL_PECK;
 			break;
 		case 33:
+			movebank = new Move[16];
+			movebank[0] = Move.POISON_STING;
+			movebank[2] = Move.STRING_SHOT;
+			movebank[5] = Move.LEECH_LIFE;
+			movebank[9] = Move.SUPERSONIC;
+			movebank[11] = Move.SMOKESCREEN;
+			movebank[15] = Move.SLUDGE;
 			break;
 		case 34:
+			movebank = new Move[55];
+			movebank[0] = Move.POISON_STING;
+			movebank[2] = Move.STRING_SHOT;
+			movebank[5] = Move.LEECH_LIFE;
+			movebank[9] = Move.SUPERSONIC;
+			movebank[11] = Move.SMOKESCREEN;
+			movebank[15] = Move.SLUDGE;
+			movebank[20] = Move.POISON_POWDER;
+			movebank[25] = Move.FAINT_ATTACK;
+			movebank[33] = Move.BUG_BITE;
+			movebank[38] = Move.U_TURN;
+			movebank[43] = Move.DARK_PULSE;
+			movebank[48] = Move.CRUNCH;
+			movebank[54] = Move.POISON_FANG;
 			break;
 		case 35:
+			movebank = new Move[40];
+			movebank[0] = Move.POISON_STING;
+			movebank[2] = Move.BUZZ;
+			movebank[4] = Move.SLAP;
+			movebank[11] = Move.DOUBLE_SLAP;
+			movebank[24] = Move.WING_ATTACK;
+			movebank[27] = Move.STING;
+			movebank[39] = Move.BUG_BUZZ;
 			break;
 		case 36:
+			movebank = new Move[40];
+			movebank[0] = Move.TACKLE;
+			movebank[2] = Move.BUZZ;
+			movebank[4] = Move.SLAP;
+			movebank[12] = Move.DOUBLE_SLAP;
+			movebank[19] = Move.BUG_BITE;
+			movebank[24] = Move.DOUBLE_HIT;
+			movebank[29] = Move.WING_ATTACK;
+			movebank[34] = Move.INJECT;
+			movebank[39] = Move.BUG_BUZZ;
 			break;
 		case 37:
+			movebank = new Move[50];
+			movebank[0] = Move.LICK;
+			movebank[2] = Move.SMOKESCREEN;
+			movebank[7] = Move.SMOG;
+			movebank[12] = Move.POISON_GAS;
+			movebank[18] = Move.SLUDGE;
+			movebank[23] = Move.POISON_BALL;
+			movebank[28] = Move.SHADOW_BALL;
+			movebank[36] = Move.SLUDGE_BOMB;
+			movebank[49] = Move.POISONOUS_WATER;
 			break;
 		case 38:
+			movebank = new Move[24];
+			movebank[0] = Move.NIGHT_SHADE;
+			movebank[2] = Move.SCREECH;
+			movebank[6] = Move.SCARY_FACE;
+			movebank[8] = Move.CHARM;
+			movebank[10] = Move.HYPNOSIS;
+			movebank[14] = Move.CURSE;
+			movebank[18] = Move.SUCKER_PUNCH;
+			movebank[23] = Move.SHADOW_BALL;
 			break;
 		case 39:
+			movebank = new Move[55];
+			movebank[0] = Move.NIGHT_SHADE;
+			movebank[2] = Move.SCREECH;
+			movebank[6] = Move.SCARY_FACE;
+			movebank[8] = Move.CHARM;
+			movebank[10] = Move.HYPNOSIS;
+			movebank[14] = Move.CURSE;
+			movebank[18] = Move.SUCKER_PUNCH;
+			movebank[23] = Move.SHADOW_BALL;
+			movebank[24] = Move.IRON_DEFENSE;
+			movebank[28] = Move.SPIKE_SLAM;
+			movebank[30] = Move.STRONG_ARM;
+			movebank[31] = Move.DOUBLE_HIT;
+			movebank[33] = Move.DREAM_EATER;
+			movebank[38] = Move.IRON_TAIL;
+			movebank[41] = Move.NIGHTMARE;
+			movebank[48] = Move.GYRO_BALL;
+			movebank[54] = Move.DESTINY_BOND;
 			break;
 		case 40:
+			movebank = new Move[18];
+			movebank[0] = Move.NIGHT_SHADE;
+			movebank[3] = Move.DISAPPEAR;
+			movebank[7] = Move.LICK;
+			movebank[11] = Move.BAWL;
+			movebank[12] = Move.SCREECH;
+			movebank[14] = Move.HYPNOSIS;
+			movebank[17] = Move.CURSE;
 			break;
 		case 41:
+			movebank = new Move[55];
+			movebank[0] = Move.NIGHT_SHADE;
+			movebank[3] = Move.DISAPPEAR;
+			movebank[7] = Move.LICK;
+			movebank[11] = Move.BAWL;
+			movebank[12] = Move.SCREECH;
+			movebank[14] = Move.HYPNOSIS;
+			movebank[17] = Move.CURSE;
+			movebank[21] = Move.SUCKER_PUNCH;
+			movebank[24] = Move.SHADOW_BALL;
+			movebank[28] = Move.FAINT_ATTACK;
+			movebank[32] = Move.MINIMIZE;
+			movebank[38] = Move.DARK_PULSE;
+			movebank[41] = Move.DREAM_EATER;
+			movebank[48] = Move.NIGHTMARE;
+			movebank[51] = Move.TAKE_OVER;
+			movebank[54] = Move.DESTINY_BOND;
 			break;
 		case 42:
+			movebank = new Move[45];
+			movebank[0] = Move.HEADBUTT;
+			movebank[9] = Move.BLIND;
+			movebank[14] = Move.SPARK;
+			movebank[19] = Move.THUNDER_WAVE;
+			movebank[29] = Move.LIGHTNING_HEADBUTT;
+			movebank[34] = Move.THUNDERBOLT;
+			movebank[44] = Move.DISCHARGE;
 			break;
 		case 43:
+			movebank = new Move[45];
+			movebank[0] = Move.SCRATCH;
+			movebank[1] = Move.TAIL_WHIP;
+			movebank[4] = Move.SPARK;
+			movebank[7] = Move.CHARGE;
+			movebank[12] = Move.THUNDER_WAVE;
+			movebank[17] = Move.WHIP_SMASH;
+			movebank[24] = Move.LIGHTNING_HEADBUTT;
+			movebank[29] = Move.QUICK_ATTACK;
+			movebank[37] = Move.DOUBLE_TEAM;
+			movebank[44] = Move.THUNDERBOLT;
 			break;
 		case 44:
+			movebank = new Move[23];
+			movebank[0] = Move.SHOCK;
+			movebank[3] = Move.CHARGE;
+			movebank[7] = Move.SPARK;
+			movebank[11] = Move.WRAP;
+			movebank[18] = Move.THUNDER_WAVE;
+			movebank[22] = Move.THUNDERSHOCK;
 			break;
 		case 45:
+			movebank = new Move[55];
+			movebank[0] = Move.SHOCK;
+			movebank[3] = Move.CHARGE;
+			movebank[7] = Move.SPARK;
+			movebank[11] = Move.WRAP;
+			movebank[18] = Move.THUNDER_WAVE;
+			movebank[22] = Move.THUNDERSHOCK;
+			movebank[30] = Move.DOUBLE_HIT;
+			movebank[39] = Move.GYRO_BALL;
+			movebank[47] = Move.DISCHARGE;
+			movebank[54] = Move.THUNDER;
 			break;
 		case 46:
+			movebank = new Move[26];
+			movebank[0] = Move.ZAP;
+			movebank[4] = Move.POUND;
+			movebank[7] = Move.CHARGE;
+			movebank[10] = Move.SPARK;
+			movebank[13] = Move.TAIL_WHIP;
+			movebank[18] = Move.SLAM;
+			movebank[23] = Move.THUNDER_WAVE;
+			movebank[25] = Move.WRAP;
 			break;
 		case 47:
+			movebank = new Move[55];
+			movebank[0] = Move.ZAP;
+			movebank[4] = Move.POUND;
+			movebank[7] = Move.CHARGE;
+			movebank[10] = Move.SPARK;
+			movebank[13] = Move.TAIL_WHIP;
+			movebank[18] = Move.SLAM;
+			movebank[23] = Move.THUNDER_WAVE;
+			movebank[25] = Move.WRAP;
+			movebank[30] = Move.SHOCK_WAVE;
+			movebank[34] = Move.GIGA_HIT;
+			movebank[35] = Move.THUNDERBOLT;
+			movebank[43] = Move.DISCHARGE;
+			movebank[54] = Move.HYPER_BEAM;
 			break;
 		case 48:
+			movebank = new Move[12];
+			movebank[0] = Move.TACKLE;
+			movebank[2] = Move.LEER;
+			movebank[4] = Move.LOW_KICK;
+			movebank[7] = Move.KARATE_CHOP;
+			movebank[11] = Move.TORNADO_SPIN;
 			break;
 		case 49:
+			movebank = new Move[24];
+			movebank[0] = Move.TACKLE;
+			movebank[2] = Move.LEER;
+			movebank[4] = Move.LOW_KICK;
+			movebank[7] = Move.KARATE_CHOP;
+			movebank[11] = Move.TORNADO_SPIN;
+			movebank[14] = Move.SWORD_SPIN;
+			movebank[17] = Move.SWORD_STAB;
+			movebank[20] = Move.DOUBLE_SLICE;
+			movebank[23] = Move.SWORD_SLASH;
 			break;
 		case 50:
+			movebank = new Move[55];
+			movebank[0] = Move.TACKLE;
+			movebank[2] = Move.LEER;
+			movebank[4] = Move.LOW_KICK;
+			movebank[7] = Move.KARATE_CHOP;
+			movebank[11] = Move.TORNADO_SPIN;
+			movebank[14] = Move.SWORD_SPIN;
+			movebank[17] = Move.SWORD_STAB;
+			movebank[20] = Move.DOUBLE_SLICE;
+			movebank[23] = Move.SWORD_SLASH;
+			movebank[24] = Move.SHURIKEN;
+			movebank[25] = Move.MACHETE_STAB;
+			movebank[26] = Move.GUNSHOT;
+			movebank[29] = Move.U_TURN;
+			movebank[34] = Move.AGILITY;
+			movebank[39] = Move.FIRE_PUNCH;
+			movebank[44] = Move.BLAZING_SWORD;
+			movebank[49] = Move.AURA_SPHERE;
+			movebank[54] = Move.CLOSE_COMBAT;
 			break;
 		case 51:
+			movebank = new Move[25];
+			movebank[0] = Move.LOW_KICK;
+			movebank[1] = Move.LEER;
+			movebank[6] = Move.KARATE_CHOP;
+			movebank[14] = Move.SEISMIC_TOSS;
+			movebank[16] = Move.REVENGE;
+			movebank[21] = Move.VITAL_THROW;
+			movebank[22] = Move.MACH_PUNCH;
+			movebank[23] = Move.HI_JUMP_KICK;
+			movebank[24] = Move.SWORD_SLICE;
 			break;
 		case 52:
+			movebank = new Move[55];
+			movebank[0] = Move.LOW_KICK;
+			movebank[1] = Move.LEER;
+			movebank[6] = Move.KARATE_CHOP;
+			movebank[14] = Move.SEISMIC_TOSS;
+			movebank[16] = Move.REVENGE;
+			movebank[21] = Move.VITAL_THROW;
+			movebank[22] = Move.MACH_PUNCH;
+			movebank[26] = Move.COMET_PUNCH;
+			movebank[33] = Move.THUNDER_PUNCH;
+			movebank[34] = Move.FIRE_PUNCH;
+			movebank[35] = Move.POISON_PUNCH;
+			movebank[37] = Move.SKY_UPPERCUT;
+			movebank[44] = Move.MEGA_PUNCH;
+			movebank[54] = Move.CLOSE_COMBAT;
 			break;
 		case 53:
+			movebank = new Move[55];
+			movebank[0] = Move.LOW_KICK;
+			movebank[1] = Move.LEER;
+			movebank[6] = Move.KARATE_CHOP;
+			movebank[14] = Move.SEISMIC_TOSS;
+			movebank[16] = Move.REVENGE;
+			movebank[21] = Move.VITAL_THROW;
+			movebank[23] = Move.HI_JUMP_KICK;
+			movebank[30] = Move.BIDE;
+			movebank[33] = Move.DOUBLE_KICK;
+			movebank[38] = Move.MEGA_KICK;
+			movebank[45] = Move.SWEEP_KICK;
+			movebank[48] = Move.THUNDER_KICK;
+			movebank[54] = Move.CLOSE_COMBAT;
 			break;
 		case 54:
+			movebank = new Move[55];
+			movebank[0] = Move.LOW_KICK;
+			movebank[1] = Move.LEER;
+			movebank[6] = Move.KARATE_CHOP;
+			movebank[14] = Move.SEISMIC_TOSS;
+			movebank[16] = Move.REVENGE;
+			movebank[21] = Move.VITAL_THROW;
+			movebank[24] = Move.SWORD_SLICE;
+			movebank[26] = Move.SWORD_STAB;
+			movebank[32] = Move.DOUBLE_SLICE;
+			movebank[36] = Move.SWORD_SPIN;
+			movebank[39] = Move.MEGA_SWORD;
+			movebank[43] = Move.BLAZING_SWORD;
+			movebank[54] = Move.CLOSE_COMBAT;
 			break;
 		case 55:
 			break;
@@ -3628,6 +3907,24 @@ public class Pokemon implements Serializable {
 	public Status getStatus() {
 		return this.status;
 	}
+	
+	public int calc(double attackStat, double defenseStat, int bp, int level) {
+		double num = 2* (double) level / 5 + 2;
+		double stat = attackStat / defenseStat / 50;
+		double damageDouble = Math.floor(num * bp * stat);
+		damageDouble += 2;
+		
+		Random roll = new Random();
+		double rollAmt = roll.nextInt(16);
+		rollAmt += 85;
+		rollAmt /= 100;
+		
+		// Roll
+		damageDouble *= rollAmt;
+		// Convert to integer
+		int damage = (int) Math.floor(damageDouble);
+		return damage;
+	}
 
 	public static void endOfTurn(Pokemon p) {
 		if (p.status != Status.HEALTHY) {
@@ -3668,14 +3965,35 @@ public class Pokemon implements Serializable {
 				}
 				
 			} else if (p.vStatus == Status.LEECHED) {
-				p.currentHP -= p.getStat(0) / 4;
-				System.out.println(p.name + " was hurt by bleeding!\n");
-				if (p.currentHP <= 0) { // Check for kill
-					p.currentHP = 0;
-					System.out.println(p.name + " fainted!\n");
-					p.fainted = true;
-				}
+//				p.currentHP -= p.getStat(0) / 4;
+//				System.out.println(p.name + " was hurt by bleeding!\n");
+//				if (p.currentHP <= 0) { // Check for kill
+//					p.currentHP = 0; TODO
+//					System.out.println(p.name + " fainted!\n");
+//					p.fainted = true;
+//				}
 				
+			} else if (p.vStatus == Status.NIGHTMARE) {
+				if (p.status == Status.ASLEEP) {
+					p.currentHP -= p.getStat(0) / 4;
+					System.out.println(p.name + " had a nightmare!\n");
+					if (p.currentHP <= 0) { // Check for kill
+						p.currentHP = 0;
+						System.out.println(p.name + " fainted!\n");
+						p.fainted = true;
+					}
+				} else {
+					p.vStatus = Status.HEALTHY;
+				}
+			}
+			if (p.perishCount > 0) {
+				p.perishCount--;
+				System.out.println(p.getName() + "'s perish count fell to " + p.perishCount + "!");
+				if (p.perishCount == 0) {
+					p.currentHP = 0;
+					p.fainted = true;
+					System.out.println(p.name + " fainted!\n");
+				}
 			}
 		}
 		
