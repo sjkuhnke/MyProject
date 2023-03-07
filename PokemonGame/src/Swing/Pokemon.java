@@ -3628,4 +3628,56 @@ public class Pokemon implements Serializable {
 	public Status getStatus() {
 		return this.status;
 	}
+
+	public static void endOfTurn(Pokemon p) {
+		if (p.status != Status.HEALTHY) {
+			if (p.status == Status.BLEEDING) {
+				p.currentHP -= p.getStat(0) / 4;
+				System.out.println(p.name + " was hurt by bleeding!\n");
+				if (p.currentHP <= 0) { // Check for kill
+					p.currentHP = 0;
+					System.out.println(p.name + " fainted!\n");
+					p.fainted = true;
+				}
+				
+			} else if (p.status == Status.BURNED) {
+				p.currentHP -= p.getStat(0) / 16;
+				System.out.println(p.name + " was hurt by its burn!\n");
+				if (p.currentHP <= 0) { // Check for kill
+					p.currentHP = 0;
+					System.out.println(p.name + " fainted!\n");
+					p.fainted = true;
+				}
+				
+			} else if (p.status == Status.POISONED) {
+				p.currentHP -= p.getStat(0) / 8;
+				System.out.println(p.name + " was hurt by poison!\n");
+				if (p.currentHP <= 0) { // Check for kill
+					p.currentHP = 0;
+					System.out.println(p.name + " fainted!\n");
+					p.fainted = true;
+				}
+				
+			} else if (p.vStatus == Status.CURSED) {
+				p.currentHP -= p.getStat(0) / 4;
+				System.out.println(p.name + " was hurt by the curse!\n");
+				if (p.currentHP <= 0) { // Check for kill
+					p.currentHP = 0;
+					System.out.println(p.name + " fainted!\n");
+					p.fainted = true;
+				}
+				
+			} else if (p.vStatus == Status.LEECHED) {
+				p.currentHP -= p.getStat(0) / 4;
+				System.out.println(p.name + " was hurt by bleeding!\n");
+				if (p.currentHP <= 0) { // Check for kill
+					p.currentHP = 0;
+					System.out.println(p.name + " fainted!\n");
+					p.fainted = true;
+				}
+				
+			}
+		}
+		
+	}
 }

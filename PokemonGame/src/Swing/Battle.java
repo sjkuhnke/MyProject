@@ -480,22 +480,34 @@ public class Battle extends JFrame {
 
 	public void turn(Pokemon p1, Pokemon p2, Move m1, Move m2) {
 		Pokemon newP;
+		double p1speed = p1.getStat(5) * p1.asModifier(4);
+		double p2speed = p2.getStat(5) * p2.asModifier(4);
+		if (p1.getStatus() == Status.PARALYZED) p1speed *= 0.5;
+		if (p2.getStatus() == Status.PARALYZED) p2speed *= 0.5;
 		
-		if (p1.getStat(5) > p2.getStat(5)) {
+		if ((int) p1speed > (int) p2speed) {
 			newP = p1.move(p2, m1);
 			p2.move(p1, m2);
-		} else if (p1.getStat(5) < p2.getStat(5)) {
+			Pokemon.endOfTurn(p1);
+			Pokemon.endOfTurn(p2);
+		} else if ((int) p1speed < (int) p2speed) {
 			p2.move(p1, m2);
 			newP = p1.move(p2, m1);
+			Pokemon.endOfTurn(p2);
+			Pokemon.endOfTurn(p1);
 		} else {
 			Random speedTie = new Random();
 			double random = speedTie.nextDouble();
 			if (random < 0.5) {
 				newP = p1.move(p2, m1);
 				p2.move(p1, m2);
+				Pokemon.endOfTurn(p1);
+				Pokemon.endOfTurn(p2);
 			} else {
 				p2.move(p1, m2);
 				newP = p1.move(p2, m1);
+				Pokemon.endOfTurn(p2);
+				Pokemon.endOfTurn(p1);
 			}
 		}
 		me.current = newP;
