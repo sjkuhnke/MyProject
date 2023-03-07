@@ -15,7 +15,8 @@ public class Pokemon implements Serializable {
 	
 	public int[] baseStats;
 	public int[] stats;
-	public int level;
+	private int level;
+	public int[] statStages;
 	
 	public PType type1;
 	public PType type2;
@@ -30,6 +31,12 @@ public class Pokemon implements Serializable {
 	
 	public int currentHP;
 	private boolean fainted;
+
+	private boolean charged;
+	private int confusionCounter;
+	@SuppressWarnings("unused") private int sleepCounter;
+
+	private int perishCount;
 	
 	public Pokemon(int i, int l) {
 		id = i;
@@ -38,6 +45,7 @@ public class Pokemon implements Serializable {
 		baseStats = new int[6];
 		stats = new int[6];
 		level = l;
+		statStages = new int[7];
 		
 		setBaseStats();
 		getStats();
@@ -97,8 +105,11 @@ public class Pokemon implements Serializable {
 		expMax = level * 2;
 		exp = 0;
 		
+		currentHP = this.getStat(0);
 		setMoveBank();
 		moveset = set;
+		
+		status = Status.HEALTHY;
 		
 	}
 	
@@ -590,296 +601,151 @@ public class Pokemon implements Serializable {
 	}
 	
 	public String getName() {
-		if (id == 1) {
-			return "Leafer";
-		} else if (id == 2) {
-			return "Sticker";
-		} else if (id == 3) {
-			return "Tree-a-tar";
-		} else if (id == 4) {
-			return "Fwoochar";
-		} else if (id == 5) {
-			return "Charchar";
-		} else if (id == 6) {
-			return "Charwoo";
-		} else if (id == 7) {
-			return "Poletad";
-		} else if (id == 8) {
-			return "Tadwhirl";
-		} else if (id == 9) {
-			return "Tadtoad";
-		} else if (id == 10) {
-			return "Twigzig";
-		} else if (id == 11) {
-			return "Twanzig";
-		} else if (id == 12) {
-			return "Sapwin";
-		} else if (id == 13) {
-			return "Treewin";
-		} else if (id == 14) {
-			return "Hops";
-		} else if (id == 15) {
-			return "Bouncey";
-		} else if (id == 16) {
-			return "Hammo";
-		} else if (id == 17) {
-			return "HammyBoy";
-		} else if (id == 18) {
-			return "Rocky";
-		} else if (id == 19) {
-			return "Boulder";
-		} else if (id == 20) {
-			return "Blaster";
-		} else if (id == 21) {
-			return "Spike";
-		} else if (id == 22) {
-			return "Spiko";
-		} else if (id == 23) {
-			return "Spikoga";
-		} else if (id == 24) {
-			return "Chompee";
-		} else if (id == 25) {
-			return "Chompo";
-		} else if (id == 26) {
-			return "Duckwee";
-		} else if (id == 27) {
-			return "Duckwack";
-		} else if (id == 28) {
-			return "Duckstrike";
-		} else if (id == 29) {
-			return "Chirpus";
-		} else if (id == 30) {
-			return "Quackus";
-		} else if (id == 31) {
-			return "Crane";
-		} else if (id == 32) {
-			return "Plankik";
-		} else if (id == 33) {
-			return "Nug";
-		} else if (id == 34) {
-			return "Contrug";
-		} else if (id == 35) {
-			return "Wasp";
-		} else if (id == 36) {
-			return "Mosquitto";
-		} else if (id == 37) {
-			return "Cluuz";
-		} else if (id == 38) {
-			return "Poof";
-		} else if (id == 39) {
-			return "Hast";
-		} else if (id == 40) {
-			return "Poov";
-		} else if (id == 41) {
-			return "Grust";
-		} else if (id == 42) {
-			return "Smartwiz";
-		} else if (id == 43) {
-			return "Vinnie";
-		} else if (id == 44) {
-			return "Shookwat";
-		} else if (id == 45) {
-			return "Wattwo";
-		} else if (id == 46) {
-			return "Corry";
-		} else if (id == 47) {
-			return "Ssordy";
-		} else if (id == 48) {
-			return "Bugik";
-		} else if (id == 49) {
-			return "Swordik";
-		} else if (id == 50) {
-			return "Ninjakik";
-		} else if (id == 51) {
-			return "Karachop";
-		} else if (id == 52) {
-			return "Karapunch";
-		} else if (id == 53) {
-			return "Karakik";
-		} else if (id == 54) {
-			return "Karasword";
-		} else if (id == 55) {
-			return "Sludger";
-		} else if (id == 56) {
-			return "Gludge";
-		} else if (id == 57) {
-			return "Wing";
-		} else if (id == 58) {
-			return "Toxing";
-		} else if (id == 59) {
-			return "Gelco-G";
-		} else if (id == 60) {
-			return "Lizardo-G";
-		} else if (id == 61) {
-			return "Jorid";
-		} else if (id == 62) {
-			return "Tentarid";
-		} else if (id == 63) {
-			return "Hedgehog";
-		} else if (id == 64) {
-			return "Bulldozer";
-		} else if (id == 65) {
-			return "Daray";
-		} else if (id == 66) {
-			return "Spinaquata";
-		} else if (id == 67) {
-			return "Toree";
-		} else if (id == 68) {
-			return "Turdee";
-		} else if (id == 69) {
-			return "Ali";
-		} else if (id == 70) {
-			return "Shomp";
-		} else if (id == 71) {
-			return "Rhypo";
-		} else if (id == 72) {
-			return "Rhynee";
-		} else if (id == 73) {
-			return "Rhypolar";
-		} else if (id == 74) {
-			return "Ignite";
-		} else if (id == 75) {
-			return "Blaze";
-		} else if (id == 76) {
-			return "Inferno";
-		} else if (id == 77) {
-			return "Flamehead";
-		} else if (id == 78) {
-			return "Fireshard";
-		} else if (id == 79) {
-			return "Blastflames";
-		} else if (id == 80) {
-			return "Heater";
-		} else if (id == 81) {
-			return "Froller";
-		} else if (id == 82) {
-			return "Cloudorus";
-		} else if (id == 83) {
-			return "Stormatus";
-		} else if (id == 84) {
-			return "Creeflare";
-		} else if (id == 85) {
-			return "Flyflare";
-		} else if (id == 86) {
-			return "Tara-z";
-		} else if (id == 87) {
-			return "Tara-x";
-		} else if (id == 88) {
-			return "Savahger";
-		} else if (id == 89) {
-			return "Show";
-		} else if (id == 90) {
-			return "Dark Zombie";
-		} else if (id == 91) {
-			return "Diftery";
-		} else if (id == 92) {
-			return "Electroball";
-		} else if (id == 93) {
-			return "Ghast";
-		} else if (id == 94) {
-			return "Flast";
-		} else if (id == 95) {
-			return "Magie";
-		} else if (id == 96) {
-			return "Cumin";
-		} else if (id == 97) {
-			return "Droid";
-		} else if (id == 98) {
-			return "Armoid";
-		} else if (id == 99) {
-			return "Soldrota";
-		} else if (id == 100) {
-			return "Dragee";
-		} else if (id == 101) {
-			return "Draga";
-		} else if (id == 102) {
-			return "Drageye";
-		} else if (id == 103) {
-			return "Soardine-A";
-		} else if (id == 104) {
-			return "Soardine-D";
-		} else if (id == 105) {
-			return "Soardine-F";
-		} else if (id == 106) {
-			return "Wando";
-		} else if (id == 107) {
-			return "Sparkdust";
-		} else if (id == 108) {
-			return "Splame";
-		} else if (id == 109) {
-			return "Tinkie";
-		} else if (id == 110) {
-			return "Shawar";
-		} else if (id == 111) {
-			return "Shaboom";
-		} else if (id == 112) {
-			return "Dogo";
-		} else if (id == 113) {
-			return "Doleaf";
-		} else if (id == 114) {
-			return "Drame";
-		} else if (id == 115) {
-			return "Daqua";
-		} else if (id == 116) {
-			return "Doxic";
-		} else if (id == 117) {
-			return "Dratt";
-		} else if (id == 118) {
-			return "Drock";
-		} else if (id == 119) {
-			return "Dokurk";
-		} else if (id == 120) {
-			return "Drotal";
-		} else if (id == 121) {
-			return "Drunch";
-		} else if (id == 122) {
-			return "Draco";
-		} else if (id == 123) {
-			return "Drakik";
-		} else if (id == 124) {
-			return "Plantro";
-		} else if (id == 125) {
-			return "Leafron";
-		} else if (id == 126) {
-			return "Planterra";
-		} else if (id == 127) {
-			return "Sparky";
-		} else if (id == 128) {
-			return "Fireball";
-		} else if (id == 129) {
-			return "Meteator";
-		} else if (id == 130) {
-			return "Taddy";
-		} else if (id == 131) {
-			return "Tarow";
-		} else if (id == 132) {
-			return "Tadagater";
-		} else if (id == 133) {
-			return "Zaparch";
-		} else if (id == 134) {
-			return "Zaflame";
-		} else if (id == 135) {
-			return "Holgor";
-		} else if (id == 136) {
-			return "Larvangor";
-		} else if (id == 137) {
-			return "Fleigor";
-		} else if (id == 138) {
-			return "Halgatoria";
-		} else if (id == 139) {
-			return "Lavatoria";
-		} else if (id == 140) {
-			return "Wingatoria";
-		} else if (id == 141) {
-			return "Gelco-F";
-		} else if (id == 142) {
-			return "Gelco-W";
-		} else if (id == 143) {
-			return "Lizardo-F";
-		} else if (id == 144) {
-			return "Lizardo-W";
-		}
-		return "";
+		if (id == 1) { return "Leafer";
+		} else if (id == 2) { return "Sticker";
+		} else if (id == 3) { return "Tree-a-tar";
+		} else if (id == 4) { return "Fwoochar";
+		} else if (id == 5) { return "Charchar";
+		} else if (id == 6) { return "Charwoo";
+		} else if (id == 7) { return "Poletad";
+		} else if (id == 8) { return "Tadwhirl";
+		} else if (id == 9) { return "Tadtoad";
+		} else if (id == 10) { return "Twigzig";
+		} else if (id == 11) { return "Twanzig";
+		} else if (id == 12) { return "Sapwin";
+		} else if (id == 13) { return "Treewin";
+		} else if (id == 14) { return "Hops";
+		} else if (id == 15) { return "Bouncey";
+		} else if (id == 16) { return "Hammo";
+		} else if (id == 17) { return "HammyBoy";
+		} else if (id == 18) { return "Rocky";
+		} else if (id == 19) { return "Boulder";
+		} else if (id == 20) { return "Blaster";
+		} else if (id == 21) { return "Spike";
+		} else if (id == 22) { return "Spiko";
+		} else if (id == 23) { return "Spikoga";
+		} else if (id == 24) { return "Chompee";
+		} else if (id == 25) { return "Chompo";
+		} else if (id == 26) { return "Duckwee";
+		} else if (id == 27) { return "Duckwack";
+		} else if (id == 28) { return "Duckstrike";
+		} else if (id == 29) { return "Chirpus";
+		} else if (id == 30) { return "Quackus";
+		} else if (id == 31) { return "Crane";
+		} else if (id == 32) { return "Plankik";
+		} else if (id == 33) { return "Nug";
+		} else if (id == 34) { return "Contrug";
+		} else if (id == 35) { return "Wasp";
+		} else if (id == 36) { return "Mosquitto";
+		} else if (id == 37) { return "Cluuz";
+		} else if (id == 38) { return "Poof";
+		} else if (id == 39) { return "Hast";
+		} else if (id == 40) { return "Poov";
+		} else if (id == 41) { return "Grust";
+		} else if (id == 42) { return "Smartwiz";
+		} else if (id == 43) { return "Vinnie";
+		} else if (id == 44) { return "Shookwat";
+		} else if (id == 45) { return "Wattwo";
+		} else if (id == 46) { return "Corry";
+		} else if (id == 47) { return "Ssordy";
+		} else if (id == 48) { return "Bugik";
+		} else if (id == 49) { return "Swordik";
+		} else if (id == 50) { return "Ninjakik";
+		} else if (id == 51) { return "Karachop";
+		} else if (id == 52) { return "Karapunch";
+		} else if (id == 53) { return "Karakik";
+		} else if (id == 54) { return "Karasword";
+		} else if (id == 55) { return "Sludger";
+		} else if (id == 56) { return "Gludge";
+		} else if (id == 57) { return "Wing";
+		} else if (id == 58) { return "Toxing";
+		} else if (id == 59) { return "Gelco-G";
+		} else if (id == 60) { return "Lizardo-G";
+		} else if (id == 61) { return "Jorid";
+		} else if (id == 62) { return "Tentarid";
+		} else if (id == 63) { return "Hedgehog";
+		} else if (id == 64) { return "Bulldozer";
+		} else if (id == 65) { return "Daray";
+		} else if (id == 66) { return "Spinaquata";
+		} else if (id == 67) { return "Toree";
+		} else if (id == 68) { return "Turdee";
+		} else if (id == 69) { return "Ali";
+		} else if (id == 70) { return "Shomp";
+		} else if (id == 71) { return "Rhypo";
+		} else if (id == 72) { return "Rhynee";
+		} else if (id == 73) { return "Rhypolar";
+		} else if (id == 74) { return "Ignite";
+		} else if (id == 75) { return "Blaze";
+		} else if (id == 76) { return "Inferno";
+		} else if (id == 77) { return "Flamehead";
+		} else if (id == 78) { return "Fireshard";
+		} else if (id == 79) { return "Blastflames";
+		} else if (id == 80) { return "Heater";
+		} else if (id == 81) { return "Froller";
+		} else if (id == 82) { return "Cloudorus";
+		} else if (id == 83) { return "Stormatus";
+		} else if (id == 84) { return "Creeflare";
+		} else if (id == 85) { return "Flyflare";
+		} else if (id == 86) { return "Tara-z";
+		} else if (id == 87) { return "Tara-x";
+		} else if (id == 88) { return "Savahger";
+		} else if (id == 89) { return "Show";
+		} else if (id == 90) { return "Dark Zombie";
+		} else if (id == 91) { return "Diftery";
+		} else if (id == 92) { return "Electroball";
+		} else if (id == 93) { return "Ghast";
+		} else if (id == 94) { return "Flast";
+		} else if (id == 95) { return "Magie";
+		} else if (id == 96) { return "Cumin";
+		} else if (id == 97) { return "Droid";
+		} else if (id == 98) { return "Armoid";
+		} else if (id == 99) { return "Soldrota";
+		} else if (id == 100) { return "Dragee";
+		} else if (id == 101) { return "Draga";
+		} else if (id == 102) { return "Drageye";
+		} else if (id == 103) { return "Soardine-A";
+		} else if (id == 104) { return "Soardine-D";
+		} else if (id == 105) { return "Soardine-F";
+		} else if (id == 106) { return "Wando";
+		} else if (id == 107) { return "Sparkdust";
+		} else if (id == 108) { return "Splame";
+		} else if (id == 109) { return "Tinkie";
+		} else if (id == 110) { return "Shawar";
+		} else if (id == 111) { return "Shaboom";
+		} else if (id == 112) { return "Dogo";
+		} else if (id == 113) { return "Doleaf";
+		} else if (id == 114) { return "Drame";
+		} else if (id == 115) { return "Daqua";
+		} else if (id == 116) { return "Doxic";
+		} else if (id == 117) { return "Dratt";
+		} else if (id == 118) { return "Drock";
+		} else if (id == 119) { return "Dokurk";
+		} else if (id == 120) { return "Drotal";
+		} else if (id == 121) { return "Drunch";
+		} else if (id == 122) { return "Draco";
+		} else if (id == 123) { return "Drakik";
+		} else if (id == 124) { return "Plantro";
+		} else if (id == 125) { return "Leafron";
+		} else if (id == 126) { return "Planterra";
+		} else if (id == 127) { return "Sparky";
+		} else if (id == 128) { return "Fireball";
+		} else if (id == 129) { return "Meteator";
+		} else if (id == 130) { return "Taddy";
+		} else if (id == 131) { return "Tarow";
+		} else if (id == 132) { return "Tadagater";
+		} else if (id == 133) { return "Zaparch";
+		} else if (id == 134) { return "Zaflame";
+		} else if (id == 135) { return "Holgor";
+		} else if (id == 136) { return "Larvangor";
+		} else if (id == 137) { return "Fleigor";
+		} else if (id == 138) { return "Halgatoria";
+		} else if (id == 139) { return "Lavatoria";
+		} else if (id == 140) { return "Wingatoria";
+		} else if (id == 141) { return "Gelco-F";
+		} else if (id == 142) { return "Gelco-W";
+		} else if (id == 143) { return "Lizardo-F";
+		} else if (id == 144) { return "Lizardo-W";
+		} return "";
 	}
 	
 	public int getLevel() {
@@ -911,6 +777,8 @@ public class Pokemon implements Serializable {
 			return result;
 		} else if (id == 2 && level >= 35) {
 			Pokemon result = new Pokemon(3, level, this.moveset);
+			int hpDif = this.getStat(0) - this.currentHP;
+			result.currentHP -= hpDif;
 			System.out.println(this.name + " evolved into " + result.name + "!");
 			return result;
 		} else if (id == 2 && level >= 35) {
@@ -2123,35 +1991,559 @@ public class Pokemon implements Serializable {
 	}
 
 	
-	public int move(Pokemon foe, Move move) {
-		if (this.fainted) return 0;
-		if (foe.fainted) return 0;
+	public Pokemon move(Pokemon foe, Move move) {
+		if (this.fainted || foe.fainted) return this;
 
 		int attackStat;
 		int defenseStat;
 		int damage;
-		if (!hit(move.accuracy)) {
-			System.out.println(this.name + " used " + move + "!");
-			System.out.println(this.name + "'s attack missed!\n");
-			return 0; // Check for miss
+		
+		if (this.status == Status.CONFUSED) {
+			if (this.confusionCounter == 0) {
+				this.status = Status.HEALTHY;
+		        System.out.println(this.name + " snapped out of confusion!");
+			} else {
+				System.out.println(this.name + " is confused!");
+				if (Math.random() < 1.0/3.0) {
+			        // user hits themselves
+					System.out.println(this.name + " hit itself in confusion!");
+					attackStat = this.getStat(1);
+					defenseStat = this.getStat(2);
+					attackStat *= this.asModifier(0);
+					defenseStat *= this.asModifier(1);
+					
+					double num = 2* (double) this.level / 5 + 2;
+					double stat = (double) attackStat / (double) defenseStat / 50;
+					double damageDouble = Math.floor(num * 40 * stat);
+					damageDouble += 2;
+					
+					Random roll = new Random();
+					double rollAmt = roll.nextInt(16);
+					rollAmt += 85;
+					rollAmt /= 100;
+					
+					// Roll
+					damageDouble *= rollAmt;
+					// Convert to integer
+					damage = (int) Math.floor(damageDouble);
+					this.currentHP -= damage;
+					
+					if (this.currentHP <= 0) {
+						this.currentHP = 0;
+						this.fainted = true;
+						System.out.println(this.name + " fainted!\n");
+					}
+					confusionCounter--;
+					return this;
+				} else {
+					confusionCounter--;
+				}
+			}
 		}
 		
-		if(getImmune(foe, move.mtype)) {
+		if (move.accuracy < 100 && !hit(move.accuracy)) {
 			System.out.println(this.name + " used " + move + "!");
-			System.out.println("It doesn't effect " + foe.name + "...\n");
-			return 0; // Check for miss
+			System.out.println(this.name + "'s attack missed!\n");
+			return this; // Check for miss
+		}
+		
+		if (move.accuracy <= 100 && move.cat != 2) {
+			if (getImmune(foe, move.mtype)) {
+				System.out.println(this.name + " used " + move + "!");
+				System.out.println("It doesn't effect " + foe.name + "...\n");
+				return this; // Check for immunity
+			}
+		}
+		
+		System.out.println(this.name + " used " + move + "!");
+		
+		if (move.cat == 2) {
+			if (move == Move.AGILITY) {
+				this.statStages[4] += 2;
+				if (this.statStages[4] > 6) {
+					this.statStages[4] = 6;
+					System.out.println(this.name + "'s Speed won't go any higher!\n");
+				} else {
+					System.out.println(this.name + "'s Speed sharply rose!\n");
+				}
+			} else if (move == Move.AQUA_RING) {
+//				// TODO
+//				System.out.println(this.name + " surrounded itself in a veil of water!");
+			} else if (move == Move.AUTOMOTIZE) {
+				this.statStages[4] += 2;
+				if (this.statStages[4] > 6) {
+					this.statStages[4] = 6;
+					System.out.println(this.name + "'s Speed won't go any higher!\n");
+				} else {
+					System.out.println(this.name + "'s Speed sharply rose!\n");
+				}
+			} else if (move == Move.AUTO_SHOT) {
+//				// TODO
+//				System.out.println(this.name + " upgraded its weapon!");
+			} else if (move == Move.BAWL) {
+				foe.statStages[0] -= 2;
+				if (foe.statStages[0] < -6) {
+				    foe.statStages[0] = -6;
+				    System.out.println(foe.name + "'s Attack won't go any lower!\n");
+				} else {
+					System.out.println(foe.name + "'s Attack harshly fell!\n");
+				}
+			} else if (move == Move.BLACK_DUST) {
+				foe.statStages[5] -= 2;
+				if (foe.statStages[5] < -6) {
+				    foe.statStages[5] = -6;
+				    System.out.println(foe.name + "'s Accuracy won't go any lower!\n");
+				} else {
+					System.out.println(foe.name + "'s Accuracy harshly fell!\n");
+				}
+			} else if (move == Move.CHARGE) {
+				System.out.println(this.name + " became charged with power!");
+				this.charged = true;
+				this.statStages[3] += 1;
+				if (this.statStages[3] > 6) {
+					this.statStages[3] = 6;
+					System.out.println(this.name + "'s Special Defense won't go any higher!\n");
+				} else {
+					System.out.println(this.name + "'s Special Defense rose!\n");
+				}
+			} else if (move == Move.CHARM) {
+				foe.statStages[0] -= 2;
+				if (foe.statStages[0] < -6) {
+				    foe.statStages[0] = -6;
+				    System.out.println(foe.name + "'s Attack won't go any lower!\n");
+				} else {
+					System.out.println(foe.name + "'s Attack harshly fell!\n");
+				}
+			} else if (move == Move.CONFUSE_RAY) {
+				if (foe.status == Status.HEALTHY) {
+					foe.status = Status.CONFUSED;
+					foe.confusionCounter = (int)(Math.random() * 4) + 1;
+					System.out.println(foe.name + " became confused!\n");
+				} else {
+					System.out.println("But it failed!\n");
+				}
+			} else if (move == Move.CURSE) {
+				if (foe.status == Status.HEALTHY) {
+					foe.status = Status.CURSED;
+					System.out.println(foe.name + " was afflicted with a curse!\n");
+					this.currentHP -= (this.getStat(0) / 2);
+					if (this.currentHP <= 0) {
+						this.currentHP = 0;
+						this.fainted = true;
+						System.out.println(this.name + " fainted!\n");
+					}
+				} else {
+					System.out.println("But it failed!\n");
+				}
+			} else if (move == Move.DARK_VOID) {
+				if (foe.status == Status.HEALTHY) {
+					foe.status = Status.ASLEEP;
+					foe.sleepCounter = (int)(Math.random() * 3) + 1;
+					System.out.println(foe.name + " fell asleep!\n");
+				} else {
+					System.out.println("But it failed!\n");
+				}
+			} else if (move == Move.DEFENSE_CURL) {
+				this.statStages[1] += 1;
+				if (this.statStages[1] > 6) {
+					this.statStages[1] = 6;
+					System.out.println(this.name + "'s Defense won't go any higher!\n");
+				} else {
+					System.out.println(this.name + "'s Defense rose!\n");
+				}
+			} else if (move == Move.DESTINY_BOND) {
+//				// TODO
+//				System.out.println(this.name + " is ready to take its attacker down with it!");
+			} else if (move == Move.DISAPPEAR) {
+//				// TODO
+//				System.out.println(this.name + " vanished!");
+			} else if (move == Move.DOUBLE_TEAM) {
+				this.statStages[6] += 1;
+				if (this.statStages[6] > 6) {
+					this.statStages[6] = 6;
+					System.out.println(this.name + "'s Evasion won't go any higher!\n");
+				} else {
+					System.out.println(this.name + "'s Evasion rose!\n");
+				}
+			} else if (move == Move.DRAGON_DANCE) {
+				this.statStages[0] += 1;
+				this.statStages[4] += 1;
+				if (this.statStages[0] > 6) {
+					this.statStages[0] = 6;
+					System.out.println(this.name + "'s Attack won't go any higher!\n");
+				} else {
+					System.out.println(this.name + "'s Attack rose!\n");
+				}
+				if (this.statStages[4] > 6) {
+					this.statStages[4] = 6;
+					System.out.println(this.name + "'s Speed won't go any higher!\n");
+				} else {
+					System.out.println(this.name + "'s Speed rose!\n");
+				}
+			} else if (move == Move.FLASH) {
+				foe.statStages[5] -= 1;
+				if (foe.statStages[5] < -6) {
+				    foe.statStages[5] = -6;
+				    System.out.println(foe.name + "'s Accuracy won't go any lower!\n");
+				} else {
+					System.out.println(foe.name + "'s Accuracy fell!\n");
+				}
+			} else if (move == Move.FORESIGHT) {
+				if (foe.type1 == PType.GHOST) foe.type1 = PType.NORMAL;
+				if (foe.type2 == PType.GHOST) foe.type2 = PType.NORMAL;
+				System.out.println(this.name + " identified " + foe.name + "!\n");
+			} else if (move == Move.GLARE) {
+				if (foe.type1 == PType.ELECTRIC || foe.type2 == PType.ELECTRIC) {
+					System.out.println("It doesn't effect " + foe.name + "...");
+					return this;
+				}
+				if (foe.status == Status.HEALTHY) {
+					foe.status = Status.PARALYZED;
+					System.out.println(foe.name + " was paralyzed!\n");
+				} else {
+					System.out.println("But it failed!\n");
+				}
+			} else if (move == Move.GROWL) {
+				foe.statStages[0] -= 1;
+				if (foe.statStages[0] < -6) {
+				    foe.statStages[0] = -6;
+				    System.out.println(foe.name + "'s Attack won't go any lower!\n");
+				} else {
+					System.out.println(foe.name + "'s Attack fell!\n");
+				}
+			} else if (move == Move.GROWTH) {
+				this.statStages[0] += 1;
+				this.statStages[2] += 1;
+				if (this.statStages[0] > 6) {
+					this.statStages[0] = 6;
+					System.out.println(this.name + "'s Attack won't go any higher!\n");
+				} else {
+					System.out.println(this.name + "'s Attack rose!\n");
+				}
+				if (this.statStages[2] > 6) {
+					this.statStages[2] = 6;
+					System.out.println(this.name + "'s Special Attack won't go any higher!\n");
+				} else {
+					System.out.println(this.name + "'s Special Attack rose!\n");
+				}
+			} else if (move == Move.HARDEN) {
+				this.statStages[1] += 1;
+				if (this.statStages[1] > 6) {
+					this.statStages[1] = 6;
+					System.out.println(this.name + "'s Defense won't go any higher!\n");
+				} else {
+					System.out.println(this.name + "'s Defense rose!\n");
+				}
+			} else if (move == Move.HAZE) {
+				this.statStages = new int[7];
+				foe.statStages = new int[7];
+				System.out.println(this.name + "All stat changes were eliminated!\n");
+			} else if (move == Move.HYPNOSIS) {
+				if (foe.status == Status.HEALTHY) {
+					foe.status = Status.ASLEEP;
+					foe.sleepCounter = (int)(Math.random() * 3) + 1;
+					System.out.println(foe.name + " fell asleep!\n");
+				} else {
+					System.out.println("But it failed!\n");
+				}
+			} else if (move == Move.IGNITE) {
+				if (foe.type1 == PType.FIRE || foe.type2 == PType.FIRE) {
+					System.out.println("It doesn't effect " + foe.name + "...");
+					return this;
+				}
+				if (foe.status == Status.HEALTHY) {
+					foe.status = Status.BURNED;
+					System.out.println(foe.name + " was burned!\n");
+				} else {
+					System.out.println("But it failed!\n");
+				}
+			} else if (move == Move.IRON_DEFENSE) {
+				this.statStages[1] += 2;
+				if (this.statStages[1] > 6) {
+					this.statStages[1] = 6;
+					System.out.println(this.name + "'s Defense won't go any higher!\n");
+				} else {
+					System.out.println(this.name + "'s Defense sharply rose!\n");
+				}
+			} else if (move == Move.LEECH_SEED) {
+				if (foe.status == Status.HEALTHY) {
+					foe.status = Status.LEECHED;
+					System.out.println(foe.name + " was seeded!\n");
+				} else {
+					System.out.println("But it failed!\n");
+				}
+			} else if (move == Move.LEER) {
+				foe.statStages[1] -= 1;
+				if (foe.statStages[1] < -6) {
+				    foe.statStages[1] = -6;
+				    System.out.println(foe.name + "'s Defense won't go any lower!\n");
+				} else {
+					System.out.println(foe.name + "'s Defense fell!\n");
+				}
+			} else if (move == Move.LOCK_ON) {
+//				// TODO
+//				System.out.println(this.name + " took aim at " + foe.name + "!\n");
+			} else if (move == Move.MAGIC_REFLECT) {
+//				// TODO
+			} else if (move == Move.MAGNET_RISE) {
+//				// TODO
+//				System.out.println(this.name + " floated with electromagnetism!\n");
+			} else if (move == Move.METAL_SOUND) {
+				foe.statStages[3] -= 2;
+				if (foe.statStages[3] < -6) {
+				    foe.statStages[3] = -6;
+				    System.out.println(foe.name + "'s Special Defense won't go any lower!\n");
+				} else {
+					System.out.println(foe.name + "'s Special Defense harshly fell!\n");
+				}
+			} else if (move == Move.MINIMIZE) {
+				this.statStages[6] += 2;
+				if (this.statStages[6] > 6) {
+					this.statStages[6] = 6;
+					System.out.println(this.name + "'s Evasion won't go any higher!\n");
+				} else {
+					System.out.println(this.name + "'s Evasion sharply rose!\n");
+				}
+			} else if (move == Move.MOONLIGHT) {
+				if (this.currentHP == this.getStat(0)) {
+					System.out.println(this.name + "'s HP is full!\n");
+				} else {
+					this.currentHP += (this.getStat(0) / 2);
+					if (this.currentHP > this.getStat(0)) this.currentHP = this.getStat(0);
+					System.out.println(this.name + " restored HP.\n");
+				}
+			} else if (move == Move.MUD_SPORT) {
+				System.out.println(this.name + " electric's power was weakened!\n");
+			} else if (move == Move.NIGHTMARE) {
+//				if (foe.status == Status.ASLEEP) { TODO
+//					foe.status = Status.NIGHTMARE;
+//					System.out.println(foe.name + " had a nightmare!\n");
+//				} else {
+//					System.out.println("But it failed!\n");
+//				}
+			} else if (move == Move.ODOR_SLEUTH) {
+				if (foe.type1 == PType.GHOST) foe.type1 = PType.NORMAL;
+				if (foe.type2 == PType.GHOST) foe.type2 = PType.NORMAL;
+				System.out.println(this.name + " identified " + foe.name + "!\n");
+			} else if (move == Move.PERISH_SONG) {
+//				if (foe.status == Status.HEALTHY) { TODO
+//				foe.status = Status.PERISH;
+//				this.perishCount = 3;
+//				foe.perishCount = 3;
+//				}
+			} else if (move == Move.PHASE_SHIFT) {
+//				// TODO
+			} else if (move == Move.POISON_GAS) {
+				if (foe.type1 == PType.POISON || foe.type2 == PType.POISON) {
+					System.out.println("It doesn't effect " + foe.name + "...");
+					return this;
+				}
+				if (foe.status == Status.HEALTHY) {
+					foe.status = Status.POISONED;
+					System.out.println(foe.name + " was poisoned!\n");
+				} else {
+					System.out.println("But it failed!\n");
+				}
+			} else if (move == Move.POISON_POWDER) {
+				if (foe.type1 == PType.POISON || foe.type2 == PType.POISON) {
+					System.out.println("It doesn't effect " + foe.name + "...");
+					return this;
+				}
+				if (foe.status == Status.HEALTHY) {
+					foe.status = Status.POISONED;
+					System.out.println(foe.name + " was poisoned!\n");
+				} else {
+					System.out.println("But it failed!\n");
+				}
+			} else if (move == Move.PROTECT) {
+//				// TODO
+			} else if (move == Move.REBOOT) {
+				if (this.status != Status.HEALTHY) System.out.println(this.name + " became healthy!\n");
+				this.status = Status.HEALTHY;
+				this.statStages[4] += 1;
+				if (this.statStages[4] > 6) {
+					this.statStages[4] = 6;
+					System.out.println(this.name + "'s Speed won't go any higher!\n");
+				} else {
+					System.out.println(this.name + "'s Speed rose!\n");
+				}
+			} else if (move == Move.ROOST) {
+				if (this.currentHP == this.getStat(0)) {
+					System.out.println(this.name + "'s HP is full!\n");
+				} else {
+					this.currentHP += (this.getStat(0) / 2);
+					if (this.currentHP > this.getStat(0)) this.currentHP = this.getStat(0);
+					System.out.println(this.name + " restored HP.\n");
+				}
+			} else if (move == Move.SAND_ATTACK) {
+				foe.statStages[5] -= 1;
+				if (foe.statStages[5] < -6) {
+				    foe.statStages[5] = -6;
+				    System.out.println(foe.name + "'s Accuracy won't go any lower!\n");
+				} else {
+					System.out.println(foe.name + "'s Accuracy fell!\n");
+				}
+			} else if (move == Move.SCARY_FACE) {
+				foe.statStages[4] -= 2;
+				if (foe.statStages[4] < -6) {
+				    foe.statStages[4] = -6;
+				    System.out.println(foe.name + "'s Speed won't go any lower!\n");
+				} else {
+					System.out.println(foe.name + "'s Speed harshly fell!\n");
+				}
+			} else if (move == Move.SCREECH) {
+				foe.statStages[1] -= 2;
+				if (foe.statStages[1] < -6) {
+				    foe.statStages[1] = -6;
+				    System.out.println(foe.name + "'s Defense won't go any lower!\n");
+				} else {
+					System.out.println(foe.name + "'s Defense harshly fell!\n");
+				}
+			} else if (move == Move.SLEEP_POWDER) {
+				if (foe.status == Status.HEALTHY) {
+					foe.status = Status.ASLEEP;
+					foe.sleepCounter = (int)(Math.random() * 3) + 1;
+					System.out.println(foe.name + " fell asleep!\n");
+				} else {
+					System.out.println("But it failed!\n");
+				}
+			} else if (move == Move.SMOKESCREEN) {
+				foe.statStages[5] -= 1;
+				if (foe.statStages[5] < -6) {
+				    foe.statStages[5] = -6;
+				    System.out.println(foe.name + "'s Accuracy won't go any lower!\n");
+				} else {
+					System.out.println(foe.name + "'s Accuracy fell!\n");
+				}
+			} else if (move == Move.STARE) {
+				foe.statStages[0] += 1;
+				if (foe.statStages[0] > 6) {
+					foe.statStages[0] = 6;
+					System.out.println(foe.name + "'s Attack won't go any higher!\n");
+				} else {
+					System.out.println(foe.name + "'s Attack rose!\n");
+				}
+				if (foe.status == Status.HEALTHY) {
+					foe.status = Status.CONFUSED;
+					foe.confusionCounter = (int)(Math.random() * 4) + 1;
+					System.out.println(foe.name + " became confused!\n");
+				}
+			} else if (move == Move.STRING_SHOT) {
+				foe.statStages[4] -= 2;
+				if (foe.statStages[4] < -6) {
+				    foe.statStages[4] = -6;
+				    System.out.println(foe.name + "'s Speed won't go any lower!\n");
+				} else {
+					System.out.println(foe.name + "'s Speed harshly fell!\n");
+				}
+			} else if (move == Move.SUNNY_DAY) {
+//				// TODO
+			} else if (move == Move.SUPERSONIC) {
+				if (foe.status == Status.HEALTHY) {
+					foe.status = Status.CONFUSED;
+					foe.confusionCounter = (int)(Math.random() * 4) + 1;
+					System.out.println(foe.name + " became confused!\n");
+				} else {
+					System.out.println("But it failed!\n");
+				}
+			} else if (move == Move.SWAGGER) {
+				foe.statStages[0] += 2;
+				if (foe.statStages[0] > 6) {
+					foe.statStages[0] = 6;
+					System.out.println(foe.name + "'s Attack won't go any higher!\n");
+				} else {
+					System.out.println(foe.name + "'s Attack sharply rose!\n");
+				}
+				if (foe.status == Status.HEALTHY) {
+					foe.status = Status.CONFUSED;
+					foe.confusionCounter = (int)(Math.random() * 4) + 1;
+					System.out.println(foe.name + " became confused!\n");
+				}
+			} else if (move == Move.SYNTHESIS) {
+				if (this.currentHP == this.getStat(0)) {
+					System.out.println(this.name + "'s HP is full!\n");
+				} else {
+					this.currentHP += (this.getStat(0) / 2);
+					if (this.currentHP > this.getStat(0)) this.currentHP = this.getStat(0);
+					System.out.println(this.name + " restored HP.\n");
+				}
+			} else if (move == Move.TAIL_WHIP) {
+				foe.statStages[1] -= 1;
+				if (foe.statStages[1] < -6) {
+				    foe.statStages[1] = -6;
+				    System.out.println(foe.name + "'s Defense won't go any lower!\n");
+				} else {
+					System.out.println(foe.name + "'s Defense fell!\n");
+				}
+			} else if (move == Move.TAILWIND) {
+//				// TODO
+			} else if (move == Move.TAKE_OVER) {
+//				// TODO
+			} else if (move == Move.TAUNT) {
+//				// TODO
+			} else if (move == Move.THUNDER_WAVE) {
+				if (foe.type1 == PType.ELECTRIC || foe.type2 == PType.ELECTRIC) {
+					System.out.println("It doesn't effect " + foe.name + "...");
+					return this;
+				}
+				if (foe.status == Status.HEALTHY) {
+					foe.status = Status.PARALYZED;
+					System.out.println(foe.name + " was paralyzed!\n");
+				} else {
+					System.out.println("But it failed!\n");
+				}
+			} else if (move == Move.TORMENT) {
+//				// TODO
+			} else if (move == Move.TOXIC) {
+				if (foe.type1 == PType.POISON || foe.type2 == PType.POISON) {
+					System.out.println("It doesn't effect " + foe.name + "...");
+					return this;
+				}
+				if (foe.status == Status.HEALTHY) {
+					foe.status = Status.POISONED;
+					System.out.println(foe.name + " was poisoned!\n");
+				} else {
+					System.out.println("But it failed!\n");
+				}
+			} else if (move == Move.TOXIC_SPIKES) {
+//				// TODO
+			} else if (move == Move.WHIRLWIND) {
+//				// TODO
+			} else if (move == Move.WILL_O_WISP) {
+				if (foe.type1 == PType.FIRE || foe.type2 == PType.FIRE) {
+					System.out.println("It doesn't effect " + foe.name + "...");
+					return this;
+				}
+				if (foe.status == Status.HEALTHY) {
+					foe.status = Status.BURNED;
+					System.out.println(foe.name + " was burned!\n");
+				} else {
+					System.out.println("But it failed!\n");
+				}
+			} if (move == Move.ROCK_POLISH) {
+				this.statStages[4] += 2;
+				if (this.statStages[4] > 6) {
+					this.statStages[4] = 6;
+					System.out.println(this.name + "'s Speed won't go any higher!\n");
+				} else {
+					System.out.println(this.name + "'s Speed sharply rose!\n");
+				}
+			}
+			return this;
 		}
 		
 		// Use either physical or special attack/defense
 		if (move.isPhysical()) {
 			attackStat = this.getStat(1);
 			defenseStat = foe.getStat(2);
+			attackStat *= this.asModifier(0);
+			defenseStat *= foe.asModifier(1);
 		} else {
 			attackStat = this.getStat(3);
 			defenseStat = foe.getStat(4);
+			attackStat *= this.asModifier(2);
+			defenseStat *= foe.asModifier(3);
 		}
-		
-		System.out.println(this.name + " used " + move + "!");
 		
 		double num = 2* (double) this.level / 5 + 2;
 		double stat = (double) attackStat / (double) defenseStat / 50;
@@ -2169,6 +2561,9 @@ public class Pokemon implements Serializable {
 		// Stab
 		if (move.mtype == this.type1) damageDouble *= 1.5;
 		if (move.mtype == this.type2) damageDouble *= 1.5;
+		
+		// Charged
+		if (move.mtype == PType.ELECTRIC && this.charged) damageDouble *= 2;
 		
 		// Crit Check
 		if (critCheck(move)) {
@@ -2206,20 +2601,88 @@ public class Pokemon implements Serializable {
 		
 		System.out.println(damage + " damage\n");
 		
+		Pokemon user = this;
+		
 		// Damage foe
 		foe.currentHP -= damage;
 		if (foe.currentHP <= 0) { // Check for kill
 			foe.currentHP = 0;
 			this.exp += foe.level;
 			if (this.exp >= this.expMax) { // Check for level up
-				this.levelUp();
+				user = this.levelUp();
 			}
-			System.out.println(foe.getName() + " fainted!\n");
+			System.out.println(foe.name + " fainted!\n");
 			foe.fainted = true;
 		}
 		
 		
-		return damage;
+		return user;
+	}
+	
+	public double asModifier(int index) {
+		double modifier = 1;
+		if (index <= 4) {
+			switch(statStages[index]) {
+			case -6:
+				modifier = 2.0/8.0;
+			case -5:
+				modifier = 2.0/7.0;
+			case -4:
+				modifier = 2.0/6.0;
+			case -3:
+				modifier = 2.0/5.0;
+			case -2:
+				modifier = 2.0/4.0;
+			case -1:
+				modifier = 2.0/3.0;
+			case 0:
+				modifier = 2.0/2.0;
+			case 1:
+				modifier = 3.0/2.0;
+			case 2:
+				modifier = 4.0/2.0;
+			case 3:
+				modifier = 5.0/2.0;
+			case 4:
+				modifier = 6.0/2.0;
+			case 5:
+				modifier = 7.0/2.0;
+			case 6:
+				modifier = 8.0/2.0;
+			}
+		} else {
+			int accev = statStages[index];
+			if (index == 6) accev *= -1;
+			switch(accev) {
+			case -6:
+				modifier = 3.0/9.0;
+			case -5:
+				modifier = 3.0/8.0;
+			case -4:
+				modifier = 3.0/7.0;
+			case -3:
+				modifier = 3.0/6.0;
+			case -2:
+				modifier = 3.0/5.0;
+			case -1:
+				modifier = 3.0/4.0;
+			case 0:
+				modifier = 3.0/3.0;
+			case 1:
+				modifier = 4.0/3.0;
+			case 2:
+				modifier = 5.0/3.0;
+			case 3:
+				modifier = 6.0/3.0;
+			case 4:
+				modifier = 7.0/3.0;
+			case 5:
+				modifier = 8.0/3.0;
+			case 6:
+				modifier = 9.0/3.0;
+			}
+		}
+		return modifier;
 	}
 
 	private boolean getImmune(Pokemon p, PType type) {
@@ -2302,6 +2765,7 @@ public class Pokemon implements Serializable {
 	
 	public void heal() {
 		this.fainted = false;
+		this.clearVolatile();
 		this.currentHP = this.getStat(0);
 		this.status = Status.HEALTHY;
 		System.out.println(this.name + " healed!");
@@ -2645,7 +3109,7 @@ public class Pokemon implements Serializable {
 			movebank[18] = Move.HEADBUTT;
 			movebank[23] = Move.BRANCH_WHACK;
 			movebank[28] = Move.LEAF_BALL;
-			movebank[35] = Move.MEAN_LOOK;
+			//movebank[35] = Move.MEAN_LOOK; TODO
 			movebank[44] = Move.FAINT_ATTACK;
 			movebank[54] = Move.LEAF_STORM;
 			break;
@@ -2847,8 +3311,7 @@ public class Pokemon implements Serializable {
 			movebank[14] = Move.WING_ATTACK;
 			break;
 		case 27:
-			movebank = new Move[33];
-			movebank[0] = Move.TACKLE;
+			movebank = new Move[33];movebank[0] = Move.TACKLE;
 			movebank[4] = Move.SAND_ATTACK;
 			movebank[6] = Move.FORESIGHT;
 			movebank[9] = Move.GUST;
@@ -3108,6 +3571,17 @@ public class Pokemon implements Serializable {
 
 	public void faint() {
 		this.fainted = true;
+		
+	}
+
+	public void clearVolatile() {
+		if (this.status == Status.CONFUSED) {
+			confusionCounter = 0;
+			this.status = Status.HEALTHY;
+		}
+		if (this.status == Status.CURSED) this.status = Status.HEALTHY;
+		statStages = new int[7];
+		setType();
 		
 	}
 }

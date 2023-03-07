@@ -46,7 +46,11 @@ public class Battle extends JFrame {
 	private JButton party3;
 	private JButton party4;
 	private JButton party5;
+	
+	private JButton catchButton;
+	private JButton fightButton;
 	private JButton healButton;
+	
 	/**
 	 * Launch the application.
 	 */
@@ -61,7 +65,7 @@ public class Battle extends JFrame {
 	    } catch (IOException | ClassNotFoundException e) {
 	        // If there's an error reading the file, create a new Player object
 	        me = new Player();
-	        me.catchPokemon(new Pokemon(11,70));
+	        me.catchPokemon(new Pokemon(4,5));
 	    }
 	    
 	    
@@ -92,42 +96,21 @@ public class Battle extends JFrame {
 	public Battle() {
 		// Initialize frame
 		initialize();
-		
 		updateFoe();
 		
-		JButton catchButton = new JButton("CATCH!");
-		catchButton.setFont(new Font("Tahoma", Font.BOLD, 11));
-		catchButton.setBounds(20, 171, 89, 23);
-		playerPanel.add(catchButton);
+		catchButton = createJButton("CATCH", new Font("Tahoma", Font.BOLD, 11), 20, 171, 89, 23);
+		fightButton = createJButton("FIGHT", new Font("Tahoma", Font.BOLD, 11), 20, 80, 89, 23);
+		healButton = createJButton("HEAL", new Font("Tahoma", Font.BOLD, 9), 10, 267, 68, 23);
 		
-		idInput = new JTextField();
-		idInput.setBounds(31, 53, 27, 20);
-		playerPanel.add(idInput);
-		idInput.setColumns(3);
+		idInput = createJTextField(3, 31, 53, 27, 20);
+		levelInput = createJTextField(2, 71, 53, 27, 20);
 		
-		levelInput = new JTextField();
-		levelInput.setColumns(2);
-		levelInput.setBounds(71, 53, 27, 20);
-		playerPanel.add(levelInput);
-		
-		JButton fightButton = new JButton("FIGHT!");
-		fightButton.setFont(new Font("Tahoma", Font.BOLD, 11));
-		fightButton.setBounds(20, 80, 89, 23);
-		playerPanel.add(fightButton);
-		
-		healButton = new JButton("HEAL");
-		healButton.setFont(new Font("Tahoma", Font.BOLD, 9));
-		healButton.setBounds(10, 267, 68, 23);
-		playerPanel.add(healButton);
-		
-		healButton.addActionListener(e -> {
-			for (Pokemon member : me.team) {
-				if (member != null) member.heal();
-			}
-			updateCurrent();
-			updateBars();
+		catchButton.addActionListener(e -> {
+			me.catchPokemon(new Pokemon(foe.id, foe.getLevel()));
+			foe.currentHP = 0;
+			foe.faint();
 			displayParty();
-			playerPanel.repaint();
+			updateFoe();
         });
 		
 		fightButton.addActionListener(e -> {
@@ -138,6 +121,16 @@ public class Battle extends JFrame {
 				foe = new Pokemon (10, 5);
 				updateFoe();
 			}
+        });
+		
+		healButton.addActionListener(e -> {
+			for (Pokemon member : me.team) {
+				if (member != null) member.heal();
+			}
+			updateCurrent();
+			updateBars();
+			displayParty();
+			playerPanel.repaint();
         });
 		
 		party1 = new JButton();
@@ -187,14 +180,7 @@ public class Battle extends JFrame {
 			displayParty();
         });
 		
-		
-		catchButton.addActionListener(e -> {
-			me.catchPokemon(foe);
-			displayParty();
-        });
-		
 		System.out.println(me.toString());
-		System.out.println(me.getCurrent().exp);
 	}
 	
 	private void initialize() {
@@ -295,6 +281,22 @@ public class Battle extends JFrame {
 		
 		playerPanel.add(foeText);
 		playerPanel.add(foeHealthBar);
+	}
+	
+	private JTextField createJTextField(int i, int j, int k, int l, int m) {
+		JTextField newT = new JTextField();
+		newT.setColumns(i);
+		newT.setBounds(j, k, l, m);
+		playerPanel.add(newT);
+		return newT;
+	}
+
+	private JButton createJButton(String string, Font font, int i, int j, int k, int l) {
+		JButton newB = new JButton(string);
+		newB.setFont(font);
+		newB.setBounds(i, j, k, l);
+		playerPanel.add(newB);
+		return newB;
 	}
 
 	private void updateCurrent() {
@@ -444,24 +446,26 @@ public class Battle extends JFrame {
 	}
 
 	public void turn(Pokemon p1, Pokemon p2, Move m1, Move m2) {
+		Pokemon newP;
 		
 		if (p1.getStat(5) > p2.getStat(5)) {
-			p1.move(p2, m1);
+			newP = p1.move(p2, m1);
 			p2.move(p1, m2);
 		} else if (p1.getStat(5) < p2.getStat(5)) {
 			p2.move(p1, m2);
-			p1.move(p2, m1);
+			newP = p1.move(p2, m1);
 		} else {
 			Random speedTie = new Random();
 			double random = speedTie.nextDouble();
 			if (random < 0.5) {
-				p1.move(p2, m1);
+				newP = p1.move(p2, m1);
 				p2.move(p1, m2);
 			} else {
 				p2.move(p1, m2);
-				p1.move(p2, m1);
+				newP = p1.move(p2, m1);
 			}
 		}
+		me.current = newP;
 		updateBars();
 		updateCurrent();
 		
@@ -481,6 +485,7 @@ public class Battle extends JFrame {
 			healthBar.setForeground(new Color(255, 0, 0));
 		}
 		
+		progressBar.setMaximum(me.getCurrent().expMax);
 		progressBar.setValue(me.getCurrent().exp);
 		
 		foeHealthBar.setValue(foe.getCurrentHP());

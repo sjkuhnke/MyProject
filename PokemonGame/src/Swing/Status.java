@@ -8,7 +8,11 @@ public enum Status {
 	HEALTHY,
 	BLEEDING,
 	CONFUSED,
-	FROZEN;
+	FROZEN,
+	CURSED,
+	LEECHED,
+	NIGHTMARE,
+	PERISH;
 	
 	@Override // implementation
 	public String toString() {

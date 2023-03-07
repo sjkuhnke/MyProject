@@ -77,6 +77,7 @@ public class Player implements Serializable{
 	public void swap(Pokemon pokemon, int index) {
 		System.out.println(current.name + ", come back!");
 		Pokemon lead = current;
+		lead.clearVolatile();
 		this.current = pokemon;
 		this.team[0] = pokemon;
 		this.team[index] = lead;
