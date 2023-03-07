@@ -25,6 +25,7 @@ public class Pokemon implements Serializable {
 	public Move[] moveset;
 	
 	private Status status;
+	private Status vStatus;
 	
 	public int exp;
 	public int expMax;
@@ -59,6 +60,7 @@ public class Pokemon implements Serializable {
 		setMoves();
 		
 		status = Status.HEALTHY;
+		vStatus = Status.HEALTHY;
 		
 	}
 	
@@ -2001,9 +2003,9 @@ public class Pokemon implements Serializable {
 		double defenseStat;
 		int damage;
 		
-		if (this.status == Status.CONFUSED) {
+		if (this.vStatus == Status.CONFUSED) {
 			if (this.confusionCounter == 0) {
-				this.status = Status.HEALTHY;
+				this.vStatus = Status.HEALTHY;
 		        System.out.println(this.name + " snapped out of confusion!");
 			} else {
 				System.out.println(this.name + " is confused!");
@@ -2210,16 +2212,16 @@ public class Pokemon implements Serializable {
 				System.out.println(foe.name + "'s Attack harshly fell!\n");
 			}
 		} else if (move == Move.CONFUSE_RAY) {
-			if (foe.status == Status.HEALTHY) {
-				foe.status = Status.CONFUSED;
+			if (foe.vStatus == Status.HEALTHY) {
+				foe.vStatus = Status.CONFUSED;
 				foe.confusionCounter = (int)(Math.random() * 4) + 1;
 				System.out.println(foe.name + " became confused!\n");
 			} else {
 				System.out.println("But it failed!\n");
 			}
 		} else if (move == Move.CURSE) {
-			if (foe.status == Status.HEALTHY) {
-				foe.status = Status.CURSED;
+			if (foe.vStatus == Status.HEALTHY) {
+				foe.vStatus = Status.CURSED;
 				System.out.println(foe.name + " was afflicted with a curse!\n");
 				this.currentHP -= (this.getStat(0) / 2);
 				if (this.currentHP <= 0) {
@@ -2360,8 +2362,8 @@ public class Pokemon implements Serializable {
 				System.out.println(this.name + "'s Defense sharply rose!\n");
 			}
 		} else if (move == Move.LEECH_SEED) {
-			if (foe.status == Status.HEALTHY) {
-				foe.status = Status.LEECHED;
+			if (foe.vStatus == Status.HEALTHY) {
+				foe.vStatus = Status.LEECHED;
 				System.out.println(foe.name + " was seeded!\n");
 			} else {
 				System.out.println("But it failed!\n");
@@ -2410,7 +2412,7 @@ public class Pokemon implements Serializable {
 			System.out.println(this.name + " electric's power was weakened!\n");
 		} else if (move == Move.NIGHTMARE) {
 //			if (foe.status == Status.ASLEEP) { TODO
-//				foe.status = Status.NIGHTMARE;
+//				foe.vStatus = Status.NIGHTMARE;
 //				System.out.println(foe.name + " had a nightmare!\n");
 //			} else {
 //				System.out.println("But it failed!\n");
@@ -2420,8 +2422,6 @@ public class Pokemon implements Serializable {
 			if (foe.type2 == PType.GHOST) foe.type2 = PType.NORMAL;
 			System.out.println(this.name + " identified " + foe.name + "!\n");
 		} else if (move == Move.PERISH_SONG) {
-//			if (foe.status == Status.HEALTHY) { TODO
-//			foe.status = Status.PERISH;
 //			this.perishCount = 3;
 //			foe.perishCount = 3;
 //			}
@@ -2452,8 +2452,9 @@ public class Pokemon implements Serializable {
 		} else if (move == Move.PROTECT) {
 //			// TODO
 		} else if (move == Move.REBOOT) {
-			if (this.status != Status.HEALTHY) System.out.println(this.name + " became healthy!\n");
+			if (this.status != Status.HEALTHY || this.vStatus != Status.HEALTHY) System.out.println(this.name + " became healthy!\n");
 			this.status = Status.HEALTHY;
+			this.vStatus = Status.HEALTHY;
 			this.statStages[4] += 1;
 			if (this.statStages[4] > 6) {
 				this.statStages[4] = 6;
@@ -2517,8 +2518,8 @@ public class Pokemon implements Serializable {
 			} else {
 				System.out.println(foe.name + "'s Attack rose!\n");
 			}
-			if (foe.status == Status.HEALTHY) {
-				foe.status = Status.CONFUSED;
+			if (foe.vStatus == Status.HEALTHY) {
+				foe.vStatus = Status.CONFUSED;
 				foe.confusionCounter = (int)(Math.random() * 4) + 1;
 				System.out.println(foe.name + " became confused!\n");
 			}
@@ -2533,8 +2534,8 @@ public class Pokemon implements Serializable {
 		} else if (move == Move.SUNNY_DAY) {
 //			// TODO
 		} else if (move == Move.SUPERSONIC) {
-			if (foe.status == Status.HEALTHY) {
-				foe.status = Status.CONFUSED;
+			if (foe.vStatus == Status.HEALTHY) {
+				foe.vStatus = Status.CONFUSED;
 				foe.confusionCounter = (int)(Math.random() * 4) + 1;
 				System.out.println(foe.name + " became confused!\n");
 			} else {
@@ -2548,8 +2549,8 @@ public class Pokemon implements Serializable {
 			} else {
 				System.out.println(foe.name + "'s Attack sharply rose!\n");
 			}
-			if (foe.status == Status.HEALTHY) {
-				foe.status = Status.CONFUSED;
+			if (foe.vStatus == Status.HEALTHY) {
+				foe.vStatus = Status.CONFUSED;
 				foe.confusionCounter = (int)(Math.random() * 4) + 1;
 				System.out.println(foe.name + " became confused!\n");
 			}
@@ -3622,5 +3623,9 @@ public class Pokemon implements Serializable {
 		statStages = new int[7];
 		setType();
 		
+	}
+
+	public Status getStatus() {
+		return this.status;
 	}
 }

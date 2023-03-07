@@ -50,9 +50,8 @@ public class Battle extends JFrame {
 	private JButton catchButton;
 	private JButton fightButton;
 	private JButton healButton;
-	
-	private JLabel userStages;
-	private JLabel foeStages;
+	private JLabel userStatus;
+	private JLabel foeStatus;
 	
 	/**
 	 * Launch the application.
@@ -111,16 +110,6 @@ public class Battle extends JFrame {
 		idInput = createJTextField(3, 31, 53, 27, 20);
 		levelInput = createJTextField(2, 71, 53, 27, 20);
 		
-		// TEST
-		userStages = new JLabel("");
-		userStages.setText(intArrayToString(me.getCurrent().statStages));
-		userStages.setBounds(497, 98, 119, 14);
-		playerPanel.add(userStages);
-		foeStages = new JLabel("");
-		foeStages.setText(intArrayToString(foe.statStages));
-		foeStages.setBounds(497, 78, 119, 14);
-		playerPanel.add(foeStages);
-		
 		catchButton.addActionListener(e -> {
 			me.catchPokemon(new Pokemon(foe.id, foe.getLevel()));
 			foe.currentHP = 0;
@@ -146,6 +135,7 @@ public class Battle extends JFrame {
 			updateCurrent();
 			updateBars();
 			displayParty();
+			updateStatus();
 			playerPanel.repaint();
         });
 		
@@ -162,6 +152,7 @@ public class Battle extends JFrame {
 			updateCurrent();
 			updateBars();
 			displayParty();
+			updateStatus();
         });
 		
 		party2.addActionListener(e -> {
@@ -170,6 +161,7 @@ public class Battle extends JFrame {
 			updateCurrent();
 			updateBars();
 			displayParty();
+			updateStatus();
         });
 		
 		party3.addActionListener(e -> {
@@ -178,6 +170,7 @@ public class Battle extends JFrame {
 			updateCurrent();
 			updateBars();
 			displayParty();
+			updateStatus();
         });
 		
 		party4.addActionListener(e -> {
@@ -186,6 +179,7 @@ public class Battle extends JFrame {
 			updateCurrent();
 			updateBars();
 			displayParty();
+			updateStatus();
         });
 		
 		party5.addActionListener(e -> {
@@ -194,6 +188,7 @@ public class Battle extends JFrame {
 			updateCurrent();
 			updateBars();
 			displayParty();
+			updateStatus();
         });
 		
 		System.out.println(me.toString());
@@ -220,6 +215,28 @@ public class Battle extends JFrame {
 		
 		// Set current elements
 		updateCurrent();
+		
+		userStatus = new JLabel("");
+		userStatus.setHorizontalAlignment(SwingConstants.CENTER);
+		userStatus.setFont(new Font("Tahoma", Font.PLAIN, 8));
+		userStatus.setText(me.getCurrent().getStatus().getName());
+		userStatus.setForeground(me.getCurrent().getStatus().getTextColor());
+		userStatus.setBackground(me.getCurrent().getStatus().getColor());
+		userStatus.setBounds(143, 149, 21, 20);
+		userStatus.setVisible(true);
+		userStatus.setOpaque(true);
+		playerPanel.add(userStatus);
+		
+		foeStatus = new JLabel("");
+		foeStatus.setHorizontalAlignment(SwingConstants.CENTER);
+		foeStatus.setFont(new Font("Tahoma", Font.PLAIN, 8));
+		foeStatus.setText(foe.getStatus().getName());
+		foeStatus.setForeground(foe.getStatus().getTextColor());
+		foeStatus.setBackground(foe.getStatus().getColor());
+		foeStatus.setBounds(143, 37, 21, 20);
+		foeStatus.setVisible(true);
+		foeStatus.setOpaque(true);
+		playerPanel.add(foeStatus);
 		
 		// Add current elements to panel
 		playerPanel.add(currentText);
@@ -318,7 +335,7 @@ public class Battle extends JFrame {
 	private void updateCurrent() {
 		currentText.setText(me.getCurrent().getName() + "  lv " + me.getCurrent().getLevel()); 
 		currentText.setHorizontalAlignment(SwingConstants.CENTER);
-		currentText.setBounds(133, 149, 164, 20);
+		currentText.setBounds(143, 149, 164, 20);
 		currentText.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		
 		setMoveButtons();
@@ -371,7 +388,7 @@ public class Battle extends JFrame {
 	private void updateFoe() {
 		// Foe text
 		foeText.setText(foe.getName() + "  lv " + foe.getLevel());
-		foeText.setBounds(133, 37, 164, 20);
+		foeText.setBounds(143, 37, 164, 20);
 		foeText.setHorizontalAlignment(SwingConstants.CENTER);
 		foeText.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		
@@ -484,9 +501,21 @@ public class Battle extends JFrame {
 		me.current = newP;
 		updateBars();
 		updateCurrent();
-		userStages.setText(intArrayToString(me.getCurrent().statStages));
-		foeStages.setText(intArrayToString(foe.statStages));
+		updateStatus();
 		
+	}
+
+	private void updateStatus() {
+		userStatus.setText(me.getCurrent().getStatus().getName());
+		userStatus.setBackground(me.getCurrent().getStatus().getColor());
+		
+		foeStatus.setText(foe.getStatus().getName());
+		foeStatus.setBackground(foe.getStatus().getColor());
+		
+		userStatus.setForeground(me.getCurrent().getStatus().getTextColor());
+		foeStatus.setForeground(foe.getStatus().getTextColor());
+		
+		playerPanel.repaint();
 	}
 
 	private void updateBars() {
@@ -515,19 +544,6 @@ public class Battle extends JFrame {
 		}
 		playerPanel.repaint();
 		
-	}
-	
-	private String intArrayToString(int[] arr) {
-	    StringBuilder sb = new StringBuilder();
-	    sb.append("[");
-	    for (int i = 0; i < arr.length; i++) {
-	        sb.append(arr[i]);
-	        if (i != arr.length - 1) {
-	            sb.append(", ");
-	        }
-	    }
-	    sb.append("]");
-	    return sb.toString();
 	}
 	
 	private static final class JGradientButton extends JButton{
