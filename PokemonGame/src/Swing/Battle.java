@@ -6,6 +6,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
 
 import java.awt.*;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.FileInputStream;
@@ -342,6 +344,12 @@ public class Battle extends JFrame {
 		JTextField newT = new JTextField();
 		newT.setColumns(i);
 		newT.setBounds(j, k, l, m);
+		newT.addFocusListener(new FocusAdapter() {
+		    @Override // implementation
+		    public void focusGained(FocusEvent e) {
+		        newT.selectAll();
+		    }
+		});
 		playerPanel.add(newT);
 		return newT;
 	}
@@ -502,10 +510,8 @@ public class Battle extends JFrame {
 
 	public void turn(Pokemon p1, Pokemon p2, Move m1, Move m2) {
 		Pokemon newP;
-		double p1speed = p1.getStat(5) * p1.asModifier(4);
-		double p2speed = p2.getStat(5) * p2.asModifier(4);
-		if (p1.getStatus() == Status.PARALYZED) p1speed *= 0.5;
-		if (p2.getStatus() == Status.PARALYZED) p2speed *= 0.5;
+		int p1speed = p1.getSpeed();
+		int p2speed = p2.getSpeed();
 		
 		if ((int) p1speed > (int) p2speed) {
 			newP = p1.move(p2, m1);
