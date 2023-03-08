@@ -101,6 +101,7 @@ public class Pokemon implements Serializable {
 		baseStats = new int[6];
 		stats = new int[6];
 		level = l;
+		statStages = new int[7];
 		
 		setBaseStats();
 		getStats();
@@ -114,6 +115,7 @@ public class Pokemon implements Serializable {
 		moveset = set;
 		
 		status = Status.HEALTHY;
+		vStatus = Status.HEALTHY;
 		
 	}
 	
@@ -811,12 +813,14 @@ public class Pokemon implements Serializable {
 			int hpDif = this.getStat(0) - this.currentHP;
 			result.currentHP -= hpDif;
 			System.out.println(this.name + " evolved into " + result.name + "!");
+			checkMove(Battle.getScanner());
 			return result;
-		} else if (id == 2 && level >= 35) {
-			Pokemon result = new Pokemon(3, level, this.moveset);
+		} else if (id == 4 && level >= 16) {
+			Pokemon result = new Pokemon(5, level, this.moveset);
 			int hpDif = this.getStat(0) - this.currentHP;
 			result.currentHP -= hpDif;
 			System.out.println(this.name + " evolved into " + result.name + "!");
+			checkMove(Battle.getScanner());
 			return result;
 		}
 		return this;
@@ -2063,7 +2067,10 @@ public class Pokemon implements Serializable {
 			return this;
 		}
 		
-		if (move.accuracy < 100 && !hit(move.accuracy)) {
+		int accEv = this.statStages[5] - foe.statStages[6];
+		accEv = accEv > 6 ? 6 : accEv;
+		accEv = accEv < -6 ? -6 : accEv;
+		if (!hit(move.accuracy * (asAccModifier(accEv)))) {
 			System.out.println(this.name + " used " + move + "!");
 			System.out.println(this.name + "'s attack missed!\n");
 			return this; // Check for miss
@@ -2694,53 +2701,55 @@ public class Pokemon implements Serializable {
 				modifier = 1;
 				break;
 			}
-		} else {
-			int accev = statStages[index];
-			if (index == 6) accev *= -1;
-			switch(accev) {
-			case -6:
-				modifier = 3.0/9.0;
-				break;
-			case -5:
-				modifier = 3.0/8.0;
-				break;
-			case -4:
-				modifier = 3.0/7.0;
-				break;
-			case -3:
-				modifier = 3.0/6.0;
-				break;
-			case -2:
-				modifier = 3.0/5.0;
-				break;
-			case -1:
-				modifier = 3.0/4.0;
-				break;
-			case 0:
-				modifier = 3.0/3.0;
-				break;
-			case 1:
-				modifier = 4.0/3.0;
-				break;
-			case 2:
-				modifier = 5.0/3.0;
-				break;
-			case 3:
-				modifier = 6.0/3.0;
-				break;
-			case 4:
-				modifier = 7.0/3.0;
-				break;
-			case 5:
-				modifier = 8.0/3.0;
-				break;
-			case 6:
-				modifier = 9.0/3.0;
-				break;
-			default:
-				modifier = 1;
-				break;
-			}
+		}
+		return modifier;
+	}
+	
+	public double asAccModifier(int value) {
+		double modifier = 1;
+		switch(value) {
+		case -6:
+			modifier = 3.0/9.0;
+			break;
+		case -5:
+			modifier = 3.0/8.0;
+			break;
+		case -4:
+			modifier = 3.0/7.0;
+			break;
+		case -3:
+			modifier = 3.0/6.0;
+			break;
+		case -2:
+			modifier = 3.0/5.0;
+			break;
+		case -1:
+			modifier = 3.0/4.0;
+			break;
+		case 0:
+			modifier = 3.0/3.0;
+			break;
+		case 1:
+			modifier = 4.0/3.0;
+			break;
+		case 2:
+			modifier = 5.0/3.0;
+			break;
+		case 3:
+			modifier = 6.0/3.0;
+			break;
+		case 4:
+			modifier = 7.0/3.0;
+			break;
+		case 5:
+			modifier = 8.0/3.0;
+			break;
+		case 6:
+			modifier = 9.0/3.0;
+			break;
+		default:
+			modifier = 1;
+			break;
 		}
 		return modifier;
 	}
@@ -2795,12 +2804,13 @@ public class Pokemon implements Serializable {
 			return false;
 		default:
 			return false;
-    }
+		}
 		
 	}
 
-	private boolean hit(int acc) {
-		int hitChance = (int)(Math.random()*100);
+	private boolean hit(double d) {
+		double hitChance = (int) (Math.random()*100 + 1);
+		int acc = (int) Math.round(d);
 		if (hitChance <= acc) {
 			return true;
 		} else {

@@ -533,6 +533,7 @@ public class Battle extends JFrame {
 			}
 		}
 		me.current = newP;
+		me.team[0] = me.getCurrent();
 		updateBars();
 		updateCurrent();
 		updateStatus();
