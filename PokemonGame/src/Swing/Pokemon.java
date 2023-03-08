@@ -3,6 +3,7 @@ package Swing;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Scanner;
 
 public class Pokemon implements Serializable {
 	/**
@@ -764,6 +765,7 @@ public class Pokemon implements Serializable {
 		this.exp -= this.expMax;
 		++level;
 		System.out.println(this.name + " leveled Up!");
+		checkMove(Battle.getScanner());
 		Pokemon result = this.checkEvo();
 		expMax = this.level * 2;
 		stats = this.getStats();
@@ -773,12 +775,37 @@ public class Pokemon implements Serializable {
 		
 	}
 	
+	private void checkMove(Scanner scanner) {
+		Move move = null;
+		move = this.movebank[this.level - 1];
+		if (move == null) return;
+		for (int i = 0; i < 4; i++) {
+			if (this.moveset[i] == null) {
+				this.moveset[i] = move;
+				System.out.println(this.name + " learned " + move.toString() + "!\n");
+				return;
+			}
+		}
+		
+	    System.out.println(this.name + " wants to learn " + move.toString() + ", but " + this.name + " already has 4 moves. What would you like to do?");
+	    System.out.print("Enter slot 1-4, or 0 to keep current moves: ");
+	    int moveIndex = scanner.nextInt();
+	    if (moveIndex == 0) {
+	    	scanner.close();
+	    	return;
+	    }
+	    System.out.println("Your " + this.name + " has learned " + move.toString() + " and forgot " + this.moveset[moveIndex - 1] + "!\n");
+	    this.moveset[moveIndex - 1] = move;
+	    scanner.close();
+	}
+
 	private Pokemon checkEvo() {
 		if (id == 1 && level >= 15) {
 			Pokemon result = new Pokemon(2, level, this.moveset);
 			int hpDif = this.getStat(0) - this.currentHP;
 			result.currentHP -= hpDif;
 			System.out.println(this.name + " evolved into " + result.name + "!");
+			checkMove(Battle.getScanner());
 			return result;
 		} else if (id == 2 && level >= 35) {
 			Pokemon result = new Pokemon(3, level, this.moveset);
@@ -3894,11 +3921,8 @@ public class Pokemon implements Serializable {
 	}
 
 	public void clearVolatile() {
-		if (this.status == Status.CONFUSED) {
-			confusionCounter = 0;
-			this.status = Status.HEALTHY;
-		}
-		if (this.status == Status.CURSED) this.status = Status.HEALTHY;
+		confusionCounter = 0;
+		this.vStatus = Status.HEALTHY;
 		statStages = new int[7];
 		setType();
 		
@@ -3927,6 +3951,7 @@ public class Pokemon implements Serializable {
 	}
 
 	public static void endOfTurn(Pokemon p) {
+		if (p.isFainted()) return;
 		if (p.status != Status.HEALTHY) {
 			if (p.status == Status.BLEEDING) {
 				p.currentHP -= p.getStat(0) / 4;

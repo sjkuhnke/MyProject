@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Random;
+import java.util.Scanner;
 
 import javax.swing.JButton;
 import javax.swing.JProgressBar;
@@ -52,6 +53,9 @@ public class Battle extends JFrame {
 	private JButton healButton;
 	private JLabel userStatus;
 	private JLabel foeStatus;
+	private JButton boxButton;
+	
+	private static Scanner stdIn;
 	
 	/**
 	 * Launch the application.
@@ -84,6 +88,7 @@ public class Battle extends JFrame {
 	                    public void windowClosing(WindowEvent e) {
 	                        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("player.dat"))) {
 	                            oos.writeObject(me);
+	                            stdIn.close();
 	                            oos.close();
 	                        } catch (IOException ex) {
 	                            System.err.println("Error writing Player object to file: " + ex.getMessage());
@@ -106,6 +111,7 @@ public class Battle extends JFrame {
 		catchButton = createJButton("CATCH", new Font("Tahoma", Font.BOLD, 11), 20, 171, 89, 23);
 		fightButton = createJButton("FIGHT", new Font("Tahoma", Font.BOLD, 11), 20, 80, 89, 23);
 		healButton = createJButton("HEAL", new Font("Tahoma", Font.BOLD, 9), 10, 267, 68, 23);
+		boxButton = createJButton("Box", new Font("Tahoma", Font.PLAIN, 12), 553, 35, 62, 21);
 		
 		idInput = createJTextField(3, 31, 53, 27, 20);
 		levelInput = createJTextField(2, 71, 53, 27, 20);
@@ -148,7 +154,10 @@ public class Battle extends JFrame {
 		
 		party1.addActionListener(e -> {
 			me.swap(me.team[1], 1);
-			if (!me.team[1].isFainted()) foe.move(me.getCurrent(),foe.randomMove());
+			if (!me.team[1].isFainted()) {
+				foe.move(me.getCurrent(),foe.randomMove());
+				Pokemon.endOfTurn(foe);
+			}
 			updateCurrent();
 			updateBars();
 			displayParty();
@@ -157,7 +166,10 @@ public class Battle extends JFrame {
 		
 		party2.addActionListener(e -> {
 			me.swap(me.team[2], 2);
-			if (!me.team[2].isFainted()) foe.move(me.getCurrent(),foe.randomMove());
+			if (!me.team[2].isFainted()) {
+				foe.move(me.getCurrent(),foe.randomMove());
+				Pokemon.endOfTurn(foe);
+			}
 			updateCurrent();
 			updateBars();
 			displayParty();
@@ -166,7 +178,10 @@ public class Battle extends JFrame {
 		
 		party3.addActionListener(e -> {
 			me.swap(me.team[3], 3);
-			if (!me.team[3].isFainted()) foe.move(me.getCurrent(),foe.randomMove());
+			if (!me.team[3].isFainted()) {
+				foe.move(me.getCurrent(),foe.randomMove());
+				Pokemon.endOfTurn(foe);
+			}
 			updateCurrent();
 			updateBars();
 			displayParty();
@@ -175,7 +190,10 @@ public class Battle extends JFrame {
 		
 		party4.addActionListener(e -> {
 			me.swap(me.team[4], 4);
-			if (!me.team[4].isFainted()) foe.move(me.getCurrent(),foe.randomMove());
+			if (!me.team[4].isFainted()) {
+				foe.move(me.getCurrent(),foe.randomMove());
+				Pokemon.endOfTurn(foe);
+			}
 			updateCurrent();
 			updateBars();
 			displayParty();
@@ -184,7 +202,10 @@ public class Battle extends JFrame {
 		
 		party5.addActionListener(e -> {
 			me.swap(me.team[5], 5);
-			if (!me.team[5].isFainted()) foe.move(me.getCurrent(),foe.randomMove());
+			if (!me.team[5].isFainted()) {
+				foe.move(me.getCurrent(),foe.randomMove());
+				Pokemon.endOfTurn(foe);
+			}
 			updateCurrent();
 			updateBars();
 			displayParty();
@@ -206,6 +227,7 @@ public class Battle extends JFrame {
 		playerPanel.setLayout(null);
 		
 		// Initializing current elements
+		stdIn = new Scanner(System.in);
 		currentText = new JLabel("");
 		
 		move1 = new JGradientButton("");
@@ -405,7 +427,7 @@ public class Battle extends JFrame {
 			foeHealthBar.setForeground(new Color(255, 0, 0));
 		}
 		foeHealthBar.setBounds(143, 59, 146, 14);
-		
+		updateStatus();
 		playerPanel.repaint();
 		
 	}
@@ -588,5 +610,9 @@ public class Battle extends JFrame {
 
 	        super.paintComponent(g);
 	    }
+	}
+
+	public static Scanner getScanner() {
+		return stdIn;
 	}
 }
