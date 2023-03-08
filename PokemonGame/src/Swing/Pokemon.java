@@ -777,6 +777,7 @@ public class Pokemon implements Serializable {
 	
 	private void checkMove(Scanner scanner) {
 		Move move = null;
+		if (this.level - 1 >= this.movebank.length) return;
 		move = this.movebank[this.level - 1];
 		if (move == null) return;
 		for (int i = 0; i < 4; i++) {
@@ -791,12 +792,10 @@ public class Pokemon implements Serializable {
 	    System.out.print("Enter slot 1-4, or 0 to keep current moves: ");
 	    int moveIndex = scanner.nextInt();
 	    if (moveIndex == 0) {
-	    	scanner.close();
 	    	return;
 	    }
 	    System.out.println("Your " + this.name + " has learned " + move.toString() + " and forgot " + this.moveset[moveIndex - 1] + "!\n");
 	    this.moveset[moveIndex - 1] = move;
-	    scanner.close();
 	}
 
 	private Pokemon checkEvo() {
