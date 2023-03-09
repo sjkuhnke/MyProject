@@ -139,7 +139,7 @@ public class Battle extends JFrame {
         });
 		
 		healButton.addActionListener(e -> {
-			System.out.println("");
+			System.out.println();
 			for (Pokemon member : me.team) {
 				if (member != null) member.heal();
 			}
@@ -148,6 +148,8 @@ public class Battle extends JFrame {
 			displayParty();
 			updateStatus();
 			playerPanel.repaint();
+			System.out.println();
+			System.out.println("------------------------------");
         });
 		
 		party1 = new JButton();
@@ -161,7 +163,8 @@ public class Battle extends JFrame {
 			me.swap(me.team[1], 1);
 			if (!me.team[1].isFainted()) {
 				foe.move(me.getCurrent(),foe.randomMove());
-				Pokemon.endOfTurn(foe);
+				Pokemon.endOfTurn(foe, me.getCurrent());
+				Pokemon.endOfTurn(me.getCurrent(), foe);
 			}
 			updateCurrent();
 			updateBars();
@@ -173,7 +176,8 @@ public class Battle extends JFrame {
 			me.swap(me.team[2], 2);
 			if (!me.team[2].isFainted()) {
 				foe.move(me.getCurrent(),foe.randomMove());
-				Pokemon.endOfTurn(foe);
+				Pokemon.endOfTurn(foe, me.getCurrent());
+				Pokemon.endOfTurn(me.getCurrent(), foe);
 			}
 			updateCurrent();
 			updateBars();
@@ -185,7 +189,8 @@ public class Battle extends JFrame {
 			me.swap(me.team[3], 3);
 			if (!me.team[3].isFainted()) {
 				foe.move(me.getCurrent(),foe.randomMove());
-				Pokemon.endOfTurn(foe);
+				Pokemon.endOfTurn(foe, me.getCurrent());
+				Pokemon.endOfTurn(me.getCurrent(), foe);
 			}
 			updateCurrent();
 			updateBars();
@@ -197,7 +202,8 @@ public class Battle extends JFrame {
 			me.swap(me.team[4], 4);
 			if (!me.team[4].isFainted()) {
 				foe.move(me.getCurrent(),foe.randomMove());
-				Pokemon.endOfTurn(foe);
+				Pokemon.endOfTurn(foe, me.getCurrent());
+				Pokemon.endOfTurn(me.getCurrent(), foe);
 			}
 			updateCurrent();
 			updateBars();
@@ -209,7 +215,8 @@ public class Battle extends JFrame {
 			me.swap(me.team[5], 5);
 			if (!me.team[5].isFainted()) {
 				foe.move(me.getCurrent(),foe.randomMove());
-				Pokemon.endOfTurn(foe);
+				Pokemon.endOfTurn(foe, me.getCurrent());
+				Pokemon.endOfTurn(me.getCurrent(), foe);
 			}
 			updateCurrent();
 			updateBars();
@@ -233,6 +240,7 @@ public class Battle extends JFrame {
 		
 		// Initializing current elements
 		stdIn = new Scanner(System.in);
+		stdIn2 = new Scanner(System.in);
 		currentText = new JLabel("");
 		
 		move1 = new JGradientButton("");
@@ -448,8 +456,8 @@ public class Battle extends JFrame {
 		if (me.team[1] != null && !me.team[1].isFainted()) {
 			party1.setText(me.team[1].getName() + "  lv " + me.team[1].getLevel());
 			party1.setHorizontalAlignment(SwingConstants.CENTER);
-			party1.setFont(new Font("Tahoma", Font.PLAIN, 12));
-			party1.setBounds(330, 21, 120, 30);
+			party1.setFont(new Font("Tahoma", Font.PLAIN, 11));
+			party1.setBounds(330, 21, 124, 30);
 			playerPanel.add(party1);
 			party1.setVisible(true);
 			
@@ -461,8 +469,8 @@ public class Battle extends JFrame {
 		if (me.team[2] != null && !me.team[2].isFainted()) {
 			party2.setText(me.team[2].getName() + "  lv " + me.team[2].getLevel());
 			party2.setHorizontalAlignment(SwingConstants.CENTER);
-			party2.setFont(new Font("Tahoma", Font.PLAIN, 12));
-			party2.setBounds(330, 66, 120, 30);
+			party2.setFont(new Font("Tahoma", Font.PLAIN, 11));
+			party2.setBounds(330, 66, 124, 30);
 			playerPanel.add(party2);
 			party2.setVisible(true);
 			
@@ -474,8 +482,8 @@ public class Battle extends JFrame {
 		if (me.team[3] != null && !me.team[3].isFainted()) {
 			party3.setText(me.team[3].getName() + "  lv " + me.team[3].getLevel());
 			party3.setHorizontalAlignment(SwingConstants.CENTER);
-			party3.setFont(new Font("Tahoma", Font.PLAIN, 12));
-			party3.setBounds(330, 111, 120, 30);
+			party3.setFont(new Font("Tahoma", Font.PLAIN, 11));
+			party3.setBounds(330, 111, 124, 30);
 			playerPanel.add(party3);
 			party3.setVisible(true);
 			
@@ -487,8 +495,8 @@ public class Battle extends JFrame {
 		if (me.team[4] != null && !me.team[4].isFainted()) {
 			party4.setText(me.team[4].getName() + "  lv " + me.team[4].getLevel());
 			party4.setHorizontalAlignment(SwingConstants.CENTER);
-			party4.setFont(new Font("Tahoma", Font.PLAIN, 12));
-			party4.setBounds(330, 156, 120, 30);
+			party4.setFont(new Font("Tahoma", Font.PLAIN, 11));
+			party4.setBounds(330, 156, 124, 30);
 			playerPanel.add(party4);
 			party4.setVisible(true);
 			
@@ -500,8 +508,8 @@ public class Battle extends JFrame {
 		if (me.team[5] != null && !me.team[5].isFainted()) {
 			party5.setText(me.team[5].getName() + "  lv " + me.team[5].getLevel());
 			party5.setHorizontalAlignment(SwingConstants.CENTER);
-			party5.setFont(new Font("Tahoma", Font.PLAIN, 12));
-			party5.setBounds(330, 201, 120, 30);
+			party5.setFont(new Font("Tahoma", Font.PLAIN, 11));
+			party5.setBounds(330, 201, 124, 30);
 			playerPanel.add(party5);
 			party5.setVisible(true);
 			
@@ -512,6 +520,7 @@ public class Battle extends JFrame {
 	}
 
 	public void turn(Pokemon p1, Pokemon p2, Move m1, Move m2) {
+		if (p1.isFainted() || p2.isFainted()) return;
 		Pokemon newP;
 		int p1speed = p1.getSpeed();
 		int p2speed = p2.getSpeed();
@@ -520,53 +529,55 @@ public class Battle extends JFrame {
 	    if (m1.isPriority() && !m2.isPriority()) {
 	        newP = p1.move(p2, m1);
 	        p2.move(p1, m2);
-	        Pokemon.endOfTurn(p1);
-			Pokemon.endOfTurn(p2);
+	        Pokemon.endOfTurn(p1, p2);
+			Pokemon.endOfTurn(p2, p1);
 	    } else if (!m1.isPriority() && m2.isPriority()) {
 	        p2.move(p1, m2);
 	        newP = p1.move(p2, m1);
-	        Pokemon.endOfTurn(p2);
-			Pokemon.endOfTurn(p1);
+	        Pokemon.endOfTurn(p2, p1);
+			Pokemon.endOfTurn(p1, p2);
 	    } else if (m1.isPriority() && m2.isPriority()) {
 	        if (p1speed >= p2speed) {
 	            newP = p1.move(p2, m1);
 	            p2.move(p1, m2);
-	            Pokemon.endOfTurn(p1);
-				Pokemon.endOfTurn(p2);
+	            Pokemon.endOfTurn(p1, p2);
+				Pokemon.endOfTurn(p2, p1);
 	        } else {
 	            p2.move(p1, m2);
 	            newP = p1.move(p2, m1);
-	            Pokemon.endOfTurn(p2);
-				Pokemon.endOfTurn(p1);
+	            Pokemon.endOfTurn(p2, p1);
+				Pokemon.endOfTurn(p1, p2);
 	        }
 	    } else {
 	        // Regular turn order
 	        if (p1speed > p2speed) {
 	            newP = p1.move(p2, m1);
 	            p2.move(p1, m2);
-	            Pokemon.endOfTurn(p1);
-				Pokemon.endOfTurn(p2);
+	            Pokemon.endOfTurn(p1, p2);
+				Pokemon.endOfTurn(p2, p1);
 	        } else if (p1speed < p2speed) {
 	            p2.move(p1, m2);
 	            newP = p1.move(p2, m1);
-	            Pokemon.endOfTurn(p2);
-				Pokemon.endOfTurn(p1);
+	            Pokemon.endOfTurn(p2, p1);
+				Pokemon.endOfTurn(p1, p2);
 	        } else {
 	            Random speedTie = new Random();
 	            double random = speedTie.nextDouble();
 	            if (random < 0.5) {
 	                newP = p1.move(p2, m1);
 	                p2.move(p1, m2);
-	                Pokemon.endOfTurn(p1);
-	    			Pokemon.endOfTurn(p2);
+	                Pokemon.endOfTurn(p1, p2);
+	    			Pokemon.endOfTurn(p2, p1);
 	            } else {
 	                p2.move(p1, m2);
 	                newP = p1.move(p2, m1);
-	                Pokemon.endOfTurn(p2);
-	    			Pokemon.endOfTurn(p1);
+	                Pokemon.endOfTurn(p2, p1);
+	    			Pokemon.endOfTurn(p1, p2);
 	            }
 	        }
 	    }
+	    System.out.println();
+	    System.out.println("------------------------------");
 		me.current = newP;
 		me.team[0] = me.getCurrent();
 		updateBars();
