@@ -131,7 +131,7 @@ public class Pokemon implements Serializable {
 			this.type2 = null;
 		} else if (id == 3) {
 			this.type1 = PType.GRASS;
-			this.type2 = null;
+			this.type2 = PType.ROCK;
 		} else if (id == 4) {
 			this.type1 = PType.FIRE;
 			this.type2 = null;
@@ -766,7 +766,7 @@ public class Pokemon implements Serializable {
 		++level;
 		System.out.println(this.name + " leveled Up!");
 		checkMove(Battle.getScanner());
-		Pokemon result = this.checkEvo();
+		Pokemon result = this.checkEvo(Battle.getScanner2());
 		expMax = this.level * 2;
 		stats = this.getStats();
 		int nHP = this.getStat(0);
@@ -780,6 +780,7 @@ public class Pokemon implements Serializable {
 		if (this.level - 1 >= this.movebank.length) return;
 		move = this.movebank[this.level - 1];
 		if (move == null) return;
+		if (this.contains(move)) return;
 		for (int i = 0; i < 4; i++) {
 			if (this.moveset[i] == null) {
 				this.moveset[i] = move;
@@ -798,37 +799,155 @@ public class Pokemon implements Serializable {
 	    this.moveset[moveIndex - 1] = move;
 	}
 
-	private Pokemon checkEvo() {
+	private Pokemon checkEvo(Scanner scanner) {
+		Pokemon result = this;
 		if (id == 1 && level >= 15) {
-			Pokemon result = new Pokemon(2, level, this.moveset);
-			int hpDif = this.getStat(0) - this.currentHP;
-			result.currentHP -= hpDif;
-			System.out.println(this.name + " evolved into " + result.name + "!");
-			checkMove(Battle.getScanner());
-			return result;
+			result = new Pokemon(2, level, this.moveset);
 		} else if (id == 2 && level >= 35) {
-			Pokemon result = new Pokemon(3, level, this.moveset);
-			int hpDif = this.getStat(0) - this.currentHP;
-			result.currentHP -= hpDif;
-			System.out.println(this.name + " evolved into " + result.name + "!");
-			checkMove(Battle.getScanner());
-			return result;
+			result = new Pokemon(3, level, this.moveset);
 		} else if (id == 4 && level >= 16) {
-			Pokemon result = new Pokemon(5, level, this.moveset);
-			int hpDif = this.getStat(0) - this.currentHP;
-			result.currentHP -= hpDif;
-			System.out.println(this.name + " evolved into " + result.name + "!");
-			checkMove(Battle.getScanner());
-			return result;
+			result = new Pokemon(5, level, this.moveset);
 		} else if (id == 5 && level >= 34) {
-			Pokemon result = new Pokemon(6, level, this.moveset);
-			int hpDif = this.getStat(0) - this.currentHP;
-			result.currentHP -= hpDif;
-			System.out.println(this.name + " evolved into " + result.name + "!");
-			checkMove(Battle.getScanner());
-			return result;
+			result = new Pokemon(6, level, this.moveset);
+		} else if (id == 7 && level >= 20) {
+			result = new Pokemon(8, level, this.moveset);
+		} else if (id == 8 && level >= 31) {
+			result = new Pokemon(9, level, this.moveset);
+		} else if (id == 10 && level >= 16) {
+			result = new Pokemon(11, level, this.moveset);
+		} else if (id == 12 && level >= 28) {
+			result = new Pokemon(13, level, this.moveset);
+		} else if (id == 14 && level >= 16) {
+			result = new Pokemon(15, level, this.moveset);
+		} else if (id == 16 && level >= 32 && this.contains(Move.ROLLOUT)) {
+			result = new Pokemon(17, level, this.moveset);
+		} else if (id == 18 && level >= 21) {
+			result = new Pokemon(19, level, this.moveset);
+		} else if (id == 19 && level >= 36 && this.contains(Move.ROCK_BLAST)) {
+			result = new Pokemon(20, level, this.moveset);
+		} else if (id == 21 && level >= 25) {
+			result = new Pokemon(22, level, this.moveset);
+		} else if (id == 22 && level >= 40) {
+			result = new Pokemon(23, level, this.moveset);
+		} else if (id == 24 && level >= 21) {
+			result = new Pokemon(id + 1, level, this.moveset);
+		} else if (id == 26 && level >= 18) {
+			result = new Pokemon(id + 1, level, this.moveset);
+		} else if (id == 27 && level >= 36) {
+			result = new Pokemon(id + 1, level, this.moveset);
+		} else if (id == 29 && level >= 18) {
+			result = new Pokemon(id + 1, level, this.moveset);
+		} else if (id == 33 && level >= 21) {
+			result = new Pokemon(id + 1, level, this.moveset);
+		} else if (id == 38 && level >= 25) {
+			result = new Pokemon(id + 1, level, this.moveset);
+		} else if (id == 40 && level >= 21) {
+			result = new Pokemon(id + 1, level, this.moveset);
+		} else if (id == 44 && level >= 30) {
+			result = new Pokemon(id + 1, level, this.moveset);
+		} else if (id == 46 && level >= 31) {
+			result = new Pokemon(id + 1, level, this.moveset);
+		} else if (id == 48 && level >= 15) {
+			result = new Pokemon(id + 1, level, this.moveset);
+		} else if (id == 49 && level >= 25) {
+			result = new Pokemon(id + 1, level, this.moveset);
+		} else if (id == 51 && level > 25 && this.contains(Move.MACH_PUNCH)) {
+			result = new Pokemon(52, level, this.moveset);
+		} else if (id == 51 && level > 25 && this.contains(Move.HI_JUMP_KICK)) {
+			result = new Pokemon(53, level, this.moveset);
+		} else if (id == 51 && level > 25 && this.contains(Move.SWORD_SLICE)) {
+			result = new Pokemon(54, level, this.moveset);
+		} else if (id == 55 && level >= 25) {
+			result = new Pokemon(id + 1, level, this.moveset);
+		} else if (id == 57 && level >= 21) {
+			result = new Pokemon(id + 1, level, this.moveset);
+		} else if (id == 59 && level >= 28) {
+			result = new Pokemon(id + 1, level, this.moveset);
+		} else if (id == 141 && level >= 28) {
+			result = new Pokemon(143, level, this.moveset);
+		} else if (id == 142 && level >= 28) {
+			result = new Pokemon(144, level, this.moveset);
+		} else if (id == 61 && level >= 29) {
+			result = new Pokemon(id + 1, level, this.moveset);
+		} else if (id == 63 && level >= 25) {
+			result = new Pokemon(id + 1, level, this.moveset);
+		} else if (id == 65 && level >= 27) {
+			result = new Pokemon(id + 1, level, this.moveset);
+		} else if (id == 67 && level >= 18) {
+			result = new Pokemon(id + 1, level, this.moveset);
+		} else if (id == 71 && level >= 30) {
+			result = new Pokemon(id + 1, level, this.moveset);
+		} else if (id == 72 && level >= 55) {
+			result = new Pokemon(id + 1, level, this.moveset);
+		} else if (id == 74 && level >= 16) {
+			result = new Pokemon(id + 1, level, this.moveset);
+		} else if (id == 75 && level >= 36) {
+			result = new Pokemon(id + 1, level, this.moveset);
+		} else if (id == 77 && level >= 35) {
+			result = new Pokemon(id + 1, level, this.moveset);
+		} else if (id == 78 && level >= 55) {
+			result = new Pokemon(id + 1, level, this.moveset);
+		} else if (id == 80 && level >= 28) {
+			result = new Pokemon(id + 1, level, this.moveset);
+		} else if (id == 82 && level >= 26) {
+			result = new Pokemon(id + 1, level, this.moveset);
+		} else if (id == 85 && level >= 31) {
+			result = new Pokemon(id + 1, level, this.moveset);
+		} else if (id == 86 && level >= 36) {
+			result = new Pokemon(id + 1, level, this.moveset);
+		} else if (id == 89 && level >= 31) {
+			result = new Pokemon(id + 1, level, this.moveset);
+		} else if (id == 93 && level >= 32) {
+			result = new Pokemon(id + 1, level, this.moveset);
+		} else if (id == 95 && level >= 30) {
+			result = new Pokemon(id + 1, level, this.moveset);
+		} else if (id == 97 && level >= 25) {
+			result = new Pokemon(id + 1, level, this.moveset);
+		} else if (id == 98 && level >= 50) {
+			result = new Pokemon(id + 1, level, this.moveset);
+		} else if (id == 100 && level >= 35) {
+			result = new Pokemon(id + 1, level, this.moveset);
+		} else if (id == 101 && level >= 55) {
+			result = new Pokemon(id + 1, level, this.moveset);
+		} else if (id == 105 && level >= 25) {
+			result = new Pokemon(id + 1, level, this.moveset);
+		} else if (id == 107 && level >= 30) {
+			result = new Pokemon(id + 1, level, this.moveset);
+		} else if (id == 108 && level >= 50) {
+			result = new Pokemon(id + 1, level, this.moveset);
+		} else if (id == 110 && level >= 25) {
+			System.out.print(this.name + " is evolving. Please enter the id of the evolution of choice: ");
+		    int idE = scanner.nextInt();
+		    if (idE < 111 || idE > 121) {
+		    	return result;
+		    }
+			result = new Pokemon(idE, level, this.moveset);
+		} else if (id == 122 && level >= 16) {
+			result = new Pokemon(id + 1, level, this.moveset);
+		} else if (id == 123 && level >= 36) {
+			result = new Pokemon(id + 1, level, this.moveset);
+		} else if (id == 125 && level >= 16) {
+			result = new Pokemon(id + 1, level, this.moveset);
+		} else if (id == 126 && level >= 36) {
+			result = new Pokemon(id + 1, level, this.moveset);
+		} else if (id == 128 && level >= 15) {
+			result = new Pokemon(id + 1, level, this.moveset);
+		} else if (id == 129 && level >= 35) {
+			result = new Pokemon(id + 1, level, this.moveset);
+		} else if (id == 133 && level >= 50) {
+			result = new Pokemon(136, level, this.moveset);
+		} else if (id == 134 && level >= 50) {
+			result = new Pokemon(137, level, this.moveset);
+		} else if (id == 135 && level >= 55) {
+			result = new Pokemon(138, level, this.moveset);
 		}
-		return this;
+		if (result != this) {
+	        int hpDif = this.getStat(0) - this.currentHP;
+	        result.currentHP -= hpDif;
+	        System.out.println(this.name + " evolved into " + result.name + "!");
+	        checkMove(Battle.getScanner());
+	    }
+		return result;
 		
 	}
 
@@ -2028,6 +2147,38 @@ public class Pokemon implements Serializable {
 			this.baseStats[4] = 110;
 			this.baseStats[5] = 100;
 			return this.baseStats;
+		} else if (this.id == 141) {
+			this.baseStats[0] = 55;
+			this.baseStats[1] = 60;
+			this.baseStats[2] = 40;
+			this.baseStats[3] = 60;
+			this.baseStats[4] = 55;
+			this.baseStats[5] = 80;
+			return this.baseStats;
+		} else if (this.id == 143) {
+			this.baseStats[0] = 105;
+			this.baseStats[1] = 88;
+			this.baseStats[2] = 60;
+			this.baseStats[3] = 112;
+			this.baseStats[4] = 65;
+			this.baseStats[5] = 70;
+			return this.baseStats;
+		} else if (this.id == 142) {
+			this.baseStats[0] = 55;
+			this.baseStats[1] = 60;
+			this.baseStats[2] = 40;
+			this.baseStats[3] = 60;
+			this.baseStats[4] = 55;
+			this.baseStats[5] = 80;
+			return this.baseStats;
+		} else if (this.id == 144) {
+			this.baseStats[0] = 105;
+			this.baseStats[1] = 88;
+			this.baseStats[2] = 60;
+			this.baseStats[3] = 112;
+			this.baseStats[4] = 65;
+			this.baseStats[5] = 70;
+			return this.baseStats;
 		}
 		return this.baseStats;
 	}
@@ -2038,17 +2189,18 @@ public class Pokemon implements Serializable {
 
 		double attackStat;
 		double defenseStat;
-		int damage;
+		int damage = 0;
+		int bp = move.basePower;
 		
 		if (this.vStatuses.contains(Status.CONFUSED)) {
 			if (this.confusionCounter == 0) {
 				this.vStatuses.remove(Status.CONFUSED);
-		        System.out.println(this.name + " snapped out of confusion!");
+		        System.out.println("\n" + this.name + " snapped out of confusion!");
 			} else {
-				System.out.println(this.name + " is confused!");
+				System.out.println("\n" + this.name + " is confused!");
 				if (Math.random() < 1.0/3.0) {
 			        // user hits themselves
-					System.out.println(this.name + " hit itself in confusion!\n");
+					System.out.println(this.name + " hit itself in confusion!");
 					attackStat = this.getStat(1);
 					defenseStat = this.getStat(2);
 					attackStat *= this.asModifier(0);
@@ -2066,23 +2218,23 @@ public class Pokemon implements Serializable {
 			}
 		}
 		if (this.status == Status.PARALYZED && Math.random() < 0.25) {
-			System.out.println(this.name + " is fully paralyzed!\n");
+			System.out.println("\n" + this.name + " is fully paralyzed!");
 			return this;
 		}
 		
 		if (this.status == Status.ASLEEP) {
 			if (this.sleepCounter > 0) {
-				System.out.println(this.name + " is fast asleep.\n");
+				System.out.println("\n" + this.name + " is fast asleep.");
 				this.sleepCounter--;
 				return this;
 			} else {
-				System.out.println(this.name + " woke up!");
+				System.out.println("\n" + this.name + " woke up!");
 				this.status = Status.HEALTHY;
 			}
 		}
 		
 		if (this.vStatuses.contains(Status.FLINCHED)) {
-			System.out.println(this.name + " flinched!");
+			System.out.println("\n" + this.name + " flinched!");
 			this.vStatuses.remove(Status.FLINCHED);
 			return this;
 		}
@@ -2091,24 +2243,28 @@ public class Pokemon implements Serializable {
 		accEv = accEv > 6 ? 6 : accEv;
 		accEv = accEv < -6 ? -6 : accEv;
 		if (!hit(move.accuracy * (asAccModifier(accEv)))) {
-			System.out.println(this.name + " used " + move + "!");
-			System.out.println(this.name + "'s attack missed!\n");
+			System.out.println("\n" + this.name + " used " + move + "!");
+			System.out.println(this.name + "'s attack missed!");
 			return this; // Check for miss
 		}
 		
 		if (move.accuracy <= 100 && move.cat != 2) {
 			if (getImmune(foe, move.mtype)) {
-				System.out.println(this.name + " used " + move + "!");
-				System.out.println("It doesn't effect " + foe.name + "...\n");
+				System.out.println("\n" + this.name + " used " + move + "!");
+				System.out.println("It doesn't effect " + foe.name + "...");
 				return this; // Check for immunity
 			}
 		}
 		
-		System.out.println(this.name + " used " + move + "!");
+		System.out.println("\n" + this.name + " used " + move + "!");
 		
 		if (move.cat == 2) {
 			statusEffect(foe, move);
 			return this;
+		}
+		
+		if (move.basePower < 0) {
+			bp = determineBasePower(foe, move);
 		}
 		
 		// Use either physical or special attack/defense
@@ -2126,7 +2282,24 @@ public class Pokemon implements Serializable {
 			if (this.status == Status.BLEEDING) attackStat /= 2;
 		}
 		
-		damage = calc(attackStat, defenseStat, move.basePower, this.level);
+		// Crit Check
+		if (critCheck(move)) {
+			System.out.println("A critical hit!");
+			if (move.isPhysical() && attackStat < this.getStat(1)) {
+				attackStat = this.getStat(1);
+				if (this.status == Status.BURNED) attackStat /= 2;
+			}
+			if (!move.isPhysical() && attackStat < this.getStat(3)) {
+				attackStat = this.getStat(3);
+				if (this.status == Status.BLEEDING) attackStat /= 2;
+			}
+			if (move.isPhysical() && defenseStat > foe.getStat(2)) attackStat = foe.getStat(2);
+			if (!move.isPhysical() && defenseStat > foe.getStat(4)) attackStat = foe.getStat(4);
+			damage = calc(attackStat, defenseStat, bp, this.level);
+			damage *= 1.5;
+		} else {
+			damage = calc(attackStat, defenseStat, bp, this.level);
+		}
 		
 		// Stab
 		if (move.mtype == this.type1) damage *= 1.5;
@@ -2138,41 +2311,35 @@ public class Pokemon implements Serializable {
 			this.vStatuses.remove(Status.CHARGED);
 		}
 		
-		// Crit Check
-		if (critCheck(move)) {
-			System.out.println("A critical hit!");
-			damage *= 1.5;
-		}
-		
+		double multiplier = 1;
 		// Check type effectiveness
 		PType[] resist = getResistances(move.mtype);
 		for (PType type : resist) {
-			if (foe.type1 == type) {
-				System.out.println("It's not very effective...\n");
-				damage *= 0.5;
-			}
-			if (foe.type2 == type) {
-				System.out.println("It's not very effective...\n");
-				damage *= 0.5;
-			}
+			if (foe.type1 == type) multiplier /= 2;
+			if (foe.type2 == type) multiplier /= 2;
 		}
+		
 		// Check type effectiveness
 		PType[] weak = getWeaknesses(move.mtype);
 		for (PType type : weak) {
-			if (foe.type1 == type) {
-				damage *= 2;
-				System.out.println("It's super effective!\n");
-			}
-			if (foe.type2 == type) {
-				damage *= 2;
-				System.out.println("It's super effective!\n");
-			}
+			if (foe.type1 == type) multiplier *= 2;
+			if (foe.type2 == type) multiplier *= 2;
 		}
+		
+		damage *= multiplier;
+		if (multiplier > 1) System.out.println("It's super effective!");
+		if (multiplier < 1) System.out.println("It's not very effective...");
 		
 		Pokemon user = this;
 		
 		if (move == Move.NIGHT_SHADE || move == Move.SEISMIC_TOSS) damage = this.level;
 		if (move == Move.FIRE_DASH) damage = this.currentHP;
+		if (move == Move.SUPER_FANG) damage = foe.currentHP / 2;
+		if (move == Move.DRAGON_RAGE) damage = 40;
+		if (move == Move.HORN_DRILL) {
+			damage = foe.currentHP;
+			System.out.println("It's a one-hit KO!");
+		}
 		
 		if (move == Move.ABSORB || move == Move.DREAM_EATER || move == Move.GIGA_DRAIN || move == Move.MEGA_DRAIN || move == Move.LEECH_LIFE || move == Move.BUG_BITE) {
 			int healAmount;
@@ -2184,7 +2351,7 @@ public class Pokemon implements Serializable {
 			
 			this.currentHP += healAmount;
 			if (this.currentHP > this.getStat(0)) this.currentHP = this.getStat(0);
-			System.out.println(this.name + " restored HP.\n");
+			System.out.println(this.name + " sucked HP from " + foe.name + "!");
 		}
 		
 		damage = Math.max(damage, 1);
@@ -2240,8 +2407,6 @@ public class Pokemon implements Serializable {
 		} else if (move == Move.BOUNCE) {
 			foe.paralyze(false);
 		} else if (move == Move.BRICK_BREAK) {
-			// TODO
-		} else if (move == Move.BRINE) {
 			// TODO
 		} else if (move == Move.BUBBLEBEAM) {
 			stat(foe, 4, -1);
@@ -2379,7 +2544,7 @@ public class Pokemon implements Serializable {
 			if (!(this.vStatuses.contains(Status.AQUA_RING))) {
 			    this.vStatuses.add(Status.AQUA_RING);
 			} else {
-			    System.out.println("But it failed!\n");
+			    System.out.println("But it failed!");
 			}
 		} else if (move == Move.AUTOMOTIZE) {
 			stat(this, 4, 2);
@@ -2400,24 +2565,24 @@ public class Pokemon implements Serializable {
 			if (!foe.vStatuses.contains(Status.CONFUSED)) {
 				foe.confuse();
 			} else {
-				System.out.println("But it failed!\n");
+				System.out.println("But it failed!");
 			}
 		} else if (move == Move.CURSE) {
 			if (!foe.vStatuses.contains(Status.CURSED)) {
 				foe.vStatuses.add(Status.CURSED);
-				System.out.println(foe.name + " was afflicted with a curse!\n");
+				System.out.println(foe.name + " was afflicted with a curse!");
 				this.currentHP -= (this.getStat(0) / 2);
 				if (this.currentHP <= 0) {
 					this.faint();
 				}
 			} else {
-				System.out.println("But it failed!\n");
+				System.out.println("But it failed!");
 			}
 		} else if (move == Move.DARK_VOID) {
 			if (foe.status == Status.HEALTHY) {
 				foe.sleep();
 			} else {
-				System.out.println("But it failed!\n");
+				System.out.println("But it failed!");
 			}
 		} else if (move == Move.DEFENSE_CURL) {
 			stat(this, 1, 1);
@@ -2437,7 +2602,7 @@ public class Pokemon implements Serializable {
 		} else if (move == Move.FORESIGHT) {
 			if (foe.type1 == PType.GHOST) foe.type1 = PType.NORMAL;
 			if (foe.type2 == PType.GHOST) foe.type2 = PType.NORMAL;
-			System.out.println(this.name + " identified " + foe.name + "!\n");
+			System.out.println(this.name + " identified " + foe.name + "!");
 		} else if (move == Move.GLARE) {
 			foe.paralyze(true);
 		} else if (move == Move.GROWL) {
@@ -2451,12 +2616,12 @@ public class Pokemon implements Serializable {
 		} else if (move == Move.HAZE) {
 			this.statStages = new int[7];
 			foe.statStages = new int[7];
-			System.out.println(this.name + "All stat changes were eliminated!\n");
+			System.out.println(this.name + "All stat changes were eliminated!");
 		} else if (move == Move.HYPNOSIS) {
 			if (foe.status == Status.HEALTHY) {
 				foe.sleep();
 			} else {
-				System.out.println("But it failed!\n");
+				System.out.println("But it failed!");
 			}
 		} else if (move == Move.IGNITE) {
 			foe.burn(true);
@@ -2465,9 +2630,9 @@ public class Pokemon implements Serializable {
 		} else if (move == Move.LEECH_SEED) {
 			if (!foe.vStatuses.contains(Status.LEECHED)) {
 				foe.vStatuses.add(Status.LEECHED);
-				System.out.println(foe.name + " was seeded!\n");
+				System.out.println(foe.name + " was seeded!");
 			} else {
-				System.out.println("But it failed!\n");
+				System.out.println("But it failed!");
 			}
 		} else if (move == Move.LEER) {
 			stat(foe, 1, -1);
@@ -2485,25 +2650,25 @@ public class Pokemon implements Serializable {
 			stat(this, 6, 2);
 		} else if (move == Move.MOONLIGHT) {
 			if (this.currentHP == this.getStat(0)) {
-				System.out.println(this.name + "'s HP is full!\n");
+				System.out.println(this.name + "'s HP is full!");
 			} else {
 				this.currentHP += (this.getStat(0) / 2);
 				if (this.currentHP > this.getStat(0)) this.currentHP = this.getStat(0);
-				System.out.println(this.name + " restored HP.\n");
+				System.out.println(this.name + " restored HP.");
 			}
 		} else if (move == Move.MUD_SPORT) {
-			System.out.println(this.name + " electric's power was weakened!\n");
+			System.out.println(this.name + " electric's power was weakened!");
 		} else if (move == Move.NIGHTMARE) {
 			if (foe.status == Status.ASLEEP && !foe.vStatuses.contains(Status.NIGHTMARE)) {
 				foe.vStatuses.add(Status.NIGHTMARE);
-				System.out.println(foe.name + " had a nightmare!\n");
+				System.out.println(foe.name + " had a nightmare!");
 			} else {
-				System.out.println("But it failed!\n");
+				System.out.println("But it failed!");
 			}
 		} else if (move == Move.ODOR_SLEUTH) {
 			if (foe.type1 == PType.GHOST) foe.type1 = PType.NORMAL;
 			if (foe.type2 == PType.GHOST) foe.type2 = PType.NORMAL;
-			System.out.println(this.name + " identified " + foe.name + "!\n");
+			System.out.println(this.name + " identified " + foe.name + "!");
 		} else if (move == Move.PERISH_SONG) {
 			this.perishCount = (this.perishCount == 0) ? 3 : this.perishCount;
 			foe.perishCount = (foe.perishCount == 0) ? 3 : foe.perishCount;
@@ -2516,17 +2681,17 @@ public class Pokemon implements Serializable {
 		} else if (move == Move.PROTECT) {
 //			// TODO
 		} else if (move == Move.REBOOT) {
-			if (this.status != Status.HEALTHY || !this.vStatuses.isEmpty()) System.out.println(this.name + " became healthy!\n");
+			if (this.status != Status.HEALTHY || !this.vStatuses.isEmpty()) System.out.println(this.name + " became healthy!");
 			this.status = Status.HEALTHY;
 			this.vStatuses.clear();
 			stat(this, 4, 1);
 		} else if (move == Move.ROOST) {
 			if (this.currentHP == this.getStat(0)) {
-				System.out.println(this.name + "'s HP is full!\n");
+				System.out.println(this.name + "'s HP is full!");
 			} else {
 				this.currentHP += (this.getStat(0) / 2);
 				if (this.currentHP > this.getStat(0)) this.currentHP = this.getStat(0);
-				System.out.println(this.name + " restored HP.\n");
+				System.out.println(this.name + " restored HP.");
 			}
 		} else if (move == Move.SAND_ATTACK) {
 			stat(foe, 5, -1);
@@ -2538,7 +2703,7 @@ public class Pokemon implements Serializable {
 			if (foe.status == Status.HEALTHY) {
 				foe.sleep();
 			} else {
-				System.out.println("But it failed!\n");
+				System.out.println("But it failed!");
 			}
 		} else if (move == Move.SMOKESCREEN) {
 			stat(foe, 5, -1);
@@ -2555,7 +2720,7 @@ public class Pokemon implements Serializable {
 			if (!foe.vStatuses.contains(Status.CONFUSED)) {
 				foe.confuse();
 			} else {
-				System.out.println("But it failed!\n");
+				System.out.println("But it failed!");
 			}
 		} else if (move == Move.SWAGGER) {
 			stat(foe, 0, 2);
@@ -2564,11 +2729,11 @@ public class Pokemon implements Serializable {
 			}
 		} else if (move == Move.SYNTHESIS) {
 			if (this.currentHP == this.getStat(0)) {
-				System.out.println(this.name + "'s HP is full!\n");
+				System.out.println(this.name + "'s HP is full!");
 			} else {
 				this.currentHP += (this.getStat(0) / 2);
 				if (this.currentHP > this.getStat(0)) this.currentHP = this.getStat(0);
-				System.out.println(this.name + " restored HP.\n");
+				System.out.println(this.name + " restored HP.");
 			}
 		} else if (move == Move.TAIL_WHIP) {
 			stat(foe, 1, -1);
@@ -2606,16 +2771,16 @@ public class Pokemon implements Serializable {
 		if (amt == 1) amount = " rose";
 		if (amt == -1) amount = " fell";
 		if (amt > 1) amount = " Sharply rose";
-		if (amt < 1) amount = " Harshly fell";
+		if (amt < -1) amount = " Harshly fell";
 		p.statStages[i] += amt;
 		if (p.statStages[i] > 6 && amt > 0) {
 			p.statStages[i] = 6;
-			System.out.println(p.name + "'s " + type + " won't go any higher!\n");
+			System.out.println(p.name + "'s " + type + " won't go any higher!");
 		} else if (p.statStages[i] < -6 && amt < 0){
 			p.statStages[i] = -6;
-			System.out.println(p.name + "'s " + type + " won't go any lower!\n");
+			System.out.println(p.name + "'s " + type + " won't go any lower!");
 		} else {
-			System.out.println(p.name + "'s " + type + amount + "!\n");
+			System.out.println(p.name + "'s " + type + amount + "!");
 		}
 		
 	}
@@ -2807,11 +2972,6 @@ public class Pokemon implements Serializable {
 		System.out.println(this.name + " healed!");
 	}
 	
-	/**
-	 * 
-	 * @param type - type to check what other types resist it
-	 * @return Array of types that resist type
-	 */
 	public PType[] getResistances(PType type) {
 	    ArrayList<PType> resistantTypes = new ArrayList<>();
 	    switch(type) {
@@ -2906,11 +3066,6 @@ public class Pokemon implements Serializable {
 	    return resistantTypes.toArray(toReturn);
 	}
 	
-	/**
-	 * 
-	 * @param type - type to check what other types are weak to it
-	 * @return Array of types that are weak to type
-	 */
 	public PType[] getWeaknesses(PType type) {
 	    ArrayList<PType> resistantTypes = new ArrayList<>();
 	    switch(type) {
@@ -3691,7 +3846,7 @@ public class Pokemon implements Serializable {
 			movebank[16] = Move.REVENGE;
 			movebank[21] = Move.VITAL_THROW;
 			movebank[23] = Move.HI_JUMP_KICK;
-			movebank[30] = Move.BIDE;
+			movebank[30] = Move.ROOT_KICK;
 			movebank[33] = Move.DOUBLE_KICK;
 			movebank[38] = Move.MEGA_KICK;
 			movebank[45] = Move.SWEEP_KICK;
@@ -3931,21 +4086,21 @@ public class Pokemon implements Serializable {
 		if (p.status != Status.HEALTHY) {
 			if (p.status == Status.BLEEDING) {
 				p.currentHP -= p.getStat(0) / 8;
-				System.out.println(p.name + " was hurt by bleeding!\n");
+				System.out.println("\n" + p.name + " was hurt by bleeding!");
 				if (p.currentHP <= 0) { // Check for kill
 					p.faint();
 				}
 				
 			} else if (p.status == Status.BURNED) {
 				p.currentHP -= p.getStat(0) / 16;
-				System.out.println(p.name + " was hurt by its burn!\n");
+				System.out.println("\n" + p.name + " was hurt by its burn!");
 				if (p.currentHP <= 0) { // Check for kill
 					p.faint();
 				}
 				
 			} else if (p.status == Status.POISONED) {
 				p.currentHP -= p.getStat(0) / 8;
-				System.out.println(p.name + " was hurt by poison!\n");
+				System.out.println("\n" + p.name + " was hurt by poison!");
 				if (p.currentHP <= 0) { // Check for kill
 					p.faint();
 				}
@@ -3953,7 +4108,7 @@ public class Pokemon implements Serializable {
 			}
 			if (p.vStatuses.contains(Status.CURSED)) {
 				p.currentHP -= p.getStat(0) / 4;
-				System.out.println(p.name + " was hurt by the curse!\n");
+				System.out.println("\n" + p.name + " was hurt by the curse!");
 				if (p.currentHP <= 0) { // Check for kill
 					p.faint();
 				}
@@ -3961,7 +4116,7 @@ public class Pokemon implements Serializable {
 			}
 			if (p.vStatuses.contains(Status.LEECHED)) {
 //				p.currentHP -= p.getStat(0) / 4;
-//				System.out.println(p.name + " was hurt by bleeding!\n");
+//				System.out.println("\n" + p.name + " was hurt by bleeding!");
 //				if (p.currentHP <= 0) { // Check for kill TODO
 //					p.faint();
 //				}
@@ -3970,7 +4125,7 @@ public class Pokemon implements Serializable {
 			if (p.vStatuses.contains(Status.NIGHTMARE)) {
 				if (p.status == Status.ASLEEP) {
 					p.currentHP -= p.getStat(0) / 4;
-					System.out.println(p.name + " had a nightmare!\n");
+					System.out.println("\n" + p.name + " had a nightmare!");
 					if (p.currentHP <= 0) { // Check for kill
 						p.faint();
 					}
@@ -3983,12 +4138,12 @@ public class Pokemon implements Serializable {
 					if (p.currentHP > p.getStat(0)) {
 						p.currentHP = p.getStat(0);
 					}
-					System.out.println(p.name + " restored HP.\n");
+					System.out.println("\n" + p.name + " restored HP.");
 				}
 			}
 			if (p.perishCount > 0) {
 				p.perishCount--;
-				System.out.println(p.getName() + "'s perish count fell to " + p.perishCount + "!");
+				System.out.println("\n" + p.getName() + "'s perish count fell to " + p.perishCount + "!");
 				if (p.perishCount == 0) {
 					p.faint();
 				}
@@ -4006,13 +4161,13 @@ public class Pokemon implements Serializable {
 	public void confuse() {
 		this.vStatuses.add(Status.CONFUSED);
 		this.confusionCounter = (int)(Math.random() * 4) + 1;
-		System.out.println(this.name + " became confused!\n");
+		System.out.println(this.name + " became confused!");
 	}
 	
 	public void sleep() {
 		this.status = Status.ASLEEP;
 		this.sleepCounter = (int)(Math.random() * 3) + 1;
-		System.out.println(this.name + " fell asleep!\n");
+		System.out.println(this.name + " fell asleep!");
 	}
 	
 	public void paralyze(boolean announce) {
@@ -4022,9 +4177,9 @@ public class Pokemon implements Serializable {
 		}
 		if (this.status == Status.HEALTHY) {
 			this.status = Status.PARALYZED;
-			System.out.println(this.name + " was paralyzed!\n");
+			System.out.println(this.name + " was paralyzed!");
 		} else {
-			if (announce) System.out.println("But it failed!\n");
+			if (announce) System.out.println("But it failed!");
 		}
 	}
 	
@@ -4035,9 +4190,9 @@ public class Pokemon implements Serializable {
 		}
 		if (this.status == Status.HEALTHY) {
 			this.status = Status.BURNED;
-			System.out.println(this.name + " was burned!\n");
+			System.out.println(this.name + " was burned!");
 		} else {
-			if (announce) System.out.println("But it failed!\n");
+			if (announce) System.out.println("But it failed!");
 		}
 	}
 	
@@ -4048,10 +4203,105 @@ public class Pokemon implements Serializable {
 		}
 		if (this.status == Status.HEALTHY) {
 			this.status = Status.POISONED;
-			System.out.println(this.name + " was poisoned!\n");
+			System.out.println(this.name + " was poisoned!");
 		} else {
-			if (announce) System.out.println("But it failed!\n");
+			if (announce) System.out.println("But it failed!");
 		}
 	}
 	
+	public boolean contains(Move move) {
+	    for (Move m : this.moveset) {
+	        if (m != null && m == (move)) {
+	            return true;
+	        }
+	    }
+	    return false;
+	}
+	
+	private int determineBasePower(Pokemon foe, Move move) {
+		int bp = 0;
+		if (move == Move.BRINE) {
+			if (foe.currentHP / foe.getStat(0) > 0.5) {
+				bp = 65;
+			} else {
+				bp = 130;
+			}
+		} else if (move == Move.ELECTROBALL) {
+			double speedRatio = foe.getSpeed() / this.getSpeed();
+			if (speedRatio > 1) {
+				bp = 40;
+			} else if (speedRatio >= 0.501 && speedRatio <= 1) {
+				bp = 60;
+			} else if (speedRatio >= 0.3334 && speedRatio < 0.501) {
+				bp = 80;
+			} else if (speedRatio >= 0.2501 && speedRatio < 0.3334) {
+				bp = 120;
+			} else if (speedRatio < 0.2501) {
+				bp = 150;
+			}
+		} else if (move == Move.ERUPTION) {
+			double hpRatio = this.currentHP / this.getStat(0);
+			hpRatio *= 150;
+			bp = Math.max((int) hpRatio, 1);
+		} else if (move == Move.FLAIL) {
+			double hpRatio = this.currentHP / this.getStat(0);
+			if (hpRatio >= 0.6875) {
+				bp = 20;
+			} else if (hpRatio >= 0.3542 && hpRatio < 0.6875) {
+				bp = 40;
+			} else if (hpRatio >= 0.2083 && hpRatio < 0.3542) {
+				bp = 80;
+			} else if (hpRatio >= 0.1042 && hpRatio < 0.2083) {
+				bp = 100;
+			} else if (hpRatio >= 0.0417 && hpRatio < 0.1042) {
+				bp = 150;
+			} else if (hpRatio < 0.0417) {
+				bp = 200;
+			}
+		} else if (move == Move.GYRO_BALL) {
+			double speedRatio = foe.getSpeed() / this.getSpeed();
+			bp = (int) Math.min(150, (25 * speedRatio) + 1);
+		} else if (move == Move.MAGNITUDE) {
+			int mag = (int) (Math.random()*100 + 1);
+			if (mag <= 5) {
+				bp = 10;
+				System.out.println("Magnitude 4!");
+			} else if (mag <= 15) {
+				bp = 30;
+				System.out.println("Magnitude 5!");
+			} else if (mag <= 35) {
+				bp = 50;
+				System.out.println("Magnitude 6!");
+			} else if (mag <= 65) {
+				bp = 70;
+				System.out.println("Magnitude 7!");
+			} else if (mag <= 85) {
+				bp = 90;
+				System.out.println("Magnitude 8!");
+			} else if (mag <= 95) {
+				bp = 110;
+				System.out.println("Magnitude 9!");
+			} else if (mag <= 100) {
+				bp = 150;
+				System.out.println("Magnitude 10!");
+			}
+		} else if (move == Move.TIDAL_WAVE) {
+			int wave = (int) (Math.random()*3 + 1);
+			if (wave == 1) {
+				bp = 90;
+				System.out.println("Morning Tide!");
+			} else if (wave == 2) {
+				bp = 50;
+				System.out.println("Day Tide!");
+			} else if (wave == 3) {
+				bp = 130;
+				System.out.println("Evening Tide!");
+			}
+		} else if (move == Move.WRING_OUT) {
+			double hpRatio = foe.currentHP / foe.getStat(0);
+			hpRatio *= 120;
+			bp = Math.max((int) hpRatio, 1);
+		}
+		return bp;
+	}
 }

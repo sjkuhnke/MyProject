@@ -17,7 +17,6 @@ public enum Move {
 	AUTO_SHOT(0,1000,0,0,2,false,PType.STEEL),
 	BAWL(0,100,0,0,2,false,PType.DARK),
 	BEAT_UP(20,100,0,0,0,false,PType.DARK),
-	BIDE(-1,1000,0,0,0,false,PType.NORMAL),
 	BIG_BULLET(70,90,30,0,0,false,PType.STEEL),
 	BITE(60,100,30,0,0,false,PType.DARK),
 	BLACK_DUST(0,100,0,0,2,false,PType.FIRE),
@@ -35,7 +34,7 @@ public enum Move {
 	BRANCH_WHACK(50,95,0,0,0,false,PType.ROCK),
 	BRAVE_BIRD(120,100,0,0,0,false,PType.FLYING),
 	BRICK_BREAK(75,100,100,0,0,false,PType.FIGHTING),
-	BRINE(65,100,100,0,1,false,PType.WATER),
+	BRINE(-1,100,100,0,1,false,PType.WATER),
 	BUBBLE(20,100,0,0,1,false,PType.WATER),
 	BUBBLEBEAM(65,100,10,0,1,false,PType.WATER),
 	BUG_BITE(60,100,0,0,0,false,PType.BUG),
@@ -75,7 +74,7 @@ public enum Move {
 	DRAGON_CLAW(80,100,0,1,0,false,PType.DRAGON),
 	DRAGON_DANCE(0,1000,0,0,2,false,PType.DRAGON),
 	DRAGON_PULSE(90,100,0,0,1,false,PType.DRAGON),
-	DRAGON_RAGE(-1,100,0,0,1,false,PType.DRAGON),
+	DRAGON_RAGE(0,100,0,0,1,false,PType.DRAGON),
 	DRAGON_RUSH(100,75,30,0,0,false,PType.DRAGON),
 	DRAGON_BREATH(60,0,30,0,1,false,PType.DRAGON),
 	DREAM_EATER(100,100,0,0,1,false,PType.DARK),
@@ -96,7 +95,7 @@ public enum Move {
 	FIREBALL(60,100,10,0,1,false,PType.FIRE),
 	FIRE_BLAST(120,85,10,0,1,false,PType.FIRE),
 	FIRE_CHARGE(75,90,10,0,0,false,PType.FIRE),
-	FIRE_DASH(-1,100,100,0,0,false,PType.FIRE),
+	FIRE_DASH(0,100,100,0,0,false,PType.FIRE),
 	FIRE_FANG(65,95,10,0,0,false,PType.FIRE),
 	FIRE_PUNCH(75,100,10,0,0,false,PType.FIRE),
 	FIRE_SMASH(60,95,0,0,0,false,PType.FIRE),
@@ -122,7 +121,7 @@ public enum Move {
 	GIGA_HIT(110,75,50,0,0,false,PType.FIGHTING),
 	GIGA_IMPACT(150,90,0,0,0,false,PType.NORMAL),
 	GLARE(0,100,0,0,2,false,PType.DARK),
-	GRASS_KNOT(-1,100,0,0,1,false,PType.GRASS),
+	GRASS_KNOT(80,100,0,0,1,false,PType.GRASS),
 	GRASS_PUNCH(80,100,0,0,0,false,PType.GRASS),
 	GROWL(0,100,0,0,2,false,PType.NORMAL),
 	GROWTH(0,1000,0,0,2,false,PType.GRASS),
@@ -138,7 +137,7 @@ public enum Move {
 	HEAT_WAVE(100,90,10,0,1,false,PType.FIRE),
 	HI_JUMP_KICK(130,90,0,0,0,false,PType.FIGHTING),
 	HORN_ATTACK(65,100,0,0,0,false,PType.NORMAL),
-	HORN_DRILL(-1,30,0,0,0,false,PType.NORMAL),
+	HORN_DRILL(0,30,0,0,0,false,PType.NORMAL),
 	HYDRO_CANNON(150,90,0,0,1,false,PType.WATER),
 	HYDRO_PUMP(120,80,0,0,1,false,PType.WATER),
 	HYPER_BEAM(150,90,0,0,1,false,PType.NORMAL),
@@ -165,7 +164,7 @@ public enum Move {
 	LICK(20,100,30,0,0,false,PType.GHOST),
 	LIGHTNING_HEADBUTT(90,95,30,0,0,false,PType.ELECTRIC),
 	LOCK_ON(0,1000,0,0,2,false,PType.STEEL),
-	LOW_KICK(-1,100,0,0,0,false,PType.FIGHTING),
+	LOW_KICK(60,100,100,0,0,false,PType.FIGHTING),
 	MACH_PUNCH(40,100,0,0,0,true,PType.FIGHTING),
 	MACHETE_STAB(75,80,100,0,0,false,PType.STEEL),
 	MAGIC_BLAST(30,100,100,0,1,false,PType.MAGIC),
@@ -189,7 +188,7 @@ public enum Move {
 	MUD_SPORT(0,1000,0,0,2,false,PType.GROUND),
 	NEEDLE_SPRAY(55,95,10,0,0,false,PType.POISON),
 	NIBBLE(10,100,0,0,0,false,PType.NORMAL),
-	NIGHT_SHADE(-1,100,0,0,1,false,PType.GHOST),
+	NIGHT_SHADE(0,100,0,0,1,false,PType.GHOST),
 	NIGHT_SLASH(70,100,0,1,0,false,PType.DARK),
 	NIGHTMARE(0,100,0,0,2,false,PType.GHOST),
 	ODOR_SLEUTH(0,1000,0,0,2,false,PType.NORMAL),
@@ -232,7 +231,7 @@ public enum Move {
 	SCARY_FACE(0,100,0,0,2,false,PType.NORMAL),
 	SCRATCH(40,100,0,0,0,false,PType.NORMAL),
 	SCREECH(0,85,0,0,2,false,PType.NORMAL),
-	SEISMIC_TOSS(-1,100,0,0,0,false,PType.FIGHTING),
+	SEISMIC_TOSS(0,100,0,0,0,false,PType.FIGHTING),
 	SELF_DESTRUCT(200,100,0,0,0,false,PType.NORMAL),
 	SHADOW_BALL(80,100,30,0,1,false,PType.GHOST),
 	SHADOW_SNEAK(40,100,0,0,0,true,PType.GHOST),
@@ -269,7 +268,7 @@ public enum Move {
 	SUCKER_PUNCH(80,100,0,0,0,false,PType.DARK),
 	SUNNY_DAY(0,1000,0,0,2,false,PType.FIRE),
 	SUPER_CHARGE(90,60,100,0,0,false,PType.ELECTRIC),
-	SUPER_FANG(-1,100,0,0,0,false,PType.NORMAL),
+	SUPER_FANG(0,100,0,0,0,false,PType.NORMAL),
 	SUPERPOWER(120,100,100,0,0,false,PType.FIGHTING),
 	SUPERSONIC(0,55,0,0,2,false,PType.NORMAL),
 	SURF(95,100,0,0,1,false,PType.WATER),
@@ -357,5 +356,9 @@ public enum Move {
 	public int critChance;
 	public PType mtype;
 	public boolean priority;
+	
+	public boolean isPriority() {
+		return priority;
+	}
 
 }

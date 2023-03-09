@@ -58,6 +58,7 @@ public class Battle extends JFrame {
 	private JButton boxButton;
 	
 	private static Scanner stdIn;
+	private static Scanner stdIn2;
 	
 	/**
 	 * Launch the application.
@@ -91,6 +92,7 @@ public class Battle extends JFrame {
 	                        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("player.dat"))) {
 	                            oos.writeObject(me);
 	                            stdIn.close();
+	                            stdIn2.close();
 	                            oos.close();
 	                        } catch (IOException ex) {
 	                            System.err.println("Error writing Player object to file: " + ex.getMessage());
@@ -137,6 +139,7 @@ public class Battle extends JFrame {
         });
 		
 		healButton.addActionListener(e -> {
+			System.out.println("");
 			for (Pokemon member : me.team) {
 				if (member != null) member.heal();
 			}
@@ -513,31 +516,57 @@ public class Battle extends JFrame {
 		int p1speed = p1.getSpeed();
 		int p2speed = p2.getSpeed();
 		
-		if ((int) p1speed > (int) p2speed) {
-			newP = p1.move(p2, m1);
-			p2.move(p1, m2);
-			Pokemon.endOfTurn(p1);
+		// Check for priority moves
+	    if (m1.isPriority() && !m2.isPriority()) {
+	        newP = p1.move(p2, m1);
+	        p2.move(p1, m2);
+	        Pokemon.endOfTurn(p1);
 			Pokemon.endOfTurn(p2);
-		} else if ((int) p1speed < (int) p2speed) {
-			p2.move(p1, m2);
-			newP = p1.move(p2, m1);
-			Pokemon.endOfTurn(p2);
+	    } else if (!m1.isPriority() && m2.isPriority()) {
+	        p2.move(p1, m2);
+	        newP = p1.move(p2, m1);
+	        Pokemon.endOfTurn(p2);
 			Pokemon.endOfTurn(p1);
-		} else {
-			Random speedTie = new Random();
-			double random = speedTie.nextDouble();
-			if (random < 0.5) {
-				newP = p1.move(p2, m1);
-				p2.move(p1, m2);
-				Pokemon.endOfTurn(p1);
+	    } else if (m1.isPriority() && m2.isPriority()) {
+	        if (p1speed >= p2speed) {
+	            newP = p1.move(p2, m1);
+	            p2.move(p1, m2);
+	            Pokemon.endOfTurn(p1);
 				Pokemon.endOfTurn(p2);
-			} else {
-				p2.move(p1, m2);
-				newP = p1.move(p2, m1);
-				Pokemon.endOfTurn(p2);
+	        } else {
+	            p2.move(p1, m2);
+	            newP = p1.move(p2, m1);
+	            Pokemon.endOfTurn(p2);
 				Pokemon.endOfTurn(p1);
-			}
-		}
+	        }
+	    } else {
+	        // Regular turn order
+	        if (p1speed > p2speed) {
+	            newP = p1.move(p2, m1);
+	            p2.move(p1, m2);
+	            Pokemon.endOfTurn(p1);
+				Pokemon.endOfTurn(p2);
+	        } else if (p1speed < p2speed) {
+	            p2.move(p1, m2);
+	            newP = p1.move(p2, m1);
+	            Pokemon.endOfTurn(p2);
+				Pokemon.endOfTurn(p1);
+	        } else {
+	            Random speedTie = new Random();
+	            double random = speedTie.nextDouble();
+	            if (random < 0.5) {
+	                newP = p1.move(p2, m1);
+	                p2.move(p1, m2);
+	                Pokemon.endOfTurn(p1);
+	    			Pokemon.endOfTurn(p2);
+	            } else {
+	                p2.move(p1, m2);
+	                newP = p1.move(p2, m1);
+	                Pokemon.endOfTurn(p2);
+	    			Pokemon.endOfTurn(p1);
+	            }
+	        }
+	    }
 		me.current = newP;
 		me.team[0] = me.getCurrent();
 		updateBars();
@@ -621,5 +650,9 @@ public class Battle extends JFrame {
 
 	public static Scanner getScanner() {
 		return stdIn;
+	}
+	
+	public static Scanner getScanner2() {
+		return stdIn2;
 	}
 }
