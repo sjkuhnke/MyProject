@@ -4,8 +4,11 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 import java.awt.*;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.WindowAdapter;
@@ -18,11 +21,16 @@ import java.io.ObjectOutputStream;
 import java.util.Random;
 import java.util.Scanner;
 
+import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JProgressBar;
+import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.JTextField;
+import javax.swing.JRadioButton;
 
 public class Battle extends JFrame {
 
@@ -51,22 +59,28 @@ public class Battle extends JFrame {
 	private JButton party5;
 	
 	private JButton catchButton;
+	private JButton addButton;
 	private JButton fightButton;
 	private JButton healButton;
 	private JLabel userStatus;
 	private JLabel foeStatus;
 	private JButton boxButton;
+	private JGradientButton[] boxButtons;
+	private JButton returnButton;
 	
 	private static Scanner stdIn;
 	private static Scanner stdIn2;
+	private JRadioButton pokeballButton;
+	private JRadioButton greatballButton;
+	private JRadioButton ultraballButton;
 	
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-	    foe = new Pokemon(10, 5);
+	    foe = new Pokemon(10, 5, false);
 	    foe.currentHP = 0;
-	    foe.faint();
+	    foe.faint(false);
 
 	    try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("player.dat"))) {
 	        me = (Player) ois.readObject();
@@ -77,7 +91,7 @@ public class Battle extends JFrame {
 	    } catch (IOException | ClassNotFoundException e) {
 	        // If there's an error reading the file, create a new Player object
 	        me = new Player();
-	        me.catchPokemon(new Pokemon(4,5));
+	        me.catchPokemon(new Pokemon(4,5, true));
 	    }
 	    
 	    
@@ -112,29 +126,146 @@ public class Battle extends JFrame {
 		initialize();
 		updateFoe();
 		
-		catchButton = createJButton("CATCH", new Font("Tahoma", Font.BOLD, 11), 20, 171, 89, 23);
+		addButton = createJButton("ADD", new Font("Tahoma", Font.BOLD, 9), 10, 231, 75, 23);
 		fightButton = createJButton("FIGHT", new Font("Tahoma", Font.BOLD, 11), 20, 80, 89, 23);
-		healButton = createJButton("HEAL", new Font("Tahoma", Font.BOLD, 9), 10, 267, 68, 23);
+		catchButton = createJButton("CATCH", new Font("Tahoma", Font.BOLD, 11), 20, 120, 89, 23);
+		healButton = createJButton("HEAL", new Font("Tahoma", Font.BOLD, 9), 10, 262, 75, 23);
 		boxButton = createJButton("Box", new Font("Tahoma", Font.PLAIN, 12), 553, 35, 62, 21);
+		returnButton = createJButton("Exit", new Font("Tahoma", Font.BOLD, 12), 553, 35, 62, 21);
+		returnButton.setVisible(false);
+		
+		boxButtons = new JGradientButton[30];
+		for (int i = 0; i < boxButtons.length; i++) {
+			final int index = i;
+			boxButtons[i] = new JGradientButton("");
+			boxButtons[i].setBounds(10 + (i % 6) * 90, 10 + (i / 6) * 80, 80, 50);
+			boxButtons[i].setVisible(false);
+			playerPanel.add(boxButtons[i]);
+			boxButtons[i].addActionListener(new ActionListener() {
+		        @Override
+		        public void actionPerformed(ActionEvent e) {
+	                // Display the details of the selected box member
+	                // and provide the option to swap with a party member
+	                JPanel boxMemberPanel = new JPanel();
+	                boxMemberPanel.setLayout(new BoxLayout(boxMemberPanel, BoxLayout.Y_AXIS));
+	                JLabel nameLabel = new JLabel("Name: N/A");
+	                if (me.box[index] != null) nameLabel.setText("Name: " + me.box[index].getName());
+	                JLabel levelLabel = new JLabel("Level: N/A");
+	                if (me.box[index] != null) levelLabel.setText("Level: " + me.box[index].getLevel());
+	                JLabel statsLabel = new JLabel("Stats: N/A");
+	                if (me.box[index] != null) statsLabel.setText("Stats: " + intArrayToString(me.box[index].stats));
+	                JLabel movesLabel = new JLabel("Moves: N/A");
+	                if (me.box[index] != null) movesLabel.setText("Moves: " + movesToString(me.box[index]));
+	                JButton swapButton = new JButton("Swap with a party member");
+	                JButton releaseButton = new JButton("Release");
+	                swapButton.addActionListener(new ActionListener() {
+	                    @Override
+	                    public void actionPerformed(ActionEvent e) {
+	                        // Open a new panel to display the party and allow the user to select a party member to swap with
+	                        JPanel partyPanel = new JPanel();
+	                        partyPanel.setLayout(new BoxLayout(partyPanel, BoxLayout.Y_AXIS));
+	                        JLabel titleLabel = new JLabel("Select a party member to swap with:");
+	                        partyPanel.add(titleLabel);
+	                        boolean oneVisible = false;
+	                        for (int j = 0; j < me.team.length; j++) {
+	                            final int jndex = j;
+	                            JButton partyButton = new JGradientButton("EMPTY");
+	                            partyButton.setVisible(false);
+	                            if (me.team[j] != null) {
+	                                partyButton.setText(me.team[j].getName() + "  lv " + me.team[j].getLevel());
+	                                if (me.team[j].isFainted()) {
+	                                    partyButton.setBackground(Color.RED);
+	                                } else if (me.team[j].getStatus() != Status.HEALTHY) {
+	                                    partyButton.setBackground(Color.YELLOW);
+	                                } else {
+	                                    partyButton.setBackground(Color.GREEN);
+	                                }
+	                                partyButton.setVisible(true);
+	                            } else {
+	                                if (!oneVisible) {
+	                                    partyButton.setVisible(true);
+	                                    oneVisible = true;
+	                                }
+	                            }
+	                            partyButton.addActionListener(new ActionListener() {
+	                                @Override
+	                                public void actionPerformed(ActionEvent e) {
+
+	                                    // Swap the selected party member with the selected box member
+	                                    if (jndex == 0) {
+	                                    	if (me.box[index] == null) {
+	                                    		JOptionPane.showMessageDialog(null, "You cannot remove current from the party.");
+	            	                            return;
+	                                    	}
+	                                        me.current = me.box[index];
+	                                    }
+	                                    Pokemon temp = me.team[jndex];
+	                                    if (temp != null) {
+	                                        temp.heal();
+	                                    }
+	                                    me.team[jndex] = me.box[index];
+	                                    me.box[index] = temp;
+
+	                                    // Update the display
+	                                    SwingUtilities.getWindowAncestor(partyPanel).dispose();
+	                                    SwingUtilities.getWindowAncestor(boxMemberPanel).dispose();
+	                                    displayBox();
+	                                }
+
+	                            });
+	                            partyPanel.add(partyButton);
+	                        }
+	                        JScrollPane scrollPane = new JScrollPane(partyPanel);
+	                        scrollPane.setPreferredSize(new Dimension(300, 200));
+	                        JOptionPane.showMessageDialog(null, scrollPane, "Swap with a party member", JOptionPane.PLAIN_MESSAGE);
+	                    }
+	                });
+
+	                releaseButton.addActionListener(new ActionListener() {
+	                    @Override
+	                    public void actionPerformed(ActionEvent e) {
+	                        // code to release the box member
+	                        me.box[index] = null;
+	                        boxButtons[index].setText("");
+	                        boxButtons[index].setBackground(null);
+	                        boxMemberPanel.setVisible(false);
+	                        SwingUtilities.getWindowAncestor(boxMemberPanel).dispose();
+	                    }
+	                });
+	                boxMemberPanel.add(nameLabel);
+	                boxMemberPanel.add(levelLabel);
+	                boxMemberPanel.add(statsLabel);
+	                boxMemberPanel.add(movesLabel);
+	                boxMemberPanel.add(swapButton);
+	                boxMemberPanel.add(releaseButton);
+	                JOptionPane.showMessageDialog(null, boxMemberPanel, "Box member details", JOptionPane.PLAIN_MESSAGE);
+		        }
+		    });
+		}
 		
 		idInput = createJTextField(3, 31, 53, 27, 20);
 		levelInput = createJTextField(2, 71, 53, 27, 20);
 		
-		catchButton.addActionListener(e -> {
-			me.catchPokemon(new Pokemon(foe.id, foe.getLevel()));
-			foe.currentHP = 0;
-			foe.faint();
-			displayParty();
-			updateFoe();
+		addButton.addActionListener(e -> {
+			if (!foe.isFainted()) {
+				me.catchPokemon(new Pokemon(foe.id, foe.getLevel(), true));
+				foe.currentHP = 0;
+				foe.faint(false);
+				displayParty();
+				updateFoe();
+				boxButton.setVisible(true);
+			}
         });
 		
 		fightButton.addActionListener(e -> {
 			try {
-				foe = new Pokemon(Integer.parseInt(idInput.getText()), Integer.parseInt(levelInput.getText()));
+				foe = new Pokemon(Integer.parseInt(idInput.getText()), Integer.parseInt(levelInput.getText()), false);
 				updateFoe();
+				boxButton.setVisible(false);
 			} catch (NumberFormatException e1) {
-				foe = new Pokemon (10, 5);
+				foe = new Pokemon (10, 5, false);
 				updateFoe();
+				boxButton.setVisible(false);
 			}
         });
 		
@@ -151,6 +282,44 @@ public class Battle extends JFrame {
 			System.out.println();
 			System.out.println("------------------------------");
         });
+		
+		boxButton.addActionListener(e -> {
+			Component[] components = getContentPane().getComponents();
+			for (Component component : components) {
+			    component.setVisible(false);
+			}
+			displayBox();
+		});
+		
+		returnButton.addActionListener(e -> {
+			Component[] components = getContentPane().getComponents();
+			for (Component component : components) {
+			    component.setVisible(false);
+			}
+			initialize();
+			updateCurrent();
+			updateFoe();
+			updateBars();
+			displayParty();
+			updateStatus();
+			playerPanel.add(catchButton);
+			catchButton.setVisible(true);
+			playerPanel.add(addButton);
+			addButton.setVisible(true);
+			playerPanel.add(healButton);
+			healButton.setVisible(true);
+			playerPanel.add(fightButton);
+			fightButton.setVisible(true);
+			playerPanel.add(idInput);
+			idInput.setVisible(true);
+			playerPanel.add(levelInput);
+			levelInput.setVisible(true);
+			playerPanel.add(boxButton);
+			boxButton.setVisible(true);
+			JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(playerPanel);
+			frame.setBounds(100, 100, 648, 330);
+			playerPanel.repaint();
+		});
 		
 		party1 = new JButton();
 		party2 = new JButton();
@@ -223,8 +392,6 @@ public class Battle extends JFrame {
 			displayParty();
 			updateStatus();
         });
-		
-		System.out.println(me.toString());
 	}
 
 	private void initialize() {
@@ -309,6 +476,24 @@ public class Battle extends JFrame {
 		slashLabel.setFont(new Font("Tahoma", Font.BOLD, 11));
 		slashLabel.setBounds(206, 192, 21, 14);
 		playerPanel.add(slashLabel);
+		
+		ButtonGroup ballType = new ButtonGroup();
+		pokeballButton = new JRadioButton("");
+		pokeballButton.setBounds(18, 145, 21, 23);
+		pokeballButton.setSelected(true);
+		playerPanel.add(pokeballButton);
+		pokeballButton.setVisible(true);
+		greatballButton = new JRadioButton("");
+		greatballButton.setBounds(53, 145, 21, 23);
+		playerPanel.add(greatballButton);
+		greatballButton.setVisible(true);
+		ultraballButton = new JRadioButton("");
+		ultraballButton.setBounds(88, 145, 21, 23);
+		playerPanel.add(ultraballButton);
+		ultraballButton.setVisible(true);
+		ballType.add(pokeballButton);
+		ballType.add(greatballButton);
+		ballType.add(ultraballButton);
 		
 		healthBar = new JProgressBar(0, me.getCurrent().getStat(0));
 		healthBar.setBackground(UIManager.getColor("Button.darkShadow"));
@@ -583,7 +768,7 @@ public class Battle extends JFrame {
 		updateBars();
 		updateCurrent();
 		updateStatus();
-		
+		if (foe.isFainted()) boxButton.setVisible(true);
 	}
 
 	private void updateStatus() {
@@ -627,6 +812,27 @@ public class Battle extends JFrame {
 		
 	}
 	
+	private void displayBox() {
+		JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(playerPanel);
+		frame.setBounds(100, 100, 648, 530);
+		for (int i = 0; i < me.box.length; i++) {
+	        boxButtons[i].setText("");
+	        if (me.box[i] != null) {
+	            boxButtons[i].setText(me.box[i].name);
+	            boxButtons[i].setHorizontalAlignment(SwingConstants.CENTER);
+	            boxButtons[i].setFont(new Font("Tahoma", Font.BOLD, 9));
+	            boxButtons[i].setBackground(me.box[i].type1.getColor());
+	        } else {
+	            boxButtons[i].setText("");
+	            boxButtons[i].setBackground(null);
+	        }
+	        boxButtons[i].setVisible(true);
+	        playerPanel.add(boxButtons[i]);
+		}
+		playerPanel.add(returnButton);
+		returnButton.setVisible(true);
+	}
+	
 	private static final class JGradientButton extends JButton{
 		/**
 		 * 
@@ -665,5 +871,33 @@ public class Battle extends JFrame {
 	
 	public static Scanner getScanner2() {
 		return stdIn2;
+	}
+	
+	private String intArrayToString(int[] arr) {
+	    StringBuilder sb = new StringBuilder();
+	    sb.append("[");
+	    for (int i = 0; i < arr.length; i++) {
+	        sb.append(arr[i]);
+	        if (i != arr.length - 1) {
+	            sb.append(", ");
+	        }
+	    }
+	    sb.append("]");
+	    return sb.toString();
+	}
+	
+	private String movesToString(Pokemon p) {
+		String moveString = "";
+	    
+	    for (int i = 0; i < p.moveset.length; i++) {
+	    	if (p.moveset[i] != null) {
+	    		moveString += p.moveset[i].toString();
+	    		if (i != p.moveset.length - 1) {
+	    			moveString += " / ";
+	    		}
+	    	}
+	    }
+	    
+	    return moveString;
 	}
 }

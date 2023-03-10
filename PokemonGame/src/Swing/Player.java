@@ -8,30 +8,19 @@ public class Player implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = -2851052666892205583L;
-	public int id;
 	public Pokemon[] team;
 	public Pokemon[] box;
 	public int money;
 	public Pokemon current;
-	public int numPokemonTeam;
-	public int numPokemonBox;
+	public int pokeballCount;
+	public int greatballCount;
+	public int ultraballCount;
 	
 	public Player() {
-		this(genID());
-	}
-
-	public Player(int id) {
 		team = new Pokemon[6];
 		box = new Pokemon[30];
 		money = 0;
 		current = null;
-		numPokemonTeam = 0;
-		numPokemonBox = 0;
-	}
-
-	private static int genID() {
-		Random random = new Random();
-	    return random.nextInt();
 	}
 	
 	public Pokemon getCurrent() {
@@ -39,20 +28,40 @@ public class Player implements Serializable{
 	}
 	
 	public void catchPokemon(Pokemon p) {
-		if (p.isFainted()) return;
-		if (numPokemonTeam < 6) {
-            team[numPokemonTeam] = p;
-            numPokemonTeam++;
-            System.out.println("Caught " + p.name + ", added to party!");
-            if (numPokemonTeam == 1) current = p;
-        } else if (numPokemonBox < 30) {
-            box[numPokemonBox] = p;
-            numPokemonBox++;
-            System.out.println("Caught " + p.name + ", sent to box!");
-        } else {
-            System.out.println("Cannot catch " + p.name + ", box is full");
-        }
+	    if (p.isFainted()) return;
+	    boolean hasNull = false;
+	    for (int i = 0; i < team.length; i++) {
+	        if (team[i] == null) {
+	            hasNull = true;
+	            break;
+	        }
+	    }
+	    if (hasNull) {
+	        for (int i = 0; i < team.length; i++) {
+	            if (team[i] == null) {
+	                team[i] = p;
+	                System.out.println("Caught " + p.name + ", added to party!");
+	                current = team[0];
+	                break;
+	            }
+	        }
+	    } else {
+	        int index = -1;
+	        for (int i = 0; i < box.length; i++) {
+	            if (box[i] == null) {
+	                index = i;
+	                break;
+	            }
+	        }
+	        if (index >= 0) {
+	            box[index] = p;
+	            System.out.println("Caught " + p.name + ", sent to box!");
+	        } else {
+	            System.out.println("Cannot catch " + p.name + ", box is full");
+	        }
+	    }
 	}
+
 	
 	@Override // implementation
 	public String toString() {
