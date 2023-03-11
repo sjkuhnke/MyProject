@@ -98,7 +98,6 @@ public enum Move {
 	FIRE_DASH(0,100,100,0,0,false,PType.FIRE),
 	FIRE_FANG(65,95,10,0,0,false,PType.FIRE),
 	FIRE_PUNCH(75,100,10,0,0,false,PType.FIRE),
-	FIRE_SMASH(60,95,0,0,0,false,PType.FIRE),
 	FIRE_SPIN(35,85,100,0,1,false,PType.FIRE),
 	FIRE_TAIL(85,90,10,0,0,false,PType.FIRE),
 	FLAIL(-1,100,0,0,0,false,PType.NORMAL),
@@ -248,7 +247,6 @@ public enum Move {
 	SLEEP_POWDER(0,75,0,0,2,false,PType.GRASS),
 	SLUDGE(65,100,30,0,1,false,PType.POISON),
 	SLUDGE_BOMB(90,100,30,0,1,false,PType.POISON),
-	SMACK_DOWN(50,100,0,0,0,false,PType.ROCK), // TODO
 	SMASH(70,90,0,0,0,false,PType.NORMAL),
 	SMOG(20,70,50,0,1,false,PType.POISON),
 	SMOKESCREEN(0,100,0,0,2,false,PType.NORMAL),
@@ -295,7 +293,7 @@ public enum Move {
 	TORNADO_SPIN(60,95,100,0,0,false,PType.FIGHTING),
 	TOXIC(0,100,0,0,2,false,PType.POISON),
 	TWISTER(40,100,10,0,1,false,PType.DRAGON),
-	U_TURN(70,100,100,0,0,false,PType.BUG), // TODO
+	FIRST_IMPRESSION(90,100,0,0,0,true,PType.BUG),
 	VINE_WHIP(35,100,0,0,0,false,PType.GRASS),
 	VITAL_THROW(60,1000,0,0,0,false,PType.FIGHTING),
 	VOLT_TACKLE(120,100,10,0,0,false,PType.ELECTRIC), // recoil
@@ -305,7 +303,7 @@ public enum Move {
 	WATER_PULSE(60,100,30,0,1,false,PType.WATER),
 	WATERFALL(80,100,10,0,0,false,PType.WATER),
 	WHIP_SMASH(120,100,0,0,0,false,PType.NORMAL),
-	WHIRLPOOL(35,85,0,0,1,false,PType.WATER), // TODO
+	WHIRLPOOL(35,85,0,0,1,false,PType.WATER),
 	WILL_O_WISP(0,80,0,0,2,false,PType.FIRE),
 	WING_ATTACK(60,100,0,0,0,false,PType.FLYING),
 	WOOD_FANG(50,100,50,0,0,false,PType.ROCK),
@@ -357,5 +355,14 @@ public enum Move {
 	public boolean isPriority() {
 		return priority;
 	}
+
+	public static Move getMove(String moveName) {
+    for (Move move : Move.values()) {
+        if (move.toString().equalsIgnoreCase(moveName)) {
+            return move;
+        }
+    }
+    return null;
+}
 
 }

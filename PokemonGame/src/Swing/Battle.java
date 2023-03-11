@@ -3,6 +3,7 @@ package Swing;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
@@ -73,6 +74,12 @@ public class Battle extends JFrame {
 	private JRadioButton pokeballButton;
 	private JRadioButton greatballButton;
 	private JRadioButton ultraballButton;
+	private JGradientButton addMoney;
+	private JGradientButton buyPoke;
+	private JGradientButton buyGreat;
+	private JGradientButton buyUltra;
+	private JLabel moneyLabel;
+	private JLabel[] bag;
 	
 	/**
 	 * Launch the application.
@@ -134,6 +141,117 @@ public class Battle extends JFrame {
 		returnButton = createJButton("Exit", new Font("Tahoma", Font.BOLD, 12), 553, 35, 62, 21);
 		returnButton.setVisible(false);
 		
+		addMoney = new JGradientButton("Win ($100)");
+		addMoney.setBounds(30, 410, 100, 50);
+		addMoney.setFont(new Font("Tahoma", Font.BOLD, 9));
+		addMoney.setBackground(Color.GREEN);
+		
+		addMoney.addActionListener(e -> {
+			me.money += 100;
+			JOptionPane.showMessageDialog(null, "Won $100! Current Balance: $" + me.money);
+			moneyLabel.setText("$" + me.money);
+		});
+		
+		bag = new JLabel[9];
+		buyPoke = new JGradientButton("Buy Pokeballs");
+		buyPoke.setBounds(155, 410, 100, 50);
+		buyPoke.setFont(new Font("Tahoma", Font.PLAIN, 9));
+		buyPoke.setBackground(new Color(199, 6, 32));
+		bag[6] = new JLabel("10 for $100");
+		bag[6].setBounds(155, 462, 100, 21);
+		bag[6].setHorizontalAlignment(SwingConstants.CENTER);
+		bag[6].setFont(new Font("Tahoma", Font.BOLD, 12));
+		bag[6].setForeground(new Color(79, 2, 2));
+		
+		buyGreat = new JGradientButton("Buy Great Balls");
+		buyGreat.setBounds(280, 410, 100, 50);
+		buyGreat.setFont(new Font("Tahoma", Font.PLAIN, 9));
+		buyGreat.setBackground(new Color(6, 16, 199));
+		bag[7] = new JLabel("5 for $200");
+		bag[7].setBounds(280, 462, 100, 21);
+		bag[7].setHorizontalAlignment(SwingConstants.CENTER);
+		bag[7].setFont(new Font("Tahoma", Font.BOLD, 12));
+		bag[7].setForeground(new Color(2, 4, 79));
+		
+		buyUltra = new JGradientButton("Buy Ultra Balls");
+		buyUltra.setBounds(405, 410, 100, 50);
+		buyUltra.setFont(new Font("Tahoma", Font.PLAIN, 9));
+		buyUltra.setBackground(new Color(199, 192, 6));
+		bag[8] = new JLabel("5 for $500");
+		bag[8].setBounds(405, 462, 100, 21);
+		bag[8].setHorizontalAlignment(SwingConstants.CENTER);
+		bag[8].setFont(new Font("Tahoma", Font.BOLD, 12));
+		bag[8].setForeground(new Color(92, 97, 6));
+		
+		moneyLabel = new JLabel("$" + me.money);
+		moneyLabel.setHorizontalAlignment(SwingConstants.LEFT);
+		moneyLabel.setBounds(553, 10, 100, 21);
+		moneyLabel.setFont(new Font("Tahoma", Font.BOLD, 12));
+		
+		bag[0] = new JLabel("Pokeballs:");
+		bag[0].setBounds(553, 60, 60, 21);
+		bag[0].setFont(new Font("Tahoma", Font.PLAIN, 11));
+		
+		bag[1] = new JLabel(me.pokeballCount + "");
+		bag[1].setBounds(553, 80, 40, 21);
+		bag[1].setFont(new Font("Tahoma", Font.BOLD, 15));
+		bag[1].setForeground(new Color(199, 6, 32));
+		
+		bag[2] = new JLabel("Great Balls:");
+		bag[2].setBounds(553, 105, 60, 21);
+		bag[2].setFont(new Font("Tahoma", Font.PLAIN, 11));
+		
+		bag[3] = new JLabel(me.greatballCount + "");
+		bag[3].setBounds(553, 125, 40, 21);
+		bag[3].setFont(new Font("Tahoma", Font.BOLD, 15));
+		bag[3].setForeground(new Color(6, 16, 199));
+		
+		bag[4] = new JLabel("Ultra Balls:");
+		bag[4].setBounds(553, 150, 60, 21);
+		bag[4].setFont(new Font("Tahoma", Font.PLAIN, 11));
+		
+		bag[5] = new JLabel(me.ultraballCount + "");
+		bag[5].setBounds(553, 170, 40, 21);
+		bag[5].setFont(new Font("Tahoma", Font.BOLD, 15));
+		bag[5].setForeground(new Color(199, 192, 6));
+		
+		buyPoke.addActionListener(e -> {
+			if (me.money >= 100) {
+				me.pokeballCount += 10;
+				me.money -= 100;
+				JOptionPane.showMessageDialog(null, "Bought 10 Pokeballs for $100! You have $" + me.money + " remaining");
+				moneyLabel.setText("$" + me.money);
+				bag[1].setText(me.pokeballCount + "");
+			} else {
+				JOptionPane.showMessageDialog(null, "Not enough money!");
+			}
+		});
+		
+		buyGreat.addActionListener(e -> {
+			if (me.money >= 200) {
+				me.greatballCount += 5;
+				me.money -= 200;
+				JOptionPane.showMessageDialog(null, "Bought 5 Great Balls for $200! You have $" + me.money + " remaining");
+				moneyLabel.setText("$" + me.money);
+				bag[3].setText(me.greatballCount + "");
+			} else {
+				JOptionPane.showMessageDialog(null, "Not enough money!");
+			}
+		});
+		
+		buyUltra.addActionListener(e -> {
+			if (me.money >= 500) {
+				me.ultraballCount += 5;
+				me.money -= 500;
+				JOptionPane.showMessageDialog(null, "Bought 5 Ultra Balls for $500! You have $" + me.money + " remaining");
+				moneyLabel.setText("$" + me.money);
+				bag[5].setText(me.ultraballCount + "");
+			} else {
+				JOptionPane.showMessageDialog(null, "Not enough money!");
+			}
+		});
+		
+		
 		boxButtons = new JGradientButton[30];
 		for (int i = 0; i < boxButtons.length; i++) {
 			final int index = i;
@@ -157,6 +275,7 @@ public class Battle extends JFrame {
 	                JLabel movesLabel = new JLabel("Moves: N/A");
 	                if (me.box[index] != null) movesLabel.setText("Moves: " + movesToString(me.box[index]));
 	                JButton swapButton = new JButton("Swap with a party member");
+	                JButton moveButton = new JButton("Teach Move");
 	                JButton releaseButton = new JButton("Release");
 	                swapButton.addActionListener(new ActionListener() {
 	                    @Override
@@ -194,7 +313,7 @@ public class Battle extends JFrame {
 	                                    // Swap the selected party member with the selected box member
 	                                    if (jndex == 0) {
 	                                    	if (me.box[index] == null) {
-	                                    		JOptionPane.showMessageDialog(null, "You cannot remove current from the party.");
+	                                    		JOptionPane.showMessageDialog(null, "You cannot remove the lead from your party.");
 	            	                            return;
 	                                    	}
 	                                        me.current = me.box[index];
@@ -220,6 +339,72 @@ public class Battle extends JFrame {
 	                        JOptionPane.showMessageDialog(null, scrollPane, "Swap with a party member", JOptionPane.PLAIN_MESSAGE);
 	                    }
 	                });
+	                moveButton.addActionListener(new ActionListener() {
+	                    @Override
+	                    public void actionPerformed(ActionEvent e) {
+	                        // Prompt the player to enter the name of the move they want to teach
+	                        String moveName = JOptionPane.showInputDialog(null, "Enter the name of the move you want to teach:");
+
+	                        // Find the move in the move database
+	                        Move move = Move.getMove(moveName);
+	                        if (move == null) {
+	                            JOptionPane.showMessageDialog(null, "Invalid move name.");
+	                            return;
+	                        }
+	                        for (int l = 0; l < me.box[index].moveset.length; l++) {
+	                        	if (move == me.box[index].moveset[l]) {
+	                        		JOptionPane.showMessageDialog(null, me.box[index].name + " already knows " + move.toString() + "!");
+		                            return;
+	                        	}
+	                        }
+
+	                     // Add a boolean flag to keep track of whether an empty move slot has been found
+	                        boolean foundEmptySlot = false;
+
+	                        // Display the moveset and allow the player to select a move to replace
+	                        JPanel moveset = new JPanel();
+	                        moveset.setLayout(new BoxLayout(moveset, BoxLayout.Y_AXIS));
+	                        JLabel titleLabel = new JLabel("Select a move to override:");
+	                        moveset.add(titleLabel);
+	                        for (int j = 0; j < me.box[index].moveset.length; j++) {
+	                            JButton moveslot;
+	                            if (me.box[index].moveset[j] != null) {
+	                                moveslot = new JGradientButton(me.box[index].moveset[j].toString());
+	                                moveslot.setBackground(me.box[index].moveset[j].mtype.getColor());
+	                            } else {
+	                                // Only display the first empty move slot
+	                                if (!foundEmptySlot) {
+	                                    moveslot = new JGradientButton("EMPTY");
+	                                    foundEmptySlot = true;
+	                                } else {
+	                                    // Don't display any more empty move slots
+	                                    continue;
+	                                }
+	                            }
+	                            moveslot.setVisible(true);
+
+	                            int moveIndex = j;
+	                            moveslot.addActionListener(new ActionListener() {
+	                                @Override
+	                                public void actionPerformed(ActionEvent e) {
+	                                    // Replace the selected move with the new move
+	                                    me.box[index].moveset[moveIndex] = move;
+
+	                                    // Update the display
+	                                    SwingUtilities.getWindowAncestor(moveset).dispose();
+	                                    SwingUtilities.getWindowAncestor(boxMemberPanel).dispose();
+	                                    displayBox();
+	                                }
+	                            });
+	                            moveset.add(moveslot);
+	                        }
+	                        JScrollPane scrollPane = new JScrollPane(moveset);
+	                        scrollPane.setPreferredSize(new Dimension(300, 200));
+	                        JOptionPane.showMessageDialog(null, scrollPane, "Override move", JOptionPane.PLAIN_MESSAGE);
+
+	                    }
+	                });
+
 
 	                releaseButton.addActionListener(new ActionListener() {
 	                    @Override
@@ -237,6 +422,7 @@ public class Battle extends JFrame {
 	                boxMemberPanel.add(statsLabel);
 	                boxMemberPanel.add(movesLabel);
 	                boxMemberPanel.add(swapButton);
+	                boxMemberPanel.add(moveButton);
 	                boxMemberPanel.add(releaseButton);
 	                JOptionPane.showMessageDialog(null, boxMemberPanel, "Box member details", JOptionPane.PLAIN_MESSAGE);
 		        }
@@ -256,6 +442,88 @@ public class Battle extends JFrame {
 				boxButton.setVisible(true);
 			}
         });
+		
+		catchButton.addActionListener(e -> {
+		    if (!foe.isFainted()) {
+		        Random rand = new Random();
+		        double catchRate = 0;
+		        double statusBonus = 1;
+		        
+		        if (foe.id == 103 || foe.id == 104 || foe.id == 105 || foe.id == 91 || foe.id == 133 || foe.id == 134 ||foe.id == 135 || foe.id == 136 || foe.id == 137 ||foe.id == 138 || foe.id == 139 || foe.id == 140) statusBonus = 0.25; // if legendary
+		        
+		        if (pokeballButton.isSelected()) {
+		        	if (me.pokeballCount <= 0) {
+		        		JOptionPane.showMessageDialog(null, "No balls remaining!");
+                        return;
+		        	}
+		            catchRate = 1.0 / 12.0;
+		            if (foe.currentHP <= (foe.getStat(0) / 4)) {
+		                catchRate = 0.25;
+		            } else if (foe.currentHP <= (foe.getStat(0) / 2)) {
+		                catchRate = 1.0 / 8.0;
+		            }
+		            if (foe.getStatus() != Status.HEALTHY) {
+		                statusBonus *= 2.0;
+		            }
+		            System.out.println("\nUsed a Pokeball!");
+		            me.pokeballCount--;
+		        } else if (greatballButton.isSelected()) {
+		        	if (me.greatballCount <= 0) {
+		        		JOptionPane.showMessageDialog(null, "No balls remaining!");
+                        return;
+		        	}
+		            catchRate = 1.0 / 10.0;
+		            if (foe.currentHP <= (foe.getStat(0) / 4)) {
+		                catchRate = 0.5;
+		            } else if (foe.currentHP <= (foe.getStat(0) / 2)) {
+		                catchRate = 1.0 / 6.0;
+		            }
+		            if (foe.getStatus() != Status.HEALTHY) {
+		                statusBonus *= 2.0;
+		            }
+		            System.out.println("\nUsed a Great Ball!");
+		            me.greatballCount--;
+		        } else if (ultraballButton.isSelected()) {
+		        	if (me.ultraballCount <= 0) {
+		        		JOptionPane.showMessageDialog(null, "No balls remaining!");
+                        return;
+		        	}
+		            catchRate = 1.0 / 6.0;
+		            if (foe.currentHP <= (foe.getStat(0) / 4)) {
+		                catchRate = 1.0;
+		            } else if (foe.currentHP <= (foe.getStat(0) / 2)) {
+		                catchRate = 1.0 / 3.0;
+		            }
+		            if (foe.getStatus() != Status.HEALTHY) {
+		                statusBonus *= 2.0;
+		            }
+		            System.out.println("\nUsed an Ultra Ball!");
+		            me.ultraballCount--;
+		        }
+		        
+		        double randomValue = rand.nextDouble();
+		        double modifiedCatchRate = catchRate * statusBonus;
+		        if (randomValue <= modifiedCatchRate) {
+		            me.catchPokemon(new Pokemon(foe.id, foe.getLevel(), true));
+		            foe.currentHP = 0;
+					foe.faint(false);
+					displayParty();
+					updateFoe();
+					boxButton.setVisible(true);
+		        } else {
+		            System.out.println("Oh no! " + foe.name + " broke free!");
+		            foe.move(me.getCurrent(),foe.randomMove());
+					Pokemon.endOfTurn(foe, me.getCurrent());
+					Pokemon.endOfTurn(me.getCurrent(), foe);
+					updateCurrent();
+					updateBars();
+					displayParty();
+					updateStatus();
+		        }
+		        System.out.println();
+			    System.out.println("------------------------------");
+		    }
+		});
 		
 		fightButton.addActionListener(e -> {
 			try {
@@ -329,6 +597,10 @@ public class Battle extends JFrame {
 		displayParty();
 		
 		party1.addActionListener(e -> {
+			if (me.getCurrent().vStatuses.contains(Status.SPUN)) {
+        		JOptionPane.showMessageDialog(null, "You are trapped and cannot switch!");
+                return;
+        	}
 			me.swap(me.team[1], 1);
 			if (!me.team[1].isFainted()) {
 				foe.move(me.getCurrent(),foe.randomMove());
@@ -339,9 +611,15 @@ public class Battle extends JFrame {
 			updateBars();
 			displayParty();
 			updateStatus();
+			System.out.println();
+		    System.out.println("------------------------------");
         });
 		
 		party2.addActionListener(e -> {
+			if (me.getCurrent().vStatuses.contains(Status.SPUN)) {
+        		JOptionPane.showMessageDialog(null, "You are trapped and cannot switch!");
+                return;
+        	}
 			me.swap(me.team[2], 2);
 			if (!me.team[2].isFainted()) {
 				foe.move(me.getCurrent(),foe.randomMove());
@@ -352,9 +630,15 @@ public class Battle extends JFrame {
 			updateBars();
 			displayParty();
 			updateStatus();
+			System.out.println();
+		    System.out.println("------------------------------");
         });
 		
 		party3.addActionListener(e -> {
+			if (me.getCurrent().vStatuses.contains(Status.SPUN)) {
+        		JOptionPane.showMessageDialog(null, "You are trapped and cannot switch!");
+                return;
+        	}
 			me.swap(me.team[3], 3);
 			if (!me.team[3].isFainted()) {
 				foe.move(me.getCurrent(),foe.randomMove());
@@ -365,9 +649,15 @@ public class Battle extends JFrame {
 			updateBars();
 			displayParty();
 			updateStatus();
+			System.out.println();
+		    System.out.println("------------------------------");
         });
 		
 		party4.addActionListener(e -> {
+			if (me.getCurrent().vStatuses.contains(Status.SPUN)) {
+        		JOptionPane.showMessageDialog(null, "You are trapped and cannot switch!");
+                return;
+        	}
 			me.swap(me.team[4], 4);
 			if (!me.team[4].isFainted()) {
 				foe.move(me.getCurrent(),foe.randomMove());
@@ -378,9 +668,15 @@ public class Battle extends JFrame {
 			updateBars();
 			displayParty();
 			updateStatus();
+			System.out.println();
+		    System.out.println("------------------------------");
         });
 		
 		party5.addActionListener(e -> {
+			if (me.getCurrent().vStatuses.contains(Status.SPUN)) {
+        		JOptionPane.showMessageDialog(null, "You are trapped and cannot switch!");
+                return;
+        	}
 			me.swap(me.team[5], 5);
 			if (!me.team[5].isFainted()) {
 				foe.move(me.getCurrent(),foe.randomMove());
@@ -391,6 +687,8 @@ public class Battle extends JFrame {
 			updateBars();
 			displayParty();
 			updateStatus();
+			System.out.println();
+		    System.out.println("------------------------------");
         });
 	}
 
@@ -831,6 +1129,27 @@ public class Battle extends JFrame {
 		}
 		playerPanel.add(returnButton);
 		returnButton.setVisible(true);
+		
+		addMoney.setVisible(true);
+		playerPanel.add(addMoney);
+		
+		buyPoke.setVisible(true);
+		playerPanel.add(buyPoke);
+		buyGreat.setVisible(true);
+		playerPanel.add(buyGreat);
+		buyUltra.setVisible(true);
+		playerPanel.add(buyUltra);
+		moneyLabel.setVisible(true);
+		playerPanel.add(moneyLabel);
+		
+		bag[1].setText(me.pokeballCount + "");
+		bag[3].setText(me.greatballCount + "");
+		bag[5].setText(me.ultraballCount + "");
+		
+		for (int i = 0; i < bag.length; i++) {
+			bag[i].setVisible(true);
+			playerPanel.add(bag[i]);
+		}
 	}
 	
 	private static final class JGradientButton extends JButton{

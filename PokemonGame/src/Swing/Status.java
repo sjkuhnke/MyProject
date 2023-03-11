@@ -17,7 +17,9 @@ public enum Status {
 	AQUA_RING("AQR", new Color(84, 117, 247), Color.BLACK), 
 	CHARGED("CRG", new Color(219, 216, 15), Color.BLACK),
 	SPUN("SPN", new Color(32, 37, 61), Color.WHITE),
-	RECHARGE("SPN", new Color(32, 37, 61), Color.WHITE);
+	RECHARGE("SPN", new Color(32, 37, 61), Color.WHITE),
+	POSESSED("SPN", new Color(32, 37, 61), Color.WHITE),
+	CHARGING("CRG", new Color(219, 216, 15), Color.BLACK);
 	
 	Status(String name, Color color, Color textColor) {
 		this.name = name;

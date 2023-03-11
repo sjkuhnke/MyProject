@@ -26,7 +26,7 @@ public class Pokemon implements Serializable {
 	public Move[] moveset;
 	
 	private Status status;
-	private ArrayList<Status> vStatuses;
+	public ArrayList<Status> vStatuses;
 	
 	public int exp;
 	public int expMax;
@@ -42,6 +42,7 @@ public class Pokemon implements Serializable {
 	private int moveMultiplier;
 	private boolean trainerOwned;
 	private int spunCount;
+	public boolean impressive;
 	
 	
 	public Pokemon(int i, int l, boolean o) {
@@ -70,6 +71,7 @@ public class Pokemon implements Serializable {
 		vStatuses = new ArrayList<Status>();
 		
 		trainerOwned = o;
+		impressive = true;
 		
 	}
 	
@@ -124,7 +126,7 @@ public class Pokemon implements Serializable {
 		vStatuses = new ArrayList<Status>();
 		
 		trainerOwned = true;
-		
+		impressive = true;
 	}
 	
 	public boolean isFainted() {
@@ -2225,6 +2227,7 @@ public class Pokemon implements Serializable {
 						foe.awardxp(this.level);
 					}
 					confusionCounter--;
+					this.impressive = false;
 					return this;
 				} else {
 					confusionCounter--;
@@ -2234,6 +2237,7 @@ public class Pokemon implements Serializable {
 		if (this.status == Status.PARALYZED && Math.random() < 0.25) {
 			System.out.println("\n" + this.name + " is fully paralyzed!");
 			this.moveMultiplier = 0;
+			this.impressive = false;
 			return this;
 		}
 		
@@ -2241,6 +2245,7 @@ public class Pokemon implements Serializable {
 			if (this.sleepCounter > 0) {
 				System.out.println("\n" + this.name + " is fast asleep.");
 				this.sleepCounter--;
+				this.impressive = false;
 				return this;
 			} else {
 				System.out.println("\n" + this.name + " woke up!");
@@ -2251,11 +2256,13 @@ public class Pokemon implements Serializable {
 		if (this.vStatuses.contains(Status.FLINCHED)) {
 			System.out.println("\n" + this.name + " flinched!");
 			this.vStatuses.remove(Status.FLINCHED);
+			this.impressive = false;
 			return this;
 		}
 		if (this.vStatuses.contains(Status.RECHARGE)) {
 			System.out.println("\n" + this.name + " must recharge!");
 			this.vStatuses.remove(Status.RECHARGE);
+			this.impressive = false;
 			return this;
 		}
 		if (move == Move.MIRROR_MOVE) {
@@ -2263,6 +2270,7 @@ public class Pokemon implements Serializable {
 			move = foe.lastMoveUsed;
 			if (move == null) {
 				System.out.println("\nBut it failed!");
+				this.impressive = false;
 				return this;
 			}
 		}
@@ -2271,6 +2279,11 @@ public class Pokemon implements Serializable {
 			Move[] moves = Move.values();
 			move = moves[new Random().nextInt(moves.length)];
 			bp = move.basePower;
+		}
+		if (move == Move.FIRST_IMPRESSION && !this.impressive) {
+			System.out.print("\n" + this.name + " used " + move + "!");
+			System.out.println("\nBut it failed!");
+			return this;
 		}
 		int accEv = this.statStages[5] - foe.statStages[6];
 		accEv = accEv > 6 ? 6 : accEv;
@@ -2286,6 +2299,7 @@ public class Pokemon implements Serializable {
 					foe.awardxp(this.level);
 				}
 			}
+			this.impressive = false;
 			return this; // Check for miss
 		}
 		
@@ -2293,12 +2307,14 @@ public class Pokemon implements Serializable {
 			if (getImmune(foe, move.mtype)) {
 				System.out.println("\n" + this.name + " used " + move + "!");
 				System.out.println("It doesn't effect " + foe.name + "...");
+				this.impressive = false;
 				return this; // Check for immunity
 			}
 		}
 		if (move.cat != 2 && move.mtype == PType.GROUND && foe.magCount > 0) {
 			System.out.println("\n" + this.name + " used " + move + "!");
 			System.out.println("It doesn't effect " + foe.name + "...");
+			this.impressive = false;
 			return this; // Check for immunity
 		}
 		if (foe.magCount > 0) foe.magCount--;
@@ -2307,10 +2323,12 @@ public class Pokemon implements Serializable {
 		
 		if (move == Move.DREAM_EATER && foe.status != Status.ASLEEP) {
 			System.out.println("It doesn't effect " + foe.name + "...");
+			this.impressive = false;
 			return this;
 		}
 		if (move.cat == 2) {
 			statusEffect(foe, move);
+			this.impressive = false;
 			return this;
 		}
 		
@@ -2447,6 +2465,7 @@ public class Pokemon implements Serializable {
 			Move[] validMoves = moves.toArray(new Move[moves.size()]);
 			move(foe, validMoves[new Random().nextInt(validMoves.length)]);
 		}
+		this.impressive = false;
 		return user;
 	}
 
@@ -2579,8 +2598,23 @@ public class Pokemon implements Serializable {
 			if (!foe.vStatuses.contains(Status.SPUN)) {
 				if (foe.type1 != PType.FIRE && foe.type2 != PType.FIRE) {
 					foe.vStatuses.add(Status.SPUN);
+					foe.spunCount = (((int) Math.random() * 3) + 3);
 					System.out.println(foe.name + " was trapped in a fiery vortex!");
 				}
+			}
+		} else if (move == Move.WHIRLPOOL) {
+			if (!foe.vStatuses.contains(Status.SPUN)) {
+				if (foe.type1 != PType.WATER && foe.type2 != PType.WATER) {
+					foe.vStatuses.add(Status.SPUN);
+					foe.spunCount = (((int) Math.random() * 3) + 3);
+					System.out.println(foe.name + " was trapped in a whirlpool vortex!");
+				}
+			}
+		} else if (move == Move.WRAP) {
+			if (!foe.vStatuses.contains(Status.SPUN)) {
+				foe.vStatuses.add(Status.SPUN);
+				foe.spunCount = (((int) Math.random() * 3) + 3);
+				System.out.println(foe.name + " was wrapped by " + this.name + "!");
 			}
 		} else if (move == Move.FIRE_TAIL) {
 			foe.burn(false);
@@ -3082,7 +3116,11 @@ public class Pokemon implements Serializable {
 		} else if (move == Move.TAIL_WHIP) {
 			stat(foe, 1, -1);
 		} else if (move == Move.TAKE_OVER) {
-//			// TODO
+			if (!foe.vStatuses.contains(Status.POSESSED)) {
+				foe.vStatuses.add(Status.POSESSED); // TODO
+			} else {
+				System.out.println("But it failed!");
+			}
 		} else if (move == Move.THUNDER_WAVE) {
 			foe.paralyze(true);
 		} else if (move == Move.TOXIC) {
@@ -3558,7 +3596,7 @@ public class Pokemon implements Serializable {
 			movebank[11] = Move.SLAM;
 			movebank[14] = Move.FIRE_FANG;
 			movebank[18] = Move.BLACK_DUST;
-			movebank[23] = Move.FIRE_SMASH;
+			movebank[23] = Move.FIRE_SPIN;
 			movebank[27] = Move.SELF_DESTRUCT;
 			movebank[32] = Move.LAVA_PLUME;
 			break;
@@ -3571,7 +3609,7 @@ public class Pokemon implements Serializable {
 			movebank[11] = Move.SLAM;
 			movebank[14] = Move.FIRE_FANG;
 			movebank[18] = Move.BLACK_DUST;
-			movebank[23] = Move.FIRE_SMASH;
+			movebank[23] = Move.FIRE_SPIN;
 			movebank[27] = Move.SELF_DESTRUCT;
 			movebank[32] = Move.LAVA_PLUME;
 			movebank[38] = Move.EXPLOSION;
@@ -3936,7 +3974,7 @@ public class Pokemon implements Serializable {
 			movebank[20] = Move.POISON_POWDER;
 			movebank[25] = Move.FAINT_ATTACK;
 			movebank[33] = Move.BUG_BITE;
-			movebank[38] = Move.U_TURN;
+			movebank[38] = Move.FIRST_IMPRESSION;
 			movebank[43] = Move.DARK_PULSE;
 			movebank[48] = Move.CRUNCH;
 			movebank[54] = Move.POISON_FANG;
@@ -4141,7 +4179,7 @@ public class Pokemon implements Serializable {
 			movebank[24] = Move.SHURIKEN;
 			movebank[25] = Move.MACHETE_STAB;
 			movebank[26] = Move.GUNSHOT;
-			movebank[29] = Move.U_TURN;
+			movebank[29] = Move.FIRST_IMPRESSION;
 			movebank[34] = Move.AGILITY;
 			movebank[39] = Move.FIRE_PUNCH;
 			movebank[44] = Move.BLAZING_SWORD;
@@ -4694,7 +4732,7 @@ public class Pokemon implements Serializable {
 			movebank[4] = Move.FURY_CUTTER;
 			movebank[9] = Move.FALSE_SWIPE;
 			movebank[14] = Move.AGILITY;
-			movebank[19] = Move.U_TURN;
+			movebank[19] = Move.FIRST_IMPRESSION;
 			movebank[24] = Move.SLASH;
 			movebank[29] = Move.X_SCIZZOR;
 			movebank[34] = Move.SUPERPOWER;
@@ -5275,7 +5313,7 @@ public class Pokemon implements Serializable {
 			movebank[16] = Move.HAMMER_ARM;
 			movebank[19] = Move.MEGA_DRAIN;
 			movebank[21] = Move.DOUBLE_PUNCH;
-			movebank[24] = Move.SMACK_DOWN;
+			movebank[24] = Move.ROCK_TOMB;
 			movebank[27] = Move.LEAF_BLADE;
 			movebank[31] = Move.SYNTHESIS;
 			break;
@@ -5289,7 +5327,7 @@ public class Pokemon implements Serializable {
 			movebank[16] = Move.HAMMER_ARM;
 			movebank[19] = Move.MEGA_DRAIN;
 			movebank[21] = Move.DOUBLE_PUNCH;
-			movebank[24] = Move.SMACK_DOWN;
+			movebank[24] = Move.ROCK_TOMB;
 			movebank[27] = Move.LEAF_BLADE;
 			movebank[31] = Move.SYNTHESIS;
 			movebank[36] = Move.GIGA_DRAIN;
@@ -5653,6 +5691,7 @@ public class Pokemon implements Serializable {
 		this.moveMultiplier = 1;
 		this.vStatuses.clear();
 		statStages = new int[7];
+		this.impressive = true;
 		setType();
 		
 	}
@@ -5739,13 +5778,26 @@ public class Pokemon implements Serializable {
 			} else {
 				p.vStatuses.remove(Status.NIGHTMARE);
 			}
-		} else if (p.vStatuses.contains(Status.AQUA_RING)) {
+		} if (p.vStatuses.contains(Status.AQUA_RING)) {
 			if (p.currentHP < p.getStat(0)) {
 				p.currentHP += p.getStat(0) / 16;
 				if (p.currentHP > p.getStat(0)) {
 					p.currentHP = p.getStat(0);
 				}
 				System.out.println("\n" + p.name + " restored HP.");
+			}
+		} if (p.vStatuses.contains(Status.SPUN)) {
+			if (p.spunCount == 0) {
+				System.out.println("\n" + p.name + " was freed from wrap!");
+				p.vStatuses.remove(Status.SPUN);
+			} else {
+				p.currentHP -= p.getStat(0) / 16;
+				System.out.println("\n" + p.name + " was hurt by being wrapped!");
+				p.spunCount--;
+				if (p.currentHP <= 0) { // Check for kill
+					p.faint(true);
+					f.awardxp(p.level);
+				}
 			}
 		}
 		if (p.perishCount > 0) {

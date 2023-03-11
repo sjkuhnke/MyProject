@@ -1,7 +1,6 @@
 package Swing;
 
 import java.io.Serializable;
-import java.util.Random;
 
 public class Player implements Serializable{
 	/**
@@ -84,13 +83,13 @@ public class Player implements Serializable{
 	}
 
 	public void swap(Pokemon pokemon, int index) {
-		System.out.println(current.name + ", come back!");
+		System.out.println("\n" + current.name + ", come back!");
 		Pokemon lead = current;
 		lead.clearVolatile();
 		this.current = pokemon;
 		this.team[0] = pokemon;
 		this.team[index] = lead;
-		System.out.println("Go " + current.name + "!\n");
+		System.out.println("Go " + current.name + "!");
 		
 	}
 
