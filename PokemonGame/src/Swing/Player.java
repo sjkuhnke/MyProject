@@ -14,6 +14,7 @@ public class Player implements Serializable{
 	public int pokeballCount;
 	public int greatballCount;
 	public int ultraballCount;
+	private int numBattled;
 	
 	public Player() {
 		team = new Pokemon[6];
@@ -89,8 +90,31 @@ public class Player implements Serializable{
 		this.current = pokemon;
 		this.team[0] = pokemon;
 		this.team[index] = lead;
+		if (!this.current.battled) {
+			numBattled++;
+			this.current.battled = true;
+		}
 		System.out.println("Go " + current.name + "!");
 		
+	}
+	
+	public int getBattled() {
+		return numBattled;
+	}
+	
+	public void setBattled(int battled) {
+		numBattled = battled;
+	}
+	
+	public void clearBattled() {
+		for (Pokemon p : team) {
+			if (p != null) p.battled = false;
+		}
+		numBattled = 1;
+	}
+
+	public Pokemon[] getTeam() {
+		return team;
 	}
 
 }

@@ -53,11 +53,7 @@ public class Battle extends JFrame {
 	private JTextField idInput;
 	private JTextField levelInput;
 	private JLabel currentText;
-	private JButton party1;
-	private JButton party2;
-	private JButton party3;
-	private JButton party4;
-	private JButton party5;
+	private JGradientButton[] party;
 	
 	private JButton catchButton;
 	private JButton addButton;
@@ -80,6 +76,7 @@ public class Battle extends JFrame {
 	private JGradientButton buyUltra;
 	private JLabel moneyLabel;
 	private JLabel[] bag;
+	private JProgressBar[] partyHP;
 	
 	/**
 	 * Launch the application.
@@ -87,7 +84,7 @@ public class Battle extends JFrame {
 	public static void main(String[] args) {
 	    foe = new Pokemon(10, 5, false);
 	    foe.currentHP = 0;
-	    foe.faint(false);
+	    foe.faint(false, me);
 
 	    try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("player.dat"))) {
 	        me = (Player) ois.readObject();
@@ -436,7 +433,7 @@ public class Battle extends JFrame {
 			if (!foe.isFainted()) {
 				me.catchPokemon(new Pokemon(foe.id, foe.getLevel(), true));
 				foe.currentHP = 0;
-				foe.faint(false);
+				foe.faint(false, me);
 				displayParty();
 				updateFoe();
 				boxButton.setVisible(true);
@@ -506,15 +503,15 @@ public class Battle extends JFrame {
 		        if (randomValue <= modifiedCatchRate) {
 		            me.catchPokemon(new Pokemon(foe.id, foe.getLevel(), true));
 		            foe.currentHP = 0;
-					foe.faint(false);
+					foe.faint(false, me);
 					displayParty();
 					updateFoe();
 					boxButton.setVisible(true);
 		        } else {
 		            System.out.println("Oh no! " + foe.name + " broke free!");
-		            foe.move(me.getCurrent(),foe.randomMove());
-					Pokemon.endOfTurn(foe, me.getCurrent());
-					Pokemon.endOfTurn(me.getCurrent(), foe);
+		            foe.move(me.getCurrent(),foe.randomMove(), me);
+					Pokemon.endOfTurn(foe, me.getCurrent(), me);
+					Pokemon.endOfTurn(me.getCurrent(), foe, me);
 					updateCurrent();
 					updateBars();
 					displayParty();
@@ -535,6 +532,9 @@ public class Battle extends JFrame {
 				updateFoe();
 				boxButton.setVisible(false);
 			}
+			me.clearBattled();
+			me.getCurrent().battled = true;
+			System.out.println(me.getBattled());
         });
 		
 		healButton.addActionListener(e -> {
@@ -589,107 +589,34 @@ public class Battle extends JFrame {
 			playerPanel.repaint();
 		});
 		
-		party1 = new JButton();
-		party2 = new JButton();
-		party3 = new JButton();
-		party4 = new JButton();
-		party5 = new JButton();
+		party = new JGradientButton[5];
+		partyHP = new JProgressBar[5];
+		for (int i = 0; i < 5; i++) {
+			party[i] = new JGradientButton("");
+			partyHP[i] = new JProgressBar(0, 100);
+			final int index = i + 1;
+			
+			party[i].addActionListener(e -> {
+				if (me.getCurrent().vStatuses.contains(Status.SPUN)) {
+	        		JOptionPane.showMessageDialog(null, "You are trapped and cannot switch!");
+	                return;
+	        	}
+				me.swap(me.team[index], index);
+				if (!me.team[index].isFainted()) {
+					foe.move(me.getCurrent(),foe.randomMove(), me);
+					Pokemon.endOfTurn(foe, me.getCurrent(), me);
+					Pokemon.endOfTurn(me.getCurrent(), foe, me);
+				}
+				updateCurrent();
+				updateBars();
+				displayParty();
+				updateStatus();
+				System.out.println();
+			    System.out.println("------------------------------");
+			    System.out.println(me.getBattled());
+	        });
+		}
 		displayParty();
-		
-		party1.addActionListener(e -> {
-			if (me.getCurrent().vStatuses.contains(Status.SPUN)) {
-        		JOptionPane.showMessageDialog(null, "You are trapped and cannot switch!");
-                return;
-        	}
-			me.swap(me.team[1], 1);
-			if (!me.team[1].isFainted()) {
-				foe.move(me.getCurrent(),foe.randomMove());
-				Pokemon.endOfTurn(foe, me.getCurrent());
-				Pokemon.endOfTurn(me.getCurrent(), foe);
-			}
-			updateCurrent();
-			updateBars();
-			displayParty();
-			updateStatus();
-			System.out.println();
-		    System.out.println("------------------------------");
-        });
-		
-		party2.addActionListener(e -> {
-			if (me.getCurrent().vStatuses.contains(Status.SPUN)) {
-        		JOptionPane.showMessageDialog(null, "You are trapped and cannot switch!");
-                return;
-        	}
-			me.swap(me.team[2], 2);
-			if (!me.team[2].isFainted()) {
-				foe.move(me.getCurrent(),foe.randomMove());
-				Pokemon.endOfTurn(foe, me.getCurrent());
-				Pokemon.endOfTurn(me.getCurrent(), foe);
-			}
-			updateCurrent();
-			updateBars();
-			displayParty();
-			updateStatus();
-			System.out.println();
-		    System.out.println("------------------------------");
-        });
-		
-		party3.addActionListener(e -> {
-			if (me.getCurrent().vStatuses.contains(Status.SPUN)) {
-        		JOptionPane.showMessageDialog(null, "You are trapped and cannot switch!");
-                return;
-        	}
-			me.swap(me.team[3], 3);
-			if (!me.team[3].isFainted()) {
-				foe.move(me.getCurrent(),foe.randomMove());
-				Pokemon.endOfTurn(foe, me.getCurrent());
-				Pokemon.endOfTurn(me.getCurrent(), foe);
-			}
-			updateCurrent();
-			updateBars();
-			displayParty();
-			updateStatus();
-			System.out.println();
-		    System.out.println("------------------------------");
-        });
-		
-		party4.addActionListener(e -> {
-			if (me.getCurrent().vStatuses.contains(Status.SPUN)) {
-        		JOptionPane.showMessageDialog(null, "You are trapped and cannot switch!");
-                return;
-        	}
-			me.swap(me.team[4], 4);
-			if (!me.team[4].isFainted()) {
-				foe.move(me.getCurrent(),foe.randomMove());
-				Pokemon.endOfTurn(foe, me.getCurrent());
-				Pokemon.endOfTurn(me.getCurrent(), foe);
-			}
-			updateCurrent();
-			updateBars();
-			displayParty();
-			updateStatus();
-			System.out.println();
-		    System.out.println("------------------------------");
-        });
-		
-		party5.addActionListener(e -> {
-			if (me.getCurrent().vStatuses.contains(Status.SPUN)) {
-        		JOptionPane.showMessageDialog(null, "You are trapped and cannot switch!");
-                return;
-        	}
-			me.swap(me.team[5], 5);
-			if (!me.team[5].isFainted()) {
-				foe.move(me.getCurrent(),foe.randomMove());
-				Pokemon.endOfTurn(foe, me.getCurrent());
-				Pokemon.endOfTurn(me.getCurrent(), foe);
-			}
-			updateCurrent();
-			updateBars();
-			displayParty();
-			updateStatus();
-			System.out.println();
-		    System.out.println("------------------------------");
-        });
 	}
 
 	private void initialize() {
@@ -935,69 +862,36 @@ public class Battle extends JFrame {
 	}
 
 	private void displayParty() {
-		party1.setText("");
-		if (me.team[1] != null && !me.team[1].isFainted()) {
-			party1.setText(me.team[1].getName() + "  lv " + me.team[1].getLevel());
-			party1.setHorizontalAlignment(SwingConstants.CENTER);
-			party1.setFont(new Font("Tahoma", Font.PLAIN, 11));
-			party1.setBounds(330, 21, 124, 30);
-			playerPanel.add(party1);
-			party1.setVisible(true);
-			
-		} else {
-			party1.setVisible(false);
-		}
-		
-		party2.setText("");
-		if (me.team[2] != null && !me.team[2].isFainted()) {
-			party2.setText(me.team[2].getName() + "  lv " + me.team[2].getLevel());
-			party2.setHorizontalAlignment(SwingConstants.CENTER);
-			party2.setFont(new Font("Tahoma", Font.PLAIN, 11));
-			party2.setBounds(330, 66, 124, 30);
-			playerPanel.add(party2);
-			party2.setVisible(true);
-			
-		} else {
-			party2.setVisible(false);
-		}
-		
-		party3.setText("");
-		if (me.team[3] != null && !me.team[3].isFainted()) {
-			party3.setText(me.team[3].getName() + "  lv " + me.team[3].getLevel());
-			party3.setHorizontalAlignment(SwingConstants.CENTER);
-			party3.setFont(new Font("Tahoma", Font.PLAIN, 11));
-			party3.setBounds(330, 111, 124, 30);
-			playerPanel.add(party3);
-			party3.setVisible(true);
-			
-		} else {
-			party3.setVisible(false);
-		}
-		
-		party4.setText("");
-		if (me.team[4] != null && !me.team[4].isFainted()) {
-			party4.setText(me.team[4].getName() + "  lv " + me.team[4].getLevel());
-			party4.setHorizontalAlignment(SwingConstants.CENTER);
-			party4.setFont(new Font("Tahoma", Font.PLAIN, 11));
-			party4.setBounds(330, 156, 124, 30);
-			playerPanel.add(party4);
-			party4.setVisible(true);
-			
-		} else {
-			party4.setVisible(false);
-		}
-		
-		party5.setText("");
-		if (me.team[5] != null && !me.team[5].isFainted()) {
-			party5.setText(me.team[5].getName() + "  lv " + me.team[5].getLevel());
-			party5.setHorizontalAlignment(SwingConstants.CENTER);
-			party5.setFont(new Font("Tahoma", Font.PLAIN, 11));
-			party5.setBounds(330, 201, 124, 30);
-			playerPanel.add(party5);
-			party5.setVisible(true);
-			
-		} else {
-			party5.setVisible(false);
+		for (int i = 0; i < 5; i++) {
+			party[i].setText("");
+			if (me.team[i + 1] != null && !me.team[i + 1].isFainted()) {
+				party[i].setText(me.team[i + 1].getName() + "  lv " + me.team[i + 1].getLevel());
+				party[i].setHorizontalAlignment(SwingConstants.CENTER);
+				party[i].setFont(new Font("Tahoma", Font.PLAIN, 11));
+				party[i].setBounds(330, 21 + (i % 5) * 54, 124, 30);
+				party[i].setBackground(me.team[i + 1].type1.getColor());
+				playerPanel.add(party[i]);
+				party[i].setVisible(true);
+				
+			} else {
+				party[i].setVisible(false);
+			}
+			if (me.team[i + 1] != null && !me.team[i + 1].isFainted()) {
+				partyHP[i].setMaximum(me.team[i + 1].getStat(0));
+				partyHP[i].setValue(me.team[i + 1].currentHP);
+				if (partyHP[i].getPercentComplete() > 0.5) {
+					partyHP[i].setForeground(new Color(0, 255, 0));
+				} else if (partyHP[i].getPercentComplete() <= 0.5 && partyHP[i].getPercentComplete() > 0.25) {
+					partyHP[i].setForeground(new Color(255, 255, 0));
+				} else {
+					partyHP[i].setForeground(new Color(255, 0, 0));
+				}
+				partyHP[i].setBounds(330, 54 + (i % 5) * 54, 124, 7);
+				partyHP[i].setVisible(true);
+				playerPanel.add(partyHP[i]);
+			} else {
+				partyHP[i].setVisible(false);
+			}
 		}
 		
 	}
@@ -1010,52 +904,52 @@ public class Battle extends JFrame {
 		
 		// Check for priority moves
 	    if (m1.isPriority() && !m2.isPriority()) {
-	        newP = p1.move(p2, m1);
-	        p2.move(p1, m2);
-	        Pokemon.endOfTurn(p1, p2);
-			Pokemon.endOfTurn(p2, p1);
+	        newP = p1.move(p2, m1, me);
+	        p2.move(p1, m2, me);
+	        Pokemon.endOfTurn(p1, p2, me);
+			Pokemon.endOfTurn(p2, p1, me);
 	    } else if (!m1.isPriority() && m2.isPriority()) {
-	        p2.move(p1, m2);
-	        newP = p1.move(p2, m1);
-	        Pokemon.endOfTurn(p2, p1);
-			Pokemon.endOfTurn(p1, p2);
+	        p2.move(p1, m2, me);
+	        newP = p1.move(p2, m1, me);
+	        Pokemon.endOfTurn(p2, p1, me);
+			Pokemon.endOfTurn(p1, p2, me);
 	    } else if (m1.isPriority() && m2.isPriority()) {
 	        if (p1speed >= p2speed) {
-	            newP = p1.move(p2, m1);
-	            p2.move(p1, m2);
-	            Pokemon.endOfTurn(p1, p2);
-				Pokemon.endOfTurn(p2, p1);
+	            newP = p1.move(p2, m1, me);
+	            p2.move(p1, m2, me);
+	            Pokemon.endOfTurn(p1, p2, me);
+				Pokemon.endOfTurn(p2, p1, me);
 	        } else {
-	            p2.move(p1, m2);
-	            newP = p1.move(p2, m1);
-	            Pokemon.endOfTurn(p2, p1);
-				Pokemon.endOfTurn(p1, p2);
+	            p2.move(p1, m2, me);
+	            newP = p1.move(p2, m1, me);
+	            Pokemon.endOfTurn(p2, p1, me);
+				Pokemon.endOfTurn(p1, p2, me);
 	        }
 	    } else {
 	        // Regular turn order
 	        if (p1speed > p2speed) {
-	            newP = p1.move(p2, m1);
-	            p2.move(p1, m2);
-	            Pokemon.endOfTurn(p1, p2);
-				Pokemon.endOfTurn(p2, p1);
+	            newP = p1.move(p2, m1, me);
+	            p2.move(p1, m2, me);
+	            Pokemon.endOfTurn(p1, p2, me);
+				Pokemon.endOfTurn(p2, p1, me);
 	        } else if (p1speed < p2speed) {
-	            p2.move(p1, m2);
-	            newP = p1.move(p2, m1);
-	            Pokemon.endOfTurn(p2, p1);
-				Pokemon.endOfTurn(p1, p2);
+	            p2.move(p1, m2, me);
+	            newP = p1.move(p2, m1, me);
+	            Pokemon.endOfTurn(p2, p1, me);
+				Pokemon.endOfTurn(p1, p2, me);
 	        } else {
 	            Random speedTie = new Random();
 	            double random = speedTie.nextDouble();
 	            if (random < 0.5) {
-	                newP = p1.move(p2, m1);
-	                p2.move(p1, m2);
-	                Pokemon.endOfTurn(p1, p2);
-	    			Pokemon.endOfTurn(p2, p1);
+	                newP = p1.move(p2, m1, me);
+	                p2.move(p1, m2, me);
+	                Pokemon.endOfTurn(p1, p2, me);
+	    			Pokemon.endOfTurn(p2, p1, me);
 	            } else {
-	                p2.move(p1, m2);
-	                newP = p1.move(p2, m1);
-	                Pokemon.endOfTurn(p2, p1);
-	    			Pokemon.endOfTurn(p1, p2);
+	                p2.move(p1, m2, me);
+	                newP = p1.move(p2, m1, me);
+	                Pokemon.endOfTurn(p2, p1, me);
+	    			Pokemon.endOfTurn(p1, p2, me);
 	            }
 	        }
 	    }
@@ -1066,6 +960,7 @@ public class Battle extends JFrame {
 		updateBars();
 		updateCurrent();
 		updateStatus();
+		displayParty();
 		if (foe.isFainted()) boxButton.setVisible(true);
 	}
 

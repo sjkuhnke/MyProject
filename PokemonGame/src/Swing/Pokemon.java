@@ -2,6 +2,7 @@ package Swing;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -43,7 +44,7 @@ public class Pokemon implements Serializable {
 	private boolean trainerOwned;
 	private int spunCount;
 	public boolean impressive;
-	
+	public boolean battled;
 	
 	public Pokemon(int i, int l, boolean o) {
 		id = i;
@@ -803,6 +804,7 @@ public class Pokemon implements Serializable {
 		}
 		
 	    System.out.println(this.name + " wants to learn " + move.toString() + ", but " + this.name + " already has 4 moves. What would you like to do?");
+	    System.out.println("Current moves: " + movesToString(this));
 	    System.out.print("Enter slot 1-4, or 0 to keep current moves: ");
 	    int moveIndex = scanner.nextInt();
 	    if (moveIndex == 0) {
@@ -813,7 +815,7 @@ public class Pokemon implements Serializable {
 	}
 
 	private Pokemon checkEvo(Scanner scanner) {
-		Pokemon result = this;
+		Pokemon result = null;
 		if (id == 1 && level >= 15) {
 			result = new Pokemon(2, level, this.moveset);
 		} else if (id == 2 && level >= 35) {
@@ -954,7 +956,7 @@ public class Pokemon implements Serializable {
 		} else if (id == 135 && level >= 55) {
 			result = new Pokemon(138, level, this.moveset);
 		}
-		if (result != this) {
+		if (result != null) {
 	        int hpDif = this.getStat(0) - this.currentHP;
 	        result.currentHP -= hpDif;
 	        result.moveMultiplier = this.moveMultiplier;
@@ -2198,7 +2200,7 @@ public class Pokemon implements Serializable {
 	}
 
 	
-	public Pokemon move(Pokemon foe, Move move) {
+	public Pokemon move(Pokemon foe, Move move, Player player) {
 		if (this.fainted || foe.fainted) return this;
 
 		double attackStat;
@@ -2223,8 +2225,8 @@ public class Pokemon implements Serializable {
 					damage = calc(attackStat, defenseStat, 40, this.level);
 					this.currentHP -= damage;
 					if (this.currentHP <= 0) {
-						this.faint(true);
-						foe.awardxp(this.level);
+						this.faint(true, player);
+						foe.awardxp(this.level, player);
 					}
 					confusionCounter--;
 					this.impressive = false;
@@ -2295,8 +2297,8 @@ public class Pokemon implements Serializable {
 				this.currentHP -= this.getStat(0) / 2;
 				System.out.println(this.name + " kept going and crashed!");
 				if (this.currentHP < 0) {
-					this.faint(true);
-					foe.awardxp(this.level);
+					this.faint(true, player);
+					foe.awardxp(this.level, player);
 				}
 			}
 			this.impressive = false;
@@ -2327,7 +2329,7 @@ public class Pokemon implements Serializable {
 			return this;
 		}
 		if (move.cat == 2) {
-			statusEffect(foe, move);
+			statusEffect(foe, move, player);
 			this.impressive = false;
 			return this;
 		}
@@ -2436,8 +2438,8 @@ public class Pokemon implements Serializable {
 		foe.currentHP -= damage;
 		if (foe.currentHP <= 0 && move == Move.FALSE_SWIPE) foe.currentHP = 1;
 		if (foe.currentHP <= 0) { // Check for kill
-			foe.faint(true);
-			this.awardxp(foe.level);
+			foe.faint(true, player);
+			this.awardxp(foe.level, player);
 		}
 		
 		if (move == Move.BRAVE_BIRD || move == Move.DOUBLE_EDGE || move == Move.FLARE_BLITZ || move == Move.HEAD_SMASH || move == Move.LIGHTNING_HEADBUTT || move == Move.SHELL_BASH || move == Move.SUPER_CHARGE || move == Move.TAKE_DOWN || move == Move.VOLT_TACKLE || move == Move.ROCK_WRECKER) {
@@ -2446,13 +2448,13 @@ public class Pokemon implements Serializable {
 			System.out.println(this.name + " was damaged by recoil!");
 			this.currentHP -= recoil;
 			if (this.currentHP <= 0) { // Check for kill
-				this.faint(true);
-				foe.awardxp(this.level);
+				this.faint(true, player);
+				foe.awardxp(this.level, player);
 			}
 		}
 		if (move == Move.SELF_DESTRUCT || move == Move.EXPLOSION || move == Move.ELECTROEXPLOSION || move == Move.FIRE_DASH) {
-			this.faint(true);
-			foe.awardxp(this.level);
+			this.faint(true, player);
+			foe.awardxp(this.level, player);
 		}
 		if (move == Move.HYPER_BEAM || move == Move.BLAST_BURN || move == Move.FRENZY_PLANT || move == Move.GIGA_IMPACT || move == Move.HYDRO_CANNON || move == Move.MAGIC_CRASH) this.vStatuses.add(Status.RECHARGE);
 		if (move == Move.MAGIC_BLAST) {
@@ -2463,23 +2465,48 @@ public class Pokemon implements Serializable {
 				}
 			}
 			Move[] validMoves = moves.toArray(new Move[moves.size()]);
-			move(foe, validMoves[new Random().nextInt(validMoves.length)]);
+			move(foe, validMoves[new Random().nextInt(validMoves.length)], player);
 		}
 		this.impressive = false;
 		return user;
 	}
 
-	private Pokemon awardxp(int amt) {
-		if (this.fainted) return this;
-		if (!this.trainerOwned) return this;
-		System.out.println(this.name + " gained experience points!");
-		Pokemon user = this;
-		if (this.level < 100) this.exp += amt;
-		if (this.exp >= this.expMax) { // Check for level up
-			user = this.levelUp();
-		}
-		return user;
+	private void awardxp(int amt, Player player) {
+	    if (this.fainted) return;
+	    if (!this.trainerOwned) return;
+
+	    ArrayList<Pokemon> teamCopy = new ArrayList<>(Arrays.asList(player.getTeam()));
+	    int numBattled = player.getBattled();
+	    int expPerPokemon = amt / numBattled;
+	    int remainingExp = amt % numBattled;
+
+	    // Award experience points to each battled Pokemon
+	    for (Pokemon p : teamCopy) {
+	        if (p != null && p.battled) {
+	            int expAwarded = expPerPokemon;
+	            if (remainingExp > 0) {
+	                expAwarded++;
+	                remainingExp--;
+	            }
+	            if (p.level < 100) {
+	                p.exp += expAwarded;
+	                System.out.println(p.name + " gained " + expAwarded + " experience points!");
+	            }
+	            if (p.exp >= p.expMax) {
+	                // Pokemon has leveled up, check for evolution
+	                Pokemon evolved = p.levelUp();
+	                if (evolved != null) {
+	                    // Update the player's team with the evolved Pokemon
+	                    int index = Arrays.asList(player.getTeam()).indexOf(p);
+	                    player.getTeam()[index] = evolved;
+	                    System.out.println(p.name + " evolved into " + evolved.name + "!");
+	                }
+	            }
+	        }
+	    }
 	}
+
+
 
 	private void secondaryEffect(Pokemon foe, Move move) {
 		if (move == Move.ACID) {
@@ -2900,7 +2927,7 @@ public class Pokemon implements Serializable {
 		}
 	}
 
-	private void statusEffect(Pokemon foe, Move move) {
+	private void statusEffect(Pokemon foe, Move move, Player player) {
 		if (move == Move.AGILITY) {
 			stat(this, 4, 2);
 		} else if (move == Move.AQUA_RING) {
@@ -2936,8 +2963,8 @@ public class Pokemon implements Serializable {
 				System.out.println(foe.name + " was afflicted with a curse!");
 				this.currentHP -= (this.getStat(0) / 2);
 				if (this.currentHP <= 0) {
-					this.faint(true);
-					foe.awardxp(this.level);
+					this.faint(true, player);
+					foe.awardxp(this.level, player);
 				}
 			} else {
 				System.out.println("But it failed!");
@@ -5678,9 +5705,13 @@ public class Pokemon implements Serializable {
 		
 	}
 
-	public void faint(boolean announce) {
+	public void faint(boolean announce, Player player) {
 		this.currentHP = 0;
 		this.fainted = true;
+		this.battled = false;
+		if (player != null && this.trainerOwned) {
+			player.setBattled(player.getBattled() - 1);
+		}
 		if (announce) System.out.println("\n" + this.name + " fainted!");
 	}
 
@@ -5718,30 +5749,30 @@ public class Pokemon implements Serializable {
 		return damage;
 	}
 
-	public static void endOfTurn(Pokemon p, Pokemon f) {
+	public static void endOfTurn(Pokemon p, Pokemon f, Player player) {
 		if (p.isFainted()) return;
 		if (p.status == Status.BLEEDING) {
 			p.currentHP -= p.getStat(0) / 8;
 			System.out.println("\n" + p.name + " was hurt by bleeding!");
 			if (p.currentHP <= 0) { // Check for kill
-				p.faint(true);
-				f.awardxp(p.level);
+				p.faint(true, player);
+				f.awardxp(p.level, player);
 			}
 			
 		} else if (p.status == Status.BURNED) {
 			p.currentHP -= p.getStat(0) / 16;
 			System.out.println("\n" + p.name + " was hurt by its burn!");
 			if (p.currentHP <= 0) { // Check for kill
-				p.faint(true);
-				f.awardxp(p.level);
+				p.faint(true, player);
+				f.awardxp(p.level, player);
 			}
 			
 		} else if (p.status == Status.POISONED) {
 			p.currentHP -= p.getStat(0) / 8;
 			System.out.println("\n" + p.name + " was hurt by poison!");
 			if (p.currentHP <= 0) { // Check for kill
-				p.faint(true);
-				f.awardxp(p.level);
+				p.faint(true, player);
+				f.awardxp(p.level, player);
 			}
 			
 		}
@@ -5749,8 +5780,8 @@ public class Pokemon implements Serializable {
 			p.currentHP -= p.getStat(0) / 4;
 			System.out.println("\n" + p.name + " was hurt by the curse!");
 			if (p.currentHP <= 0) { // Check for kill
-				p.faint(true);
-				f.awardxp(p.level);
+				p.faint(true, player);
+				f.awardxp(p.level, player);
 			}
 			
 		}
@@ -5762,8 +5793,8 @@ public class Pokemon implements Serializable {
 			System.out.println("\n" + f.name + " sucked health from " + p.name + "!");
 			f.currentHP += hp;
 			if (p.currentHP <= 0) {
-				p.faint(true);
-				f.awardxp(p.level);
+				p.faint(true, player);
+				f.awardxp(p.level, player);
 			}
 			
 		}
@@ -5772,8 +5803,8 @@ public class Pokemon implements Serializable {
 				p.currentHP -= p.getStat(0) / 4;
 				System.out.println("\n" + p.name + " had a nightmare!");
 				if (p.currentHP <= 0) { // Check for kill
-					p.faint(true);
-					f.awardxp(p.level);
+					p.faint(true, player);
+					f.awardxp(p.level, player);
 				}
 			} else {
 				p.vStatuses.remove(Status.NIGHTMARE);
@@ -5795,8 +5826,8 @@ public class Pokemon implements Serializable {
 				System.out.println("\n" + p.name + " was hurt by being wrapped!");
 				p.spunCount--;
 				if (p.currentHP <= 0) { // Check for kill
-					p.faint(true);
-					f.awardxp(p.level);
+					p.faint(true, player);
+					f.awardxp(p.level, player);
 				}
 			}
 		}
@@ -5804,8 +5835,8 @@ public class Pokemon implements Serializable {
 			p.perishCount--;
 			System.out.println("\n" + p.getName() + "'s perish count fell to " + p.perishCount + "!");
 			if (p.perishCount == 0) {
-				p.faint(true);
-				f.awardxp(p.level);
+				p.faint(true, player);
+				f.awardxp(p.level, player);
 			}
 		}
 		
@@ -6042,5 +6073,20 @@ public class Pokemon implements Serializable {
 		stati.remove(Status.BLEEDING);
 		stati.remove(Status.FLINCHED);
 		stati.remove(Status.SPUN);
+	}
+	
+	private String movesToString(Pokemon p) {
+		String moveString = "";
+	    
+	    for (int i = 0; i < p.moveset.length; i++) {
+	    	if (p.moveset[i] != null) {
+	    		moveString += p.moveset[i].toString();
+	    		if (i != p.moveset.length - 1) {
+	    			moveString += " / ";
+	    		}
+	    	}
+	    }
+	    
+	    return moveString;
 	}
 }
