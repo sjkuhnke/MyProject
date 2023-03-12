@@ -377,13 +377,21 @@ public class Encounter {
 			encounters.add(new Encounter(18, 5, 7, 0.2));
 			encounters.add(new Encounter(21, 6, 8, 0.1));
 		} else if (routeName.equals("Route 4")&& type.equals("Standard") && time.equals("D")) {
-			encounters.add(new Encounter(36, 12, 14, 0.4));
-			encounters.add(new Encounter(82, 14, 16, 0.3));
-			encounters.add(new Encounter(30, 18, 18, 0.2));
+			encounters.add(new Encounter(59, 4, 6, 0.03));
+			encounters.add(new Encounter(141, 4, 6, 0.03));
+			encounters.add(new Encounter(142, 4, 6, 0.03));
+			encounters.add(new Encounter(14, 5, 6, 0.4));
+			encounters.add(new Encounter(16, 6, 7, 0.3));
+			encounters.add(new Encounter(18, 5, 7, 0.2));
+			encounters.add(new Encounter(21, 6, 8, 0.1));
 		} else if (routeName.equals("Route 4")&& type.equals("Standard") && time.equals("N")) {
-			encounters.add(new Encounter(36, 12, 14, 0.4));
-			encounters.add(new Encounter(82, 14, 16, 0.1));
-			encounters.add(new Encounter(30, 18, 18, 0.2));
+			encounters.add(new Encounter(59, 4, 6, 0.06));
+			encounters.add(new Encounter(141, 4, 6, 0.06));
+			encounters.add(new Encounter(142, 4, 6, 0.06));
+			encounters.add(new Encounter(14, 5, 6, 0.0));
+			encounters.add(new Encounter(16, 6, 7, 0.2));
+			encounters.add(new Encounter(18, 5, 7, 0.2));
+			encounters.add(new Encounter(21, 6, 8, 0.1));
 		} else if (routeName.equals("Route 10")&& type.equals("Standard")) {
 			encounters.add(new Encounter(82, 21, 24, 0.2));
 			encounters.add(new Encounter(71, 20, 24, 0.2));

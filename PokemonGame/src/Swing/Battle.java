@@ -87,6 +87,10 @@ public class Battle extends JFrame {
 	private JRadioButton day;
 	private JRadioButton night;
 	private JButton encounterButton;
+	private JRadioButton standard;
+	private JRadioButton rdbtnFishing;
+	private JRadioButton rdbtnSurfing;
+	private JRadioButton rdbtnHeadbutt;
 	
 	/**
 	 * Launch the application.
@@ -167,6 +171,7 @@ public class Battle extends JFrame {
 				if (!foe.isFainted()) boxButton.setVisible(false);
 				me.clearBattled();
 				me.getCurrent().battled = true;
+				me.getCurrent().clearVolatile();
 		    }
 		});
 		
@@ -454,6 +459,115 @@ public class Battle extends JFrame {
 		idInput = createJTextField(2, 31, 53, 27, 20);
 		levelInput = createJTextField(2, 71, 53, 27, 20);
 		
+		encounterInput = new JComboBox<String>();
+		encounterInput.addItem("New Pheonix Town");
+		encounterInput.addItem("Route 1");
+		encounterInput.addItem("Blueberry Grove");
+		encounterInput.addItem("Route 2");
+		encounterInput.addItem("Route 3");
+		encounterInput.addItem("Chupi Forest");
+		encounterInput.addItem("Route 5");
+		encounterInput.addItem("Route 6");
+		encounterInput.addItem("Shorki Cavern");
+		encounterInput.addItem("Route 7");
+		encounterInput.addItem("Route 9");
+		encounterInput.addItem("Cornline City");
+		encounterInput.addItem("Brocline City");
+		encounterInput.addItem("Route 14");
+		encounterInput.addItem("Route 15");
+		encounterInput.addItem("Route 11");
+		encounterInput.addItem("Route 13");
+		encounterInput.addItem("Route 12");
+		encounterInput.addItem("Night Scope Town");
+		encounterInput.addItem("Mt. Wakauki 1A");
+		encounterInput.addItem("Mt. Wakauki 2F");
+		encounterInput.addItem("Mt. Wakauki 1F");
+		encounterInput.addItem("Mt. Wakauki 3B");
+		encounterInput.addItem("Mt. Wakauki 4A");
+		encounterInput.addItem("Mt. Wakauki 5F");
+		encounterInput.addItem("Mt. Wakauki 5A");
+		encounterInput.addItem("Mt. Wakauki 5B");
+		encounterInput.addItem("Mt. Wakauki 6A");
+		encounterInput.addItem("Route 4");
+		encounterInput.addItem("Route 10");
+		encounterInput.addItem("Route 16");
+		encounterInput.addItem("Breezeline Village");
+		encounterInput.addItem("Blantoisa Path 1F");
+		encounterInput.addItem("Blantoisa Path B1F");
+		encounterInput.addItem("Route 17");
+		encounterInput.addItem("Elite Plateau");
+		encounterInput.addItem("Route 8");
+		encounterInput.addItem("Chomp Lake");
+		encounterInput.addItem("Thunder Tower 1T");
+		encounterInput.addItem("Thunder Tower 2T");
+		encounterInput.addItem("Thunder Tower 3T");
+		encounterInput.addItem("Thunder Tower R");
+		encounterInput.addItem("Thunder Tower 1TB");
+		encounterInput.addItem("Thunder Tower 2TB");
+		encounterInput.addItem("Thunder Tower 3TB");
+		encounterInput.addItem("Thunder Tower RB");
+		encounterInput.addItem("Thunder Tower R6");
+		encounterInput.addItem("Thunder Tower RB2");
+		encounterInput.addItem("Route 18");
+		encounterInput.addItem("Route 19");
+		encounterInput.addItem("Route 20");
+		encounterInput.addItem("Route 21");
+		encounterInput.addItem("Orcai Cavern 1A");
+		encounterInput.addItem("Orcai Cavern 0 N");
+		encounterInput.addItem("Orcai Cavern 0 SE");
+		encounterInput.addItem("Orcai Cavern 0 SW");
+		encounterInput.setBounds(478, 80, 142, 21);
+		
+		encounterInput.addActionListener(new ActionListener() {
+		    public void actionPerformed(ActionEvent e) {
+				foe = encounterPokemon((String)encounterInput.getSelectedItem());
+				updateFoe();
+				if (!foe.isFainted()) boxButton.setVisible(false);
+				me.clearBattled();
+				me.getCurrent().battled = true;
+		    }
+		});
+		encounterInput.setVisible(true);
+		playerPanel.add(encounterInput);
+		encounterType = new ButtonGroup();
+		standard = new JRadioButton("Standard");
+		standard.setActionCommand("Standard");
+		standard.setSelected(true);
+		standard.setBounds(502, 108, 109, 23);
+		playerPanel.add(standard);
+		rdbtnFishing = new JRadioButton("Fishing");
+		rdbtnFishing.setActionCommand("Fishing");
+		rdbtnFishing.setBounds(502, 134, 109, 23);
+		playerPanel.add(rdbtnFishing);
+		rdbtnSurfing = new JRadioButton("Surfing");
+		rdbtnSurfing.setBounds(502, 162, 109, 23);
+		rdbtnSurfing.setActionCommand("Surfing");
+		playerPanel.add(rdbtnSurfing);
+		rdbtnHeadbutt = new JRadioButton("Headbutt");
+		rdbtnHeadbutt.setActionCommand("Headbutt");
+		rdbtnHeadbutt.setBounds(502, 188, 109, 23);
+		playerPanel.add(rdbtnHeadbutt);
+		encounterType.add(standard);
+		encounterType.add(rdbtnFishing);
+		encounterType.add(rdbtnSurfing);
+		encounterType.add(rdbtnHeadbutt);
+		time = new ButtonGroup();
+		morning = new JRadioButton("M");
+		morning.setActionCommand("M");
+		morning.setBounds(481, 57, 35, 23);
+		playerPanel.add(morning);
+		day = new JRadioButton("D");
+		day.setActionCommand("D");
+		day.setBounds(531, 57, 35, 23);
+		day.setSelected(true);
+		playerPanel.add(day);
+		night = new JRadioButton("N");
+		night.setActionCommand("N");
+		night.setBounds(581, 57, 35, 23);
+		playerPanel.add(night);
+		time.add(morning);
+		time.add(day);
+		time.add(night);
 		addButton.addActionListener(e -> {
 			if (!foe.isFainted()) {
 				me.catchPokemon(new Pokemon(foe.id, foe.getLevel(), true, false));
@@ -599,7 +713,23 @@ public class Battle extends JFrame {
 			playerPanel.add(boxButton);
 			boxButton.setVisible(true);
 			playerPanel.add(encounterButton);
+			encounterInput.setVisible(true);
+			playerPanel.add(encounterInput);
 			encounterButton.setVisible(true);
+			standard.setVisible(true);
+			playerPanel.add(standard);
+			rdbtnFishing.setVisible(true);
+			playerPanel.add(rdbtnFishing);
+			rdbtnHeadbutt.setVisible(true);
+			playerPanel.add(rdbtnHeadbutt);
+			rdbtnSurfing.setVisible(true);
+			playerPanel.add(rdbtnSurfing);
+			morning.setVisible(true);
+			playerPanel.add(morning);
+			day.setVisible(true);
+			playerPanel.add(day);
+			night.setVisible(true);
+			playerPanel.add(night);
 			JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(playerPanel);
 			frame.setBounds(100, 100, 648, 330);
 			playerPanel.repaint();
@@ -743,118 +873,6 @@ public class Battle extends JFrame {
 		ballType.add(pokeballButton);
 		ballType.add(greatballButton);
 		ballType.add(ultraballButton);
-		
-		encounterInput = new JComboBox<String>();
-		encounterInput.addItem("New Pheonix Town");
-		encounterInput.addItem("Route 1");
-		encounterInput.addItem("Blueberry Grove");
-		encounterInput.addItem("Route 2");
-		encounterInput.addItem("Route 3");
-		encounterInput.addItem("Chupi Forest");
-		encounterInput.addItem("Route 5");
-		encounterInput.addItem("Route 6");
-		encounterInput.addItem("Shorki Cavern");
-		encounterInput.addItem("Route 7");
-		encounterInput.addItem("Route 9");
-		encounterInput.addItem("Cornline City");
-		encounterInput.addItem("Brocline City");
-		encounterInput.addItem("Route 14");
-		encounterInput.addItem("Route 15");
-		encounterInput.addItem("Route 11");
-		encounterInput.addItem("Route 13");
-		encounterInput.addItem("Route 12");
-		encounterInput.addItem("Night Scope Town");
-		encounterInput.addItem("Mt. Wakauki 1A");
-		encounterInput.addItem("Mt. Wakauki 2F");
-		encounterInput.addItem("Mt. Wakauki 1F");
-		encounterInput.addItem("Mt. Wakauki 3B");
-		encounterInput.addItem("Mt. Wakauki 4A");
-		encounterInput.addItem("Mt. Wakauki 5F");
-		encounterInput.addItem("Mt. Wakauki 5A");
-		encounterInput.addItem("Mt. Wakauki 5B");
-		encounterInput.addItem("Mt. Wakauki 6A");
-		encounterInput.addItem("Route 4");
-		encounterInput.addItem("Route 10");
-		encounterInput.addItem("Route 16");
-		encounterInput.addItem("Breezeline Village");
-		encounterInput.addItem("Blantoisa Path 1F");
-		encounterInput.addItem("Blantoisa Path B1F");
-		encounterInput.addItem("Route 17");
-		encounterInput.addItem("Elite Plateau");
-		encounterInput.addItem("Route 8");
-		encounterInput.addItem("Chomp Lake");
-		encounterInput.addItem("Thunder Tower 1T");
-		encounterInput.addItem("Thunder Tower 2T");
-		encounterInput.addItem("Thunder Tower 3T");
-		encounterInput.addItem("Thunder Tower R");
-		encounterInput.addItem("Thunder Tower 1TB");
-		encounterInput.addItem("Thunder Tower 2TB");
-		encounterInput.addItem("Thunder Tower 3TB");
-		encounterInput.addItem("Thunder Tower RB");
-		encounterInput.addItem("Thunder Tower R6");
-		encounterInput.addItem("Thunder Tower RB2");
-		encounterInput.addItem("Route 18");
-		encounterInput.addItem("Route 19");
-		encounterInput.addItem("Route 20");
-		encounterInput.addItem("Route 21");
-		encounterInput.addItem("Orcai Cavern 1A");
-		encounterInput.addItem("Orcai Cavern 0 N");
-		encounterInput.addItem("Orcai Cavern 0 SE");
-		encounterInput.addItem("Orcai Cavern 0 SW");
-		encounterInput.setBounds(478, 80, 142, 21);
-		encounterInput.setVisible(true);
-		playerPanel.add(encounterInput);
-		
-		encounterInput.addActionListener(new ActionListener() {
-		    public void actionPerformed(ActionEvent e) {
-				foe = encounterPokemon((String)encounterInput.getSelectedItem());
-				updateFoe();
-				if (!foe.isFainted()) boxButton.setVisible(false);
-				me.clearBattled();
-				me.getCurrent().battled = true;
-		    }
-		});
-		
-		time = new ButtonGroup();
-		morning = new JRadioButton("M");
-		morning.setActionCommand("M");
-		morning.setBounds(481, 57, 35, 23);
-		playerPanel.add(morning);
-		day = new JRadioButton("D");
-		day.setActionCommand("D");
-		day.setBounds(531, 57, 35, 23);
-		day.setSelected(true);
-		playerPanel.add(day);
-		night = new JRadioButton("N");
-		night.setActionCommand("N");
-		night.setBounds(581, 57, 35, 23);
-		playerPanel.add(night);
-		time.add(morning);
-		time.add(day);
-		time.add(night);
-		
-		encounterType = new ButtonGroup();
-		JRadioButton standard = new JRadioButton("Standard");
-		standard.setActionCommand("Standard");
-		standard.setSelected(true);
-		standard.setBounds(502, 108, 109, 23);
-		playerPanel.add(standard);
-		JRadioButton rdbtnFishing = new JRadioButton("Fishing");
-		rdbtnFishing.setActionCommand("Fishing");
-		rdbtnFishing.setBounds(502, 134, 109, 23);
-		playerPanel.add(rdbtnFishing);
-		JRadioButton rdbtnSurfing = new JRadioButton("Surfing");
-		rdbtnSurfing.setBounds(502, 162, 109, 23);
-		rdbtnSurfing.setActionCommand("Surfing");
-		playerPanel.add(rdbtnSurfing);
-		JRadioButton rdbtnHeadbutt = new JRadioButton("Headbutt");
-		rdbtnHeadbutt.setActionCommand("Headbutt");
-		rdbtnHeadbutt.setBounds(502, 188, 109, 23);
-		playerPanel.add(rdbtnHeadbutt);
-		encounterType.add(standard);
-		encounterType.add(rdbtnFishing);
-		encounterType.add(rdbtnSurfing);
-		encounterType.add(rdbtnHeadbutt);
 		
 		healthBar = new JProgressBar(0, me.getCurrent().getStat(0));
 		healthBar.setBackground(UIManager.getColor("Button.darkShadow"));
@@ -1103,7 +1121,6 @@ public class Battle extends JFrame {
 
 	public void turn(Pokemon p1, Pokemon p2, Move m1, Move m2) {
 		if (p1.isFainted() || p2.isFainted()) return;
-		Pokemon newP;
 		int p1speed = p1.getSpeed();
 		int p2speed = p2.getSpeed();
 		
@@ -1111,19 +1128,19 @@ public class Battle extends JFrame {
 	    if (m1.isPriority() && !m2.isPriority()) {
 	    	if (m1 == Move.SUCKER_PUNCH) {
 	    		if (m2.isAttack()) {
-	    			newP = p1.move(p2, m1, me);
+	    			p1.move(p2, m1, me);
 	    			p2.move(p1, m2, me);
 	    	        Pokemon.endOfTurn(p1, p2, me);
 	    			Pokemon.endOfTurn(p2, p1, me);
 	    		} else {
 	    			m1 = Move.FAILED_SUCKER;
-	    			newP = p1.move(p2, m1, me);
+	    			p1.move(p2, m1, me);
 	    			p2.move(p1, m2, me);
 	    	        Pokemon.endOfTurn(p1, p2, me);
 	    			Pokemon.endOfTurn(p2, p1, me);
 	    		}
 	    	} else {
-	    		newP = p1.move(p2, m1, me);
+	    		p1.move(p2, m1, me);
 		        p2.move(p1, m2, me);
 		        Pokemon.endOfTurn(p1, p2, me);
 				Pokemon.endOfTurn(p2, p1, me);
@@ -1132,57 +1149,57 @@ public class Battle extends JFrame {
 	    	if (m2 == Move.SUCKER_PUNCH) {
 	    		if (m1.isAttack()) {
 	    			p2.move(p1, m2, me);
-	    	        newP = p1.move(p2, m1, me);
+	    	        p1.move(p2, m1, me);
 	    	        Pokemon.endOfTurn(p2, p1, me);
 	    			Pokemon.endOfTurn(p1, p2, me);
 	    		} else {
 	    			m2 = Move.FAILED_SUCKER;
 	    			p2.move(p1, m2, me);
-	    	        newP = p1.move(p2, m1, me);
+	    	        p1.move(p2, m1, me);
 	    	        Pokemon.endOfTurn(p2, p1, me);
 	    			Pokemon.endOfTurn(p1, p2, me);
 	    		}
 	    	} else {
 	    		p2.move(p1, m2, me);
-		        newP = p1.move(p2, m1, me);
+		        p1.move(p2, m1, me);
 		        Pokemon.endOfTurn(p2, p1, me);
 				Pokemon.endOfTurn(p1, p2, me);
 	    	}
 	    } else if (m1.isPriority() && m2.isPriority()) {
 	        if (p1speed >= p2speed) {
-	            newP = p1.move(p2, m1, me);
+	            p1.move(p2, m1, me);
 	            p2.move(p1, m2, me);
 	            Pokemon.endOfTurn(p1, p2, me);
 				Pokemon.endOfTurn(p2, p1, me);
 	        } else {
 	            p2.move(p1, m2, me);
-	            newP = p1.move(p2, m1, me);
+	            p1.move(p2, m1, me);
 	            Pokemon.endOfTurn(p2, p1, me);
 				Pokemon.endOfTurn(p1, p2, me);
 	        }
 	    } else {
 	        // Regular turn order
 	        if (p1speed > p2speed) {
-	            newP = p1.move(p2, m1, me);
+	            p1.move(p2, m1, me);
 	            p2.move(p1, m2, me);
 	            Pokemon.endOfTurn(p1, p2, me);
 				Pokemon.endOfTurn(p2, p1, me);
 	        } else if (p1speed < p2speed) {
 	            p2.move(p1, m2, me);
-	            newP = p1.move(p2, m1, me);
+	            p1.move(p2, m1, me);
 	            Pokemon.endOfTurn(p2, p1, me);
 				Pokemon.endOfTurn(p1, p2, me);
 	        } else {
 	            Random speedTie = new Random();
 	            double random = speedTie.nextDouble();
 	            if (random < 0.5) {
-	                newP = p1.move(p2, m1, me);
+	                p1.move(p2, m1, me);
 	                p2.move(p1, m2, me);
 	                Pokemon.endOfTurn(p1, p2, me);
 	    			Pokemon.endOfTurn(p2, p1, me);
 	            } else {
 	                p2.move(p1, m2, me);
-	                newP = p1.move(p2, m1, me);
+	                p1.move(p2, m1, me);
 	                Pokemon.endOfTurn(p2, p1, me);
 	    			Pokemon.endOfTurn(p1, p2, me);
 	            }
@@ -1190,8 +1207,6 @@ public class Battle extends JFrame {
 	    }
 	    System.out.println();
 	    System.out.println("------------------------------");
-		me.current = newP;
-		me.team[0] = me.getCurrent();
 		updateBars();
 		updateCurrent();
 		updateStatus();
