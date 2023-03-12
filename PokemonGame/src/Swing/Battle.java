@@ -92,7 +92,7 @@ public class Battle extends JFrame {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-	    foe = new Pokemon(10, 5, false);
+	    foe = new Pokemon(10, 5, false, false);
 	    foe.currentHP = 0;
 	    foe.faint(false, me);
 
@@ -105,7 +105,7 @@ public class Battle extends JFrame {
 	    } catch (IOException | ClassNotFoundException e) {
 	        // If there's an error reading the file, create a new Player object
 	        me = new Player();
-	        me.catchPokemon(new Pokemon(4,5, true));
+	        me.catchPokemon(new Pokemon(4,5, true, false));
 	    }
 	    
 	    
@@ -456,7 +456,7 @@ public class Battle extends JFrame {
 		
 		addButton.addActionListener(e -> {
 			if (!foe.isFainted()) {
-				me.catchPokemon(new Pokemon(foe.id, foe.getLevel(), true));
+				me.catchPokemon(new Pokemon(foe.id, foe.getLevel(), true, false));
 				foe.currentHP = 0;
 				foe.faint(false, me);
 				displayParty();
@@ -526,7 +526,7 @@ public class Battle extends JFrame {
 		        double randomValue = rand.nextDouble();
 		        double modifiedCatchRate = catchRate * statusBonus;
 		        if (randomValue <= modifiedCatchRate) {
-		            me.catchPokemon(new Pokemon(foe.id, foe.getLevel(), true));
+		            me.catchPokemon(new Pokemon(foe.id, foe.getLevel(), true, false));
 		            foe.currentHP = 0;
 					foe.faint(false, me);
 					displayParty();
@@ -935,7 +935,7 @@ public class Battle extends JFrame {
 	        if (rand < 0) {
 	            // Randomly generate a level within the level range
 	            int level = (int) (Math.random() * (encounter.getMaxLevel() - encounter.getMinLevel() + 1) + encounter.getMinLevel());
-	            return new Pokemon(encounter.getId(), level, false);
+	            return new Pokemon(encounter.getId(), level, false, false);
 	        }
 	    }
 
@@ -1353,11 +1353,15 @@ public class Battle extends JFrame {
 	
 	private void fightMon() {
 		try {
-			foe = new Pokemon(Integer.parseInt(idInput.getText()), Integer.parseInt(levelInput.getText()), false);
+			if (Integer.parseInt(idInput.getText()) <= 144 && Integer.parseInt(idInput.getText())  >= 1) {
+				foe = new Pokemon(Integer.parseInt(idInput.getText()), Integer.parseInt(levelInput.getText()), false, true);
+			} else {
+				foe = new Pokemon (10, 5, false, true);
+			}
 			updateFoe();
 			boxButton.setVisible(false);
 		} catch (NumberFormatException e1) {
-			foe = new Pokemon (10, 5, false);
+			foe = new Pokemon (10, 5, false, true);
 			updateFoe();
 			boxButton.setVisible(false);
 		}
