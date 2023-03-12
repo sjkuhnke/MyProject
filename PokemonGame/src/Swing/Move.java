@@ -33,7 +33,7 @@ public enum Move {
 	BOUNCE(85,85,30,0,0,false,PType.FLYING),
 	BRANCH_WHACK(50,95,0,0,0,false,PType.ROCK),
 	BRAVE_BIRD(120,100,0,0,0,false,PType.FLYING), // recoil
-	BRICK_BREAK(75,100,100,0,0,false,PType.FIGHTING),
+	BRICK_BREAK(75,100,0,0,0,false,PType.FIGHTING),
 	BRINE(-1,100,0,0,1,false,PType.WATER),
 	BUBBLE(20,100,0,0,1,false,PType.WATER),
 	BUBBLEBEAM(65,100,10,0,1,false,PType.WATER),
@@ -58,11 +58,11 @@ public enum Move {
 	DARK_VOID(0,80,0,0,2,false,PType.DARK),
 	DEFENSE_CURL(0,1000,0,0,2,false,PType.NORMAL),
 	DESTINY_BOND(0,1000,0,0,2,true,PType.GHOST),
-	DISAPPEAR(0,1000,50,0,2,false,PType.GHOST), // TODO
+	DISAPPEAR(0,1000,50,0,2,false,PType.GHOST),
 	DISCHARGE(80,100,30,0,1,false,PType.ELECTRIC),
 	DIVE(80,90,0,0,0,false,PType.WATER),
 	DOUBLE_BLAST(-1,60,30,0,1,false,PType.NORMAL),
-	DOUBLE_HIT(-1,95,0,0,1,false,PType.NORMAL),
+	DOUBLE_HIT(-1,95,0,0,0,false,PType.NORMAL),
 	DOUBLE_JET(-1,85,0,0,0,false,PType.WATER),
 	DOUBLE_KICK(-1,85,0,0,0,false,PType.FIGHTING),
 	DOUBLE_PUNCH(-1,85,0,0,0,false,PType.FIGHTING),
@@ -191,7 +191,7 @@ public enum Move {
 	NIGHT_SLASH(70,100,0,1,0,false,PType.DARK),
 	NIGHTMARE(0,100,0,0,2,false,PType.GHOST),
 	ODOR_SLEUTH(0,1000,0,0,2,false,PType.NORMAL),
-	OUTRAGE(120,100,0,0,0,false,PType.DRAGON), // TODO
+	OUTRAGE(120,100,0,0,0,false,PType.DRAGON),
 	OVERHEAT(140,90,100,0,1,false,PType.FIRE),
 	PECK(35,100,0,0,0,false,PType.FLYING),
 	PERISH_SONG(0,1000,0,0,2,false,PType.GHOST),
@@ -206,7 +206,7 @@ public enum Move {
 	POISONOUS_WATER(95,85,30,0,1,false,PType.POISON),
 	POKE(10,100,0,0,0,false,PType.NORMAL),
 	POUND(40,100,0,0,0,false,PType.NORMAL),
-	PROTECT(0,1000,0,0,2,true,PType.NORMAL), // TODO
+	SHELL_SMASH(0,1000,0,0,2,true,PType.NORMAL),
 	PSYCHO_BLADE(70,100,0,1,0,false,PType.MAGIC),
 	PUNCH(40,90,0,0,0,false,PType.FIGHTING),
 	PURSUIT(40,100,0,0,0,false,PType.DARK),
@@ -215,14 +215,14 @@ public enum Move {
 	RAPID_SPIN(20,100,100,0,0,false,PType.NORMAL),
 	RAZOR_LEAF(55,95,0,1,0,false,PType.GRASS),
 	REBOOT(0,1000,0,0,2,false,PType.STEEL),
-	REVENGE(60,100,0,0,0,false,PType.FIGHTING), // TODO
+	REVENGE(-1,100,0,0,0,false,PType.FIGHTING),
 	ROCK_BLADE(80,100,0,1,0,false,PType.ROCK),
 	ROCK_BLAST(-1,90,0,0,0,false,PType.ROCK),
 	ROCK_SMASH(40,100,50,0,0,false,PType.FIGHTING),
 	ROCK_THROW(50,90,0,0,0,false,PType.ROCK),
 	ROCK_TOMB(60,80,100,0,0,false,PType.ROCK),
 	ROCKET(120,75,50,0,0,false,PType.STEEL),
-	ROLLOUT(30,90,0,0,0,false,PType.ROCK), // TODO
+	ROLLOUT(-1,90,0,0,0,false,PType.ROCK),
 	ROOST(0,1000,0,0,2,false,PType.FLYING),
 	ROOT_CRUSH(105,90,100,0,0,false,PType.ROCK),
 	ROOT_KICK(60,95,0,0,0,false,PType.ROCK),
@@ -238,7 +238,7 @@ public enum Move {
 	SHOCK(15,100,100,0,1,false,PType.ELECTRIC),
 	SHOCK_WAVE(60,1000,0,0,1,false,PType.ELECTRIC),
 	SHURIKEN(75,85,50,0,0,false,PType.STEEL),
-	SKULL_BASH(100,100,100,0,0,false,PType.NORMAL), // TODO charge
+	SKULL_BASH(100,100,100,0,0,false,PType.NORMAL), // charge
 	SKY_ATTACK(140,90,30,1,0,false,PType.FLYING), // charge
 	SKY_UPPERCUT(85,90,0,0,0,false,PType.FIGHTING),
 	SLAM(80,75,0,0,0,false,PType.NORMAL),
@@ -263,7 +263,7 @@ public enum Move {
 	STRENGTH(80,100,0,0,0,false,PType.NORMAL),
 	STRING_SHOT(0,100,0,0,2,false,PType.BUG),
 	STRONG_ARM(90,85,30,0,0,false,PType.FIGHTING),
-	SUCKER_PUNCH(80,100,0,0,0,true,PType.DARK), // TODO
+	SUCKER_PUNCH(80,100,0,0,0,true,PType.DARK),
 	SUPER_CHARGE(90,50,100,0,0,false,PType.ELECTRIC), // recoil
 	SUPER_FANG(0,100,0,0,0,false,PType.NORMAL),
 	SUPERPOWER(120,100,100,0,0,false,PType.FIGHTING),
@@ -314,7 +314,8 @@ public enum Move {
 	ZEN_HEADBUTT(80,90,30,0,0,false,PType.MAGIC),
 	ROCK_SLIDE(75,90,30,0,0,false,PType.ROCK),
 	ROCK_POLISH(0,1000,0,0,2,false,PType.ROCK),
-	ROCK_WRECKER(150,90,0,0,0,false,PType.ROCK), // recoil
+	ROCK_WRECKER(150,90,0,0,0,false,PType.ROCK), 
+	FAILED_SUCKER(0,100,0,0,0,false,PType.DARK) // recoil
 	
 	;
 	
@@ -330,6 +331,10 @@ public enum Move {
 
 	public boolean isPhysical() {
 		return cat == 0;
+	}
+	
+	public boolean isAttack() {
+		return cat != 2;
 	}
 	
 	@Override // implementation

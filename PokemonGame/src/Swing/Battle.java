@@ -19,16 +19,19 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.Timer;
 import javax.swing.UIManager;
 import javax.swing.JTextField;
 import javax.swing.JRadioButton;
@@ -77,6 +80,13 @@ public class Battle extends JFrame {
 	private JLabel moneyLabel;
 	private JLabel[] bag;
 	private JProgressBar[] partyHP;
+	private JComboBox<String> encounterInput;
+	private ButtonGroup encounterType;
+	private ButtonGroup time;
+	private JRadioButton morning;
+	private JRadioButton day;
+	private JRadioButton night;
+	private JButton encounterButton;
 	
 	/**
 	 * Launch the application.
@@ -135,6 +145,7 @@ public class Battle extends JFrame {
 		catchButton = createJButton("CATCH", new Font("Tahoma", Font.BOLD, 11), 20, 120, 89, 23);
 		healButton = createJButton("HEAL", new Font("Tahoma", Font.BOLD, 9), 10, 262, 75, 23);
 		boxButton = createJButton("Box", new Font("Tahoma", Font.PLAIN, 12), 553, 35, 62, 21);
+		encounterButton = createJButton("Fight", new Font("Tahoma", Font.PLAIN, 12), 486, 35, 62, 21);
 		returnButton = createJButton("Exit", new Font("Tahoma", Font.BOLD, 12), 553, 35, 62, 21);
 		returnButton.setVisible(false);
 		
@@ -147,6 +158,16 @@ public class Battle extends JFrame {
 			me.money += 100;
 			JOptionPane.showMessageDialog(null, "Won $100! Current Balance: $" + me.money);
 			moneyLabel.setText("$" + me.money);
+		});
+		
+		encounterButton.addActionListener(new ActionListener() {
+		    public void actionPerformed(ActionEvent e) {
+				foe = encounterPokemon((String)encounterInput.getSelectedItem());
+				updateFoe();
+				if (!foe.isFainted()) boxButton.setVisible(false);
+				me.clearBattled();
+				me.getCurrent().battled = true;
+		    }
 		});
 		
 		bag = new JLabel[9];
@@ -339,6 +360,10 @@ public class Battle extends JFrame {
 	                moveButton.addActionListener(new ActionListener() {
 	                    @Override
 	                    public void actionPerformed(ActionEvent e) {
+	                    	if (me.box[index] == null) {
+                        		JOptionPane.showMessageDialog(null, "No Pokemon to teach.");
+	                            return;
+                        	}
 	                        // Prompt the player to enter the name of the move they want to teach
 	                        String moveName = JOptionPane.showInputDialog(null, "Enter the name of the move you want to teach:");
 
@@ -426,7 +451,7 @@ public class Battle extends JFrame {
 		    });
 		}
 		
-		idInput = createJTextField(3, 31, 53, 27, 20);
+		idInput = createJTextField(2, 31, 53, 27, 20);
 		levelInput = createJTextField(2, 71, 53, 27, 20);
 		
 		addButton.addActionListener(e -> {
@@ -523,18 +548,7 @@ public class Battle extends JFrame {
 		});
 		
 		fightButton.addActionListener(e -> {
-			try {
-				foe = new Pokemon(Integer.parseInt(idInput.getText()), Integer.parseInt(levelInput.getText()), false);
-				updateFoe();
-				boxButton.setVisible(false);
-			} catch (NumberFormatException e1) {
-				foe = new Pokemon (10, 5, false);
-				updateFoe();
-				boxButton.setVisible(false);
-			}
-			me.clearBattled();
-			me.getCurrent().battled = true;
-			System.out.println(me.getBattled());
+			fightMon();
         });
 		
 		healButton.addActionListener(e -> {
@@ -584,6 +598,8 @@ public class Battle extends JFrame {
 			levelInput.setVisible(true);
 			playerPanel.add(boxButton);
 			boxButton.setVisible(true);
+			playerPanel.add(encounterButton);
+			encounterButton.setVisible(true);
 			JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(playerPanel);
 			frame.setBounds(100, 100, 648, 330);
 			playerPanel.repaint();
@@ -597,11 +613,20 @@ public class Battle extends JFrame {
 			final int index = i + 1;
 			
 			party[i].addActionListener(e -> {
-				if (me.getCurrent().vStatuses.contains(Status.SPUN)) {
+				if (me.getCurrent().vStatuses.contains(Status.SPUN) || me.getCurrent().vStatuses.contains(Status.CHARGING) || me.getCurrent().vStatuses.contains(Status.RECHARGE) || me.getCurrent().vStatuses.contains(Status.LOCKED)) {
 	        		JOptionPane.showMessageDialog(null, "You are trapped and cannot switch!");
 	                return;
-	        	}
+				}
 				me.swap(me.team[index], index);
+				healthBar.setMaximum(me.getCurrent().getStat(0));
+				healthBar.setValue(me.getCurrent().currentHP);
+				if (healthBar.getPercentComplete() > 0.5) {
+					healthBar.setForeground(new Color(0, 255, 0));
+	            } else if (healthBar.getPercentComplete() <= 0.5 && healthBar.getPercentComplete() > 0.25) {
+	            	healthBar.setForeground(new Color(255, 255, 0));
+	            } else {
+	            	healthBar.setForeground(new Color(255, 0, 0));
+	            }
 				if (!me.team[index].isFainted()) {
 					foe.move(me.getCurrent(),foe.randomMove(), me);
 					Pokemon.endOfTurn(foe, me.getCurrent(), me);
@@ -613,7 +638,6 @@ public class Battle extends JFrame {
 				updateStatus();
 				System.out.println();
 			    System.out.println("------------------------------");
-			    System.out.println(me.getBattled());
 	        });
 		}
 		displayParty();
@@ -720,6 +744,118 @@ public class Battle extends JFrame {
 		ballType.add(greatballButton);
 		ballType.add(ultraballButton);
 		
+		encounterInput = new JComboBox<String>();
+		encounterInput.addItem("New Pheonix Town");
+		encounterInput.addItem("Route 1");
+		encounterInput.addItem("Blueberry Grove");
+		encounterInput.addItem("Route 2");
+		encounterInput.addItem("Route 3");
+		encounterInput.addItem("Chupi Forest");
+		encounterInput.addItem("Route 5");
+		encounterInput.addItem("Route 6");
+		encounterInput.addItem("Shorki Cavern");
+		encounterInput.addItem("Route 7");
+		encounterInput.addItem("Route 9");
+		encounterInput.addItem("Cornline City");
+		encounterInput.addItem("Brocline City");
+		encounterInput.addItem("Route 14");
+		encounterInput.addItem("Route 15");
+		encounterInput.addItem("Route 11");
+		encounterInput.addItem("Route 13");
+		encounterInput.addItem("Route 12");
+		encounterInput.addItem("Night Scope Town");
+		encounterInput.addItem("Mt. Wakauki 1A");
+		encounterInput.addItem("Mt. Wakauki 2F");
+		encounterInput.addItem("Mt. Wakauki 1F");
+		encounterInput.addItem("Mt. Wakauki 3B");
+		encounterInput.addItem("Mt. Wakauki 4A");
+		encounterInput.addItem("Mt. Wakauki 5F");
+		encounterInput.addItem("Mt. Wakauki 5A");
+		encounterInput.addItem("Mt. Wakauki 5B");
+		encounterInput.addItem("Mt. Wakauki 6A");
+		encounterInput.addItem("Route 4");
+		encounterInput.addItem("Route 10");
+		encounterInput.addItem("Route 16");
+		encounterInput.addItem("Breezeline Village");
+		encounterInput.addItem("Blantoisa Path 1F");
+		encounterInput.addItem("Blantoisa Path B1F");
+		encounterInput.addItem("Route 17");
+		encounterInput.addItem("Elite Plateau");
+		encounterInput.addItem("Route 8");
+		encounterInput.addItem("Chomp Lake");
+		encounterInput.addItem("Thunder Tower 1T");
+		encounterInput.addItem("Thunder Tower 2T");
+		encounterInput.addItem("Thunder Tower 3T");
+		encounterInput.addItem("Thunder Tower R");
+		encounterInput.addItem("Thunder Tower 1TB");
+		encounterInput.addItem("Thunder Tower 2TB");
+		encounterInput.addItem("Thunder Tower 3TB");
+		encounterInput.addItem("Thunder Tower RB");
+		encounterInput.addItem("Thunder Tower R6");
+		encounterInput.addItem("Thunder Tower RB2");
+		encounterInput.addItem("Route 18");
+		encounterInput.addItem("Route 19");
+		encounterInput.addItem("Route 20");
+		encounterInput.addItem("Route 21");
+		encounterInput.addItem("Orcai Cavern 1A");
+		encounterInput.addItem("Orcai Cavern 0 N");
+		encounterInput.addItem("Orcai Cavern 0 SE");
+		encounterInput.addItem("Orcai Cavern 0 SW");
+		encounterInput.setBounds(478, 80, 142, 21);
+		encounterInput.setVisible(true);
+		playerPanel.add(encounterInput);
+		
+		encounterInput.addActionListener(new ActionListener() {
+		    public void actionPerformed(ActionEvent e) {
+				foe = encounterPokemon((String)encounterInput.getSelectedItem());
+				updateFoe();
+				if (!foe.isFainted()) boxButton.setVisible(false);
+				me.clearBattled();
+				me.getCurrent().battled = true;
+		    }
+		});
+		
+		time = new ButtonGroup();
+		morning = new JRadioButton("M");
+		morning.setActionCommand("M");
+		morning.setBounds(481, 57, 35, 23);
+		playerPanel.add(morning);
+		day = new JRadioButton("D");
+		day.setActionCommand("D");
+		day.setBounds(531, 57, 35, 23);
+		day.setSelected(true);
+		playerPanel.add(day);
+		night = new JRadioButton("N");
+		night.setActionCommand("N");
+		night.setBounds(581, 57, 35, 23);
+		playerPanel.add(night);
+		time.add(morning);
+		time.add(day);
+		time.add(night);
+		
+		encounterType = new ButtonGroup();
+		JRadioButton standard = new JRadioButton("Standard");
+		standard.setActionCommand("Standard");
+		standard.setSelected(true);
+		standard.setBounds(502, 108, 109, 23);
+		playerPanel.add(standard);
+		JRadioButton rdbtnFishing = new JRadioButton("Fishing");
+		rdbtnFishing.setActionCommand("Fishing");
+		rdbtnFishing.setBounds(502, 134, 109, 23);
+		playerPanel.add(rdbtnFishing);
+		JRadioButton rdbtnSurfing = new JRadioButton("Surfing");
+		rdbtnSurfing.setBounds(502, 162, 109, 23);
+		rdbtnSurfing.setActionCommand("Surfing");
+		playerPanel.add(rdbtnSurfing);
+		JRadioButton rdbtnHeadbutt = new JRadioButton("Headbutt");
+		rdbtnHeadbutt.setActionCommand("Headbutt");
+		rdbtnHeadbutt.setBounds(502, 188, 109, 23);
+		playerPanel.add(rdbtnHeadbutt);
+		encounterType.add(standard);
+		encounterType.add(rdbtnFishing);
+		encounterType.add(rdbtnSurfing);
+		encounterType.add(rdbtnHeadbutt);
+		
 		healthBar = new JProgressBar(0, me.getCurrent().getStat(0));
 		healthBar.setBackground(UIManager.getColor("Button.darkShadow"));
 		healthBar.setFont(new Font("Tahoma", Font.PLAIN, 11));
@@ -771,8 +907,41 @@ public class Battle extends JFrame {
 		        newT.selectAll();
 		    }
 		});
+		newT.addActionListener(new ActionListener() {
+		    public void actionPerformed(ActionEvent e) {
+		        fightMon();
+		    }
+		});
 		playerPanel.add(newT);
 		return newT;
+	}
+
+	public Pokemon encounterPokemon(String routeName) {
+	    // Create an ArrayList of PokemonEncounter objects for the route
+		String selectedEncounterType = encounterType.getSelection().getActionCommand();
+		String selectedTime = time.getSelection().getActionCommand();
+	    ArrayList<Encounter> encounters = Encounter.getEncounters(routeName, selectedEncounterType, selectedTime);
+
+	    // Calculate the total encounter chance for the route
+	    double totalChance = 0.0;
+	    for (Encounter encounter : encounters) {
+	        totalChance += encounter.getEncounterChance();
+	    }
+
+	    // Randomly select an encounter based on the Pokemon's encounter chance
+	    double rand = Math.random() * totalChance;
+	    for (Encounter encounter : encounters) {
+	        rand -= encounter.getEncounterChance();
+	        if (rand < 0) {
+	            // Randomly generate a level within the level range
+	            int level = (int) (Math.random() * (encounter.getMaxLevel() - encounter.getMinLevel() + 1) + encounter.getMinLevel());
+	            return new Pokemon(encounter.getId(), level, false);
+	        }
+	    }
+
+	    // If no encounter was selected, return null
+	    JOptionPane.showMessageDialog(null, "No encounters available for this combination.");
+	    return foe;
 	}
 
 	private JButton createJButton(String string, Font font, int i, int j, int k, int l) {
@@ -861,6 +1030,42 @@ public class Battle extends JFrame {
 		
 	}
 
+	private void animateBar(JProgressBar bar, int value, int currentHP) {
+	    int diff = value - currentHP;
+	    int current = value;
+	    
+	    // Determine the step size for the animation
+	    int step = diff > 0 ? 1 : -1;
+	    // Create a Timer to animate the progress bar
+	    Timer timer = new Timer(5, new ActionListener() {
+	        int count = 0;
+	        @Override
+	        public void actionPerformed(ActionEvent e) {
+	            // Update the progress bar value and repaint it
+	            bar.setValue(current - step * count++);
+	            bar.repaint();
+
+	            if (bar.getPercentComplete() > 0.5) {
+	                bar.setForeground(new Color(0, 255, 0));
+	            } else if (bar.getPercentComplete() <= 0.5 && bar.getPercentComplete() > 0.25) {
+	                bar.setForeground(new Color(255, 255, 0));
+	            } else {
+	                bar.setForeground(new Color(255, 0, 0));
+	            }
+	            // Stop the Timer when the animation is finished
+	            if (count > Math.abs(diff)) {
+	                ((Timer) e.getSource()).stop();
+
+	            }
+	        }
+	    });
+	    // Start the Timer
+	    timer.start();
+	}
+
+
+
+
 	private void displayParty() {
 		for (int i = 0; i < 5; i++) {
 			party[i].setText("");
@@ -904,15 +1109,45 @@ public class Battle extends JFrame {
 		
 		// Check for priority moves
 	    if (m1.isPriority() && !m2.isPriority()) {
-	        newP = p1.move(p2, m1, me);
-	        p2.move(p1, m2, me);
-	        Pokemon.endOfTurn(p1, p2, me);
-			Pokemon.endOfTurn(p2, p1, me);
+	    	if (m1 == Move.SUCKER_PUNCH) {
+	    		if (m2.isAttack()) {
+	    			newP = p1.move(p2, m1, me);
+	    			p2.move(p1, m2, me);
+	    	        Pokemon.endOfTurn(p1, p2, me);
+	    			Pokemon.endOfTurn(p2, p1, me);
+	    		} else {
+	    			m1 = Move.FAILED_SUCKER;
+	    			newP = p1.move(p2, m1, me);
+	    			p2.move(p1, m2, me);
+	    	        Pokemon.endOfTurn(p1, p2, me);
+	    			Pokemon.endOfTurn(p2, p1, me);
+	    		}
+	    	} else {
+	    		newP = p1.move(p2, m1, me);
+		        p2.move(p1, m2, me);
+		        Pokemon.endOfTurn(p1, p2, me);
+				Pokemon.endOfTurn(p2, p1, me);
+	    	}
 	    } else if (!m1.isPriority() && m2.isPriority()) {
-	        p2.move(p1, m2, me);
-	        newP = p1.move(p2, m1, me);
-	        Pokemon.endOfTurn(p2, p1, me);
-			Pokemon.endOfTurn(p1, p2, me);
+	    	if (m2 == Move.SUCKER_PUNCH) {
+	    		if (m1.isAttack()) {
+	    			p2.move(p1, m2, me);
+	    	        newP = p1.move(p2, m1, me);
+	    	        Pokemon.endOfTurn(p2, p1, me);
+	    			Pokemon.endOfTurn(p1, p2, me);
+	    		} else {
+	    			m2 = Move.FAILED_SUCKER;
+	    			p2.move(p1, m2, me);
+	    	        newP = p1.move(p2, m1, me);
+	    	        Pokemon.endOfTurn(p2, p1, me);
+	    			Pokemon.endOfTurn(p1, p2, me);
+	    		}
+	    	} else {
+	    		p2.move(p1, m2, me);
+		        newP = p1.move(p2, m1, me);
+		        Pokemon.endOfTurn(p2, p1, me);
+				Pokemon.endOfTurn(p1, p2, me);
+	    	}
 	    } else if (m1.isPriority() && m2.isPriority()) {
 	        if (p1speed >= p2speed) {
 	            newP = p1.move(p2, m1, me);
@@ -979,7 +1214,7 @@ public class Battle extends JFrame {
 
 	private void updateBars() {
 		healthBar.setMaximum(me.getCurrent().getStat(0));
-		healthBar.setValue(me.getCurrent().getCurrentHP());
+		animateBar(healthBar, healthBar.getValue(), me.getCurrent().getCurrentHP());
 		maxHPLabel.setText(me.getCurrent().getStat(0) + "");
 		currentHPLabel.setText(me.getCurrent().getCurrentHP() + "");
 		if (healthBar.getPercentComplete() > 0.5) {
@@ -993,7 +1228,7 @@ public class Battle extends JFrame {
 		progressBar.setMaximum(me.getCurrent().expMax);
 		progressBar.setValue(me.getCurrent().exp);
 		
-		foeHealthBar.setValue(foe.getCurrentHP());
+		animateBar(foeHealthBar, foeHealthBar.getValue(), foe.getCurrentHP());
 		if (foeHealthBar.getPercentComplete() > 0.5) {
 			foeHealthBar.setForeground(new Color(0, 255, 0));
 		} else if (foeHealthBar.getPercentComplete() <= 0.5 && foeHealthBar.getPercentComplete() > 0.25) {
@@ -1002,6 +1237,7 @@ public class Battle extends JFrame {
 			foeHealthBar.setForeground(new Color(255, 0, 0));
 		}
 		playerPanel.repaint();
+		if (foe.isFainted()) boxButton.setVisible(true);
 		
 	}
 	
@@ -1113,5 +1349,19 @@ public class Battle extends JFrame {
 	    }
 	    
 	    return moveString;
+	}
+	
+	private void fightMon() {
+		try {
+			foe = new Pokemon(Integer.parseInt(idInput.getText()), Integer.parseInt(levelInput.getText()), false);
+			updateFoe();
+			boxButton.setVisible(false);
+		} catch (NumberFormatException e1) {
+			foe = new Pokemon (10, 5, false);
+			updateFoe();
+			boxButton.setVisible(false);
+		}
+		me.clearBattled();
+		me.getCurrent().battled = true;
 	}
 }

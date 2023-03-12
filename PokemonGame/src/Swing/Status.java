@@ -19,7 +19,11 @@ public enum Status {
 	SPUN("SPN", new Color(32, 37, 61), Color.WHITE),
 	RECHARGE("SPN", new Color(32, 37, 61), Color.WHITE),
 	POSESSED("SPN", new Color(32, 37, 61), Color.WHITE),
-	CHARGING("CRG", new Color(219, 216, 15), Color.BLACK);
+	CHARGING("CRG", new Color(219, 216, 15), Color.BLACK),
+	LOCKED("LCK", new Color(219, 216, 15), Color.BLACK),
+	REFLECT("RFL", new Color(219, 216, 15), Color.BLACK),
+	AUTO("AUT", new Color(219, 216, 15), Color.BLACK),
+	BONDED("AUT", new Color(219, 216, 15), Color.BLACK);
 	
 	Status(String name, Color color, Color textColor) {
 		this.name = name;
