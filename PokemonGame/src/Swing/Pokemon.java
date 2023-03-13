@@ -23,7 +23,7 @@ public class Pokemon implements Serializable {
 	public PType type1;
 	public PType type2;
 	
-	private Move[] movebank;
+	public Move[] movebank;
 	public Move[] moveset;
 	
 	private Status status;
@@ -2319,7 +2319,7 @@ public class Pokemon implements Serializable {
 			System.out.print("\n" + this.name + " used Mirror Move!");
 			move = foe.lastMoveUsed;
 			if (move == null) {
-				System.out.println("But it failed!");
+				System.out.println("\nBut it failed!");
 				this.impressive = false;
 				return;
 			}
@@ -2512,6 +2512,11 @@ public class Pokemon implements Serializable {
 		if (checkSecondary(move.secondary)) {
 			secondaryEffect(foe, move);
 		}
+		int recoil = 0;
+		if (move == Move.BRAVE_BIRD || move == Move.DOUBLE_EDGE || move == Move.FLARE_BLITZ || move == Move.HEAD_SMASH || move == Move.LIGHTNING_HEADBUTT || move == Move.SHELL_BASH || move == Move.SUPER_CHARGE || move == Move.TAKE_DOWN || move == Move.VOLT_TACKLE || move == Move.ROCK_WRECKER) {
+			recoil = Math.max(Math.floorDiv(damage, 3), 1);
+			if (damage >= foe.currentHP) recoil = Math.max(Math.floorDiv(foe.currentHP, 3), 1);
+		}
 		// Damage foe
 		foe.currentHP -= damage;
 		if (foe.currentHP <= 0 && move == Move.FALSE_SWIPE) foe.currentHP = 1;
@@ -2523,10 +2528,7 @@ public class Pokemon implements Serializable {
 				this.faint(true, player);
 			}
 		}
-		
-		if (move == Move.BRAVE_BIRD || move == Move.DOUBLE_EDGE || move == Move.FLARE_BLITZ || move == Move.HEAD_SMASH || move == Move.LIGHTNING_HEADBUTT || move == Move.SHELL_BASH || move == Move.SUPER_CHARGE || move == Move.TAKE_DOWN || move == Move.VOLT_TACKLE || move == Move.ROCK_WRECKER) {
-			int recoil = damage / 3;
-			if (damage >= foe.currentHP) recoil = foe.currentHP / 3;
+		if (recoil != 0) {
 			System.out.println(this.name + " was damaged by recoil!");
 			this.currentHP -= recoil;
 			if (this.currentHP <= 0) { // Check for kill
@@ -6060,7 +6062,7 @@ public class Pokemon implements Serializable {
 	        System.out.println("Hit " + 2 + " times!");
 	        bp = 60;
 		} else if (move == Move.ELECTROBALL) {
-			double speedRatio = foe.getSpeed() / this.getSpeed();
+			double speedRatio = foe.getSpeed() * 1.0 / this.getSpeed();
 			if (speedRatio > 1) {
 				bp = 40;
 			} else if (speedRatio >= 0.501 && speedRatio <= 1) {
@@ -6073,7 +6075,7 @@ public class Pokemon implements Serializable {
 				bp = 150;
 			}
 		} else if (move == Move.ERUPTION) {
-			double hpRatio = this.currentHP / this.getStat(0);
+			double hpRatio = this.currentHP * 1.0 / this.getStat(0);
 			hpRatio *= 150;
 			bp = Math.max((int) hpRatio, 1);
 		} else if (move == Move.FIREBALL) {
@@ -6111,7 +6113,7 @@ public class Pokemon implements Serializable {
 	        System.out.println("Hit " + randomNum + " times!");
 	        bp = 15 * randomNum;
 		} else if (move == Move.GYRO_BALL) {
-			double speedRatio = foe.getSpeed() / this.getSpeed();
+			double speedRatio = foe.getSpeed() * 1.0 / this.getSpeed();
 			bp = (int) Math.min(150, (25 * speedRatio) + 1);
 		} else if (move == Move.MAGNITUDE) {
 			int mag = (int) (Math.random()*100 + 1);
@@ -6173,7 +6175,7 @@ public class Pokemon implements Serializable {
 				foe.sleepCounter = 0;
 			}
 		} else if (move == Move.WRING_OUT) {
-			double hpRatio = foe.currentHP / foe.getStat(0);
+			double hpRatio = foe.currentHP * 1.0 / foe.getStat(0);
 			hpRatio *= 120;
 			bp = Math.max((int) hpRatio, 1);
 		}
@@ -6203,5 +6205,14 @@ public class Pokemon implements Serializable {
 	    }
 	    
 	    return moveString;
+	}
+
+	public boolean knowsMove(Move move) {
+		for (Move m : moveset) {
+			if (m == move) {
+				return true;
+			}
+		}
+		return false;
 	}
 }

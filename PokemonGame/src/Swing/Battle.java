@@ -294,10 +294,16 @@ public class Battle extends JFrame {
 	                if (me.box[index] != null) statsLabel.setText("Stats: " + intArrayToString(me.box[index].stats));
 	                JLabel movesLabel = new JLabel("Moves: N/A");
 	                if (me.box[index] != null) movesLabel.setText("Moves: " + movesToString(me.box[index]));
-	                JButton swapButton = new JButton("Swap with a party member");
-	                JButton moveButton = new JButton("Teach Move");
-	                JButton rareCandy = new JButton("Elevate Level");
-	                JButton releaseButton = new JButton("Release");
+	                JGradientButton swapButton = new JGradientButton("Swap with a party member");
+	                swapButton.setBackground(new Color(0, 227, 252));
+	                JGradientButton moveButton = new JGradientButton("Teach Move");
+	                moveButton.setBackground(new Color(255, 251, 0));
+	                JGradientButton seeForgottenMoves = new JGradientButton("See Forgotten Moves");
+	                seeForgottenMoves.setBackground(new Color(252, 147, 0));
+	                JGradientButton rareCandy = new JGradientButton("Elevate Level");
+	                rareCandy.setBackground(new Color(152, 6, 209));
+	                JGradientButton releaseButton = new JGradientButton("Release");
+	                releaseButton.setBackground(new Color(214, 6, 17));
 	                swapButton.addActionListener(new ActionListener() {
 	                    @Override
 	                    public void actionPerformed(ActionEvent e) {
@@ -434,12 +440,15 @@ public class Battle extends JFrame {
 	                releaseButton.addActionListener(new ActionListener() {
 	                    @Override
 	                    public void actionPerformed(ActionEvent e) {
-	                        // code to release the box member
-	                        me.box[index] = null;
-	                        boxButtons[index].setText("");
-	                        boxButtons[index].setBackground(null);
-	                        boxMemberPanel.setVisible(false);
-	                        SwingUtilities.getWindowAncestor(boxMemberPanel).dispose();
+	                        int confirm = JOptionPane.showConfirmDialog(null, "Are you sure you want to release this Pokemon?", "Release Pokemon", JOptionPane.YES_NO_OPTION);
+	                        if (confirm == JOptionPane.YES_OPTION) {
+	                            // code to release the box member
+	                            me.box[index] = null;
+	                            boxButtons[index].setText("");
+	                            boxButtons[index].setBackground(null);
+	                            boxMemberPanel.setVisible(false);
+	                            SwingUtilities.getWindowAncestor(boxMemberPanel).dispose();
+	                        }
 	                    }
 	                });
 	                rareCandy.addActionListener(new ActionListener() {
@@ -463,14 +472,47 @@ public class Battle extends JFrame {
 	        	                }
 	        	            }
 	                    	JOptionPane.showMessageDialog(null, me.box[index].name + " was elevated to " + me.box[index].getLevel());
+	                    	nameLabel.setText("Name: " + me.box[index].getName());;
+	    	                levelLabel.setText("Level: " + me.box[index].getLevel());
+	    	                statsLabel.setText("Stats: " + intArrayToString(me.box[index].stats));
+	    	                movesLabel.setText("Moves: " + movesToString(me.box[index]));
+	    	                displayBox();
 	                    }
 	                });
+	                seeForgottenMoves.addActionListener(new ActionListener() {
+	                    @Override
+	                    public void actionPerformed(ActionEvent e) {
+	                    	if (me.box[index] == null) {
+                        		JOptionPane.showMessageDialog(null, "No Pokemon to check.");
+	                            return;
+                        	}
+	                        ArrayList<Move> forgottenMoves = new ArrayList<>();
+	                        for (int i = 0; i < me.box[index].getLevel(); i++) {
+	                        	if (i < me.box[index].movebank.length) {
+		                            if (me.box[index].movebank[i] != null && !me.box[index].knowsMove(me.box[index].movebank[i])) {
+		                                forgottenMoves.add(me.box[index].movebank[i]);
+		                            }
+	                        	}
+	                        }
+	                        if (forgottenMoves.isEmpty()) {
+	                            JOptionPane.showMessageDialog(boxMemberPanel, "This Pokemon has not forgotten any moves.");
+	                        } else {
+	                            String message = "This Pokemon has forgotten the following moves:\n";
+	                            for (Move move : forgottenMoves) {
+	                                message += "- " + move + "\n";
+	                            }
+	                            JOptionPane.showMessageDialog(boxMemberPanel, message);
+	                        }
+	                    }
+	                });
+
 	                boxMemberPanel.add(nameLabel);
 	                boxMemberPanel.add(levelLabel);
 	                boxMemberPanel.add(statsLabel);
 	                boxMemberPanel.add(movesLabel);
 	                boxMemberPanel.add(swapButton);
 	                boxMemberPanel.add(moveButton);
+	                boxMemberPanel.add(seeForgottenMoves);
 	                boxMemberPanel.add(rareCandy);
 	                boxMemberPanel.add(releaseButton);
 	                JOptionPane.showMessageDialog(null, boxMemberPanel, "Box member details", JOptionPane.PLAIN_MESSAGE);
@@ -744,6 +786,7 @@ public class Battle extends JFrame {
 				boxButton.setVisible(false);
 				healButton.setVisible(false);
 				me.clearBattled();
+				me.getCurrent().clearVolatile();
 				me.getCurrent().battled = true;
 			}
 		});
