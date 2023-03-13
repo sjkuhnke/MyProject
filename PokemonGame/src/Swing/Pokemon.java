@@ -795,7 +795,7 @@ public class Pokemon implements Serializable {
 		
 	}
 	
-	private void checkMove(Scanner scanner) {
+	public void checkMove(Scanner scanner) {
 		Move move = null;
 		if (this.level - 1 >= this.movebank.length) return;
 		move = this.movebank[this.level - 1];
@@ -934,9 +934,11 @@ public class Pokemon implements Serializable {
 			result = new Pokemon(id + 1, level, this.moveset);
 		} else if (id == 107 && level >= 30) {
 			result = new Pokemon(id + 1, level, this.moveset);
-		} else if (id == 108 && level >= 50) {
+		} else if (id == 109 && level >= 30) {
 			result = new Pokemon(id + 1, level, this.moveset);
-		} else if (id == 110 && level >= 25) {
+		} else if (id == 110 && level >= 50) {
+			result = new Pokemon(id + 1, level, this.moveset);
+		} else if (id == 112 && level >= 25) {
 			System.out.print(this.name + " is evolving. Please enter the id of the evolution of choice (113 - 123): ");
 		    int idE = scanner.nextInt();
 		    if (idE < 113 || idE > 123) {
@@ -2551,7 +2553,7 @@ public class Pokemon implements Serializable {
 		return;
 	}
 
-	private void awardxp(int amt, Player player) {
+	public void awardxp(int amt, Player player) {
 	    if (this.fainted) return;
 	    if (!this.trainerOwned) return;
 
@@ -4780,7 +4782,7 @@ public class Pokemon implements Serializable {
 			movebank[25] = Move.CHARGE;
 			movebank[26] = Move.DISCHARGE;
 			movebank[29] = Move.WING_ATTACK;
-			movebank[34] = Move.BOUNCE;
+			movebank[34] = Move.AEROBLAST;
 			movebank[44] = Move.THUNDERBOLT;
 			movebank[49] = Move.SHADOW_BALL;
 			movebank[54] = Move.THUNDER;
@@ -5150,7 +5152,7 @@ public class Pokemon implements Serializable {
 			movebank[49] = Move.BLACK_HOLE;
 			break;
 		case 111:
-			movebank = new Move[50];
+			movebank = new Move[75];
 			movebank[0] = Move.GUST;
 			movebank[4] = Move.SPARK;
 			movebank[10] = Move.DISAPPEAR;
@@ -5842,7 +5844,7 @@ public class Pokemon implements Serializable {
 	public static void endOfTurn(Pokemon p, Pokemon f, Player player) {
 		if (p.isFainted()) return;
 		if (p.status == Status.BLEEDING) {
-			p.currentHP -= p.getStat(0) / 8;
+			p.currentHP -= Math.max(p.getStat(0) / 8, 1);
 			System.out.println("\n" + p.name + " was hurt by bleeding!");
 			if (p.currentHP <= 0) { // Check for kill
 				p.faint(true, player);
@@ -5850,7 +5852,7 @@ public class Pokemon implements Serializable {
 			}
 			
 		} else if (p.status == Status.BURNED) {
-			p.currentHP -= p.getStat(0) / 16;
+			p.currentHP -= Math.max(p.getStat(0) / 16, 1);
 			System.out.println("\n" + p.name + " was hurt by its burn!");
 			if (p.currentHP <= 0) { // Check for kill
 				p.faint(true, player);
@@ -5858,7 +5860,7 @@ public class Pokemon implements Serializable {
 			}
 			
 		} else if (p.status == Status.POISONED) {
-			p.currentHP -= p.getStat(0) / 8;
+			p.currentHP -= Math.max(p.getStat(0) / 8, 1);
 			System.out.println("\n" + p.name + " was hurt by poison!");
 			if (p.currentHP <= 0) { // Check for kill
 				p.faint(true, player);
@@ -5867,7 +5869,7 @@ public class Pokemon implements Serializable {
 			
 		}
 		if (p.vStatuses.contains(Status.CURSED)) {
-			p.currentHP -= p.getStat(0) / 4;
+			p.currentHP -= Math.max(p.getStat(0) / 4, 1);
 			System.out.println("\n" + p.name + " was hurt by the curse!");
 			if (p.currentHP <= 0) { // Check for kill
 				p.faint(true, player);
@@ -5876,7 +5878,7 @@ public class Pokemon implements Serializable {
 			
 		}
 		if (p.vStatuses.contains(Status.LEECHED)) {
-			int hp = p.getStat(0) / 8;
+			int hp = Math.max(p.getStat(0) / 8, 1);
 			if (hp >= p.currentHP) hp = p.currentHP;
 			if (f.currentHP > f.getStat(0)) f.currentHP = f.getStat(0);
 			p.currentHP -= hp;
@@ -5890,7 +5892,7 @@ public class Pokemon implements Serializable {
 		}
 		if (p.vStatuses.contains(Status.NIGHTMARE)) {
 			if (p.status == Status.ASLEEP) {
-				p.currentHP -= p.getStat(0) / 4;
+				p.currentHP -= Math.max(p.getStat(0) / 4, 1);
 				System.out.println("\n" + p.name + " had a nightmare!");
 				if (p.currentHP <= 0) { // Check for kill
 					p.faint(true, player);
@@ -5901,7 +5903,7 @@ public class Pokemon implements Serializable {
 			}
 		} if (p.vStatuses.contains(Status.AQUA_RING)) {
 			if (p.currentHP < p.getStat(0)) {
-				p.currentHP += p.getStat(0) / 16;
+				p.currentHP += Math.max(p.getStat(0) / 16, 1);
 				if (p.currentHP > p.getStat(0)) {
 					p.currentHP = p.getStat(0);
 				}
@@ -5912,7 +5914,7 @@ public class Pokemon implements Serializable {
 				System.out.println("\n" + p.name + " was freed from wrap!");
 				p.vStatuses.remove(Status.SPUN);
 			} else {
-				p.currentHP -= p.getStat(0) / 16;
+				p.currentHP -= Math.max(p.getStat(0) / 16, 1);
 				System.out.println("\n" + p.name + " was hurt by being wrapped!");
 				p.spunCount--;
 				if (p.currentHP <= 0) { // Check for kill

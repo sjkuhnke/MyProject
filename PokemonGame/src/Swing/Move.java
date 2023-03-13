@@ -210,7 +210,7 @@ public enum Move {
 	PSYCHO_BLADE(70,100,0,1,0,false,PType.MAGIC),
 	PUNCH(40,90,0,0,0,false,PType.FIGHTING),
 	PURSUIT(40,100,0,0,0,false,PType.DARK),
-	QUICK_ATTACK(0,100,0,0,0,true,PType.NORMAL),
+	QUICK_ATTACK(40,100,0,0,0,true,PType.NORMAL),
 	RAGE(-1,100,0,0,0,false,PType.NORMAL),
 	RAPID_SPIN(20,100,100,0,0,false,PType.NORMAL),
 	RAZOR_LEAF(55,95,0,1,0,false,PType.GRASS),

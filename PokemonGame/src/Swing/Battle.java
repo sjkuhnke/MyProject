@@ -296,6 +296,7 @@ public class Battle extends JFrame {
 	                if (me.box[index] != null) movesLabel.setText("Moves: " + movesToString(me.box[index]));
 	                JButton swapButton = new JButton("Swap with a party member");
 	                JButton moveButton = new JButton("Teach Move");
+	                JButton rareCandy = new JButton("Elevate Level");
 	                JButton releaseButton = new JButton("Release");
 	                swapButton.addActionListener(new ActionListener() {
 	                    @Override
@@ -441,12 +442,36 @@ public class Battle extends JFrame {
 	                        SwingUtilities.getWindowAncestor(boxMemberPanel).dispose();
 	                    }
 	                });
+	                rareCandy.addActionListener(new ActionListener() {
+	                    @Override
+	                    public void actionPerformed(ActionEvent e) {
+	                        // code to release the box member
+	                    	if (me.box[index] == null) {
+                        		JOptionPane.showMessageDialog(null, "No Pokemon to elevate.");
+	                            return;
+                        	}
+	                    	int expAmt = me.box[index].expMax - me.box[index].exp;
+	                    	me.box[index].exp += expAmt;
+	                    	while (me.box[index].exp >= me.box[index].expMax) {
+	        	                // Pokemon has leveled up, check for evolution
+	        	                Pokemon evolved = me.box[index].levelUp();
+	        	                if (evolved != null) {
+	        	                    // Update the player's team with the evolved Pokemon
+	        	                	me.box[index] = evolved;
+	        	                    evolved.checkMove(Battle.getScanner());
+	        	                    me.box[index] = evolved;
+	        	                }
+	        	            }
+	                    	JOptionPane.showMessageDialog(null, me.box[index].name + " was elevated to " + me.box[index].getLevel());
+	                    }
+	                });
 	                boxMemberPanel.add(nameLabel);
 	                boxMemberPanel.add(levelLabel);
 	                boxMemberPanel.add(statsLabel);
 	                boxMemberPanel.add(movesLabel);
 	                boxMemberPanel.add(swapButton);
 	                boxMemberPanel.add(moveButton);
+	                boxMemberPanel.add(rareCandy);
 	                boxMemberPanel.add(releaseButton);
 	                JOptionPane.showMessageDialog(null, boxMemberPanel, "Box member details", JOptionPane.PLAIN_MESSAGE);
 		        }
@@ -576,6 +601,8 @@ public class Battle extends JFrame {
 				new Trainer("F", new Pokemon[]{new Pokemon(12, 9, false, true)}, 100),
 				new Trainer("Rival 1", new Pokemon[]{new Pokemon(130, 7, false, true)}, 500),
 				new Trainer("G", new Pokemon[]{new Pokemon(42, 7, false, true), new Pokemon(42, 8, false, true)}, 100),
+				new Trainer("TT", new Pokemon[]{new Pokemon(24, 10, false, true), new Pokemon(24, 10, false, true), new Pokemon(24, 10, false, true)}, 100),
+				new Trainer("UU", new Pokemon[]{new Pokemon(24, 15, false, true)}, 100),
 				new Trainer("1 Gym A", new Pokemon[]{new Pokemon(18, 5, false, true), new Pokemon(18, 5, false, true)}, 200),
 				new Trainer("1 Gym B", new Pokemon[]{new Pokemon(18, 12, false, true)}, 200),
 				new Trainer("1 Gym C", new Pokemon[]{new Pokemon(18, 6, false, true), new Pokemon(21, 4, false, true), new Pokemon(18, 8, false, true)}, 200),
@@ -799,15 +826,16 @@ public class Battle extends JFrame {
 					displayParty();
 					updateFoe();
 					boxButton.setVisible(true);
+					healButton.setVisible(true);
 		        } else {
 		            System.out.println("Oh no! " + foe.name + " broke free!");
 		            foe.move(me.getCurrent(),foe.randomMove(), me);
 					Pokemon.endOfTurn(foe, me.getCurrent(), me);
 					Pokemon.endOfTurn(me.getCurrent(), foe, me);
-					updateCurrent();
 					updateBars();
-					displayParty();
+					updateCurrent();
 					updateStatus();
+					displayParty();
 		        }
 		        System.out.println();
 			    System.out.println("------------------------------");
@@ -885,6 +913,8 @@ public class Battle extends JFrame {
 			playerPanel.add(night);
 			moneyLabel.setVisible(true);
 			playerPanel.add(moneyLabel);
+			trainerSelect.setVisible(true);
+			playerPanel.add(trainerSelect);
 			JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(playerPanel);
 			frame.setBounds(100, 100, 648, 330);
 			playerPanel.repaint();
@@ -1448,6 +1478,7 @@ public class Battle extends JFrame {
 		progressBar.setMaximum(me.getCurrent().expMax);
 		progressBar.setValue(me.getCurrent().exp);
 		
+		foeHealthBar.setMaximum(foe.getStat(0));
 		animateBar(foeHealthBar, foeHealthBar.getValue(), foe.getCurrentHP());
 		if (foeHealthBar.getPercentComplete() > 0.5) {
 			foeHealthBar.setForeground(new Color(0, 255, 0));
