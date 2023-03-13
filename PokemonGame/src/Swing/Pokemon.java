@@ -872,11 +872,11 @@ public class Pokemon implements Serializable {
 			result = new Pokemon(id + 1, level, this.moveset);
 		} else if (id == 49 && level >= 25) {
 			result = new Pokemon(id + 1, level, this.moveset);
-		} else if (id == 51 && level > 25 && this.contains(Move.MACH_PUNCH)) {
+		} else if (id == 51 && level >= 25 && this.contains(Move.MACH_PUNCH)) {
 			result = new Pokemon(52, level, this.moveset);
-		} else if (id == 51 && level > 25 && this.contains(Move.HI_JUMP_KICK)) {
+		} else if (id == 51 && level >= 25 && this.contains(Move.HI_JUMP_KICK)) {
 			result = new Pokemon(53, level, this.moveset);
-		} else if (id == 51 && level > 25 && this.contains(Move.SWORD_SLICE)) {
+		} else if (id == 51 && level >= 25 && this.contains(Move.SWORD_SLICE)) {
 			result = new Pokemon(54, level, this.moveset);
 		} else if (id == 55 && level >= 25) {
 			result = new Pokemon(id + 1, level, this.moveset);
@@ -912,7 +912,7 @@ public class Pokemon implements Serializable {
 			result = new Pokemon(id + 1, level, this.moveset);
 		} else if (id == 82 && level >= 26) {
 			result = new Pokemon(id + 1, level, this.moveset);
-		} else if (id == 85 && level >= 31) {
+		} else if (id == 84 && level >= 31) {
 			result = new Pokemon(id + 1, level, this.moveset);
 		} else if (id == 86 && level >= 36) {
 			result = new Pokemon(id + 1, level, this.moveset);
@@ -4796,7 +4796,7 @@ public class Pokemon implements Serializable {
 			movebank[26] = Move.WING_ATTACK;
 			break;
 		case 85:
-			movebank = new Move[27];
+			movebank = new Move[55];
 			movebank[0] = Move.PECK;
 			movebank[7] = Move.EMBER;
 			movebank[12] = Move.WILL_O_WISP;
@@ -5524,7 +5524,7 @@ public class Pokemon implements Serializable {
 			movebank[33] = Move.TAKE_DOWN;
 			break;
 		case 132:
-			movebank = new Move[34];
+			movebank = new Move[70];
 			movebank[0] = Move.POUND;
 			movebank[1] = Move.LEER;
 			movebank[6] = Move.BUBBLE;

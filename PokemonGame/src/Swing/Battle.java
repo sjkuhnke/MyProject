@@ -1,17 +1,15 @@
 package Swing;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.FileInputStream;
@@ -23,18 +21,7 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 
-import javax.swing.BoxLayout;
-import javax.swing.ButtonGroup;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JProgressBar;
-import javax.swing.JScrollPane;
-import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
-import javax.swing.Timer;
-import javax.swing.UIManager;
-import javax.swing.JTextField;
-import javax.swing.JRadioButton;
+import javax.swing.*;
 
 public class Battle extends JFrame {
 
@@ -45,6 +32,7 @@ public class Battle extends JFrame {
 	private JPanel playerPanel;
 	private JButton move1, move2, move3, move4;
 	private static Pokemon foe;
+	private Trainer foeTrainer;
 	private JProgressBar healthBar;
 	private JProgressBar progressBar;
 	private JLabel currentHPLabel;
@@ -73,7 +61,6 @@ public class Battle extends JFrame {
 	private JRadioButton pokeballButton;
 	private JRadioButton greatballButton;
 	private JRadioButton ultraballButton;
-	private JGradientButton addMoney;
 	private JGradientButton buyPoke;
 	private JGradientButton buyGreat;
 	private JGradientButton buyUltra;
@@ -91,6 +78,7 @@ public class Battle extends JFrame {
 	private JRadioButton rdbtnFishing;
 	private JRadioButton rdbtnSurfing;
 	private JRadioButton rdbtnHeadbutt;
+	private JComboBox<Trainer> trainerSelect;
 	
 	/**
 	 * Launch the application.
@@ -153,25 +141,32 @@ public class Battle extends JFrame {
 		returnButton = createJButton("Exit", new Font("Tahoma", Font.BOLD, 12), 553, 35, 62, 21);
 		returnButton.setVisible(false);
 		
-		addMoney = new JGradientButton("Win ($100)");
-		addMoney.setBounds(30, 410, 100, 50);
-		addMoney.setFont(new Font("Tahoma", Font.BOLD, 9));
-		addMoney.setBackground(Color.GREEN);
-		
-		addMoney.addActionListener(e -> {
-			me.money += 100;
-			JOptionPane.showMessageDialog(null, "Won $100! Current Balance: $" + me.money);
-			moneyLabel.setText("$" + me.money);
-		});
-		
 		encounterButton.addActionListener(new ActionListener() {
 		    public void actionPerformed(ActionEvent e) {
 				foe = encounterPokemon((String)encounterInput.getSelectedItem());
+				foeTrainer = null;
 				updateFoe();
 				if (!foe.isFainted()) boxButton.setVisible(false);
+				if (!foe.isFainted()) healButton.setVisible(false);
 				me.clearBattled();
 				me.getCurrent().battled = true;
 				me.getCurrent().clearVolatile();
+		    }
+		});
+		
+		InputMap inputMap = encounterButton.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+		ActionMap actionMap = encounterButton.getActionMap();
+		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_E, 0), "clickButton");
+		actionMap.put("clickButton", new AbstractAction() {
+		    /**
+			 * 
+			 */
+			private static final long serialVersionUID = -4021844080938897923L;
+
+			@Override
+		    public void actionPerformed(ActionEvent e) {
+		        // Action to perform when E key is pressed
+		        encounterButton.doClick();
 		    }
 		});
 		
@@ -210,6 +205,8 @@ public class Battle extends JFrame {
 		moneyLabel.setHorizontalAlignment(SwingConstants.LEFT);
 		moneyLabel.setBounds(553, 10, 100, 21);
 		moneyLabel.setFont(new Font("Tahoma", Font.BOLD, 12));
+		moneyLabel.setVisible(true);
+		playerPanel.add(moneyLabel);
 		
 		bag[0] = new JLabel("Pokeballs:");
 		bag[0].setBounds(553, 60, 60, 21);
@@ -523,6 +520,7 @@ public class Battle extends JFrame {
 				foe = encounterPokemon((String)encounterInput.getSelectedItem());
 				updateFoe();
 				if (!foe.isFainted()) boxButton.setVisible(false);
+				if (!foe.isFainted()) healButton.setVisible(false);
 				me.clearBattled();
 				me.getCurrent().battled = true;
 		    }
@@ -568,6 +566,155 @@ public class Battle extends JFrame {
 		time.add(morning);
 		time.add(day);
 		time.add(night);
+		
+		Trainer[] trainers = {
+				new Trainer("A", new Pokemon[]{new Pokemon(14, 3, false, true)}, 100),
+				new Trainer("B", new Pokemon[]{new Pokemon(24, 4, false, true), new Pokemon(24, 4, false, true)}, 100),
+				new Trainer("C", new Pokemon[]{new Pokemon(12, 5, false, true), new Pokemon(10, 6, false, true)}, 100),
+				new Trainer("D", new Pokemon[]{new Pokemon(33, 7, false, true), new Pokemon(33, 7, false, true)}, 100),
+				new Trainer("E", new Pokemon[]{new Pokemon(18, 8, false, true)}, 100),
+				new Trainer("F", new Pokemon[]{new Pokemon(12, 9, false, true)}, 100),
+				new Trainer("Rival 1", new Pokemon[]{new Pokemon(130, 7, false, true)}, 500),
+				new Trainer("G", new Pokemon[]{new Pokemon(42, 7, false, true), new Pokemon(42, 8, false, true)}, 100),
+				new Trainer("1 Gym A", new Pokemon[]{new Pokemon(18, 5, false, true), new Pokemon(18, 5, false, true)}, 200),
+				new Trainer("1 Gym B", new Pokemon[]{new Pokemon(18, 12, false, true)}, 200),
+				new Trainer("1 Gym C", new Pokemon[]{new Pokemon(18, 6, false, true), new Pokemon(21, 4, false, true), new Pokemon(18, 8, false, true)}, 200),
+				new Trainer("1 Gym D", new Pokemon[]{new Pokemon(21, 7, false, true), new Pokemon(21, 7, false, true), new Pokemon(21, 9, false, true)}, 200),
+				new Trainer("1 Gym Leader 1", new Pokemon[]{new Pokemon(18, 7, false, true), new Pokemon(18, 13, false, true), new Pokemon(21, 9, false, true)}, 500),
+				new Trainer("2 Gym A", new Pokemon[]{new Pokemon(11, 16, false, true)}, 200),
+				new Trainer("2 Gym B", new Pokemon[]{new Pokemon(10, 10, false, true), new Pokemon(10, 10, false, true)}, 200),
+				new Trainer("2 Gym Leader 1", new Pokemon[]{new Pokemon(10, 10, false, true), new Pokemon(12, 10, false, true), new Pokemon(11, 19, false, true)}, 500),
+				new Trainer("H", new Pokemon[]{new Pokemon(71, 17, false, true)}, 100),
+				new Trainer("I", new Pokemon[]{new Pokemon(106, 14, false, true), new Pokemon(107, 15, false, true)}, 100),
+				new Trainer("3 Gym A", new Pokemon[]{new Pokemon(37, 12, false, true), new Pokemon(37, 14, false, true), new Pokemon(37, 16, false, true)}, 200),
+				new Trainer("3 Gym B", new Pokemon[]{new Pokemon(41, 21, false, true)}, 200),
+				new Trainer("3 Gym C", new Pokemon[]{new Pokemon(38, 15, false, true), new Pokemon(38, 18, false, true)}, 200),
+				new Trainer("3 Gym Leader 1", new Pokemon[]{new Pokemon(37, 15, false, true), new Pokemon(40, 17, false, true), new Pokemon(41, 22, false, true)}, 500),
+				new Trainer("J", new Pokemon[]{new Pokemon(46, 16, false, true)}, 100),
+				new Trainer("K", new Pokemon[]{new Pokemon(24, 14, false, true), new Pokemon(24, 14, false, true)}, 100),
+				new Trainer("L", new Pokemon[]{new Pokemon(51, 11, false, true), new Pokemon(49, 16, false, true)}, 100),
+				new Trainer("M", new Pokemon[]{new Pokemon(71, 18, false, true)}, 100),
+				new Trainer("N", new Pokemon[]{new Pokemon(75, 16, false, true), new Pokemon(75, 17, false, true)}, 100),
+				new Trainer("O", new Pokemon[]{new Pokemon(106, 20, false, true)}, 100),
+				new Trainer("P", new Pokemon[]{new Pokemon(46, 12, false, true), new Pokemon(44, 12, false, true), new Pokemon(46, 12, false, true), new Pokemon(44, 12, false, true)}, 100),
+				new Trainer("4 Gym A", new Pokemon[]{new Pokemon(46, 15, false, true), new Pokemon(44, 20, false, true)}, 200),
+				new Trainer("4 Gym Leader 1", new Pokemon[]{new Pokemon(43, 16, false, true), new Pokemon(46, 17, false, true), new Pokemon(46, 24, false, true), new Pokemon(44, 21, false, true)}, 500),
+				new Trainer("Q", new Pokemon[]{new Pokemon(50, 25, false, true)}, 100),
+				new Trainer("5 Gym A", new Pokemon[]{new Pokemon(63, 14, false, true), new Pokemon(63, 16, false, true), new Pokemon(63, 18, false, true)}, 200),
+				new Trainer("5 Gym B", new Pokemon[]{new Pokemon(66, 27, false, true)}, 200),
+				new Trainer("5 Gym C", new Pokemon[]{new Pokemon(24, 18, false, true), new Pokemon(25, 21, false, true)}, 200),
+				new Trainer("5 Gym D", new Pokemon[]{new Pokemon(69, 21, false, true)}, 200),
+				new Trainer("5 Gym E", new Pokemon[]{new Pokemon(70, 22, false, true)}, 200),
+				new Trainer("5 Gym Leader 1", new Pokemon[]{new Pokemon(65, 20, false, true), new Pokemon(66, 30, false, true), new Pokemon(69, 28, false, true), new Pokemon(64, 25, false, true)}, 500),
+				new Trainer("R", new Pokemon[]{new Pokemon(106, 24, false, true)}, 100),
+				new Trainer("S", new Pokemon[]{new Pokemon(92, 20, false, true), new Pokemon(92, 20, false, true), new Pokemon(46, 15, false, true)}, 100),
+				new Trainer("T", new Pokemon[]{new Pokemon(75, 18, false, true), new Pokemon(77, 23, false, true)}, 100),
+				new Trainer("U", new Pokemon[]{new Pokemon(84, 24, false, true)}, 100),
+				new Trainer("V", new Pokemon[]{new Pokemon(86, 25, false, true)}, 100),
+				new Trainer("W", new Pokemon[]{new Pokemon(61, 23, false, true), new Pokemon(55, 23, false, true)}, 100),
+				new Trainer("X", new Pokemon[]{new Pokemon(8, 24, false, true), new Pokemon(80, 25, false, true)}, 100),
+				new Trainer("6 Gym A", new Pokemon[]{new Pokemon(90, 32, false, true)}, 200),
+				new Trainer("6 Gym B", new Pokemon[]{new Pokemon(87, 30, false, true)}, 200),
+				new Trainer("6 Gym C", new Pokemon[]{new Pokemon(89, 24, false, true), new Pokemon(89, 24, false, true)}, 200),
+				new Trainer("6 Gym D", new Pokemon[]{new Pokemon(86, 24, false, true), new Pokemon(86, 27, false, true)}, 200),
+				new Trainer("6 Gym E", new Pokemon[]{new Pokemon(69, 29, false, true)}, 200),
+				new Trainer("6 Gym F", new Pokemon[]{new Pokemon(90, 31, false, true)}, 200),
+				new Trainer("6 Gym Leader 1", new Pokemon[]{new Pokemon(89, 29, false, true), new Pokemon(90, 34, false, true), new Pokemon(87, 36, false, true)}, 500),
+				new Trainer("Y", new Pokemon[]{new Pokemon(93, 24, false, true), new Pokemon(89, 23, false, true)}, 100),
+				new Trainer("Z", new Pokemon[]{new Pokemon(75, 26, false, true)}, 100),
+				new Trainer("AA", new Pokemon[]{new Pokemon(97, 19, false, true), new Pokemon(98, 26, false, true)}, 100),
+				new Trainer("BB", new Pokemon[]{new Pokemon(41, 26, false, true)}, 100),
+				new Trainer("CC", new Pokemon[]{new Pokemon(46, 25, false, true), new Pokemon(47, 31, false, true)}, 100),
+				new Trainer("CA", new Pokemon[]{new Pokemon(18, 10, false, true), new Pokemon(21, 10, false, true)}, 100),
+				new Trainer("CB", new Pokemon[]{new Pokemon(18, 21, false, true), new Pokemon(19, 26, false, true), new Pokemon(19, 28, false, true)}, 100),
+				new Trainer("CD", new Pokemon[]{new Pokemon(38, 21, false, true), new Pokemon(40, 21, false, true)}, 100),
+				new Trainer("CE", new Pokemon[]{new Pokemon(33, 20, false, true), new Pokemon(33, 20, false, true), new Pokemon(34, 25, false, true)}, 100),
+				new Trainer("DD", new Pokemon[]{new Pokemon(80, 10, false, true), new Pokemon(74, 8, false, true)}, 100),
+				new Trainer("EE", new Pokemon[]{new Pokemon(18, 9, false, true), new Pokemon(18, 9, false, true), new Pokemon(18, 9, false, true), new Pokemon(18, 9, false, true)}, 100),
+				new Trainer("FF", new Pokemon[]{new Pokemon(25, 25, false, true), new Pokemon(25, 25, false, true)}, 100),
+				new Trainer("GG", new Pokemon[]{new Pokemon(63, 23, false, true), new Pokemon(64, 27, false, true)}, 100),
+				new Trainer("HH", new Pokemon[]{new Pokemon(65, 23, false, true), new Pokemon(66, 27, false, true)}, 100),
+				new Trainer("II", new Pokemon[]{new Pokemon(69, 30, false, true)}, 100),
+				new Trainer("JJ", new Pokemon[]{new Pokemon(68, 20, false, true), new Pokemon(68, 25, false, true), new Pokemon(68, 25, false, true)}, 100),
+				new Trainer("VV", new Pokemon[]{new Pokemon(28, 36, false, true)}, 100),
+				new Trainer("MM", new Pokemon[]{new Pokemon(35, 12, false, true), new Pokemon(35, 12, false, true), new Pokemon(36, 12, false, true), new Pokemon(36, 12, false, true)}, 100),
+				new Trainer("NN", new Pokemon[]{new Pokemon(14, 13, false, true), new Pokemon(29, 13, false, true), new Pokemon(29, 14, false, true)}, 100),
+				new Trainer("7 Gym A", new Pokemon[]{new Pokemon(75, 30, false, true), new Pokemon(75, 30, false, true)}, 200),
+				new Trainer("7 Gym B", new Pokemon[]{new Pokemon(78, 36, false, true)}, 200),
+				new Trainer("7 Gym C", new Pokemon[]{new Pokemon(80, 26, false, true), new Pokemon(81, 29, false, true)}, 200),
+				new Trainer("7 Gym D", new Pokemon[]{new Pokemon(84, 26, false, true), new Pokemon(85, 33, false, true)}, 200),
+				new Trainer("7 Gym Leader 1", new Pokemon[]{new Pokemon(78, 39, false, true), new Pokemon(85, 30, false, true), new Pokemon(76, 41, false, true)}, 500),
+				new Trainer("KK", new Pokemon[]{new Pokemon(96, 25, false, true), new Pokemon(97, 20, false, true), new Pokemon(98, 30, false, true)}, 100),
+				new Trainer("LL", new Pokemon[]{new Pokemon(39, 25, false, true), new Pokemon(41, 25, false, true), new Pokemon(39, 30, false, true), new Pokemon(41, 30, false, true)}, 100),
+				new Trainer("OO", new Pokemon[]{new Pokemon(39, 30, false, true), new Pokemon(41, 30, false, true)}, 100),
+				new Trainer("PP", new Pokemon[]{new Pokemon(45, 33, false, true)}, 100),
+				new Trainer("QQ", new Pokemon[]{new Pokemon(64, 30, false, true), new Pokemon(66, 30, false, true)}, 100),
+				new Trainer("RR", new Pokemon[]{new Pokemon(78, 35, false, true)}, 100),
+				new Trainer("SS", new Pokemon[]{new Pokemon(25, 30, false, true), new Pokemon(25, 30, false, true), new Pokemon(69, 28, false, true), new Pokemon(70, 28, false, true), new Pokemon(64, 30, false, true), new Pokemon(66, 30, false, true)}, 100),
+				new Trainer("8 Gym A", new Pokemon[]{new Pokemon(100, 30, false, true), new Pokemon(100, 30, false, true), new Pokemon(100, 30, false, true), new Pokemon(100, 30, false, true), new Pokemon(100, 30, false, true), new Pokemon(100, 30, false, true)}, 200),
+				new Trainer("8 Gym B", new Pokemon[]{new Pokemon(101, 40, false, true), new Pokemon(101, 40, false, true)}, 200),
+				new Trainer("8 Gym C", new Pokemon[]{new Pokemon(70, 45, false, true), new Pokemon(78, 42, false, true)}, 200),
+				new Trainer("8 Gym D", new Pokemon[]{new Pokemon(122, 50, false, true)}, 200),
+				new Trainer("8 Gym E", new Pokemon[]{new Pokemon(101, 41, false, true), new Pokemon(100, 32, false, true), new Pokemon(78, 39, false, true)}, 200),
+				new Trainer("8 Gym F", new Pokemon[]{new Pokemon(122, 30, false, true), new Pokemon(122, 35, false, true), new Pokemon(122, 40, false, true), new Pokemon(122, 45, false, true)}, 200),
+				new Trainer("8 Gym Leader 1", new Pokemon[]{new Pokemon(100, 33, false, true), new Pokemon(101, 45, false, true), new Pokemon(79, 55, false, true), new Pokemon(122, 50, false, true), new Pokemon(70, 48, false, true), new Pokemon(102, 55, false, true)}, 500),
+				new Trainer("TA", new Pokemon[]{new Pokemon(112, 50, false, true)}, 100),
+				new Trainer("TB", new Pokemon[]{new Pokemon(113, 50, false, true)}, 100),
+				new Trainer("TC", new Pokemon[]{new Pokemon(114, 50, false, true)}, 100),
+				new Trainer("TD", new Pokemon[]{new Pokemon(115, 50, false, true)}, 100),
+				new Trainer("TE", new Pokemon[]{new Pokemon(116, 50, false, true)}, 100),
+				new Trainer("TF", new Pokemon[]{new Pokemon(117, 50, false, true)}, 100),
+				new Trainer("TG", new Pokemon[]{new Pokemon(118, 50, false, true)}, 100),
+				new Trainer("TH", new Pokemon[]{new Pokemon(119, 50, false, true)}, 100),
+				new Trainer("TI", new Pokemon[]{new Pokemon(120, 50, false, true)}, 100),
+				new Trainer("TJ", new Pokemon[]{new Pokemon(121, 50, false, true)}, 100),
+				new Trainer("TK", new Pokemon[]{new Pokemon(122, 50, false, true)}, 100),
+				new Trainer("TL", new Pokemon[]{new Pokemon(123, 50, false, true)}, 100),
+				new Trainer("TA 2", new Pokemon[]{new Pokemon(112, 80, false, true)}, 100),
+				new Trainer("TB 2", new Pokemon[]{new Pokemon(113, 80, false, true)}, 100),
+				new Trainer("TC 2", new Pokemon[]{new Pokemon(114, 80, false, true)}, 100),
+				new Trainer("TD 2", new Pokemon[]{new Pokemon(115, 80, false, true)}, 100),
+				new Trainer("TE 2", new Pokemon[]{new Pokemon(116, 80, false, true)}, 100),
+				new Trainer("TF 2", new Pokemon[]{new Pokemon(117, 80, false, true)}, 100),
+				new Trainer("TG 2", new Pokemon[]{new Pokemon(118, 80, false, true)}, 100),
+				new Trainer("TH 2", new Pokemon[]{new Pokemon(119, 80, false, true)}, 100),
+				new Trainer("TI 2", new Pokemon[]{new Pokemon(120, 80, false, true)}, 100),
+				new Trainer("TJ 2", new Pokemon[]{new Pokemon(121, 80, false, true)}, 100),
+				new Trainer("TK 2", new Pokemon[]{new Pokemon(122, 80, false, true)}, 100),
+				new Trainer("TL 2", new Pokemon[]{new Pokemon(123, 80, false, true)}, 100),
+				new Trainer("TM", new Pokemon[]{new Pokemon(92, 50, false, true), new Pokemon(92, 50, false, true), new Pokemon(92, 50, false, true), new Pokemon(92, 50, false, true)}, 100),
+				new Trainer("TN", new Pokemon[]{new Pokemon(47, 50, false, true), new Pokemon(45, 50, false, true), new Pokemon(37, 50, false, true), new Pokemon(37, 50, false, true), new Pokemon(90, 50, false, true), new Pokemon(90, 50, false, true)}, 100),
+				new Trainer("TO", new Pokemon[]{new Pokemon(90, 50, false, true), new Pokemon(43, 50, false, true), new Pokemon(37, 50, false, true), new Pokemon(87, 50, false, true), new Pokemon(41, 50, false, true), new Pokemon(91, 55, false, true)}, 100),
+				new Trainer("1 Gym Leader 2", new Pokemon[]{new Pokemon(20, 50, false, true), new Pokemon(23, 55, false, true), new Pokemon(20, 50, false, true), new Pokemon(118, 58, false, true), new Pokemon(3, 57, false, true), new Pokemon(6, 57, false, true)}, 500),
+				new Trainer("2 Gym Leader 2", new Pokemon[]{new Pokemon(13, 60, false, true), new Pokemon(3, 60, false, true), new Pokemon(11, 54, false, true), new Pokemon(113, 61, false, true), new Pokemon(60, 58, false, true), new Pokemon(126, 61, false, true)}, 500),
+				new Trainer("3 Gym Leader 2", new Pokemon[]{new Pokemon(41, 59, false, true), new Pokemon(39, 60, false, true), new Pokemon(41, 61, false, true), new Pokemon(94, 64, false, true), new Pokemon(94, 64, false, true), new Pokemon(39, 60, false, true)}, 500),
+				new Trainer("4 Gym Leader 2", new Pokemon[]{new Pokemon(43, 66, false, true), new Pokemon(45, 64, false, true), new Pokemon(47, 63, false, true), new Pokemon(45, 65, false, true), new Pokemon(117, 67, false, true), new Pokemon(83, 62, false, true)}, 500),
+				new Trainer("5 Gym Leader 2", new Pokemon[]{new Pokemon(132, 72, false, true), new Pokemon(66, 69, false, true), new Pokemon(9, 70, false, true), new Pokemon(64, 70, false, true), new Pokemon(144, 67, false, true), new Pokemon(115, 71, false, true)}, 500),
+				new Trainer("6 Gym Leader 2", new Pokemon[]{new Pokemon(90, 73, false, true), new Pokemon(41, 72, false, true), new Pokemon(90, 73, false, true), new Pokemon(87, 74, false, true), new Pokemon(119, 76, false, true), new Pokemon(69, 74, false, true)}, 500),
+				new Trainer("7 Gym Leader 2", new Pokemon[]{new Pokemon(85, 75, false, true), new Pokemon(108, 77, false, true), new Pokemon(129, 78, false, true), new Pokemon(76, 76, false, true), new Pokemon(114, 77, false, true), new Pokemon(81, 76, false, true)}, 500),
+				new Trainer("8 Gym Leader 2", new Pokemon[]{new Pokemon(79, 82, false, true), new Pokemon(102, 83, false, true), new Pokemon(102, 83, false, true), new Pokemon(122, 85, false, true), new Pokemon(79, 82, false, true), new Pokemon(102, 83, false, true)}, 500),
+		};
+		trainerSelect = new JComboBox<>(trainers);
+		trainerSelect.setBounds(13, 23, 110, 21);
+		trainerSelect.setVisible(true);
+		playerPanel.add(trainerSelect);
+		trainerSelect.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				foeTrainer = (Trainer) trainerSelect.getSelectedItem();
+				if (me.trainersBeat.contains(foeTrainer.toString())) {
+					JOptionPane.showMessageDialog(null, foeTrainer.toString() + " already beaten!");
+                    return;
+				}
+				foe = ((Trainer) trainerSelect.getSelectedItem()).getTeam()[0];
+				updateFoe();
+				boxButton.setVisible(false);
+				healButton.setVisible(false);
+				me.clearBattled();
+				me.getCurrent().battled = true;
+			}
+		});
+		
 		addButton.addActionListener(e -> {
 			if (!foe.isFainted()) {
 				me.catchPokemon(new Pokemon(foe.id, foe.getLevel(), true, false));
@@ -730,6 +877,8 @@ public class Battle extends JFrame {
 			playerPanel.add(day);
 			night.setVisible(true);
 			playerPanel.add(night);
+			moneyLabel.setVisible(true);
+			playerPanel.add(moneyLabel);
 			JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(playerPanel);
 			frame.setBounds(100, 100, 648, 330);
 			playerPanel.repaint();
@@ -769,6 +918,36 @@ public class Battle extends JFrame {
 				System.out.println();
 			    System.out.println("------------------------------");
 	        });
+			party[i].addMouseListener(new MouseAdapter() {
+			    @Override
+			    public void mouseClicked(MouseEvent e) {
+			        if (SwingUtilities.isRightMouseButton(e)) {
+			            JPanel teamMemberPanel = new JPanel();
+			            teamMemberPanel.setLayout(new BoxLayout(teamMemberPanel, BoxLayout.Y_AXIS));
+			            JLabel nameLabel = new JLabel("Name: N/A");
+			            if (me.team[index] != null) nameLabel.setText("Name: " + me.team[index].getName());
+			            JLabel levelLabel = new JLabel("Level: N/A");
+			            if (me.team[index] != null) levelLabel.setText("Level: " + me.team[index].getLevel());
+			            JLabel statsLabel = new JLabel("Stats: N/A");
+			            if (me.team[index] != null) statsLabel.setText("Stats: " + intArrayToString(me.team[index].stats));
+			            JLabel hpLabel = new JLabel("HP: N/A");
+			            if (me.team[index] != null) hpLabel.setText("HP: " + me.team[index].currentHP + " / " + me.team[index].getStat(0));
+			            JLabel movesLabel = new JLabel("Moves: N/A");
+			            if (me.team[index] != null) movesLabel.setText("Moves: " + movesToString(me.team[index]));
+			            JLabel statusLabel = new JLabel("Status: N/A");
+			            if (me.team[index] != null) statusLabel.setText("Status: " + me.team[index].getStatus());
+			            teamMemberPanel.add(nameLabel);
+			            teamMemberPanel.add(levelLabel);
+			            teamMemberPanel.add(statsLabel);
+			            teamMemberPanel.add(hpLabel);
+			            teamMemberPanel.add(movesLabel);
+			            teamMemberPanel.add(statusLabel);
+
+			            JOptionPane.showMessageDialog(null, teamMemberPanel, "Party member details", JOptionPane.PLAIN_MESSAGE);
+			        }
+			    }
+			});
+
 		}
 		displayParty();
 	}
@@ -1205,13 +1384,33 @@ public class Battle extends JFrame {
 	            }
 	        }
 	    }
-	    System.out.println();
-	    System.out.println("------------------------------");
+		if (foe.isFainted()) {
+			if (foeTrainer != null) {
+				if (foeTrainer.hasNext()) {
+					foe = foeTrainer.next();
+					System.out.println("\nOpponent sends out " + foeTrainer.getCurrent().name + "!");
+					updateFoe();
+					
+				} else {
+					System.out.println("\n" + foeTrainer.toString() + " was defeated!");
+					me.trainersBeat.add(foeTrainer.toString());
+					me.money += foeTrainer.getMoney();
+					System.out.println("Won $" + foeTrainer.getMoney() + "!");
+					moneyLabel.setText("$" + me.money);
+					boxButton.setVisible(true);
+					healButton.setVisible(true);
+				}
+			} else {
+				healButton.setVisible(true);
+			}
+		}
 		updateBars();
 		updateCurrent();
 		updateStatus();
 		displayParty();
-		if (foe.isFainted()) boxButton.setVisible(true);
+		System.out.println();
+	    System.out.println("------------------------------");
+		
 	}
 
 	private void updateStatus() {
@@ -1275,9 +1474,6 @@ public class Battle extends JFrame {
 		}
 		playerPanel.add(returnButton);
 		returnButton.setVisible(true);
-		
-		addMoney.setVisible(true);
-		playerPanel.add(addMoney);
 		
 		buyPoke.setVisible(true);
 		playerPanel.add(buyPoke);

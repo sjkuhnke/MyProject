@@ -1,6 +1,7 @@
 package Swing;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class Player implements Serializable{
 	/**
@@ -15,12 +16,14 @@ public class Player implements Serializable{
 	public int greatballCount;
 	public int ultraballCount;
 	private int numBattled;
+	public ArrayList<String> trainersBeat;
 	
 	public Player() {
 		team = new Pokemon[6];
 		box = new Pokemon[30];
 		money = 0;
 		current = null;
+		trainersBeat = new ArrayList<String>();
 	}
 	
 	public Pokemon getCurrent() {
