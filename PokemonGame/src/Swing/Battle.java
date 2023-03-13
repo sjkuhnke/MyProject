@@ -17,9 +17,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.Scanner;
 
 import javax.swing.*;
 
@@ -56,8 +56,6 @@ public class Battle extends JFrame {
 	private JGradientButton[] boxButtons;
 	private JButton returnButton;
 	
-	private static Scanner stdIn;
-	private static Scanner stdIn2;
 	private JRadioButton pokeballButton;
 	private JRadioButton greatballButton;
 	private JRadioButton ultraballButton;
@@ -79,6 +77,7 @@ public class Battle extends JFrame {
 	private JRadioButton rdbtnSurfing;
 	private JRadioButton rdbtnHeadbutt;
 	private JComboBox<Trainer> trainerSelect;
+	private Trainer[] trainers;
 	
 	/**
 	 * Launch the application.
@@ -111,8 +110,6 @@ public class Battle extends JFrame {
 	                    public void windowClosing(WindowEvent e) {
 	                        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("player.dat"))) {
 	                            oos.writeObject(me);
-	                            stdIn.close();
-	                            stdIn2.close();
 	                            oos.close();
 	                        } catch (IOException ex) {
 	                            System.err.println("Error writing Player object to file: " + ex.getMessage());
@@ -128,6 +125,14 @@ public class Battle extends JFrame {
 	}
 
 	public Battle() {
+		// Initializing panel
+		setResizable(false);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 648, 530);
+		playerPanel = new JPanel();
+		playerPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(playerPanel);
+		playerPanel.setLayout(null);
 		// Initialize frame
 		initialize();
 		updateFoe();
@@ -180,6 +185,8 @@ public class Battle extends JFrame {
 		bag[6].setHorizontalAlignment(SwingConstants.CENTER);
 		bag[6].setFont(new Font("Tahoma", Font.BOLD, 12));
 		bag[6].setForeground(new Color(79, 2, 2));
+		buyPoke.setVisible(false);
+		playerPanel.add(buyPoke);
 		
 		buyGreat = new JGradientButton("Buy Great Balls");
 		buyGreat.setBounds(280, 410, 100, 50);
@@ -190,6 +197,8 @@ public class Battle extends JFrame {
 		bag[7].setHorizontalAlignment(SwingConstants.CENTER);
 		bag[7].setFont(new Font("Tahoma", Font.BOLD, 12));
 		bag[7].setForeground(new Color(2, 4, 79));
+		buyGreat.setVisible(false);
+		playerPanel.add(buyGreat);
 		
 		buyUltra = new JGradientButton("Buy Ultra Balls");
 		buyUltra.setBounds(405, 410, 100, 50);
@@ -200,6 +209,8 @@ public class Battle extends JFrame {
 		bag[8].setHorizontalAlignment(SwingConstants.CENTER);
 		bag[8].setFont(new Font("Tahoma", Font.BOLD, 12));
 		bag[8].setForeground(new Color(92, 97, 6));
+		buyUltra.setVisible(false);
+		playerPanel.add(buyUltra);
 		
 		moneyLabel = new JLabel("$" + me.money);
 		moneyLabel.setHorizontalAlignment(SwingConstants.LEFT);
@@ -234,6 +245,10 @@ public class Battle extends JFrame {
 		bag[5].setBounds(553, 170, 40, 21);
 		bag[5].setFont(new Font("Tahoma", Font.BOLD, 15));
 		bag[5].setForeground(new Color(199, 192, 6));
+		for (int i = 0; i < bag.length; i++) {
+			bag[i].setVisible(false);
+			playerPanel.add(bag[i]);
+		}
 		
 		buyPoke.addActionListener(e -> {
 			if (me.money >= 100) {
@@ -467,7 +482,7 @@ public class Battle extends JFrame {
 	        	                if (evolved != null) {
 	        	                    // Update the player's team with the evolved Pokemon
 	        	                	me.box[index] = evolved;
-	        	                    evolved.checkMove(Battle.getScanner());
+	        	                    evolved.checkMove();
 	        	                    me.box[index] = evolved;
 	        	                }
 	        	            }
@@ -634,7 +649,7 @@ public class Battle extends JFrame {
 		time.add(day);
 		time.add(night);
 		
-		Trainer[] trainers = {
+		trainers = new Trainer[]{
 				new Trainer("A", new Pokemon[]{new Pokemon(14, 3, false, true)}, 100),
 				new Trainer("B", new Pokemon[]{new Pokemon(24, 4, false, true), new Pokemon(24, 4, false, true)}, 100),
 				new Trainer("C", new Pokemon[]{new Pokemon(12, 5, false, true), new Pokemon(10, 6, false, true)}, 100),
@@ -769,10 +784,25 @@ public class Battle extends JFrame {
 				new Trainer("8 Gym Leader 2", new Pokemon[]{new Pokemon(79, 82, false, true), new Pokemon(102, 83, false, true), new Pokemon(102, 83, false, true), new Pokemon(122, 85, false, true), new Pokemon(79, 82, false, true), new Pokemon(102, 83, false, true)}, 500),
 				new Trainer("Rival 7", new Pokemon[]{new Pokemon(132, 90, false, true), new Pokemon(25, 71, false, true), new Pokemon(23, 82, false, true), new Pokemon(41, 74, false, true), new Pokemon(79, 88, false, true), new Pokemon(87, 78, false, true)}, 500),
 		};
-		trainerSelect = new JComboBox<>(trainers);
+		
+		trainerSelect = new JComboBox<>(getUnbeatenTrainers());
 		trainerSelect.setBounds(13, 23, 110, 21);
+		updateTrainers();
 		trainerSelect.setVisible(true);
 		playerPanel.add(trainerSelect);
+		
+		
+		JTextArea console = new JTextArea();
+		console.setEditable(false);
+		
+		PrintStream printStream = new PrintStream(new CustomOutputStream(console));
+		
+		System.setOut(printStream);
+		
+		JScrollPane scrollPane = new JScrollPane(console);
+		scrollPane.setBounds(10, 295, 610, 190);
+		playerPanel.add(scrollPane);
+		
 		trainerSelect.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -781,7 +811,12 @@ public class Battle extends JFrame {
 					JOptionPane.showMessageDialog(null, foeTrainer.toString() + " already beaten!");
                     return;
 				}
+				if (((Trainer) trainerSelect.getSelectedItem()).getTeam() == null) {
+					return;
+				}
 				foe = ((Trainer) trainerSelect.getSelectedItem()).getTeam()[0];
+				System.out.println("\nYou are challenged by " + foeTrainer.toString() + "!");
+				System.out.println(foeTrainer.toString() + " sends out " + foeTrainer.getCurrent().name + "!");
 				updateFoe();
 				boxButton.setVisible(false);
 				healButton.setVisible(false);
@@ -958,8 +993,8 @@ public class Battle extends JFrame {
 			playerPanel.add(moneyLabel);
 			trainerSelect.setVisible(true);
 			playerPanel.add(trainerSelect);
-			JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(playerPanel);
-			frame.setBounds(100, 100, 648, 330);
+			scrollPane.setVisible(true);
+			playerPanel.add(scrollPane);
 			playerPanel.repaint();
 		});
 		
@@ -1033,18 +1068,7 @@ public class Battle extends JFrame {
 
 	private void initialize() {
 		
-		// Initializing panel
-		setResizable(false);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 648, 330);
-		playerPanel = new JPanel();
-		playerPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(playerPanel);
-		playerPanel.setLayout(null);
-		
 		// Initializing current elements
-		stdIn = new Scanner(System.in);
-		stdIn2 = new Scanner(System.in);
 		currentText = new JLabel("");
 		
 		move1 = new JGradientButton("");
@@ -1092,21 +1116,73 @@ public class Battle extends JFrame {
 		playerPanel.add(move4);
 		
 		// Add action listeners to buttons
-        move1.addActionListener(e -> {
-        	turn(me.getCurrent(),foe,me.getCurrent().moveset[0],foe.randomMove());
-        });
+		move1.addMouseListener(new MouseAdapter() {
+		    @Override
+		    public void mouseClicked(MouseEvent e) {
+		    	if (SwingUtilities.isRightMouseButton(e)) {
+		            String message = "Move: " + me.getCurrent().moveset[0].toString() + "\n";
+		            message += "Type: " + me.getCurrent().moveset[0].mtype + "\n";
+		            message += "BP: " + me.getCurrent().moveset[0].getbp() + "\n";
+		            message += "Accuracy: " + me.getCurrent().moveset[0].accuracy + "\n";
+		            message += "Category: " + me.getCurrent().moveset[0].getCategory() + "\n";
+		            message += "Description: " + me.getCurrent().moveset[0].getDescription();
+		            JOptionPane.showMessageDialog(null, message, "Move Description", JOptionPane.INFORMATION_MESSAGE);
+		        } else {
+		            turn(me.getCurrent(), foe, me.getCurrent().moveset[0], foe.randomMove());
+		        }
+		    }
+		});
 
-        move2.addActionListener(e -> {
-        	turn(me.getCurrent(),foe,me.getCurrent().moveset[1],foe.randomMove());
-        });
+		move2.addMouseListener(new MouseAdapter() {
+		    @Override
+		    public void mouseClicked(MouseEvent e) {
+		    	if (SwingUtilities.isRightMouseButton(e)) {
+		            String message = "Move: " + me.getCurrent().moveset[1].toString() + "\n";
+		            message += "Type: " + me.getCurrent().moveset[1].mtype + "\n";
+		            message += "BP: " + me.getCurrent().moveset[1].getbp() + "\n";
+		            message += "Accuracy: " + me.getCurrent().moveset[1].accuracy + "\n";
+		            message += "Category: " + me.getCurrent().moveset[1].getCategory() + "\n";
+		            message += "Description: " + me.getCurrent().moveset[1].getDescription();
+		            JOptionPane.showMessageDialog(null, message, "Move Description", JOptionPane.INFORMATION_MESSAGE);
+		        } else {
+		            turn(me.getCurrent(), foe, me.getCurrent().moveset[1], foe.randomMove());
+		        }
+		    }
+		});
 
-        move3.addActionListener(e -> {
-        	turn(me.getCurrent(),foe,me.getCurrent().moveset[2],foe.randomMove());
-        });
+		move3.addMouseListener(new MouseAdapter() {
+		    @Override
+		    public void mouseClicked(MouseEvent e) {
+		    	if (SwingUtilities.isRightMouseButton(e)) {
+		            String message = "Move: " + me.getCurrent().moveset[2].toString() + "\n";
+		            message += "Type: " + me.getCurrent().moveset[2].mtype + "\n";
+		            message += "BP: " + me.getCurrent().moveset[2].getbp() + "\n";
+		            message += "Accuracy: " + me.getCurrent().moveset[2].accuracy + "\n";
+		            message += "Category: " + me.getCurrent().moveset[2].getCategory() + "\n";
+		            message += "Description: " + me.getCurrent().moveset[2].getDescription();
+		            JOptionPane.showMessageDialog(null, message, "Move Description", JOptionPane.INFORMATION_MESSAGE);
+		        } else {
+		            turn(me.getCurrent(), foe, me.getCurrent().moveset[2], foe.randomMove());
+		        }
+		    }
+		});
 
-        move4.addActionListener(e -> {
-        	turn(me.getCurrent(),foe,me.getCurrent().moveset[3],foe.randomMove());
-        });
+		move4.addMouseListener(new MouseAdapter() {
+		    @Override
+		    public void mouseClicked(MouseEvent e) {
+		    	if (SwingUtilities.isRightMouseButton(e)) {
+		            String message = "Move: " + me.getCurrent().moveset[3].toString() + "\n";
+		            message += "Type: " + me.getCurrent().moveset[3].mtype + "\n";
+		            message += "BP: " + me.getCurrent().moveset[3].getbp() + "\n";
+		            message += "Accuracy: " + me.getCurrent().moveset[3].accuracy + "\n";
+		            message += "Category: " + me.getCurrent().moveset[3].getCategory() + "\n";
+		            message += "Description: " + me.getCurrent().moveset[3].getDescription();
+		            JOptionPane.showMessageDialog(null, message, "Move Description", JOptionPane.INFORMATION_MESSAGE);
+		        } else {
+		            turn(me.getCurrent(), foe, me.getCurrent().moveset[3], foe.randomMove());
+		        }
+		    }
+		});
         
         slashLabel = new JLabel("/");
 		slashLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -1467,8 +1543,10 @@ public class Battle extends JFrame {
 			if (foeTrainer != null) {
 				if (foeTrainer.hasNext()) {
 					foe = foeTrainer.next();
-					System.out.println("\nOpponent sends out " + foeTrainer.getCurrent().name + "!");
+					System.out.println("\n" + foeTrainer.toString() + " sends out " + foeTrainer.getCurrent().name + "!");
 					updateFoe();
+					me.clearBattled();
+					me.getCurrent().battled = true;
 					
 				} else {
 					System.out.println("\n" + foeTrainer.toString() + " was defeated!");
@@ -1478,6 +1556,7 @@ public class Battle extends JFrame {
 					moneyLabel.setText("$" + me.money);
 					boxButton.setVisible(true);
 					healButton.setVisible(true);
+					updateTrainers();
 				}
 			} else {
 				healButton.setVisible(true);
@@ -1536,8 +1615,6 @@ public class Battle extends JFrame {
 	}
 	
 	private void displayBox() {
-		JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(playerPanel);
-		frame.setBounds(100, 100, 648, 530);
 		for (int i = 0; i < me.box.length; i++) {
 	        boxButtons[i].setText("");
 	        if (me.box[i] != null) {
@@ -1605,14 +1682,6 @@ public class Battle extends JFrame {
 	        super.paintComponent(g);
 	    }
 	}
-
-	public static Scanner getScanner() {
-		return stdIn;
-	}
-	
-	public static Scanner getScanner2() {
-		return stdIn2;
-	}
 	
 	private String intArrayToString(int[] arr) {
 	    StringBuilder sb = new StringBuilder();
@@ -1658,5 +1727,123 @@ public class Battle extends JFrame {
 		}
 		me.clearBattled();
 		me.getCurrent().battled = true;
+	}
+	
+	public static int displayMoveOptions(Pokemon pokemon, Move move) {
+	    String[] moves = new String[4];
+	    JGradientButton[] buttons = new JGradientButton[4];
+	    JPanel panel = new JPanel();
+	    int[] choice = new int[1];
+	    choice[0] = -1;
+	    panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+	    JLabel label = new JLabel(pokemon.getName() + " wants to learn " + move.toString() + ".");
+	    JLabel label2 = new JLabel("Select a move to replace:");
+	    panel.add(label);
+	    panel.add(label2);
+	    for (int i = 0; i < 4; i++) {
+	        if (pokemon.moveset[i] != null) {
+	            moves[i] = pokemon.moveset[i].toString();
+	        } else {
+	            moves[i] = "";
+	        }
+	        buttons[i] = new JGradientButton(moves[i]);
+	        buttons[i].setBackground(pokemon.moveset[i].mtype.getColor());
+	        if (moves[i].equals("")) {
+	            buttons[i].setEnabled(false);
+	        }
+	        int index = i;
+	        buttons[i].addMouseListener(new MouseAdapter() {
+	        	@Override
+			    public void mouseClicked(MouseEvent e) {
+			    	if (SwingUtilities.isRightMouseButton(e)) {
+			            String message = "Move: " + pokemon.moveset[index].toString() + "\n";
+			            message += "Type: " + pokemon.moveset[index].mtype + "\n";
+			            message += "BP: " + pokemon.moveset[index].getbp() + "\n";
+			            message += "Accuracy: " + pokemon.moveset[index].accuracy + "\n";
+			            message += "Category: " + pokemon.moveset[index].getCategory() + "\n";
+			            message += "Description: " + pokemon.moveset[index].getDescription();
+			            JOptionPane.showMessageDialog(null, message, "Move Description", JOptionPane.INFORMATION_MESSAGE);
+			        } else {
+			        	choice[0] = index;
+		                JDialog dialog = (JDialog) SwingUtilities.getWindowAncestor((JButton) e.getSource());
+		                dialog.dispose();
+			        }
+			    }
+	        });
+	        panel.add(buttons[i]);
+	    }
+
+	    JOptionPane optionPane = new JOptionPane(panel, JOptionPane.PLAIN_MESSAGE, JOptionPane.DEFAULT_OPTION, null, new Object[]{}, null);
+	    JDialog dialog = optionPane.createDialog("Learn New Move");
+	    dialog.setVisible(true);
+	    int result = choice[0];
+	    return result == JOptionPane.CLOSED_OPTION ? JOptionPane.CLOSED_OPTION : choice[0];
+	}
+
+	
+	public static boolean displayEvolution(Pokemon pokemon) {
+		int option = JOptionPane.showOptionDialog(null,
+				pokemon.name + " is evolving!\nDo you want to evolve your " + pokemon.name + "?",
+	            "Evolution",
+	            JOptionPane.YES_NO_OPTION,
+	            JOptionPane.QUESTION_MESSAGE,
+	            null, null, null);
+	    return option == JOptionPane.YES_OPTION;
+	}
+	public static int dogoEvo(Pokemon pokemon) {
+		JGradientButton[] buttons = new JGradientButton[11];
+	    JPanel panel = new JPanel();
+	    int[] choice = new int[1];
+	    choice[0] = -1;
+	    panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+	    JLabel label = new JLabel(pokemon.getName() + " is evolving.");
+	    JLabel label2 = new JLabel("Select which evolution:");
+	    panel.add(label);
+	    panel.add(label2);
+	    
+	    for (int i = 0; i < 11; i++) {
+	    	Pokemon evo = new Pokemon(i + 113, 25, false, false);
+	        buttons[i] = new JGradientButton(evo.name);
+	        buttons[i].setBackground(evo.type1.getColor());
+	        int index = i + 113;
+	        buttons[i].addActionListener(new ActionListener() {
+	            @Override
+	            public void actionPerformed(ActionEvent e) {
+	                choice[0] = index;
+	                JDialog dialog = (JDialog) SwingUtilities.getWindowAncestor((JButton) e.getSource());
+	                dialog.dispose();
+	            }
+	        });
+	        panel.add(buttons[i]);
+	    }
+
+	    JOptionPane optionPane = new JOptionPane(panel, JOptionPane.PLAIN_MESSAGE, JOptionPane.DEFAULT_OPTION, null, new Object[]{}, null);
+	    JDialog dialog = optionPane.createDialog("Choose Evolution");
+	    dialog.setVisible(true);
+	    int result = choice[0];
+	    return result == JOptionPane.CLOSED_OPTION ? JOptionPane.CLOSED_OPTION : choice[0];
+	}
+	
+	private Trainer[] getUnbeatenTrainers() {
+		// First, create a list to store trainers that haven't been beaten
+		ArrayList<Trainer> unbeatenTrainers = new ArrayList<>();
+
+		// Iterate through all trainers and add unbeaten trainers to the list
+		for (Trainer trainer : trainers) {
+		    if (!me.trainersBeat.contains(trainer.toString())) {
+		        unbeatenTrainers.add(trainer);
+		    }
+		}
+		// Create a new array with the unbeaten trainers
+		Trainer[] unbeatenTrainersArray = unbeatenTrainers.toArray(new Trainer[0]);
+		return unbeatenTrainersArray;
+	}
+	
+	private void updateTrainers() {
+		Trainer[] unbeatenTrainers = getUnbeatenTrainers();
+	    DefaultComboBoxModel<Trainer> model = new DefaultComboBoxModel<>(unbeatenTrainers);
+	    model.insertElementAt(new Trainer(true), 0); // Add placeholder at index 0
+	    trainerSelect.setModel(model);
+	    trainerSelect.setSelectedIndex(0); // Set placeholder as default selection
 	}
 }

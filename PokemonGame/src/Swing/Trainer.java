@@ -13,13 +13,27 @@ public class Trainer {
 		currentIndex = 0;
 	}
 	
+	public Trainer(boolean placeholder) {
+		if (placeholder) {
+			name = "[SELECT]";
+			this.team = null;
+			this.money = 0;
+			currentIndex = 0;
+		}
+	}
+	
 	public Pokemon[] getTeam() {
 		return team;
 	}
 	
 	@Override // implementation
 	public String toString() {
-		return name + " trainer";
+		if (name != "[SELECT]") {
+			if (!name.contains("Leader") && !name.contains("Rival")) return name + " trainer";
+			return name;
+		} else {
+			return name;
+		}
 	}
 
 	public boolean hasNext() {

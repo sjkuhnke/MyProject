@@ -4,7 +4,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
-import java.util.Scanner;
+
+import javax.swing.JOptionPane;
 
 public class Pokemon implements Serializable {
 	/**
@@ -784,8 +785,8 @@ public class Pokemon implements Serializable {
 		this.exp -= this.expMax;
 		++level;
 		System.out.println(this.name + " leveled Up!");
-		checkMove(Battle.getScanner());
-		Pokemon result = this.checkEvo(Battle.getScanner2());
+		checkMove();
+		Pokemon result = this.checkEvo();
 		expMax = this.level * 2;
 		stats = this.getStats();
 		int nHP = this.getStat(0);
@@ -795,7 +796,7 @@ public class Pokemon implements Serializable {
 		
 	}
 	
-	public void checkMove(Scanner scanner) {
+	public void checkMove() {
 		Move move = null;
 		if (this.level - 1 >= this.movebank.length) return;
 		move = this.movebank[this.level - 1];
@@ -809,18 +810,16 @@ public class Pokemon implements Serializable {
 			}
 		}
 		
-	    System.out.println(this.name + " wants to learn " + move.toString() + ", but " + this.name + " already has 4 moves. What would you like to do?");
-	    System.out.println("Current moves: " + movesToString(this));
-	    System.out.print("Enter slot 1-4, or 0 to keep current moves: ");
-	    int moveIndex = scanner.nextInt();
-	    if (moveIndex == 0) {
+	    int choice = Battle.displayMoveOptions(this, move);
+	    if (choice == JOptionPane.CLOSED_OPTION) {
+	    	System.out.println(this.name + " did not learn " + move.toString() + ".");
 	    	return;
 	    }
-	    System.out.println("Your " + this.name + " has learned " + move.toString() + " and forgot " + this.moveset[moveIndex - 1] + "!");
-	    this.moveset[moveIndex - 1] = move;
+	    System.out.println(this.name + " has learned " + move.toString() + " and forgot " + this.moveset[choice] + "!");
+	    this.moveset[choice] = move;
 	}
 
-	private Pokemon checkEvo(Scanner scanner) {
+	private Pokemon checkEvo() {
 		Pokemon result = null;
 		if (id == 1 && level >= 15) {
 			result = new Pokemon(2, level, this.moveset);
@@ -939,37 +938,37 @@ public class Pokemon implements Serializable {
 		} else if (id == 110 && level >= 50) {
 			result = new Pokemon(id + 1, level, this.moveset);
 		} else if (id == 112 && level >= 25) {
-			System.out.print(this.name + " is evolving. Please enter the id of the evolution of choice (113 - 123): ");
-		    int idE = scanner.nextInt();
-		    if (idE < 113 || idE > 123) {
-		    	return result;
-		    }
-			result = new Pokemon(idE, level, this.moveset);
-		} else if (id == 122 && level >= 16) {
+			result = new Pokemon(Battle.dogoEvo(this), level, this.moveset);
+		} else if (id == 124 && level >= 16) {
 			result = new Pokemon(id + 1, level, this.moveset);
-		} else if (id == 123 && level >= 36) {
+		} else if (id == 125 && level >= 36) {
 			result = new Pokemon(id + 1, level, this.moveset);
-		} else if (id == 125 && level >= 16) {
+		} else if (id == 127 && level >= 16) {
 			result = new Pokemon(id + 1, level, this.moveset);
-		} else if (id == 126 && level >= 36) {
+		} else if (id == 128 && level >= 36) {
 			result = new Pokemon(id + 1, level, this.moveset);
-		} else if (id == 128 && level >= 15) {
+		} else if (id == 130 && level >= 15) {
 			result = new Pokemon(id + 1, level, this.moveset);
-		} else if (id == 129 && level >= 35) {
+		} else if (id == 131 && level >= 35) {
 			result = new Pokemon(id + 1, level, this.moveset);
-		} else if (id == 133 && level >= 50) {
-			result = new Pokemon(136, level, this.moveset);
-		} else if (id == 134 && level >= 50) {
-			result = new Pokemon(137, level, this.moveset);
-		} else if (id == 135 && level >= 55) {
+		} else if (id == 135 && level >= 50) {
 			result = new Pokemon(138, level, this.moveset);
+		} else if (id == 136 && level >= 50) {
+			result = new Pokemon(139, level, this.moveset);
+		} else if (id == 137 && level >= 55) {
+			result = new Pokemon(140, level, this.moveset);
 		}
 		if (result != null) {
-	        int hpDif = this.getStat(0) - this.currentHP;
-	        result.currentHP -= hpDif;
-	        result.moveMultiplier = this.moveMultiplier;
-	        System.out.println(this.name + " evolved into " + result.name + "!");
-	        result.exp = this.exp;
+			boolean shouldEvolve = Battle.displayEvolution(this);
+			if (shouldEvolve) {
+		        int hpDif = this.getStat(0) - this.currentHP;
+		        result.currentHP -= hpDif;
+		        result.moveMultiplier = this.moveMultiplier;
+		        System.out.println(this.name + " evolved into " + result.name + "!");
+		        result.exp = this.exp;
+			} else {
+				return this;
+			}
 	    }
 		return result;
 		
@@ -2585,7 +2584,7 @@ public class Pokemon implements Serializable {
 	                    int index = Arrays.asList(player.getTeam()).indexOf(p);
 	                    player.team[index] = evolved;
 	                    if (index == 0) player.current = evolved;
-	                    evolved.checkMove(Battle.getScanner());
+	                    evolved.checkMove();
 	                    p = evolved;
 	                }
 	            }
@@ -2712,7 +2711,7 @@ public class Pokemon implements Serializable {
 			if (!foe.vStatuses.contains(Status.SPUN)) {
 				if (foe.type1 != PType.FIRE && foe.type2 != PType.FIRE) {
 					foe.vStatuses.add(Status.SPUN);
-					foe.spunCount = (((int) Math.random() * 3) + 3);
+					foe.spunCount = (((int) (Math.random() * 4)) + 2);
 					System.out.println(foe.name + " was trapped in a fiery vortex!");
 				}
 			}
@@ -2720,14 +2719,14 @@ public class Pokemon implements Serializable {
 			if (!foe.vStatuses.contains(Status.SPUN)) {
 				if (foe.type1 != PType.WATER && foe.type2 != PType.WATER) {
 					foe.vStatuses.add(Status.SPUN);
-					foe.spunCount = (((int) Math.random() * 3) + 3);
+					foe.spunCount = (((int) (Math.random() * 4)) + 2);
 					System.out.println(foe.name + " was trapped in a whirlpool vortex!");
 				}
 			}
 		} else if (move == Move.WRAP) {
 			if (!foe.vStatuses.contains(Status.SPUN)) {
 				foe.vStatuses.add(Status.SPUN);
-				foe.spunCount = (((int) Math.random() * 3) + 3);
+				foe.spunCount = (((int) (Math.random() * 4)) + 2);
 				System.out.println(foe.name + " was wrapped by " + this.name + "!");
 			}
 		} else if (move == Move.FIRE_TAIL) {
@@ -3036,6 +3035,9 @@ public class Pokemon implements Serializable {
 			stat(foe, 0, -2);
 		} else if (move == Move.BLACK_DUST) {
 			stat(foe, 5, -2);
+		} else if (move == Move.BULK_UP) {
+			stat(this, 0, 1);
+			stat(this, 1, 1);
 		} else if (move == Move.BUZZ) {
 			foe.confuse();
 		} else if (move == Move.CHARGE) {
@@ -3162,7 +3164,7 @@ public class Pokemon implements Serializable {
 			if (foe.type1 == PType.GHOST) foe.type1 = PType.NORMAL;
 			if (foe.type2 == PType.GHOST) foe.type2 = PType.NORMAL;
 			System.out.println(this.name + " identified " + foe.name + "!");
-			stat(this, 5, 1);
+			stat(foe, 6, -1);
 		} else if (move == Move.PERISH_SONG) {
 			this.perishCount = (this.perishCount == 0) ? 3 : this.perishCount;
 			foe.perishCount = (foe.perishCount == 0) ? 3 : foe.perishCount;
@@ -5371,7 +5373,7 @@ public class Pokemon implements Serializable {
 			movebank[42] = Move.ASSURANCE;
 			movebank[44] = Move.HI_JUMP_KICK;
 			movebank[48] = Move.ROCK_SLIDE;
-			movebank[54] = Move.FOCUS_PUNCH;
+			movebank[54] = Move.BULK_UP;
 			movebank[64] = Move.CLOSE_COMBAT;
 			break;
 		case 122:
@@ -5943,6 +5945,7 @@ public class Pokemon implements Serializable {
 		if (p.vStatuses.contains(Status.BONDED)) {
 			p.vStatuses.remove(Status.BONDED);
 		}
+		p.vStatuses.remove(Status.FLINCHED);
 		
 	}
 
@@ -6156,6 +6159,10 @@ public class Pokemon implements Serializable {
 	        bp = 25 * randomNum;
 		} else if (move == Move.ROLLOUT) {
 			bp = (int) (30 * Math.pow(2, this.rollCount-1));
+		} else if (move == Move.SPIKE_SHOT) {
+			int randomNum = (int) (Math.random() * 4) + 2;
+	        System.out.println("Hit " + randomNum + " times!");
+	        bp = 20 * randomNum;
 		} else if (move == Move.TIDAL_WAVE) {
 			int wave = (int) (Math.random()*3 + 1);
 			if (wave == 1) {
@@ -6190,21 +6197,6 @@ public class Pokemon implements Serializable {
 		stati.remove(Status.BLEEDING);
 		stati.remove(Status.FLINCHED);
 		stati.remove(Status.SPUN);
-	}
-	
-	private String movesToString(Pokemon p) {
-		String moveString = "";
-	    
-	    for (int i = 0; i < p.moveset.length; i++) {
-	    	if (p.moveset[i] != null) {
-	    		moveString += p.moveset[i].toString();
-	    		if (i != p.moveset.length - 1) {
-	    			moveString += " / ";
-	    		}
-	    	}
-	    }
-	    
-	    return moveString;
 	}
 
 	public boolean knowsMove(Move move) {
