@@ -108,6 +108,42 @@ public class Pokemon implements Serializable {
 	    int index = rand.nextInt(validMoves.size());
 	    return validMoves.get(index);
 	}
+	
+	public Move bestMove(Pokemon foe) {
+	    ArrayList<Move> validMoves = new ArrayList<>();
+
+	    // Add all non-null moves to the validMoves list
+	    for (Move move : moveset) {
+	        if (move != null) {
+	            validMoves.add(move);
+	        }
+	    }
+
+	    int maxDamage = 0;
+	    ArrayList<Move> bestMoves = new ArrayList<>();
+
+	    // Calculate the damage for each valid move and keep track of the maximum damage and the corresponding moves
+	    for (Move move : validMoves) {
+	        int damage = calcWithTypes(foe, move);
+	        if (damage > maxDamage) {
+	            maxDamage = damage;
+	            bestMoves.clear();
+	            bestMoves.add(move);
+	        } else if (damage == maxDamage) {
+	            bestMoves.add(move);
+	        }
+	    }
+
+	    // If all valid moves have the same damage, randomly select one of them
+	    if (bestMoves.size() > 1) {
+	        int randomIndex = (int) (Math.random() * bestMoves.size());
+	        return bestMoves.get(randomIndex);
+	    }
+
+	    // Otherwise, return the move with the highest damage
+	    return bestMoves.get(0);
+	}
+
 
 	public Pokemon(int i, int l, Move[] set) {
 		id = i;
@@ -5844,6 +5880,75 @@ public class Pokemon implements Serializable {
 		int damage = (int) Math.floor(damageDouble);
 		return damage;
 	}
+	
+	public int calcWithTypes(Pokemon foe, Move move) {
+		double attackStat;
+		double defenseStat;
+		int damage = 0;
+		int bp = move.basePower;
+		
+		if (move.accuracy <= 100 && move.cat != 2 && move != Move.ELECTROEXPLOSION) {
+			if (getImmune(foe, move.mtype)) return 0; // Check for immunity
+		} else if (move.accuracy > 100 && move.cat != 2) {
+			if (getImmune(foe, move.mtype)) return 0; // Check for immunity
+		}
+		if (move.cat != 2 && move.mtype == PType.GROUND && foe.magCount > 0) return 0; // Check for immunity
+		
+		if (move == Move.DREAM_EATER && foe.status != Status.ASLEEP) return 0;
+		
+		if (move.basePower < 0) bp = determineBasePower(foe, move);
+		
+		if (this.vStatuses.contains(Status.AUTO) && (move == Move.BIG_BULLET || move == Move.GUNSHOT || move == Move.ROCKET)) bp *= 2;
+		// Use either physical or special attack/defense
+		if (move.isPhysical()) {
+			attackStat = this.getStat(1);
+			defenseStat = foe.getStat(2);
+			attackStat *= this.asModifier(0);
+			defenseStat *= foe.asModifier(1);
+			if (this.status == Status.BURNED) attackStat /= 2;
+		} else {
+			attackStat = this.getStat(3);
+			defenseStat = foe.getStat(4);
+			attackStat *= this.asModifier(2);
+			defenseStat *= foe.asModifier(3);
+			if (this.status == Status.BLEEDING) attackStat /= 2;
+		}
+		
+		damage = calc(attackStat, defenseStat, bp, this.level);
+		
+		// Stab
+		if (move.mtype == this.type1) damage *= 1.5;
+		if (move.mtype == this.type2) damage *= 1.5;
+		
+		// Charged
+		if (move.mtype == PType.ELECTRIC && this.vStatuses.contains(Status.CHARGED)) damage *= 2;
+		
+		double multiplier = 1;
+		// Check type effectiveness
+		PType[] resist = getResistances(move.mtype);
+		for (PType type : resist) {
+			if (foe.type1 == type) multiplier /= 2;
+			if (foe.type2 == type) multiplier /= 2;
+		}
+		
+		// Check type effectiveness
+		PType[] weak = getWeaknesses(move.mtype);
+		for (PType type : weak) {
+			if (foe.type1 == type) multiplier *= 2;
+			if (foe.type2 == type) multiplier *= 2;
+		}
+		
+		damage *= multiplier;
+		
+		if (move == Move.NIGHT_SHADE || move == Move.SEISMIC_TOSS) damage = this.level;
+		if (move == Move.FIRE_DASH) damage = this.currentHP;
+		if (move == Move.SUPER_FANG) damage = foe.currentHP / 2;
+		if (move == Move.DRAGON_RAGE) damage = 40;
+		
+		damage = Math.max(damage, 1);
+		
+		return damage;
+	}
 
 	public static void endOfTurn(Pokemon p, Pokemon f, Player player) {
 		if (p.isFainted()) return;
@@ -6206,5 +6311,9 @@ public class Pokemon implements Serializable {
 			}
 		}
 		return false;
+	}
+	
+	public boolean trainerOwned() {
+		return this.trainer == 1.5;
 	}
 }
