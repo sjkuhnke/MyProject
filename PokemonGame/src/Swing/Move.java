@@ -166,7 +166,7 @@ public enum Move {
 	MACH_PUNCH(40,100,0,0,0,true,PType.FIGHTING,"Always goes first"),
 	MACHETE_STAB(75,80,100,0,0,false,PType.STEEL,"% to cause foe to Bleed"),
 	MAGIC_BLAST(30,100,0,0,1,false,PType.MAGIC,"A random Rock, Ground or Grass move is also used"),
-	MAGIC_CRASH(150,90,100,0,0,false,PType.MAGIC,"Foe is inflicted with a random Status condition. User must rest after using"), // recharge
+	MAGIC_CRASH(150,90,100,0,0,false,PType.MAGIC,"% to inflict foe with a random Status condition. User must rest after using"), // recharge
 	MAGIC_FANG(70,95,75,0,0,false,PType.MAGIC,"% to flinch foe if this move is Super-Effective against it"),
 	MAGIC_REFLECT(0,1000,0,0,2,false,PType.MAGIC,"Foe's next attack will be reflected against them. Can be used every other turn"),
 	MAGIC_TOMB(90,100,0,0,1,false,PType.MAGIC,"A normal attack"),
@@ -238,7 +238,7 @@ public enum Move {
 	SHOCK_WAVE(60,1000,0,0,1,false,PType.ELECTRIC,"This attack never misses"),
 	SHURIKEN(75,85,50,0,0,false,PType.STEEL,"% to cause foe to Bleed"),
 	SKULL_BASH(100,100,100,0,0,false,PType.NORMAL,"% to raise the user's Defense by 1, user must charge on the first turn"), // charge
-	SKY_ATTACK(140,90,30,1,0,false,PType.FLYING,"User must charge up on the first turn, attacks on the second"), // charge
+	SKY_ATTACK(140,90,30,1,0,false,PType.FLYING,"% chance to flinch. User must charge up on the first turn, attacks on the second. Boosted Crit rate"), // charge
 	SKY_UPPERCUT(85,90,0,0,0,false,PType.FIGHTING,"A normal attack"),
 	SLAM(80,75,0,0,0,false,PType.NORMAL,"A normal attack"),
 	SLAP(20,100,0,0,0,false,PType.NORMAL,"A normal attack"),

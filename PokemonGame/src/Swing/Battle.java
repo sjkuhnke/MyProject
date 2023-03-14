@@ -1540,7 +1540,7 @@ public class Battle extends JFrame {
 	        }
 	    }
 		if (foe.isFainted()) {
-			if (foeTrainer != null) {
+			if (foeTrainer != null && foeTrainer.getTeam() != null) {
 				if (foeTrainer.hasNext()) {
 					foe = foeTrainer.next();
 					System.out.println("\n" + foeTrainer.toString() + " sends out " + foeTrainer.getCurrent().name + "!");
