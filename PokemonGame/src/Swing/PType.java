@@ -13,12 +13,15 @@ public enum PType {
 	POISON(new Color(163, 62, 161)),
 	GROUND(new Color(226, 191, 101)),
 	FLYING(new Color(169, 143, 243)),
-	MAGIC(new Color(251, 6, 153)),
+	PSYCHIC(new Color(249, 85, 135)),
 	BUG(new Color(166, 185, 26)),
 	GHOST(new Color(115, 87, 151)),
 	DRAGON(new Color(111, 53, 252)),
 	STEEL(new Color(183, 183, 206)),
-	DARK(new Color(112, 87, 70));
+	DARK(new Color(112, 87, 70)),
+	LIGHT(new Color(248, 248, 120)),
+	MAGIC(new Color(254, 1, 77)),
+	GALACTIC(new Color(138, 30, 106));
 	
 	private Color color;
 
