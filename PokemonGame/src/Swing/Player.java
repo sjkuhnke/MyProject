@@ -17,6 +17,8 @@ public class Player implements Serializable{
 	public int ultraballCount;
 	private int numBattled;
 	public ArrayList<String> trainersBeat;
+	private int posX;
+	private int posY;
 	
 	public Player() {
 		team = new Pokemon[6];
@@ -118,6 +120,22 @@ public class Player implements Serializable{
 
 	public Pokemon[] getTeam() {
 		return team;
+	}
+
+	public int getPosX() {
+		return posX;
+	}
+	
+	public void setPosX(int x) {
+		posX = x;
+	}
+
+	public int getPosY() {
+		return posY;
+	}
+	
+	public void setPosY(int y) {
+		posY = y;
 	}
 
 }

@@ -2,6 +2,8 @@ package Swing;
 
 import javax.swing.border.EmptyBorder;
 
+import Entity.PlayerCharacter;
+
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
@@ -12,13 +14,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Random;
@@ -81,56 +76,16 @@ public class Battle extends JFrame {
 	private JComboBox<Trainer> trainerSelect;
 	private Trainer[] trainers;
 	private JButton infoButton;
-	
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-	    foe = new Pokemon(-10, 5, false, false);
+
+	public Battle(PlayerCharacter playerCharacter) {
+		me = playerCharacter.p;
+		
+		foe = new Pokemon(-10, 5, false, false);
 	    foe.currentHP = 0;
 	    foe.faint(false, me);
-
-	    try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("player.dat"))) {
-	        me = (Player) ois.readObject();
-	        for (Pokemon p : me.team) {
-	        	if (p != null) p.clearVolatile();
-	        }
-	        ois.close();
-	    } catch (IOException | ClassNotFoundException e) {
-	        // If there's an error reading the file, create a new Player object
-	        me = new Player();
-	        me.catchPokemon(new Pokemon(-4,5, true, false));
-	    }
-	    
-	    
-	    // Create the Battle instance and set the window listener to save on close
-	    EventQueue.invokeLater(new Runnable() {
-	        public void run() {
-	            try {
-	                Battle frame = new Battle();
-	                frame.addWindowListener(new WindowAdapter() {
-	                    @Override // implementation
-	                    public void windowClosing(WindowEvent e) {
-	                        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("player.dat"))) {
-	                            oos.writeObject(me);
-	                            oos.close();
-	                        } catch (IOException ex) {
-	                            System.err.println("Error writing Player object to file: " + ex.getMessage());
-	                        }
-	                    }
-	                });
-	                frame.setVisible(true);
-	            } catch (Exception e) {
-	                e.printStackTrace();
-	            }
-	        }
-	    });
-	}
-
-	public Battle() {
 		// Initializing panel
 		setResizable(false);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 648, 530);
 		playerPanel = new JPanel();
 		playerPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -966,6 +921,8 @@ public class Battle extends JFrame {
             if (me.getCurrent() != null) levelLabel.setText("Level: " + me.getCurrent().getLevel());
             JLabel statsLabel = new JLabel("Stats: N/A");
             if (me.getCurrent() != null) statsLabel.setText("Stats: " + intArrayToString(me.getCurrent().stats));
+            JLabel ivLabel = new JLabel("IVs: N/A");
+            if (me.getCurrent() != null) ivLabel.setText("IVs: " + intArrayToString(me.getCurrent().getIVs()));
             JLabel hpLabel = new JLabel("HP: N/A");
             if (me.getCurrent() != null) hpLabel.setText("HP: " + me.getCurrent().currentHP + " / " + me.getCurrent().getStat(0));
             JLabel movesLabel = new JLabel("Moves: N/A");
@@ -977,6 +934,7 @@ public class Battle extends JFrame {
             if (me.getCurrent().type2 != null) teamMemberPanel.add(type2);
             teamMemberPanel.add(levelLabel);
             teamMemberPanel.add(statsLabel);
+            teamMemberPanel.add(ivLabel);
             teamMemberPanel.add(hpLabel);
             teamMemberPanel.add(movesLabel);
             teamMemberPanel.add(statusLabel);
@@ -1145,7 +1103,6 @@ public class Battle extends JFrame {
 	}
 
 	private void initialize() {
-		
 		// Initializing current elements
 		currentText = new JLabel("");
 		
@@ -1291,6 +1248,7 @@ public class Battle extends JFrame {
 		playerPanel.add(newT);
 		return newT;
 	}
+
 
 	public Pokemon encounterPokemon(String routeName) {
 	    // Create an ArrayList of PokemonEncounter objects for the route
@@ -1653,13 +1611,13 @@ public class Battle extends JFrame {
 		}
 	}
 	
-	private static final class JGradientButton extends JButton{
+	public static final class JGradientButton extends JButton{
 		/**
 		 * 
 		 */
 		private static final long serialVersionUID = 639680055516122456L;
 
-		private JGradientButton(String text){
+		public JGradientButton(String text){
 	        super(text);
 	        setContentAreaFilled(false);
 	    }

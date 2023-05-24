@@ -2,13 +2,17 @@ package Overworld;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.EventQueue;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.JPanel;
 
-import Entity.Player;
+import Entity.PlayerCharacter;
 import tile.TileManager;
+import Swing.Battle;
 
 public class GamePanel extends JPanel implements Runnable {
 
@@ -35,11 +39,13 @@ public class GamePanel extends JPanel implements Runnable {
 	KeyHandler keyH = new KeyHandler();
 	Thread gameThread;
 	public CollisionChecker cChecker = new CollisionChecker(this);
-	public Player player = new Player(this,keyH);
+	public PlayerCharacter player = new PlayerCharacter(this,keyH);
 	
 	TileManager tileM = new TileManager(this);
 	
 	int FPS = 60;
+	private volatile boolean inBattle;
+	private boolean battle1;
 	
 	public GamePanel() {
 		this.setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -61,30 +67,33 @@ public class GamePanel extends JPanel implements Runnable {
 		double nextDrawTime = System.nanoTime() + drawInterval;
 		
 		while (gameThread != null) {
-			
-			update();
-			
-			repaint();
-			
-			System.out.println(player.screenX + "," + player.screenY);
-			
-			
-			try {
-				double remainingTime = nextDrawTime - System.nanoTime();
-				remainingTime /= 1000000;
+			if (!inBattle) {
+				update();
 				
-				if (remainingTime < 0) remainingTime = 0;
+				repaint();
 				
-				Thread.sleep((long)remainingTime);
+				System.out.println(player.worldX / tileSize + "," + player.worldY / tileSize + " " + keyH.pPressed);
+				if (!inBattle && !battle1 && player.worldX / tileSize == 20 && player.worldY / tileSize == 20) {
+					startBattle();
+				}
 				
-				nextDrawTime += drawInterval;
 				
-			} catch (InterruptedException e) {
-				e.printStackTrace();
+				try {
+					double remainingTime = nextDrawTime - System.nanoTime();
+					remainingTime /= 1000000;
+					
+					if (remainingTime < 0) remainingTime = 0;
+					
+					Thread.sleep((long)remainingTime);
+					
+					nextDrawTime += drawInterval;
+					
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				
 			}
-			
 		}
-		
 	}
 	
 	public void update() {
@@ -101,5 +110,29 @@ public class GamePanel extends JPanel implements Runnable {
 		
 		g2.dispose();
 	}
+	
+	public void startBattle() {
+	    // Create the Battle instance and set the window listener to save on close
+		inBattle = true;
+		battle1 = true;
+		keyH.downPressed = keyH.upPressed = keyH.leftPressed = keyH.rightPressed = false;
+	    EventQueue.invokeLater(new Runnable() {
+	        public void run() {
+	            try {
+	                Battle frame = new Battle(player);
+	                frame.addWindowListener(new WindowAdapter() {
+	                    @Override // implementation
+	                    public void windowClosing(WindowEvent e) {
+	                        inBattle = false;
+	                    }
+	                });
+	                frame.setVisible(true);
+	            } catch (Exception e) {
+	                e.printStackTrace();
+	            }
+	        }
+	    });
+	}
+
 
 }

@@ -1284,18 +1284,18 @@ public class Pokemon implements Serializable {
 	}
 
 	public int[] getStats() {
-		double HPnum = 2 * baseStats[0] + ivs[0] * level;
+		double HPnum = (2 * baseStats[0] + ivs[0]) * level;
 		stats[0] = (int) (Math.floor(HPnum/100) + level + 10);
 		if (id == 131) stats[0] = 1;
-		double Atknum = 2 * baseStats[1] + ivs[1] * level;
+		double Atknum = (2 * baseStats[1] + ivs[1]) * level;
 		stats[1] = (int) (Math.floor(Atknum/100) + 5);
-		double Defnum = 2 * baseStats[2] + ivs[2] * level;
+		double Defnum = (2 * baseStats[2] + ivs[2]) * level;
 		stats[2] = (int) (Math.floor(Defnum/100) + 5);
-		double SpAnum = 2 * baseStats[3] + ivs[3] * level;
+		double SpAnum = (2 * baseStats[3] + ivs[3]) * level;
 		stats[3] = (int) (Math.floor(SpAnum/100) + 5);
-		double SpDnum = 2 * baseStats[4] + ivs[4] * level;
+		double SpDnum = (2 * baseStats[4] + ivs[4]) * level;
 		stats[4] = (int) (Math.floor(SpDnum/100) + 5);
-		double Spenum = 2 * baseStats[5] + ivs[5] * level;
+		double Spenum = (2 * baseStats[5] + ivs[5]) * level;
 		stats[5] = (int) (Math.floor(Spenum/100) + 5);
 		return stats;
 	}
@@ -6827,5 +6827,9 @@ public class Pokemon implements Serializable {
 	
 	public boolean trainerOwned() {
 		return this.trainer == 1.5;
+	}
+
+	public int[] getIVs() {
+		return ivs;
 	}
 }
