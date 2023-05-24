@@ -2,12 +2,14 @@ package Entity;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.swing.BoxLayout;
@@ -16,13 +18,17 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
+import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneLayout;
 import javax.swing.SwingConstants;
 
 import Overworld.GamePanel;
 import Overworld.KeyHandler;
 import Swing.Battle.JGradientButton;
+import Swing.Item;
 import Swing.Player;
 import Swing.Pokemon;
+import Swing.Bag.Entry;
 
 public class PlayerCharacter extends Entity {
 	
@@ -118,8 +124,17 @@ public class PlayerCharacter extends Entity {
 			showParty();
 			keyH.pPressed = false;
 		}
+		if (keyH.sPressed) {
+			speed = 8;
+		} else {
+			speed = 4;
+		}
+		if (keyH.bPressed) {
+			showBag();
+			keyH.bPressed = false;
+		}
 	}
-	
+
 	private void showParty() {
 	    JPanel partyPanel = new JPanel();
 	    partyPanel.setLayout(new GridLayout(6, 1));
@@ -204,6 +219,46 @@ public class PlayerCharacter extends Entity {
 	    }
 
 	    JOptionPane.showMessageDialog(null, partyPanel, "Party", JOptionPane.PLAIN_MESSAGE);
+	}
+	
+	private void showBag() {
+		JPanel panel = new JPanel();
+		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+
+		ArrayList<Entry> bag = p.getBag().getItems();
+		for (Entry i : bag) {
+		    JButton item = new JButton();
+		    item.setText(i.getItem().toString() + " x " + i.getCount());
+
+		    item.addActionListener(e -> {
+		        JPanel itemDesc = new JPanel();
+		        itemDesc.setLayout(new BoxLayout(itemDesc, BoxLayout.Y_AXIS));
+		        JLabel description = new JLabel(i.getItem().toString());
+		        JLabel count = new JLabel("Count: " + i.getCount());
+
+		        JButton useButton = new JButton("Use");
+		        useButton.addActionListener(f -> {
+		        	// TODO: add a use case for items
+		        });
+		        itemDesc.add(description);
+		        itemDesc.add(count);
+		        itemDesc.add(useButton);
+
+		        JOptionPane.showMessageDialog(null, itemDesc, "Item details", JOptionPane.PLAIN_MESSAGE);
+		    });
+
+		    panel.add(item);
+		}
+
+		JScrollPane scrollPane = new JScrollPane(panel);
+		scrollPane.setPreferredSize(new Dimension(panel.getPreferredSize().width, 300));
+		scrollPane.getVerticalScrollBar().setUnitIncrement(16);
+
+		JPanel containerPanel = new JPanel(new BorderLayout());
+		containerPanel.add(scrollPane, BorderLayout.CENTER);
+
+		JOptionPane.showMessageDialog(null, containerPanel, "Bag", JOptionPane.PLAIN_MESSAGE);
+
 	}
 
 

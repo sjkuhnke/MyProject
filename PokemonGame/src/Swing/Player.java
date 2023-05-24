@@ -19,6 +19,7 @@ public class Player implements Serializable{
 	public ArrayList<String> trainersBeat;
 	private int posX;
 	private int posY;
+	public Bag bag;
 	
 	public Player() {
 		team = new Pokemon[6];
@@ -26,6 +27,7 @@ public class Player implements Serializable{
 		money = 0;
 		current = null;
 		trainersBeat = new ArrayList<String>();
+		bag = new Bag();
 	}
 	
 	public Pokemon getCurrent() {
@@ -136,6 +138,10 @@ public class Player implements Serializable{
 	
 	public void setPosY(int y) {
 		posY = y;
+	}
+	
+	public Bag getBag() {
+		return bag;
 	}
 
 }

@@ -2,19 +2,17 @@ package Overworld;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.EventQueue;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 
 import javax.swing.JPanel;
 
 import Entity.PlayerCharacter;
 import tile.TileManager;
 import Swing.Battle;
+import Swing.Battle.BattleCloseListener;
 
-public class GamePanel extends JPanel implements Runnable {
+public class GamePanel extends JPanel implements Runnable, BattleCloseListener {
 
 	/**
 	 * 
@@ -72,9 +70,9 @@ public class GamePanel extends JPanel implements Runnable {
 				
 				repaint();
 				
-				System.out.println(player.worldX / tileSize + "," + player.worldY / tileSize + " " + keyH.pPressed);
+				System.out.println(player.worldX / tileSize + "," + player.worldY / tileSize);
 				if (!inBattle && !battle1 && player.worldX / tileSize == 20 && player.worldY / tileSize == 20) {
-					startBattle();
+					startBattle(1);
 				}
 				
 				
@@ -111,27 +109,22 @@ public class GamePanel extends JPanel implements Runnable {
 		g2.dispose();
 	}
 	
-	public void startBattle() {
+	public void startBattle(int trainer) {
 	    // Create the Battle instance and set the window listener to save on close
 		inBattle = true;
 		battle1 = true;
-		keyH.downPressed = keyH.upPressed = keyH.leftPressed = keyH.rightPressed = false;
-	    EventQueue.invokeLater(new Runnable() {
-	        public void run() {
-	            try {
-	                Battle frame = new Battle(player);
-	                frame.addWindowListener(new WindowAdapter() {
-	                    @Override // implementation
-	                    public void windowClosing(WindowEvent e) {
-	                        inBattle = false;
-	                    }
-	                });
-	                frame.setVisible(true);
-	            } catch (Exception e) {
-	                e.printStackTrace();
-	            }
-	        }
-	    });
+		keyH.pause();
+		keyH.downPressed = keyH.upPressed = keyH.leftPressed = keyH.rightPressed = keyH.sPressed = false;
+		
+		Battle frame = new Battle(player, Main.trainers[trainer]);
+        frame.setBattleCloseListener(this);
+        frame.setVisible(true);
+	}
+
+	@Override
+	public void onBattleClosed() {
+		inBattle = false;
+		keyH.resume();
 	}
 
 
