@@ -119,30 +119,56 @@ public class Pokemon implements Serializable {
 	        }
 	    }
 
-	    int maxDamage = 0;
-	    ArrayList<Move> bestMoves = new ArrayList<>();
+	    ArrayList<Move> statusMoves = new ArrayList<>();
+	    ArrayList<Move> damagingMoves = new ArrayList<>();
 
-	    // Calculate the damage for each valid move and keep track of the maximum damage and the corresponding moves
+	    // Split the moves into status and damaging moves
 	    for (Move move : validMoves) {
-	        int damage = calcWithTypes(foe, move);
-	        if (damage > maxDamage) {
-	            maxDamage = damage;
-	            bestMoves.clear();
-	            bestMoves.add(move);
-	        } else if (damage == maxDamage) {
-	            bestMoves.add(move);
+	        if (move.cat == 2) {
+	            statusMoves.add(move);
+	        } else {
+	            damagingMoves.add(move);
 	        }
 	    }
 
-	    // If all valid moves have the same damage, randomly select one of them
-	    if (bestMoves.size() > 1) {
-	        int randomIndex = (int) (Math.random() * bestMoves.size());
-	        return bestMoves.get(randomIndex);
+	    // Determine if a status move should be used
+	    boolean useStatusMove = false;
+	    if (!statusMoves.isEmpty()) {
+	        int randomChance = (int) (Math.random() * 4); // 25% chance
+	        useStatusMove = randomChance == 0;
 	    }
 
-	    // Otherwise, return the move with the highest damage
-	    return bestMoves.get(0);
+	    if (useStatusMove && !statusMoves.isEmpty()) {
+	        // If a status move should be used, randomly select one
+	        int randomIndex = (int) (Math.random() * statusMoves.size());
+	        return statusMoves.get(randomIndex);
+	    } else {
+	        // Otherwise, find the move with the highest damage
+	        int maxDamage = 0;
+	        ArrayList<Move> bestMoves = new ArrayList<>();
+
+	        for (Move move : damagingMoves) {
+	            int damage = calcWithTypes(foe, move);
+	            if (damage > maxDamage) {
+	                maxDamage = damage;
+	                bestMoves.clear();
+	                bestMoves.add(move);
+	            } else if (damage == maxDamage) {
+	                bestMoves.add(move);
+	            }
+	        }
+
+	        // If all valid moves have the same damage, randomly select one of them
+	        if (bestMoves.size() > 1) {
+	            int randomIndex = (int) (Math.random() * bestMoves.size());
+	            return bestMoves.get(randomIndex);
+	        }
+
+	        // Otherwise, return the move with the highest damage
+	        return bestMoves.get(0);
+	    }
 	}
+
 
 
 	public Pokemon(int i, int l, Move[] set) {
