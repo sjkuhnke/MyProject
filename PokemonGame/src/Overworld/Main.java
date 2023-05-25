@@ -26,6 +26,7 @@ public class Main {
 		setTrainers();
 		
 		GamePanel gamePanel = new GamePanel();
+		gamePanel.setupGame();
 		try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("player.dat"))) {
 	        gamePanel.player.p = (Player) ois.readObject();
 	        for (Pokemon p : gamePanel.player.p.team) {

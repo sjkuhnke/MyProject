@@ -7,6 +7,7 @@ import java.awt.Graphics2D;
 
 import javax.swing.JPanel;
 
+import Entity.Entity;
 import Entity.PlayerCharacter;
 import tile.TileManager;
 import Swing.Battle;
@@ -35,9 +36,11 @@ public class GamePanel extends JPanel implements Runnable, BattleCloseListener {
 	public final int worldHeight = tileSize * maxWorldRow;
 	
 	KeyHandler keyH = new KeyHandler();
+	public AssetSetter aSetter = new AssetSetter(this);
 	Thread gameThread;
 	public CollisionChecker cChecker = new CollisionChecker(this);
 	public PlayerCharacter player = new PlayerCharacter(this,keyH);
+	public Entity npc[] = new Entity[10];
 	
 	TileManager tileM = new TileManager(this);
 	
@@ -104,6 +107,10 @@ public class GamePanel extends JPanel implements Runnable, BattleCloseListener {
 		Graphics2D g2 = (Graphics2D)g;
 		tileM.draw(g2);
 		
+		for (int i = 0; i < npc.length; i++) {
+			if (npc[i] != null) npc[i].draw(g2);
+		}
+		
 		player.draw(g2);
 		
 		g2.dispose();
@@ -114,7 +121,6 @@ public class GamePanel extends JPanel implements Runnable, BattleCloseListener {
 		inBattle = true;
 		battle1 = true;
 		keyH.pause();
-		keyH.downPressed = keyH.upPressed = keyH.leftPressed = keyH.rightPressed = keyH.sPressed = false;
 		
 		Battle frame = new Battle(player, Main.trainers[trainer]);
         frame.setBattleCloseListener(this);
@@ -125,6 +131,11 @@ public class GamePanel extends JPanel implements Runnable, BattleCloseListener {
 	public void onBattleClosed() {
 		inBattle = false;
 		keyH.resume();
+	}
+
+	public void setupGame() {
+		aSetter.setNPC();
+		
 	}
 
 

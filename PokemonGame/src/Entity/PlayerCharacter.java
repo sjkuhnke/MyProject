@@ -8,10 +8,8 @@ import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.ArrayList;
 
-import javax.imageio.ImageIO;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -46,7 +44,13 @@ public class PlayerCharacter extends Entity {
 		screenX = gp.screenWidth / 2 - (gp.tileSize/2);
 		screenY = gp.screenHeight / 2 - (gp.tileSize/2);
 		
-		solidArea = new Rectangle(6, 12, 30, 30);
+		solidArea = new Rectangle();
+		solidArea.x = 8;
+		solidArea.y = 16;
+		solidAreaDefaultX = solidArea.x;
+		solidAreaDefaultY = solidArea.y;
+		solidArea.width = 32;
+		solidArea.height = 32;
 		
 		setDefaultValues();
 		getPlayerImage();
@@ -59,18 +63,14 @@ public class PlayerCharacter extends Entity {
 		direction = "down";
 	}
 	public void getPlayerImage() {
-		try {
-			up1 = ImageIO.read(getClass().getResourceAsStream("/player/red2.png"));
-			up2 = ImageIO.read(getClass().getResourceAsStream("/player/red2_1.png"));
-			down1 = ImageIO.read(getClass().getResourceAsStream("/player/red1.png"));
-			down2 = ImageIO.read(getClass().getResourceAsStream("/player/red1_1.png"));
-			left1 = ImageIO.read(getClass().getResourceAsStream("/player/red3.png"));
-			left2 = ImageIO.read(getClass().getResourceAsStream("/player/red3_1.png"));
-			right1 = ImageIO.read(getClass().getResourceAsStream("/player/red4.png"));
-			right2 = ImageIO.read(getClass().getResourceAsStream("/player/red4_1.png"));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		up1 = setup("/player/red2");
+		up2 = setup("/player/red2_1");
+		down1 = setup("/player/red1");
+		down2 = setup("/player/red1_1");
+		left1 = setup("/player/red3");
+		left2 = setup("/player/red3_1");
+		right1 = setup("/player/red4");
+		right2 = setup("/player/red4_1");
 	}
 	
 	public void update() {
@@ -92,6 +92,9 @@ public class PlayerCharacter extends Entity {
 			
 			collisionOn = false;
 			gp.cChecker.checkTile(this);
+			
+			int npcIndex = gp.cChecker.checkEntity(this, gp.npc);
+			interactNurse(npcIndex);
 			
 			if (!collisionOn) {
 				switch(direction) {
@@ -122,7 +125,7 @@ public class PlayerCharacter extends Entity {
 		}
 		if (keyH.pPressed) {
 			showParty();
-			keyH.pPressed = false;
+			keyH.pause();
 		}
 		if (keyH.sPressed) {
 			speed = 8;
@@ -131,51 +134,37 @@ public class PlayerCharacter extends Entity {
 		}
 		if (keyH.bPressed) {
 			showBag();
-			keyH.bPressed = false;
+			keyH.pause();
 		}
+	}
+
+	private void interactNurse(int i) {
+		if (i != 999 && keyH.wPressed) {
+			keyH.pause();
+			int option = JOptionPane.showOptionDialog(null,
+					"Welcome to the Pokemon Center! Do you want to rest your Pokemon?",
+					"Heal",
+		            JOptionPane.YES_NO_OPTION,
+		            JOptionPane.QUESTION_MESSAGE,
+		            null, null, null);
+		    if (option == JOptionPane.YES_OPTION) {
+		    	for (Pokemon member : p.team) {
+					if (member != null) member.heal();
+				}
+		    }
+		    keyH.resume();
+		}
+		
 	}
 
 	private void showParty() {
 	    JPanel partyPanel = new JPanel();
 	    partyPanel.setLayout(new GridLayout(6, 1));
 
-	    JProgressBar[] partyHP = new JProgressBar[6];
-	    for (int i = 0; i < 6; i++) {
-	        JButton party = new JGradientButton("");
-	        partyHP[i] = new JProgressBar(0, 50);
-	        final int index = i;
-
-	        party.setText("");
-	        if (p.team[i] != null) {
-	        	if (p.team[i].isFainted()) {
-	        		party = new JButton("");
-	            	party.setBackground(new Color(200, 0, 0));
-	            } else {
-	            	party.setBackground(p.team[i].type1.getColor());
-	            }
-	            party.setText(p.team[i].getName() + "  lv " + p.team[i].getLevel());
-	            party.setHorizontalAlignment(SwingConstants.CENTER);
-	            party.setFont(new Font("Tahoma", Font.PLAIN, 11));
-	            party.setVisible(true);
-
-	        } else {
-	            party.setVisible(false);
-	        }
-
-	        if (p.team[i] != null) {
-	            partyHP[i].setMaximum(p.team[i].getStat(0));
-	            partyHP[i].setValue(p.team[i].currentHP);
-	            if (partyHP[i].getPercentComplete() > 0.5) {
-	                partyHP[i].setForeground(new Color(0, 255, 0));
-	            } else if (partyHP[i].getPercentComplete() <= 0.5 && partyHP[i].getPercentComplete() > 0.25) {
-	                partyHP[i].setForeground(new Color(255, 255, 0));
-	            } else {
-	                partyHP[i].setForeground(new Color(255, 0, 0));
-	            }
-	            partyHP[i].setVisible(true);
-	        } else {
-	            partyHP[i].setVisible(false);
-	        }
+	    for (int j = 0; j < 6; j++) {
+	    	JButton party = setUpPartyButton(j);
+	    	JProgressBar partyHP = setupHPBar(j);
+	        final int index = j;
 	        
 	        party.addActionListener(e -> {
 	            JPanel teamMemberPanel = new JPanel();
@@ -214,7 +203,7 @@ public class PlayerCharacter extends Entity {
 
 	        JPanel memberPanel = new JPanel(new BorderLayout());
 	        memberPanel.add(party, BorderLayout.NORTH);
-	        memberPanel.add(partyHP[i], BorderLayout.SOUTH);
+	        memberPanel.add(partyHP, BorderLayout.SOUTH);
 	        partyPanel.add(memberPanel);
 	    }
 
@@ -222,7 +211,6 @@ public class PlayerCharacter extends Entity {
 	}
 	
 	private void showBag() {
-		p.bag.add(new Item(22));
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
@@ -239,46 +227,18 @@ public class PlayerCharacter extends Entity {
 
 		        JButton useButton = new JButton("Use");
 		        useButton.addActionListener(f -> {
+		        	
+		        	// POTIONS
 		        	if (i.getItem().getHealAmount() != 0) {
 		        		JPanel partyPanel = new JPanel();
 		        	    partyPanel.setLayout(new GridLayout(6, 1));
 
-		        	    JProgressBar[] partyHP = new JProgressBar[6];
+		        	    
 		        	    for (int j = 0; j < 6; j++) {
-		        	        JButton party = new JGradientButton("");
-		        	        partyHP[j] = new JProgressBar(0, 50);
+		        	    	JButton party = setUpPartyButton(j);
+		        	    	JProgressBar partyHP = setupHPBar(j);
 		        	        final int index = j;
 
-		        	        party.setText("");
-		        	        if (p.team[j] != null) {
-		        	        	if (p.team[j].isFainted()) {
-		        	        		party = new JButton("");
-		        	            	party.setBackground(new Color(200, 0, 0));
-		        	            } else {
-		        	            	party.setBackground(p.team[j].type1.getColor());
-		        	            }
-		        	            party.setText(p.team[j].getName() + "  lv " + p.team[j].getLevel());
-		        	            party.setHorizontalAlignment(SwingConstants.CENTER);
-		        	            party.setFont(new Font("Tahoma", Font.PLAIN, 11));
-		        	            party.setVisible(true);
-		        	        } else {
-		        	            party.setVisible(false);
-		        	        }
-
-		        	        if (p.team[j] != null) {
-		        	            partyHP[j].setMaximum(p.team[j].getStat(0));
-		        	            partyHP[j].setValue(p.team[j].currentHP);
-		        	            if (partyHP[j].getPercentComplete() > 0.5) {
-		        	                partyHP[j].setForeground(new Color(0, 255, 0));
-		        	            } else if (partyHP[j].getPercentComplete() <= 0.5 && partyHP[j].getPercentComplete() > 0.25) {
-		        	                partyHP[j].setForeground(new Color(255, 255, 0));
-		        	            } else {
-		        	                partyHP[j].setForeground(new Color(255, 0, 0));
-		        	            }
-		        	            partyHP[j].setVisible(true);
-		        	        } else {
-		        	            partyHP[j].setVisible(false);
-		        	        }
 		        	        party.addActionListener(g -> {
 		        	        	if (p.team[index].currentHP == p.team[index].getStat(0)) {
 		        	        		JOptionPane.showMessageDialog(null, "It won't have any effect.");
@@ -304,63 +264,39 @@ public class PlayerCharacter extends Entity {
 		        	        
 		        	        JPanel memberPanel = new JPanel(new BorderLayout());
 		        	        memberPanel.add(party, BorderLayout.NORTH);
-		        	        memberPanel.add(partyHP[j], BorderLayout.SOUTH);
+		        	        memberPanel.add(partyHP, BorderLayout.SOUTH);
 		        	        partyPanel.add(memberPanel);
 		        	    }
 
 		        	    JOptionPane.showMessageDialog(null, partyPanel, "Party", JOptionPane.PLAIN_MESSAGE);
 		        	}
+		        	
+		        	// RARE CANDY
 		        	if (i.getItem().getID() == 22) {
 		        		JPanel partyPanel = new JPanel();
 		        	    partyPanel.setLayout(new GridLayout(6, 1));
 
-		        	    JProgressBar[] partyHP = new JProgressBar[6];
 		        	    for (int j = 0; j < 6; j++) {
-		        	        JButton party = new JGradientButton("");
-		        	        partyHP[j] = new JProgressBar(0, 50);
+		        	    	JButton party = setUpPartyButton(j);
+		        	    	JProgressBar partyHP = setupHPBar(j);
 		        	        final int index = j;
-
-		        	        party.setText("");
-		        	        if (p.team[j] != null) {
-		        	        	if (p.team[j].isFainted()) {
-		        	        		party = new JButton("");
-		        	            	party.setBackground(new Color(200, 0, 0));
-		        	            } else {
-		        	            	party.setBackground(p.team[j].type1.getColor());
-		        	            }
-		        	            party.setText(p.team[j].getName() + "  lv " + p.team[j].getLevel());
-		        	            party.setHorizontalAlignment(SwingConstants.CENTER);
-		        	            party.setFont(new Font("Tahoma", Font.PLAIN, 11));
-		        	            party.setVisible(true);
-		        	        } else {
-		        	            party.setVisible(false);
-		        	        }
-
-		        	        if (p.team[j] != null) {
-		        	            partyHP[j].setMaximum(p.team[j].getStat(0));
-		        	            partyHP[j].setValue(p.team[j].currentHP);
-		        	            if (partyHP[j].getPercentComplete() > 0.5) {
-		        	                partyHP[j].setForeground(new Color(0, 255, 0));
-		        	            } else if (partyHP[j].getPercentComplete() <= 0.5 && partyHP[j].getPercentComplete() > 0.25) {
-		        	                partyHP[j].setForeground(new Color(255, 255, 0));
-		        	            } else {
-		        	                partyHP[j].setForeground(new Color(255, 0, 0));
-		        	            }
-		        	            partyHP[j].setVisible(true);
-		        	        } else {
-		        	            partyHP[j].setVisible(false);
-		        	        }
+		        	        
 		        	        party.addActionListener(g -> {
 		        	        	if (p.team[index].getLevel() == 100) {
 		        	        		JOptionPane.showMessageDialog(null, "It won't have any effect.");
 		        	        	} else {
 		        	        		p.elevate(p.team[index]);
+		        	        		p.bag.remove(i.getItem());
+		        	        		SwingUtilities.getWindowAncestor(partyPanel).dispose();
+			        	        	SwingUtilities.getWindowAncestor(itemDesc).dispose();
+			        	        	SwingUtilities.getWindowAncestor(panel).dispose();
+			        	        	showBag();
 		        	        	}
 		        	        });
 		        	        
 		        	        JPanel memberPanel = new JPanel(new BorderLayout());
 		        	        memberPanel.add(party, BorderLayout.NORTH);
-		        	        memberPanel.add(partyHP[j], BorderLayout.SOUTH);
+		        	        memberPanel.add(partyHP, BorderLayout.SOUTH);
 		        	        partyPanel.add(memberPanel);
 		        	    }
 
@@ -389,6 +325,47 @@ public class PlayerCharacter extends Entity {
 	}
 
 
+
+	
+
+	private JButton setUpPartyButton(int j) {
+		JButton party = new JGradientButton("");
+		party.setText("");
+        if (p.team[j] != null) {
+        	if (p.team[j].isFainted()) {
+        		party = new JButton("");
+            	party.setBackground(new Color(200, 0, 0));
+            } else {
+            	party.setBackground(p.team[j].type1.getColor());
+            }
+            party.setText(p.team[j].getName() + "  lv " + p.team[j].getLevel());
+            party.setHorizontalAlignment(SwingConstants.CENTER);
+            party.setFont(new Font("Tahoma", Font.PLAIN, 11));
+            party.setVisible(true);
+        } else {
+            party.setVisible(false);
+        }
+        return party;
+	}
+	
+	private JProgressBar setupHPBar(int j) {
+		JProgressBar partyHP = new JProgressBar(0, 50);
+		if (p.team[j] != null) {
+            partyHP.setMaximum(p.team[j].getStat(0));
+            partyHP.setValue(p.team[j].currentHP);
+            if (partyHP.getPercentComplete() > 0.5) {
+                partyHP.setForeground(new Color(0, 255, 0));
+            } else if (partyHP.getPercentComplete() <= 0.5 && partyHP.getPercentComplete() > 0.25) {
+                partyHP.setForeground(new Color(255, 255, 0));
+            } else {
+                partyHP.setForeground(new Color(255, 0, 0));
+            }
+            partyHP.setVisible(true);
+        } else {
+            partyHP.setVisible(false);
+        }
+		return partyHP;
+	}
 
 	public void draw(Graphics2D g2) {
 		BufferedImage image = null;

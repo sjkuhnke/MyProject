@@ -35,7 +35,7 @@ public class Pokemon implements Serializable {
 	public int expMax;
 	
 	public int currentHP;
-	private boolean fainted;
+	public boolean fainted;
 	
 	private int confusionCounter;
 	private int sleepCounter;

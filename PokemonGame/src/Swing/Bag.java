@@ -27,6 +27,16 @@ public class Bag implements Serializable {
 		}
 	}
 	
+	public void add(Item item, int amt) {
+		int index = item.getID();
+		if (bag[index] == null) {
+			bag[index] = item;
+			count[index] = amt;
+		} else {
+			count[index] += amt;
+		}
+	}
+	
 	public void remove(Item item) {
 		int index = item.getID();
 		if (--count[index] == 0) bag[index] = null;

@@ -2,6 +2,7 @@ package Swing;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import javax.swing.JOptionPane;
 
@@ -154,11 +155,14 @@ public class Player implements Serializable{
             Pokemon evolved = pokemon.levelUp();
             if (evolved != null) {
                 // Update the player's team with the evolved Pokemon
-            	pokemon = evolved;
+            	int index = Arrays.asList(this.getTeam()).indexOf(pokemon);
+                this.team[index] = evolved;
+                if (index == 0) this.current = evolved;
                 evolved.checkMove();
                 pokemon = evolved;
             }
         }
+    	pokemon.fainted = false;
     	JOptionPane.showMessageDialog(null, pokemon.name + " was elevated to " + pokemon.getLevel());
 		
 	}

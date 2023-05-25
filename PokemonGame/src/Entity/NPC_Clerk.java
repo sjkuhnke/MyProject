@@ -2,16 +2,14 @@ package Entity;
 
 import Overworld.GamePanel;
 
-public class NPC_Nurse extends Entity {
-	
-	public NPC_Nurse(GamePanel gp) {
+public class NPC_Clerk extends Entity {
+	public NPC_Clerk(GamePanel gp) {
 		super(gp);
 		
 		getImage();
 	}
 	
 	public void getImage() {
-		down1 = setup("/npc/nurse");
+		down1 = setup("/npc/clerk");
 	}
-
 }
