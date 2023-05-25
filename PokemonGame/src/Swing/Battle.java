@@ -320,7 +320,7 @@ public class Battle extends JFrame {
 	                                partyButton.setText(me.team[j].getName() + "  lv " + me.team[j].getLevel());
 	                                if (me.team[j].isFainted()) {
 	                                    partyButton.setBackground(Color.RED);
-	                                } else if (me.team[j].getStatus() != Status.HEALTHY) {
+	                                } else if (me.team[j].status != Status.HEALTHY) {
 	                                    partyButton.setBackground(Color.YELLOW);
 	                                } else {
 	                                    partyButton.setBackground(Color.GREEN);
@@ -453,24 +453,11 @@ public class Battle extends JFrame {
 	                rareCandy.addActionListener(new ActionListener() {
 	                    @Override
 	                    public void actionPerformed(ActionEvent e) {
-	                        // code to release the box member
 	                    	if (me.box[index] == null) {
                         		JOptionPane.showMessageDialog(null, "No Pokemon to elevate.");
 	                            return;
                         	}
-	                    	int expAmt = me.box[index].expMax - me.box[index].exp;
-	                    	me.box[index].exp += expAmt;
-	                    	while (me.box[index].exp >= me.box[index].expMax) {
-	        	                // Pokemon has leveled up, check for evolution
-	        	                Pokemon evolved = me.box[index].levelUp();
-	        	                if (evolved != null) {
-	        	                    // Update the player's team with the evolved Pokemon
-	        	                	me.box[index] = evolved;
-	        	                    evolved.checkMove();
-	        	                    me.box[index] = evolved;
-	        	                }
-	        	            }
-	                    	JOptionPane.showMessageDialog(null, me.box[index].name + " was elevated to " + me.box[index].getLevel());
+	                    	me.elevate(me.box[index]);
 	                    	nameLabel.setText("Name: " + me.box[index].getName());;
 	    	                levelLabel.setText("Level: " + me.box[index].getLevel());
 	    	                statsLabel.setText("Stats: " + intArrayToString(me.box[index].stats));
@@ -847,7 +834,7 @@ public class Battle extends JFrame {
 		            } else if (foe.currentHP <= (foe.getStat(0) / 2)) {
 		                catchRate = 1.0 / 8.0;
 		            }
-		            if (foe.getStatus() != Status.HEALTHY) {
+		            if (foe.status != Status.HEALTHY) {
 		                statusBonus *= 2.0;
 		            }
 		            System.out.println("\nUsed a Pokeball!");
@@ -863,7 +850,7 @@ public class Battle extends JFrame {
 		            } else if (foe.currentHP <= (foe.getStat(0) / 2)) {
 		                catchRate = 1.0 / 6.0;
 		            }
-		            if (foe.getStatus() != Status.HEALTHY) {
+		            if (foe.status != Status.HEALTHY) {
 		                statusBonus *= 2.0;
 		            }
 		            System.out.println("\nUsed a Great Ball!");
@@ -879,7 +866,7 @@ public class Battle extends JFrame {
 		            } else if (foe.currentHP <= (foe.getStat(0) / 2)) {
 		                catchRate = 1.0 / 3.0;
 		            }
-		            if (foe.getStatus() != Status.HEALTHY) {
+		            if (foe.status != Status.HEALTHY) {
 		                statusBonus *= 2.0;
 		            }
 		            System.out.println("\nUsed an Ultra Ball!");
@@ -953,7 +940,7 @@ public class Battle extends JFrame {
             JLabel movesLabel = new JLabel("Moves: N/A");
             if (me.getCurrent() != null) movesLabel.setText("Moves: " + movesToString(me.getCurrent()));
             JLabel statusLabel = new JLabel("Status: N/A");
-            if (me.getCurrent() != null) statusLabel.setText("Status: " + me.getCurrent().getStatus());
+            if (me.getCurrent() != null) statusLabel.setText("Status: " + me.getCurrent().status);
             teamMemberPanel.add(nameLabel);
             teamMemberPanel.add(type1);
             if (me.getCurrent().type2 != null) teamMemberPanel.add(type2);
@@ -1022,8 +1009,8 @@ public class Battle extends JFrame {
 			playerPanel.add(night);
 			moneyLabel.setVisible(true);
 			playerPanel.add(moneyLabel);
-			trainerSelect.setVisible(true);
-			playerPanel.add(trainerSelect);
+			//trainerSelect.setVisible(true);
+			//playerPanel.add(trainerSelect);
 			scrollPane.setVisible(true);
 			playerPanel.add(scrollPane);
 			playerPanel.repaint();
@@ -1110,7 +1097,7 @@ public class Battle extends JFrame {
 			            JLabel movesLabel = new JLabel("Moves: N/A");
 			            if (me.team[index] != null) movesLabel.setText("Moves: " + movesToString(me.team[index]));
 			            JLabel statusLabel = new JLabel("Status: N/A");
-			            if (me.team[index] != null) statusLabel.setText("Status: " + me.team[index].getStatus());
+			            if (me.team[index] != null) statusLabel.setText("Status: " + me.team[index].status);
 			            teamMemberPanel.add(nameLabel);
 			            teamMemberPanel.add(levelLabel);
 			            teamMemberPanel.add(statsLabel);
@@ -1169,9 +1156,9 @@ public class Battle extends JFrame {
 		userStatus = new JLabel("");
 		userStatus.setHorizontalAlignment(SwingConstants.CENTER);
 		userStatus.setFont(new Font("Tahoma", Font.PLAIN, 8));
-		userStatus.setText(me.getCurrent().getStatus().getName());
-		userStatus.setForeground(me.getCurrent().getStatus().getTextColor());
-		userStatus.setBackground(me.getCurrent().getStatus().getColor());
+		userStatus.setText(me.getCurrent().status.getName());
+		userStatus.setForeground(me.getCurrent().status.getTextColor());
+		userStatus.setBackground(me.getCurrent().status.getColor());
 		userStatus.setBounds(143, 149, 21, 20);
 		userStatus.setVisible(true);
 		userStatus.setOpaque(true);
@@ -1180,9 +1167,9 @@ public class Battle extends JFrame {
 		foeStatus = new JLabel("");
 		foeStatus.setHorizontalAlignment(SwingConstants.CENTER);
 		foeStatus.setFont(new Font("Tahoma", Font.PLAIN, 8));
-		foeStatus.setText(foe.getStatus().getName());
-		foeStatus.setForeground(foe.getStatus().getTextColor());
-		foeStatus.setBackground(foe.getStatus().getColor());
+		foeStatus.setText(foe.status.getName());
+		foeStatus.setForeground(foe.status.getTextColor());
+		foeStatus.setBackground(foe.status.getColor());
 		foeStatus.setBounds(143, 37, 21, 20);
 		foeStatus.setVisible(true);
 		foeStatus.setOpaque(true);
@@ -1562,14 +1549,14 @@ public class Battle extends JFrame {
 	}
 
 	private void updateStatus() {
-		userStatus.setText(me.getCurrent().getStatus().getName());
-		userStatus.setBackground(me.getCurrent().getStatus().getColor());
+		userStatus.setText(me.getCurrent().status.getName());
+		userStatus.setBackground(me.getCurrent().status.getColor());
 		
-		foeStatus.setText(foe.getStatus().getName());
-		foeStatus.setBackground(foe.getStatus().getColor());
+		foeStatus.setText(foe.status.getName());
+		foeStatus.setBackground(foe.status.getColor());
 		
-		userStatus.setForeground(me.getCurrent().getStatus().getTextColor());
-		foeStatus.setForeground(foe.getStatus().getTextColor());
+		userStatus.setForeground(me.getCurrent().status.getTextColor());
+		foeStatus.setForeground(foe.status.getTextColor());
 		
 		playerPanel.repaint();
 	}
@@ -1871,4 +1858,5 @@ public class Battle extends JFrame {
 	public interface BattleCloseListener {
 	    void onBattleClosed();
 	}
+	
 }

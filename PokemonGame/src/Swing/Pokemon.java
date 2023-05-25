@@ -28,7 +28,7 @@ public class Pokemon implements Serializable {
 	public Move[] movebank;
 	public Move[] moveset;
 	
-	private Status status;
+	public Status status;
 	public ArrayList<Status> vStatuses;
 	
 	public int exp;
@@ -3803,6 +3803,10 @@ public class Pokemon implements Serializable {
 		}
 		return;
 	}
+	
+	public void verifyHP() {
+		if (currentHP > this.getStat(0)) currentHP = this.getStat(0);
+	}
 
 	private void stat(Pokemon p, int i, int amt) {
 		if (amt == 0) throw new IllegalArgumentException("Stat change amount cannot be 0");
@@ -6370,10 +6374,6 @@ public class Pokemon implements Serializable {
 		setType();
 		
 	}
-
-	public Status getStatus() {
-		return this.status;
-	}
 	
 	public int calc(double attackStat, double defenseStat, int bp, int level) {
 		double num = 2* (double) level / 5 + 2;
@@ -6568,7 +6568,7 @@ public class Pokemon implements Serializable {
 
 	public int getSpeed() {
 		double speed = this.getStat(5) * this.asModifier(4);
-		if (this.getStatus() == Status.PARALYZED) speed *= 0.5;
+		if (this.status == Status.PARALYZED) speed *= 0.5;
 		return (int) speed;
 	}
 	

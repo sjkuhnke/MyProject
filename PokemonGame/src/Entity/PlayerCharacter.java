@@ -19,8 +19,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
-import javax.swing.ScrollPaneLayout;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 
 import Overworld.GamePanel;
 import Overworld.KeyHandler;
@@ -28,6 +28,7 @@ import Swing.Battle.JGradientButton;
 import Swing.Item;
 import Swing.Player;
 import Swing.Pokemon;
+import Swing.Status;
 import Swing.Bag.Entry;
 
 public class PlayerCharacter extends Entity {
@@ -191,7 +192,7 @@ public class PlayerCharacter extends Entity {
 	            JLabel movesLabel = new JLabel("Moves: N/A");
 	            if (p.team[index] != null) movesLabel.setText("Moves: " + movesToString(p.team[index]));
 	            JLabel statusLabel = new JLabel("Status: N/A");
-	            if (p.team[index] != null) statusLabel.setText("Status: " + p.team[index].getStatus());
+	            if (p.team[index] != null) statusLabel.setText("Status: " + p.team[index].status);
 	            
 	            JButton swapButton = new JButton("Swap");
 		        swapButton.addActionListener(f -> {
@@ -222,6 +223,7 @@ public class PlayerCharacter extends Entity {
 	}
 	
 	private void showBag() {
+		p.bag.add(new Item(22));
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
@@ -238,7 +240,133 @@ public class PlayerCharacter extends Entity {
 
 		        JButton useButton = new JButton("Use");
 		        useButton.addActionListener(f -> {
-		        	// TODO: add a use case for items
+		        	if (i.getItem().getHealAmount() != 0) {
+		        		JPanel partyPanel = new JPanel();
+		        	    partyPanel.setLayout(new GridLayout(6, 1));
+
+		        	    JProgressBar[] partyHP = new JProgressBar[6];
+		        	    for (int j = 0; j < 6; j++) {
+		        	        JButton party = new JGradientButton("");
+		        	        partyHP[j] = new JProgressBar(0, 50);
+		        	        final int index = j;
+
+		        	        party.setText("");
+		        	        if (p.team[j] != null) {
+		        	        	if (p.team[j].isFainted()) {
+		        	        		party = new JButton("");
+		        	            	party.setBackground(new Color(200, 0, 0));
+		        	            } else {
+		        	            	party.setBackground(p.team[j].type1.getColor());
+		        	            }
+		        	            party.setText(p.team[j].getName() + "  lv " + p.team[j].getLevel());
+		        	            party.setHorizontalAlignment(SwingConstants.CENTER);
+		        	            party.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		        	            party.setVisible(true);
+		        	        } else {
+		        	            party.setVisible(false);
+		        	        }
+
+		        	        if (p.team[j] != null) {
+		        	            partyHP[j].setMaximum(p.team[j].getStat(0));
+		        	            partyHP[j].setValue(p.team[j].currentHP);
+		        	            if (partyHP[j].getPercentComplete() > 0.5) {
+		        	                partyHP[j].setForeground(new Color(0, 255, 0));
+		        	            } else if (partyHP[j].getPercentComplete() <= 0.5 && partyHP[j].getPercentComplete() > 0.25) {
+		        	                partyHP[j].setForeground(new Color(255, 255, 0));
+		        	            } else {
+		        	                partyHP[j].setForeground(new Color(255, 0, 0));
+		        	            }
+		        	            partyHP[j].setVisible(true);
+		        	        } else {
+		        	            partyHP[j].setVisible(false);
+		        	        }
+		        	        party.addActionListener(g -> {
+		        	        	if (p.team[index].currentHP == p.team[index].getStat(0)) {
+		        	        		JOptionPane.showMessageDialog(null, "It won't have any effect.");
+		        	        	} else {
+		        	        		int difference = 0;
+		        	        		if (i.getItem().getHealAmount() > 0) {
+		        	        			difference = Math.min(i.getItem().getHealAmount(), p.team[index].getStat(0) - p.team[index].currentHP);
+		        	        			p.team[index].currentHP += i.getItem().getHealAmount();
+		        	        		} else {
+		        	        			difference = p.team[index].getStat(0) - p.team[index].currentHP;
+		        	        			p.team[index].currentHP = p.team[index].getStat(0);
+		        	        			if (i.getItem().getID() == 8) p.team[index].status = Status.HEALTHY;
+		        	        		}
+			        	        	p.team[index].verifyHP();
+			        	        	p.bag.remove(i.getItem());
+			        	        	JOptionPane.showMessageDialog(null, p.team[index].name + " was healed by " + difference + " HP");
+			        	        	SwingUtilities.getWindowAncestor(partyPanel).dispose();
+			        	        	SwingUtilities.getWindowAncestor(itemDesc).dispose();
+			        	        	SwingUtilities.getWindowAncestor(panel).dispose();
+			        	        	showBag();
+		        	        	}
+		        	        });
+		        	        
+		        	        JPanel memberPanel = new JPanel(new BorderLayout());
+		        	        memberPanel.add(party, BorderLayout.NORTH);
+		        	        memberPanel.add(partyHP[j], BorderLayout.SOUTH);
+		        	        partyPanel.add(memberPanel);
+		        	    }
+
+		        	    JOptionPane.showMessageDialog(null, partyPanel, "Party", JOptionPane.PLAIN_MESSAGE);
+		        	}
+		        	if (i.getItem().getID() == 22) {
+		        		JPanel partyPanel = new JPanel();
+		        	    partyPanel.setLayout(new GridLayout(6, 1));
+
+		        	    JProgressBar[] partyHP = new JProgressBar[6];
+		        	    for (int j = 0; j < 6; j++) {
+		        	        JButton party = new JGradientButton("");
+		        	        partyHP[j] = new JProgressBar(0, 50);
+		        	        final int index = j;
+
+		        	        party.setText("");
+		        	        if (p.team[j] != null) {
+		        	        	if (p.team[j].isFainted()) {
+		        	        		party = new JButton("");
+		        	            	party.setBackground(new Color(200, 0, 0));
+		        	            } else {
+		        	            	party.setBackground(p.team[j].type1.getColor());
+		        	            }
+		        	            party.setText(p.team[j].getName() + "  lv " + p.team[j].getLevel());
+		        	            party.setHorizontalAlignment(SwingConstants.CENTER);
+		        	            party.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		        	            party.setVisible(true);
+		        	        } else {
+		        	            party.setVisible(false);
+		        	        }
+
+		        	        if (p.team[j] != null) {
+		        	            partyHP[j].setMaximum(p.team[j].getStat(0));
+		        	            partyHP[j].setValue(p.team[j].currentHP);
+		        	            if (partyHP[j].getPercentComplete() > 0.5) {
+		        	                partyHP[j].setForeground(new Color(0, 255, 0));
+		        	            } else if (partyHP[j].getPercentComplete() <= 0.5 && partyHP[j].getPercentComplete() > 0.25) {
+		        	                partyHP[j].setForeground(new Color(255, 255, 0));
+		        	            } else {
+		        	                partyHP[j].setForeground(new Color(255, 0, 0));
+		        	            }
+		        	            partyHP[j].setVisible(true);
+		        	        } else {
+		        	            partyHP[j].setVisible(false);
+		        	        }
+		        	        party.addActionListener(g -> {
+		        	        	if (p.team[index].getLevel() == 100) {
+		        	        		JOptionPane.showMessageDialog(null, "It won't have any effect.");
+		        	        	} else {
+		        	        		p.elevate(p.team[index]);
+		        	        	}
+		        	        });
+		        	        
+		        	        JPanel memberPanel = new JPanel(new BorderLayout());
+		        	        memberPanel.add(party, BorderLayout.NORTH);
+		        	        memberPanel.add(partyHP[j], BorderLayout.SOUTH);
+		        	        partyPanel.add(memberPanel);
+		        	    }
+
+		        	    JOptionPane.showMessageDialog(null, partyPanel, "Party", JOptionPane.PLAIN_MESSAGE);
+		        	}
 		        });
 		        itemDesc.add(description);
 		        itemDesc.add(count);

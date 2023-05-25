@@ -3,6 +3,8 @@ package Swing;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import javax.swing.JOptionPane;
+
 public class Player implements Serializable{
 	/**
 	 * 
@@ -142,6 +144,23 @@ public class Player implements Serializable{
 	
 	public Bag getBag() {
 		return bag;
+	}
+	
+	public void elevate(Pokemon pokemon) {
+		int expAmt = pokemon.expMax - pokemon.exp;
+    	pokemon.exp += expAmt;
+    	while (pokemon.exp >= pokemon.expMax) {
+            // Pokemon has leveled up, check for evolution
+            Pokemon evolved = pokemon.levelUp();
+            if (evolved != null) {
+                // Update the player's team with the evolved Pokemon
+            	pokemon = evolved;
+                evolved.checkMove();
+                pokemon = evolved;
+            }
+        }
+    	JOptionPane.showMessageDialog(null, pokemon.name + " was elevated to " + pokemon.getLevel());
+		
 	}
 
 }

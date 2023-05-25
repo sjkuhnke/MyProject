@@ -9,10 +9,32 @@ public class Item implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private int id;
 	private int cost;
+	private int healAmount;
 	
 	public Item(int i) {
 		id = i;
 		cost = setCost();
+		if (id >= 4 && id <= 8) {
+			switch(id) {
+				case 4:
+					healAmount = 20;
+					break;
+				case 5:
+					healAmount = 60;
+					break;
+				case 6:
+					healAmount = 120;
+					break;
+				case 7:
+					healAmount = -1;
+					break;
+				case 8:
+					healAmount = -1;
+					break;
+				default:
+					healAmount = 0;
+			}
+		}
 	}
 	
 	private int setCost() {
@@ -103,6 +125,7 @@ public class Item implements Serializable {
 		else if (id == 19) return "Dusk Stone";
 		else if (id == 20) return "Dawn Stone";
 		else if (id == 21) return "Ice Stone";
+		else if (id == 22) return "Rare Candy";
 		else if (id == 93) return "HM01";
 		else if (id == 94) return "HM02";
 		else if (id == 95) return "HM03";
@@ -211,5 +234,9 @@ public class Item implements Serializable {
 		else if (id == 198) return "TM98";
 		else if (id == 199) return "TM99";
 		return "";
+	}
+
+	public int getHealAmount() {
+		return healAmount;
 	}
 }

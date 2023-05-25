@@ -29,7 +29,7 @@ public class Bag implements Serializable {
 	
 	public void remove(Item item) {
 		int index = item.getID();
-		if (count[--index] == 0) bag[index] = null;
+		if (--count[index] == 0) bag[index] = null;
 	}
 	
 	public ArrayList<Entry> getItems() {
