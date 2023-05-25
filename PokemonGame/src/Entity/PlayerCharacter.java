@@ -33,7 +33,6 @@ import Swing.Bag.Entry;
 
 public class PlayerCharacter extends Entity {
 	
-	GamePanel gp;
 	KeyHandler keyH;
 	
 	public final int screenX;
@@ -41,7 +40,7 @@ public class PlayerCharacter extends Entity {
 	public Player p;
 	
 	public PlayerCharacter(GamePanel gp, KeyHandler keyH) {
-		this.gp = gp;
+		super(gp);
 		this.keyH = keyH;
 		
 		screenX = gp.screenWidth / 2 - (gp.tileSize/2);
