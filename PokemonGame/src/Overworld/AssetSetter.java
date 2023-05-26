@@ -19,7 +19,7 @@ public class AssetSetter {
 		gp.npc[0].worldY = gp.tileSize*21;
 		
 		gp.npc[1] = new NPC_Clerk(gp);
-		gp.npc[1].worldX = gp.tileSize*26;
+		gp.npc[1].worldX = gp.tileSize*25;
 		gp.npc[1].worldY = gp.tileSize*21;
 	}
 }

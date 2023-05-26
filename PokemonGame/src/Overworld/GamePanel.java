@@ -73,7 +73,7 @@ public class GamePanel extends JPanel implements Runnable, BattleCloseListener {
 				
 				repaint();
 				
-				System.out.println(player.worldX / tileSize + "," + player.worldY / tileSize);
+				//System.out.println(player.worldX / tileSize + "," + player.worldY / tileSize);
 				if (!inBattle && !battle1 && player.worldX / tileSize == 20 && player.worldY / tileSize == 20) {
 					startBattle(1);
 				}

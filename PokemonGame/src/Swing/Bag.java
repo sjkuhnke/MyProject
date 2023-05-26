@@ -9,7 +9,7 @@ public class Bag implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	private Item[] bag;
-	private int[] count;
+	public int[] count;
 	
 	public Bag() {
 		bag = new Item[200];

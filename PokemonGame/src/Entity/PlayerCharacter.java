@@ -93,8 +93,7 @@ public class PlayerCharacter extends Entity {
 			collisionOn = false;
 			gp.cChecker.checkTile(this);
 			
-			int npcIndex = gp.cChecker.checkEntity(this, gp.npc);
-			interactNurse(npcIndex);
+			gp.cChecker.checkEntity(this, gp.npc);
 			
 			if (!collisionOn) {
 				switch(direction) {
@@ -124,8 +123,8 @@ public class PlayerCharacter extends Entity {
 			}
 		}
 		if (keyH.pPressed) {
-			showParty();
 			keyH.pause();
+			showParty();
 		}
 		if (keyH.sPressed) {
 			speed = 8;
@@ -133,16 +132,21 @@ public class PlayerCharacter extends Entity {
 			speed = 4;
 		}
 		if (keyH.bPressed) {
-			showBag();
 			keyH.pause();
+			showBag();
+		}
+		if (keyH.wPressed) {
+			int npcIndex = gp.cChecker.checkEntity(this, gp.npc);
+			if (npcIndex != 999 && gp.npc[npcIndex] instanceof NPC_Nurse) interactNurse();
+			if (npcIndex != 999 && gp.npc[npcIndex] instanceof NPC_Clerk) interactClerk();
 		}
 	}
 
-	private void interactNurse(int i) {
-		if (i != 999 && keyH.wPressed) {
+	private void interactNurse() {
+		if (keyH.wPressed) {
 			keyH.pause();
 			int option = JOptionPane.showOptionDialog(null,
-					"Welcome to the Pokemon Center! Do you want to rest your Pokemon?",
+					"Welcome to the Pokemon Center!\nDo you want to rest your Pokemon?",
 					"Heal",
 		            JOptionPane.YES_NO_OPTION,
 		            JOptionPane.QUESTION_MESSAGE,
@@ -154,7 +158,17 @@ public class PlayerCharacter extends Entity {
 		    }
 		    keyH.resume();
 		}
-		
+	}
+	
+	private void interactClerk() {
+		if (keyH.wPressed) {
+			keyH.pause();
+			
+			JPanel partyPanel = new JPanel();
+		    partyPanel.setLayout(new GridLayout(6, 1));
+			JOptionPane.showMessageDialog(null, partyPanel, "Shop", JOptionPane.PLAIN_MESSAGE);
+			keyH.resume();
+		}
 	}
 
 	private void showParty() {
@@ -208,6 +222,7 @@ public class PlayerCharacter extends Entity {
 	    }
 
 	    JOptionPane.showMessageDialog(null, partyPanel, "Party", JOptionPane.PLAIN_MESSAGE);
+	    keyH.resume();
 	}
 	
 	private void showBag() {
@@ -321,10 +336,8 @@ public class PlayerCharacter extends Entity {
 		containerPanel.add(scrollPane, BorderLayout.CENTER);
 
 		JOptionPane.showMessageDialog(null, containerPanel, "Bag", JOptionPane.PLAIN_MESSAGE);
-
+		keyH.resume();
 	}
-
-
 
 	
 

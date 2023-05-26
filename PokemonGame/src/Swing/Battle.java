@@ -88,7 +88,8 @@ public class Battle extends JFrame {
 		
 		// Initializing panel
 		setResizable(false);
-		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		setPreferredSize(new Dimension(768, 576));
 		setBounds(100, 100, 648, 530);
 		playerPanel = new JPanel();
 		playerPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -207,7 +208,7 @@ public class Battle extends JFrame {
 		bag[0].setBounds(553, 60, 60, 21);
 		bag[0].setFont(new Font("Tahoma", Font.PLAIN, 11));
 		
-		bag[1] = new JLabel(me.pokeballCount + "");
+		bag[1] = new JLabel(me.bag.count[1] + "");
 		bag[1].setBounds(553, 80, 40, 21);
 		bag[1].setFont(new Font("Tahoma", Font.BOLD, 15));
 		bag[1].setForeground(new Color(199, 6, 32));
@@ -216,7 +217,7 @@ public class Battle extends JFrame {
 		bag[2].setBounds(553, 105, 60, 21);
 		bag[2].setFont(new Font("Tahoma", Font.PLAIN, 11));
 		
-		bag[3] = new JLabel(me.greatballCount + "");
+		bag[3] = new JLabel(me.bag.count[2] + "");
 		bag[3].setBounds(553, 125, 40, 21);
 		bag[3].setFont(new Font("Tahoma", Font.BOLD, 15));
 		bag[3].setForeground(new Color(6, 16, 199));
@@ -225,7 +226,7 @@ public class Battle extends JFrame {
 		bag[4].setBounds(553, 150, 60, 21);
 		bag[4].setFont(new Font("Tahoma", Font.PLAIN, 11));
 		
-		bag[5] = new JLabel(me.ultraballCount + "");
+		bag[5] = new JLabel(me.bag.count[3] + "");
 		bag[5].setBounds(553, 170, 40, 21);
 		bag[5].setFont(new Font("Tahoma", Font.BOLD, 15));
 		bag[5].setForeground(new Color(199, 192, 6));
@@ -236,11 +237,11 @@ public class Battle extends JFrame {
 		
 		buyPoke.addActionListener(e -> {
 			if (me.money >= 100) {
-				me.pokeballCount += 10;
+				me.bag.add(new Item(1), 10);
 				me.money -= 100;
 				JOptionPane.showMessageDialog(null, "Bought 10 Pokeballs for $100! You have $" + me.money + " remaining");
 				moneyLabel.setText("$" + me.money);
-				bag[1].setText(me.pokeballCount + "");
+				bag[1].setText(me.bag.count[1] + "");
 			} else {
 				JOptionPane.showMessageDialog(null, "Not enough money!");
 			}
@@ -248,11 +249,11 @@ public class Battle extends JFrame {
 		
 		buyGreat.addActionListener(e -> {
 			if (me.money >= 200) {
-				me.greatballCount += 5;
+				me.bag.add(new Item(2), 5);
 				me.money -= 200;
 				JOptionPane.showMessageDialog(null, "Bought 5 Great Balls for $200! You have $" + me.money + " remaining");
 				moneyLabel.setText("$" + me.money);
-				bag[3].setText(me.greatballCount + "");
+				bag[3].setText(me.bag.count[2] + "");
 			} else {
 				JOptionPane.showMessageDialog(null, "Not enough money!");
 			}
@@ -260,11 +261,11 @@ public class Battle extends JFrame {
 		
 		buyUltra.addActionListener(e -> {
 			if (me.money >= 500) {
-				me.ultraballCount += 5;
+				me.bag.add(new Item(3));
 				me.money -= 500;
 				JOptionPane.showMessageDialog(null, "Bought 5 Ultra Balls for $500! You have $" + me.money + " remaining");
 				moneyLabel.setText("$" + me.money);
-				bag[5].setText(me.ultraballCount + "");
+				bag[5].setText(me.bag.count[3] + "");
 			} else {
 				JOptionPane.showMessageDialog(null, "Not enough money!");
 			}
@@ -824,7 +825,7 @@ public class Battle extends JFrame {
 		        if (foe.id == 103 || foe.id == 104 || foe.id == 105 || foe.id == 91 || foe.id == 133 || foe.id == 134 ||foe.id == 135 || foe.id == 136 || foe.id == 137 ||foe.id == 138 || foe.id == 139 || foe.id == 140) statusBonus = 0.25; // if legendary
 		        
 		        if (pokeballButton.isSelected()) {
-		        	if (me.pokeballCount <= 0) {
+		        	if (me.bag.count[1] <= 0) {
 		        		JOptionPane.showMessageDialog(null, "No balls remaining!");
                         return;
 		        	}
@@ -838,9 +839,9 @@ public class Battle extends JFrame {
 		                statusBonus *= 2.0;
 		            }
 		            System.out.println("\nUsed a Pokeball!");
-		            me.pokeballCount--;
+		            me.bag.remove(new Item(1));
 		        } else if (greatballButton.isSelected()) {
-		        	if (me.greatballCount <= 0) {
+		        	if (me.bag.count[2] <= 0) {
 		        		JOptionPane.showMessageDialog(null, "No balls remaining!");
                         return;
 		        	}
@@ -854,9 +855,9 @@ public class Battle extends JFrame {
 		                statusBonus *= 2.0;
 		            }
 		            System.out.println("\nUsed a Great Ball!");
-		            me.greatballCount--;
+		            me.bag.remove(new Item(2));
 		        } else if (ultraballButton.isSelected()) {
-		        	if (me.ultraballCount <= 0) {
+		        	if (me.bag.count[3] <= 0) {
 		        		JOptionPane.showMessageDialog(null, "No balls remaining!");
                         return;
 		        	}
@@ -870,7 +871,7 @@ public class Battle extends JFrame {
 		                statusBonus *= 2.0;
 		            }
 		            System.out.println("\nUsed an Ultra Ball!");
-		            me.ultraballCount--;
+		            me.bag.remove(new Item(3));
 		        }
 		        
 		        double randomValue = rand.nextDouble();
@@ -1618,9 +1619,9 @@ public class Battle extends JFrame {
 		moneyLabel.setVisible(true);
 		playerPanel.add(moneyLabel);
 		
-		bag[1].setText(me.pokeballCount + "");
-		bag[3].setText(me.greatballCount + "");
-		bag[5].setText(me.ultraballCount + "");
+		bag[1].setText(me.bag.count[1] + "");
+		bag[3].setText(me.bag.count[2] + "");
+		bag[5].setText(me.bag.count[3] + "");
 		
 		for (int i = 0; i < bag.length; i++) {
 			bag[i].setVisible(true);

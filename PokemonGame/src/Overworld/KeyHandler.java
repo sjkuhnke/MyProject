@@ -77,7 +77,7 @@ public class KeyHandler implements KeyListener {
 	
 	public void pause() {
 		pause = true;
-		downPressed = upPressed = leftPressed = rightPressed = sPressed = wPressed = bPressed = false;
+		downPressed = upPressed = leftPressed = rightPressed = sPressed = wPressed = bPressed = pPressed = false;
 	}
 	public void resume() {
 		pause = false;

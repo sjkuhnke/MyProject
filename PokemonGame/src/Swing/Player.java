@@ -15,9 +15,6 @@ public class Player implements Serializable{
 	public Pokemon[] box;
 	public int money;
 	public Pokemon current;
-	public int pokeballCount;
-	public int greatballCount;
-	public int ultraballCount;
 	private int numBattled;
 	public ArrayList<String> trainersBeat;
 	private int posX;
