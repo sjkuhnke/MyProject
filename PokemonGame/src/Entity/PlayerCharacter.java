@@ -8,6 +8,9 @@ import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
@@ -22,8 +25,8 @@ import javax.swing.SwingUtilities;
 
 import Overworld.GamePanel;
 import Overworld.KeyHandler;
+import Overworld.Main;
 import Swing.Battle.JGradientButton;
-import Swing.Item;
 import Swing.Player;
 import Swing.Pokemon;
 import Swing.Status;
@@ -36,6 +39,7 @@ public class PlayerCharacter extends Entity {
 	public final int screenX;
 	public final int screenY;
 	public Player p;
+	public boolean[] trainersBeat = new boolean[Main.trainers.length];
 	
 	public PlayerCharacter(GamePanel gp, KeyHandler keyH) {
 		super(gp);
@@ -122,6 +126,10 @@ public class PlayerCharacter extends Entity {
 				spriteCounter = 0;
 			}
 		}
+		if (keyH.dPressed) {
+			keyH.pause();
+			showMenu();
+		}
 		if (keyH.pPressed) {
 			keyH.pause();
 			showParty();
@@ -135,11 +143,82 @@ public class PlayerCharacter extends Entity {
 			keyH.pause();
 			showBag();
 		}
+		if (keyH.backslashPressed) {
+			saveGame();
+		}
 		if (keyH.wPressed) {
 			int npcIndex = gp.cChecker.checkEntity(this, gp.npc);
 			if (npcIndex != 999 && gp.npc[npcIndex] instanceof NPC_Nurse) interactNurse();
 			if (npcIndex != 999 && gp.npc[npcIndex] instanceof NPC_Clerk) interactClerk();
+			if (npcIndex != 999 && gp.npc[npcIndex] instanceof NPC_Trainer) gp.startBattle(gp.npc[npcIndex].trainer);
+			if (npcIndex != 999 && gp.npc[npcIndex] instanceof NPC_GymLeader) gp.startBattle(gp.npc[npcIndex].trainer);
 		}
+		for (int i = 0; i < gp.npc.length; i++) {
+			if (gp.cChecker.checkTrainer(this, gp.npc[i])) gp.startBattle(gp.npc[i].trainer);
+		}
+	}
+	
+	private void showMenu() {
+		JPanel menu = new JPanel();
+	    menu.setLayout(new GridLayout(6, 1));
+	    
+	    JButton party = new JButton("Party");
+	    JButton bag = new JButton("Bag");
+	    JButton save = new JButton("Save");
+	    JButton player = new JButton("Player");
+	    
+	    party.addActionListener(e -> {
+	    	showParty();
+	    });
+	    bag.addActionListener(e -> {
+	    	showBag();
+	    });
+	    save.addActionListener(e -> {
+	    	saveGame();
+	    });
+	    player.addActionListener(e -> {
+	    	JPanel playerInfo = new JPanel();
+	    	playerInfo.setLayout(new GridLayout(6, 1));
+	    	
+	    	JLabel moneyLabel = new JLabel();
+	    	moneyLabel.setText("$" + p.money);
+	    	JLabel badgesLabel = new JLabel();
+	    	badgesLabel.setText(p.badges + " Badges");
+	    	
+	    	playerInfo.add(moneyLabel);
+	    	playerInfo.add(badgesLabel);
+	    	
+	    	JOptionPane.showMessageDialog(null, playerInfo, "Player Info", JOptionPane.PLAIN_MESSAGE);
+	    });
+	    menu.add(party);
+	    menu.add(bag);
+	    menu.add(save);
+	    menu.add(player);
+	    
+	    JOptionPane.showMessageDialog(null, menu, "Menu", JOptionPane.PLAIN_MESSAGE);
+	    keyH.resume();
+	}
+
+	private void saveGame() {
+		keyH.pause();
+		int option = JOptionPane.showOptionDialog(null,
+				"Would you like to save the game?",
+				"Confirm Save",
+	            JOptionPane.YES_NO_OPTION,
+	            JOptionPane.QUESTION_MESSAGE,
+	            null, null, null);
+	    if (option == JOptionPane.YES_OPTION) {
+	    	try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("player.dat"))) {
+            	gp.player.p.setPosX(gp.player.worldX);
+            	gp.player.p.setPosY(gp.player.worldY);
+                oos.writeObject(gp.player.p);
+                oos.close();
+                JOptionPane.showMessageDialog(null, "Game saved sucessfully!");
+            } catch (IOException ex) {
+            	JOptionPane.showMessageDialog(null, "Error writing object to file: " + ex.getMessage());
+            }
+	    }
+	    keyH.resume();
 	}
 
 	private void interactNurse() {
@@ -155,6 +234,8 @@ public class PlayerCharacter extends Entity {
 		    	for (Pokemon member : p.team) {
 					if (member != null) member.heal();
 				}
+		    	JOptionPane.showMessageDialog(null, "Your Pokemon were healed to full health!");
+		    	
 		    }
 		    keyH.resume();
 		}

@@ -76,11 +76,13 @@ public class Battle extends JFrame {
 	private JComboBox<Trainer> trainerSelect;
 	private Trainer[] trainers;
 	private JButton infoButton;
+	private int trainerIndex;
 	
 	private BattleCloseListener battleCloseListener;
 
-	public Battle(PlayerCharacter playerCharacter, Trainer foeT) {
+	public Battle(PlayerCharacter playerCharacter, Trainer foeT, int trainerIndex) {
 		me = playerCharacter.p;
+		this.trainerIndex = trainerIndex;
 		
 		foe = new Pokemon(-10, 5, false, false);
 	    foe.currentHP = 0;
@@ -1532,6 +1534,7 @@ public class Battle extends JFrame {
 //					updateTrainers();
 					// Show the prompt with the specified text
 		            JOptionPane.showMessageDialog(null, foeTrainer.toString() + " was defeated!\nWon $" + foeTrainer.getMoney() + "!");
+		            if (foeTrainer.getMoney() == 500) me.badges++;
 
 		            // Close the current Battle JFrame
 		            dispose();
@@ -1853,11 +1856,11 @@ public class Battle extends JFrame {
 	@Override
 	public void dispose() {
 		super.dispose();
-		if (battleCloseListener != null) battleCloseListener.onBattleClosed();
+		if (battleCloseListener != null) battleCloseListener.onBattleClosed(trainerIndex);
 	}
 	
 	public interface BattleCloseListener {
-	    void onBattleClosed();
+	    void onBattleClosed(int trainer);
 	}
 	
 }

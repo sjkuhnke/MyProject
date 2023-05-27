@@ -20,6 +20,7 @@ public class Player implements Serializable{
 	private int posX;
 	private int posY;
 	public Bag bag;
+	public int badges;
 	
 	public Player() {
 		team = new Pokemon[6];

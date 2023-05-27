@@ -24,6 +24,8 @@ public class Entity {
 	public int solidAreaDefaultX, solidAreaDefaultY;
 	public boolean collisionOn = false;
 	
+	public int trainer;
+	
 	public Entity(GamePanel gp) {
 		this.gp = gp;
 	}
@@ -49,7 +51,20 @@ public class Entity {
 			worldY + gp.tileSize > gp.player.worldY - gp.player.screenY &&
 			worldY - gp.tileSize < gp.player.worldY + gp.player.screenY) {
 			
-			image = down1;
+			switch(direction) {
+			case "up":
+				image = up1;
+				break;
+			case "down":
+				image = down1;
+				break;
+			case "left":
+				image = left1;
+				break;
+			case "right":
+				image = right1;
+				break;
+			}
 			
 			g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
 		}

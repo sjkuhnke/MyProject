@@ -1,6 +1,9 @@
 package Overworld;
 
+import java.awt.Rectangle;
+
 import Entity.Entity;
+import Entity.NPC_Trainer;
 
 public class CollisionChecker {
 	
@@ -52,53 +55,69 @@ public class CollisionChecker {
 	}
 	
 	public int checkEntity(Entity entity, Entity[] target) {
-		int index = 999;
-		
-		for (int i = 0; i < target.length; i++) {
-			if (target[i] != null) {
-				entity.solidArea.x = entity.worldX + entity.solidArea.x;
-				entity.solidArea.y = entity.worldY + entity.solidArea.y;
-				
-				target[i].solidArea.x = target[i].worldX + target[i].solidArea.x;
-				target[i].solidArea.y = target[i].worldY + target[i].solidArea.y;
-				
-				switch(entity.direction) {
-				case "up":
-					entity.solidArea.y -= entity.speed;
-					if(entity.solidArea.intersects(target[i].solidArea)) {
-						entity.collisionOn = true;
-						index = i;
-					}
-					break;
-				case "down":
-					entity.solidArea.y += entity.speed;
-					if(entity.solidArea.intersects(target[i].solidArea)) {
-						entity.collisionOn = true;
-						index = i;
-					}
-					break;
-				case "left":
-					entity.solidArea.x -= entity.speed;
-					if(entity.solidArea.intersects(target[i].solidArea)) {
-						entity.collisionOn = true;
-						index = i;
-					}
-					break;
-				case "right":
-					entity.solidArea.x += entity.speed;
-					if(entity.solidArea.intersects(target[i].solidArea)) {
-						entity.collisionOn = true;
-						index = i;
-					}
-					break;
-				}
-				entity.solidArea.x = entity.solidAreaDefaultX;
-				entity.solidArea.y = entity.solidAreaDefaultY;
-				target[i].solidArea.x = target[i].solidAreaDefaultX;
-				target[i].solidArea.y = target[i].solidAreaDefaultY;
-			}
-		}
-		return index;
+	    int index = 999;
+
+	    for (int i = 0; i < target.length; i++) {
+	        if (target[i] != null) {
+	            Rectangle entityRange = new Rectangle(entity.worldX + entity.solidArea.x, entity.worldY + entity.solidArea.y, entity.solidArea.width, entity.solidArea.height);
+	            Rectangle targetRange = new Rectangle(target[i].worldX + target[i].solidArea.x, target[i].worldY + target[i].solidArea.y, target[i].solidArea.width, target[i].solidArea.height);
+
+	            switch (entity.direction) {
+	                case "up":
+	                    entityRange.y -= entity.speed;
+	                    break;
+	                case "down":
+	                    entityRange.y += entity.speed;
+	                    break;
+	                case "left":
+	                    entityRange.x -= entity.speed;
+	                    break;
+	                case "right":
+	                    entityRange.x += entity.speed;
+	                    break;
+	            }
+
+	            if (entityRange.intersects(targetRange)) {
+	                entity.collisionOn = true;
+	                index = i;
+	            }
+	        }
+	    }
+	    return index;
 	}
+
+	public boolean checkTrainer(Entity entity, Entity target) {
+	    int visionRange = 4 * gp.tileSize;
+	    boolean result = false;
+
+	    if (target instanceof NPC_Trainer && target != null) {
+	        Rectangle entityRange = new Rectangle(entity.worldX + entity.solidArea.x, entity.worldY + entity.solidArea.y, entity.solidArea.width, entity.solidArea.height);
+	        Rectangle trainerRange = new Rectangle(target.worldX + target.solidArea.x, target.worldY + target.solidArea.y, target.solidArea.width, target.solidArea.height);
+
+	        switch (target.direction) {
+	            case "up":
+	                trainerRange.y -= visionRange;
+	                trainerRange.height += visionRange;
+	                break;
+	            case "down":
+	                trainerRange.height += visionRange;
+	                break;
+	            case "left":
+	                trainerRange.x -= visionRange;
+	                trainerRange.width += visionRange;
+	                break;
+	            case "right":
+	                trainerRange.width += visionRange;
+	                break;
+	        }
+
+	        if (entityRange.intersects(trainerRange)) {
+	            result = true;
+	        }
+	    }
+	    return result;
+	}
+
+
 
 }

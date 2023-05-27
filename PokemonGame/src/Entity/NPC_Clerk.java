@@ -5,6 +5,7 @@ import Overworld.GamePanel;
 public class NPC_Clerk extends Entity {
 	public NPC_Clerk(GamePanel gp) {
 		super(gp);
+		this.direction = "down";
 		
 		getImage();
 	}

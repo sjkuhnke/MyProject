@@ -2,10 +2,8 @@ package Overworld;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 
 import javax.swing.*;
 
@@ -52,13 +50,10 @@ public class Main {
 		window.addWindowListener(new WindowAdapter() {
             @Override // implementation
             public void windowClosing(WindowEvent e) {
-                try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("player.dat"))) {
-                	gamePanel.player.p.setPosX(gamePanel.player.worldX);
-                	gamePanel.player.p.setPosY(gamePanel.player.worldY);
-                    oos.writeObject(gamePanel.player.p);
-                    oos.close();
-                } catch (IOException ex) {
-                    System.err.println("Error writing object to file: " + ex.getMessage());
+            	int option = JOptionPane.showConfirmDialog(window, "Are you sure you want to exit?", "Confirm Exit", JOptionPane.YES_NO_OPTION);
+                if (option == JOptionPane.YES_OPTION) {
+                    // Close the application
+                    System.exit(0);
                 }
             }
         });

@@ -46,7 +46,6 @@ public class GamePanel extends JPanel implements Runnable, BattleCloseListener {
 	
 	int FPS = 60;
 	private volatile boolean inBattle;
-	private boolean battle1;
 	
 	public GamePanel() {
 		this.setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -74,10 +73,6 @@ public class GamePanel extends JPanel implements Runnable, BattleCloseListener {
 				repaint();
 				
 				//System.out.println(player.worldX / tileSize + "," + player.worldY / tileSize);
-				if (!inBattle && !battle1 && player.worldX / tileSize == 20 && player.worldY / tileSize == 20) {
-					startBattle(1);
-				}
-				
 				
 				try {
 					double remainingTime = nextDrawTime - System.nanoTime();
@@ -118,18 +113,20 @@ public class GamePanel extends JPanel implements Runnable, BattleCloseListener {
 	
 	public void startBattle(int trainer) {
 	    // Create the Battle instance and set the window listener to save on close
+		if (trainer == -1) return;
+		if (player.trainersBeat[trainer]) return;
 		inBattle = true;
-		battle1 = true;
 		keyH.pause();
 		
-		Battle frame = new Battle(player, Main.trainers[trainer]);
+		Battle frame = new Battle(player, Main.trainers[trainer], trainer);
         frame.setBattleCloseListener(this);
         frame.setVisible(true);
 	}
 
 	@Override
-	public void onBattleClosed() {
+	public void onBattleClosed(int trainer) {
 		inBattle = false;
+		player.trainersBeat[trainer] = true;
 		keyH.resume();
 	}
 

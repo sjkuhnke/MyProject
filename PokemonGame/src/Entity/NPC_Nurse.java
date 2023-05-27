@@ -6,6 +6,7 @@ public class NPC_Nurse extends Entity {
 	
 	public NPC_Nurse(GamePanel gp) {
 		super(gp);
+		this.direction = "down";
 		
 		getImage();
 	}
