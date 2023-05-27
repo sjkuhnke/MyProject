@@ -56,11 +56,6 @@ public class Battle extends JFrame {
 	private JRadioButton pokeballButton;
 	private JRadioButton greatballButton;
 	private JRadioButton ultraballButton;
-	private JGradientButton buyPoke;
-	private JGradientButton buyGreat;
-	private JGradientButton buyUltra;
-	private JLabel moneyLabel;
-	private JLabel[] bag;
 	private JProgressBar[] partyHP;
 	private JComboBox<String> encounterInput;
 	private ButtonGroup encounterType;
@@ -76,6 +71,7 @@ public class Battle extends JFrame {
 	private JComboBox<Trainer> trainerSelect;
 	private Trainer[] trainers;
 	private JButton infoButton;
+	private JButton exitButton;
 	private int trainerIndex;
 	
 	private BattleCloseListener battleCloseListener;
@@ -129,9 +125,14 @@ public class Battle extends JFrame {
 		healButton = createJButton("HEAL", new Font("Tahoma", Font.BOLD, 9), 10, 262, 75, 23);
 		infoButton = createJButton("INFO", new Font("Tahoma", Font.BOLD, 9), 10, 231, 75, 23);
 		boxButton = createJButton("Box", new Font("Tahoma", Font.PLAIN, 12), 553, 35, 62, 21);
+		exitButton = createJButton("EXIT", new Font("Tahoma", Font.BOLD, 9), 10, 15, 75, 23);
 		encounterButton = createJButton("Fight", new Font("Tahoma", Font.PLAIN, 12), 486, 35, 62, 21);
 		returnButton = createJButton("Exit", new Font("Tahoma", Font.BOLD, 12), 553, 35, 62, 21);
 		returnButton.setVisible(false);
+		
+		exitButton.addActionListener(e -> {
+			dispose();
+		});
 		
 		encounterButton.addActionListener(new ActionListener() {
 		    public void actionPerformed(ActionEvent e) {
@@ -161,118 +162,6 @@ public class Battle extends JFrame {
 		        encounterButton.doClick();
 		    }
 		});
-		
-		bag = new JLabel[9];
-		buyPoke = new JGradientButton("Buy Pokeballs");
-		buyPoke.setBounds(155, 410, 100, 50);
-		buyPoke.setFont(new Font("Tahoma", Font.PLAIN, 9));
-		buyPoke.setBackground(new Color(199, 6, 32));
-		bag[6] = new JLabel("10 for $100");
-		bag[6].setBounds(155, 462, 100, 21);
-		bag[6].setHorizontalAlignment(SwingConstants.CENTER);
-		bag[6].setFont(new Font("Tahoma", Font.BOLD, 12));
-		bag[6].setForeground(new Color(79, 2, 2));
-		buyPoke.setVisible(false);
-		playerPanel.add(buyPoke);
-		
-		buyGreat = new JGradientButton("Buy Great Balls");
-		buyGreat.setBounds(280, 410, 100, 50);
-		buyGreat.setFont(new Font("Tahoma", Font.PLAIN, 9));
-		buyGreat.setBackground(new Color(6, 16, 199));
-		bag[7] = new JLabel("5 for $200");
-		bag[7].setBounds(280, 462, 100, 21);
-		bag[7].setHorizontalAlignment(SwingConstants.CENTER);
-		bag[7].setFont(new Font("Tahoma", Font.BOLD, 12));
-		bag[7].setForeground(new Color(2, 4, 79));
-		buyGreat.setVisible(false);
-		playerPanel.add(buyGreat);
-		
-		buyUltra = new JGradientButton("Buy Ultra Balls");
-		buyUltra.setBounds(405, 410, 100, 50);
-		buyUltra.setFont(new Font("Tahoma", Font.PLAIN, 9));
-		buyUltra.setBackground(new Color(199, 192, 6));
-		bag[8] = new JLabel("5 for $500");
-		bag[8].setBounds(405, 462, 100, 21);
-		bag[8].setHorizontalAlignment(SwingConstants.CENTER);
-		bag[8].setFont(new Font("Tahoma", Font.BOLD, 12));
-		bag[8].setForeground(new Color(92, 97, 6));
-		buyUltra.setVisible(false);
-		playerPanel.add(buyUltra);
-		
-		moneyLabel = new JLabel("$" + me.money);
-		moneyLabel.setHorizontalAlignment(SwingConstants.LEFT);
-		moneyLabel.setBounds(553, 10, 100, 21);
-		moneyLabel.setFont(new Font("Tahoma", Font.BOLD, 12));
-		moneyLabel.setVisible(true);
-		playerPanel.add(moneyLabel);
-		
-		bag[0] = new JLabel("Pokeballs:");
-		bag[0].setBounds(553, 60, 60, 21);
-		bag[0].setFont(new Font("Tahoma", Font.PLAIN, 11));
-		
-		bag[1] = new JLabel(me.bag.count[1] + "");
-		bag[1].setBounds(553, 80, 40, 21);
-		bag[1].setFont(new Font("Tahoma", Font.BOLD, 15));
-		bag[1].setForeground(new Color(199, 6, 32));
-		
-		bag[2] = new JLabel("Great Balls:");
-		bag[2].setBounds(553, 105, 60, 21);
-		bag[2].setFont(new Font("Tahoma", Font.PLAIN, 11));
-		
-		bag[3] = new JLabel(me.bag.count[2] + "");
-		bag[3].setBounds(553, 125, 40, 21);
-		bag[3].setFont(new Font("Tahoma", Font.BOLD, 15));
-		bag[3].setForeground(new Color(6, 16, 199));
-		
-		bag[4] = new JLabel("Ultra Balls:");
-		bag[4].setBounds(553, 150, 60, 21);
-		bag[4].setFont(new Font("Tahoma", Font.PLAIN, 11));
-		
-		bag[5] = new JLabel(me.bag.count[3] + "");
-		bag[5].setBounds(553, 170, 40, 21);
-		bag[5].setFont(new Font("Tahoma", Font.BOLD, 15));
-		bag[5].setForeground(new Color(199, 192, 6));
-		for (int i = 0; i < bag.length; i++) {
-			bag[i].setVisible(false);
-			playerPanel.add(bag[i]);
-		}
-		
-		buyPoke.addActionListener(e -> {
-			if (me.money >= 100) {
-				me.bag.add(new Item(1), 10);
-				me.money -= 100;
-				JOptionPane.showMessageDialog(null, "Bought 10 Pokeballs for $100! You have $" + me.money + " remaining");
-				moneyLabel.setText("$" + me.money);
-				bag[1].setText(me.bag.count[1] + "");
-			} else {
-				JOptionPane.showMessageDialog(null, "Not enough money!");
-			}
-		});
-		
-		buyGreat.addActionListener(e -> {
-			if (me.money >= 200) {
-				me.bag.add(new Item(2), 5);
-				me.money -= 200;
-				JOptionPane.showMessageDialog(null, "Bought 5 Great Balls for $200! You have $" + me.money + " remaining");
-				moneyLabel.setText("$" + me.money);
-				bag[3].setText(me.bag.count[2] + "");
-			} else {
-				JOptionPane.showMessageDialog(null, "Not enough money!");
-			}
-		});
-		
-		buyUltra.addActionListener(e -> {
-			if (me.money >= 500) {
-				me.bag.add(new Item(3));
-				me.money -= 500;
-				JOptionPane.showMessageDialog(null, "Bought 5 Ultra Balls for $500! You have $" + me.money + " remaining");
-				moneyLabel.setText("$" + me.money);
-				bag[5].setText(me.bag.count[3] + "");
-			} else {
-				JOptionPane.showMessageDialog(null, "Not enough money!");
-			}
-		});
-		
 		
 		boxButtons = new JGradientButton[30];
 		for (int i = 0; i < boxButtons.length; i++) {
@@ -805,9 +694,7 @@ public class Battle extends JFrame {
 		
 		addButton.addActionListener(e -> {
 			if (!foe.isFainted()) {
-				me.catchPokemon(new Pokemon(foe.id, foe.getLevel(), true, false));
-				foe.currentHP = 0;
-				foe.faint(false, me);
+				me.catchPokemon(foe);
 				displayParty();
 				updateFoe();
 				boxButton.setVisible(true);
@@ -1010,8 +897,6 @@ public class Battle extends JFrame {
 			playerPanel.add(day);
 			night.setVisible(true);
 			playerPanel.add(night);
-			moneyLabel.setVisible(true);
-			playerPanel.add(moneyLabel);
 			//trainerSelect.setVisible(true);
 			//playerPanel.add(trainerSelect);
 			scrollPane.setVisible(true);
@@ -1064,13 +949,12 @@ public class Battle extends JFrame {
 							me.trainersBeat.add(foeTrainer.toString());
 							me.money += foeTrainer.getMoney();
 							System.out.println("Won $" + foeTrainer.getMoney() + "!");
-							moneyLabel.setText("$" + me.money);
 							boxButton.setVisible(true);
 							healButton.setVisible(true);
 							encounterButton.setVisible(true);
 							encounterInput.setVisible(true);
-							trainerSelect.setVisible(true);
-							updateTrainers();
+							//trainerSelect.setVisible(true);
+							//updateTrainers();
 						}
 					} else {
 						healButton.setVisible(true);
@@ -1095,6 +979,8 @@ public class Battle extends JFrame {
 			            if (me.team[index] != null) levelLabel.setText("Level: " + me.team[index].getLevel());
 			            JLabel statsLabel = new JLabel("Stats: N/A");
 			            if (me.team[index] != null) statsLabel.setText("Stats: " + intArrayToString(me.team[index].stats));
+			            JLabel ivLabel = new JLabel("IVs: N/A");
+			            if (me.team[index] != null) ivLabel.setText("IVs: " + intArrayToString(me.team[index].getIVs()));
 			            JLabel hpLabel = new JLabel("HP: N/A");
 			            if (me.team[index] != null) hpLabel.setText("HP: " + me.team[index].currentHP + " / " + me.team[index].getStat(0));
 			            JLabel movesLabel = new JLabel("Moves: N/A");
@@ -1104,6 +990,7 @@ public class Battle extends JFrame {
 			            teamMemberPanel.add(nameLabel);
 			            teamMemberPanel.add(levelLabel);
 			            teamMemberPanel.add(statsLabel);
+			            teamMemberPanel.add(ivLabel);
 			            teamMemberPanel.add(hpLabel);
 			            teamMemberPanel.add(movesLabel);
 			            teamMemberPanel.add(statusLabel);
@@ -1521,11 +1408,7 @@ public class Battle extends JFrame {
 					me.getCurrent().battled = true;
 					
 				} else {
-					System.out.println("\n" + foeTrainer.toString() + " was defeated!");
 					//me.trainersBeat.add(foeTrainer.toString());
-					me.money += foeTrainer.getMoney();
-					System.out.println("Won $" + foeTrainer.getMoney() + "!");
-					moneyLabel.setText("$" + me.money);
 //					boxButton.setVisible(true);
 //					healButton.setVisible(true);
 //					encounterButton.setVisible(true);
@@ -1533,8 +1416,9 @@ public class Battle extends JFrame {
 //					trainerSelect.setVisible(true);
 //					updateTrainers();
 					// Show the prompt with the specified text
+					me.money += foeTrainer.getMoney();
 		            JOptionPane.showMessageDialog(null, foeTrainer.toString() + " was defeated!\nWon $" + foeTrainer.getMoney() + "!");
-		            if (foeTrainer.getMoney() == 500) me.badges++;
+		            if (foeTrainer.getMoney() == 500 && me.badges < 8) me.badges++;
 
 		            // Close the current Battle JFrame
 		            dispose();
@@ -1612,24 +1496,6 @@ public class Battle extends JFrame {
 		}
 		playerPanel.add(returnButton);
 		returnButton.setVisible(true);
-		
-		buyPoke.setVisible(true);
-		playerPanel.add(buyPoke);
-		buyGreat.setVisible(true);
-		playerPanel.add(buyGreat);
-		buyUltra.setVisible(true);
-		playerPanel.add(buyUltra);
-		moneyLabel.setVisible(true);
-		playerPanel.add(moneyLabel);
-		
-		bag[1].setText(me.bag.count[1] + "");
-		bag[3].setText(me.bag.count[2] + "");
-		bag[5].setText(me.bag.count[3] + "");
-		
-		for (int i = 0; i < bag.length; i++) {
-			bag[i].setVisible(true);
-			playerPanel.add(bag[i]);
-		}
 	}
 	
 	public static final class JGradientButton extends JButton{
@@ -1697,7 +1563,7 @@ public class Battle extends JFrame {
 			if (Integer.parseInt(idInput.getText()) >= -144 && Integer.parseInt(idInput.getText()) <= 237) {
 				foe = new Pokemon(Integer.parseInt(idInput.getText()), Integer.parseInt(levelInput.getText()), false, true);
 			} else {
-				foe = new Pokemon (-10, 5, false, true);
+				foe = new Pokemon(-10, 5, false, true);
 			}
 			updateFoe();
 			boxButton.setVisible(false);

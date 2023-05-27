@@ -164,5 +164,12 @@ public class Player implements Serializable{
     	JOptionPane.showMessageDialog(null, pokemon.name + " was elevated to " + pokemon.getLevel());
 		
 	}
+	
+	public boolean buy(Item item) {
+		if (item.getCost() > money) return false;
+		money -= item.getCost();
+		bag.add(item);
+		return true;
+	}
 
 }

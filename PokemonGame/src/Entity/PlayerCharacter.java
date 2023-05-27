@@ -27,6 +27,7 @@ import Overworld.GamePanel;
 import Overworld.KeyHandler;
 import Overworld.Main;
 import Swing.Battle.JGradientButton;
+import Swing.Item;
 import Swing.Player;
 import Swing.Pokemon;
 import Swing.Status;
@@ -130,21 +131,10 @@ public class PlayerCharacter extends Entity {
 			keyH.pause();
 			showMenu();
 		}
-		if (keyH.pPressed) {
-			keyH.pause();
-			showParty();
-		}
 		if (keyH.sPressed) {
 			speed = 8;
 		} else {
 			speed = 4;
-		}
-		if (keyH.bPressed) {
-			keyH.pause();
-			showBag();
-		}
-		if (keyH.backslashPressed) {
-			saveGame();
 		}
 		if (keyH.wPressed) {
 			int npcIndex = gp.cChecker.checkEntity(this, gp.npc);
@@ -242,14 +232,38 @@ public class PlayerCharacter extends Entity {
 	}
 	
 	private void interactClerk() {
-		if (keyH.wPressed) {
-			keyH.pause();
-			
-			JPanel partyPanel = new JPanel();
-		    partyPanel.setLayout(new GridLayout(6, 1));
-			JOptionPane.showMessageDialog(null, partyPanel, "Shop", JOptionPane.PLAIN_MESSAGE);
-			keyH.resume();
-		}
+		keyH.pause();
+		
+		JPanel shopPanel = new JPanel();
+	    shopPanel.setLayout(new GridLayout(6, 1));
+	    int available = 8;
+	    if (p.badges > 7) available += 3;
+	    if (p.badges > 6) available ++;
+	    if (p.badges > 4) available += 2;
+	    if (p.badges > 2) available += 2;
+	    if (p.badges > 0) available += 2;
+	    Item[] shopItems = new Item[] {new Item(0), new Item(1), new Item(4), new Item(9), new Item(10), new Item(11), new Item(12), new Item(13), // 0 badges
+	    		new Item(2), new Item(5), // 1 badge
+	    		new Item(14), new Item(16), // 3 badges
+	    		new Item(3), new Item(6), // 5 badges
+	    		new Item(7), // 7 badges
+	    		new Item(8), new Item(17), new Item(22)}; // 8 badges
+	    for (int i = 0; i < available; i++) {
+	    	JButton item = new JButton(shopItems[i].toString() + ": $" + shopItems[i].getCost());
+	    	int index = i;
+	    	item.addActionListener(e -> {
+	    		if (p.buy(shopItems[index])) {
+	    			JOptionPane.showMessageDialog(null, "Purchased 1 " + shopItems[index].toString() + " for $" + shopItems[index].getCost());
+	    			SwingUtilities.getWindowAncestor(shopPanel).dispose();
+		    		interactClerk();
+	    		} else {
+	    			JOptionPane.showMessageDialog(null, "Not enough money!");
+	    		}
+	    	});
+	    	shopPanel.add(item);
+	    }
+		JOptionPane.showMessageDialog(null, shopPanel, "Money: $" + p.money, JOptionPane.PLAIN_MESSAGE);
+		keyH.resume();
 	}
 
 	private void showParty() {
@@ -270,6 +284,8 @@ public class PlayerCharacter extends Entity {
 	            if (p.team[index] != null) levelLabel.setText("Level: " + p.team[index].getLevel());
 	            JLabel statsLabel = new JLabel("Stats: N/A");
 	            if (p.team[index] != null) statsLabel.setText("Stats: " + intArrayToString(p.team[index].stats));
+	            JLabel ivLabel = new JLabel("IVs: N/A");
+	            if (p.team[index] != null) ivLabel.setText("IVs: " + intArrayToString(p.team[index].getIVs()));
 	            JLabel hpLabel = new JLabel("HP: N/A");
 	            if (p.team[index] != null) hpLabel.setText("HP: " + p.team[index].currentHP + " / " + p.team[index].getStat(0));
 	            JLabel movesLabel = new JLabel("Moves: N/A");
@@ -288,6 +304,7 @@ public class PlayerCharacter extends Entity {
 	            teamMemberPanel.add(nameLabel);
 	            teamMemberPanel.add(levelLabel);
 	            teamMemberPanel.add(statsLabel);
+	            teamMemberPanel.add(ivLabel);
 	            teamMemberPanel.add(hpLabel);
 	            teamMemberPanel.add(movesLabel);
 	            teamMemberPanel.add(statusLabel);

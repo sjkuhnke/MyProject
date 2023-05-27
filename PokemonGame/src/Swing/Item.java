@@ -60,6 +60,7 @@ public class Item implements Serializable {
 		else if (id == 19) return 500;
 		else if (id == 20) return 500;
 		else if (id == 21) return 500;
+		else if (id == 22) return 0;
 		else if (id == 112) return 600;
 		else if (id == 113) return 500;
 		else if (id == 115) return 900;
