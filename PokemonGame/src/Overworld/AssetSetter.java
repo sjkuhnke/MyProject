@@ -4,6 +4,7 @@ import Entity.Entity;
 import Entity.NPC_Clerk;
 import Entity.NPC_GymLeader;
 import Entity.NPC_Nurse;
+import Entity.NPC_PC;
 import Entity.NPC_Trainer;
 
 public class AssetSetter {
@@ -24,11 +25,16 @@ public class AssetSetter {
 		gp.npc[2] = NPCSetup(3, 23, 24, 0);
 		
 		gp.npc[3] = NPCSetup(8, 23, 19, 14);
+		
+		gp.npc[4] = NPCSetup(0, 23, 7, -1);
 	}
 	
 	private Entity NPCSetup(int type, int x, int y, int team) {
 		Entity result = null;
 		switch (type) {
+		case 0:
+			result = new NPC_PC(gp);
+			break;
 		case 1:
 			result = new NPC_Nurse(gp);
 			break;

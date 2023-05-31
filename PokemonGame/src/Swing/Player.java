@@ -12,7 +12,7 @@ public class Player implements Serializable{
 	 */
 	private static final long serialVersionUID = -2851052666892205583L;
 	public Pokemon[] team;
-	public Pokemon[] box;
+	public Pokemon[] box1, box2, box3;
 	public int money;
 	public Pokemon current;
 	private int numBattled;
@@ -24,7 +24,9 @@ public class Player implements Serializable{
 	
 	public Player() {
 		team = new Pokemon[6];
-		box = new Pokemon[30];
+		box1 = new Pokemon[30];
+		box2 = new Pokemon[30];
+		box3 = new Pokemon[30];
 		money = 0;
 		current = null;
 		trainersBeat = new ArrayList<String>();
@@ -56,41 +58,24 @@ public class Player implements Serializable{
 	        }
 	    } else {
 	        int index = -1;
-	        for (int i = 0; i < box.length; i++) {
-	            if (box[i] == null) {
-	                index = i;
-	                break;
+	        Pokemon[][] boxes = {box1, box2, box3};  // Array of box references
+	        for (int i = 0; i < boxes.length; i++) {
+	            for (int j = 0; j < boxes[i].length; j++) {
+	                if (boxes[i][j] == null) {
+	                    index = j;
+	                    break;
+	                }
+	            }
+	            if (index >= 0) {
+	                boxes[i][index] = p;
+	                System.out.println("Caught " + p.name + ", sent to box " + (i+1) + "!");
+	                return;  // Exit the method after catching the Pokémon
 	            }
 	        }
-	        if (index >= 0) {
-	            box[index] = p;
-	            System.out.println("Caught " + p.name + ", sent to box!");
-	        } else {
-	            System.out.println("Cannot catch " + p.name + ", box is full");
-	        }
+	        System.out.println("Cannot catch " + p.name + ", all boxes are full");
 	    }
 	}
 
-	
-	@Override // implementation
-	public String toString() {
-		return "Party: " + this.PokemonArrayToString(team) + ", Box: " + this.PokemonArrayToString(box);
-	}
-	
-	private String PokemonArrayToString(Pokemon[] arr) {
-	    StringBuilder sb = new StringBuilder();
-	    sb.append("[");
-	    for (int i = 0; i < arr.length ; i++) {
-	        if (arr[i] != null) {
-	        	sb.append(arr[i].getName());
-	        } else { break; }
-	        if (i != arr.length - 1) {
-	            sb.append(", ");
-	        }
-	    }
-	    sb.append("]");
-	    return sb.toString();
-	}
 
 	public void swap(Pokemon pokemon, int index) {
 		System.out.println("\n" + current.name + ", come back!");

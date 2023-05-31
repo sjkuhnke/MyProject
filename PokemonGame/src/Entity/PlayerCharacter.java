@@ -142,6 +142,7 @@ public class PlayerCharacter extends Entity {
 			if (npcIndex != 999 && gp.npc[npcIndex] instanceof NPC_Clerk) interactClerk();
 			if (npcIndex != 999 && gp.npc[npcIndex] instanceof NPC_Trainer) gp.startBattle(gp.npc[npcIndex].trainer);
 			if (npcIndex != 999 && gp.npc[npcIndex] instanceof NPC_GymLeader) gp.startBattle(gp.npc[npcIndex].trainer);
+			if (npcIndex != 999 && gp.npc[npcIndex] instanceof NPC_PC) gp.openBox();
 		}
 		for (int i = 0; i < gp.npc.length; i++) {
 			if (gp.cChecker.checkTrainer(this, gp.npc[i])) gp.startBattle(gp.npc[i].trainer);
@@ -280,62 +281,16 @@ public class PlayerCharacter extends Entity {
 	        final int index = j;
 	        
 	        party.addActionListener(e -> {
-	            JPanel teamMemberPanel = new JPanel();
-	            teamMemberPanel.setLayout(new BoxLayout(teamMemberPanel, BoxLayout.Y_AXIS));
-	            
-	            Pokemon pokemon = p.team[index];
-	            JLabel nameLabel, hp, at, de, sa, sd, sp, natureLabel, hpLabel, movesLabel, statusLabel;
-	            nameLabel = hp = at = de = sa = sd = sp = natureLabel = hpLabel = movesLabel = statusLabel = new JLabel("N/A");
-	            if (pokemon != null) {
-	            	nameLabel = new JLabel(pokemon.getName() + " Lv. " + pokemon.getLevel());
-	            	nameLabel.setForeground(pokemon.type1.getColor().darker());
-	            	nameLabel.setFont(new Font(nameLabel.getFont().getName(), Font.BOLD,16));
-	            	hpLabel = new JLabel(pokemon.currentHP + " / " + pokemon.getStat(0) + " HP");
-	            	hpLabel.setFont(new Font(hpLabel.getFont().getName(), Font.BOLD,14));
-	            	hp = new JLabel("HP: " + pokemon.stats[0] + ", IV: " + pokemon.getIVs()[0]);
-	            	at = new JLabel("Atk: " + pokemon.stats[1] + ", IV: " + pokemon.getIVs()[1]);
-	            	de = new JLabel("Def: " + pokemon.stats[2] + ", IV: " + pokemon.getIVs()[2]);
-	            	sa = new JLabel("SpA: " + pokemon.stats[3] + ", IV: " + pokemon.getIVs()[3]);
-	            	sd = new JLabel("SpD: " + pokemon.stats[4] + ", IV: " + pokemon.getIVs()[4]);
-	            	sp = new JLabel("Spe: " + pokemon.stats[5] + ", IV: " + pokemon.getIVs()[5]);
-	            	if (pokemon.nature[0] == 1.1) at.setForeground(Color.red.darker().darker());
-	            	if (pokemon.nature[0] == 0.9) at.setForeground(Color.blue.darker().darker());
-	            	if (pokemon.nature[1] == 1.1) de.setForeground(Color.red.darker().darker());
-	            	if (pokemon.nature[1] == 0.9) de.setForeground(Color.blue.darker().darker());
-	            	if (pokemon.nature[2] == 1.1) sa.setForeground(Color.red.darker().darker());
-	            	if (pokemon.nature[2] == 0.9) sa.setForeground(Color.blue.darker().darker());
-	            	if (pokemon.nature[3] == 1.1) sd.setForeground(Color.red.darker().darker());
-	            	if (pokemon.nature[3] == 0.9) sd.setForeground(Color.blue.darker().darker());
-	            	if (pokemon.nature[4] == 1.1) sp.setForeground(Color.red.darker().darker());
-	            	if (pokemon.nature[4] == 0.9) sp.setForeground(Color.blue.darker().darker());
-	            	natureLabel = new JLabel(pokemon.getNature() + " Nature");
-	            	movesLabel = new JLabel(movesToString(pokemon));
-	            	statusLabel = (pokemon.isFainted()) ? new JLabel("Status: FAINTED") : new JLabel("Status: " + pokemon.status.toString());
-	            	if (pokemon.status == Status.HEALTHY) { statusLabel.setForeground(Color.GREEN.darker());
-	            	} else { statusLabel.setForeground(pokemon.status.getColor()); }
-	            }
-	            
+	            JPanel teamMemberPanel = p.team[index].showSummary();
 	            JButton swapButton = new JButton("Swap");
 		        swapButton.addActionListener(f -> {
-		            if (pokemon != null && pokemon != p.current) {
-		                p.swap(pokemon, index); // Call the swap method in the Player class
+		            if (p.team[index] != null && p.team[index] != p.current) {
+		                p.swap(p.team[index], index); // Call the swap method in the Player class
 		                JOptionPane.getRootFrame().dispose();
 		                showParty(); // Update the party display after swapping
 		            }
 		        });
-	            teamMemberPanel.add(nameLabel);
-	            teamMemberPanel.add(hpLabel);
-	            teamMemberPanel.add(natureLabel);
-	            teamMemberPanel.add(hp);
-	            teamMemberPanel.add(at);
-	            teamMemberPanel.add(de);
-	            teamMemberPanel.add(sa);
-	            teamMemberPanel.add(sd);
-	            teamMemberPanel.add(sp);
-	            teamMemberPanel.add(movesLabel);
-	            teamMemberPanel.add(statusLabel);
-	            if (pokemon != p.current && !pokemon.isFainted()) teamMemberPanel.add(swapButton);
-
+	            if (p.team[index] != p.current && !p.team[index].isFainted()) teamMemberPanel.add(swapButton);
 	            JOptionPane.showMessageDialog(null, teamMemberPanel, "Party member details", JOptionPane.PLAIN_MESSAGE);
 	        });
 
@@ -379,7 +334,7 @@ public class PlayerCharacter extends Entity {
 		        	        final int index = j;
 
 		        	        party.addActionListener(g -> {
-		        	        	if (p.team[index].currentHP == p.team[index].getStat(0)) {
+		        	        	if (p.team[index].currentHP == p.team[index].getStat(0) || p.team[index].isFainted()) {
 		        	        		JOptionPane.showMessageDialog(null, "It won't have any effect.");
 		        	        	} else {
 		        	        		int difference = 0;
@@ -526,20 +481,5 @@ public class PlayerCharacter extends Entity {
 			break;
 		}
 		g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
-	}
-	
-	private String movesToString(Pokemon p) {
-		String moveString = "";
-	    
-	    for (int i = 0; i < p.moveset.length; i++) {
-	    	if (p.moveset[i] != null) {
-	    		moveString += p.moveset[i].toString();
-	    		if (i != p.moveset.length - 1) {
-	    			moveString += " / ";
-	    		}
-	    	}
-	    }
-	    
-	    return moveString;
 	}
 }
