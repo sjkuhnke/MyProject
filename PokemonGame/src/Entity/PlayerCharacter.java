@@ -327,7 +327,6 @@ public class PlayerCharacter extends Entity {
 		        		JPanel partyPanel = new JPanel();
 		        	    partyPanel.setLayout(new GridLayout(6, 1));
 
-		        	    
 		        	    for (int j = 0; j < 6; j++) {
 		        	    	JButton party = setUpPartyButton(j);
 		        	    	JProgressBar partyHP = setupHPBar(j);
