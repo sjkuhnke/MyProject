@@ -35,15 +35,15 @@ public enum Status {
 	private Color color;
 	private Color textColor;
 	
-	String getName() {
+	public String getName() {
 		return name;
 	}
 	
-	Color getColor() {
+	public Color getColor() {
 		return color;
 	}
 	
-	Color getTextColor() {
+	public Color getTextColor() {
 		return textColor;
 	}
 }

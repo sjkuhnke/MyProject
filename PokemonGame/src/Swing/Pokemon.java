@@ -21,6 +21,7 @@ public class Pokemon implements Serializable {
 	private int level;
 	public int[] statStages;
 	private int[] ivs;
+	public double[] nature;
 	
 	public PType type1;
 	public PType type2;
@@ -63,6 +64,7 @@ public class Pokemon implements Serializable {
 		
 		setBaseStats();
 		for (int j = 0; j < 6; j++) { ivs[j] = (int) (Math.random() * 32); }
+		setNature();
 		getStats();
 		setType();
 		
@@ -88,6 +90,8 @@ public class Pokemon implements Serializable {
 		
 	}
 	
+	
+
 	public void setMoves() {
 		int index = 0;
 		for (int i = 0; i < level && i < movebank.length; i++) {
@@ -178,15 +182,16 @@ public class Pokemon implements Serializable {
 
 
 
-	public Pokemon(int i, int l, Move[] set, int[] iv) {
+	public Pokemon(int i, Pokemon pokemon) {
 		id = i;
 		name = getName();
 		
 		baseStats = new int[6];
 		stats = new int[6];
-		level = l;
+		level = pokemon.level;
 		statStages = new int[7];
-		ivs = iv;
+		ivs = pokemon.ivs;
+		nature = pokemon.nature;
 		
 		setBaseStats();
 		getStats();
@@ -197,7 +202,7 @@ public class Pokemon implements Serializable {
 		
 		currentHP = this.getStat(0);
 		setMoveBank();
-		moveset = set;
+		moveset = pokemon.moveset;
 		
 		status = Status.HEALTHY;
 		vStatuses = new ArrayList<Status>();
@@ -1131,141 +1136,141 @@ public class Pokemon implements Serializable {
 	private Pokemon checkEvo() {
 		Pokemon result = null;
 		if (id == -1 && level >= 15) {
-			result = new Pokemon(-2, level, this.moveset, this.ivs);
+			result = new Pokemon(-2, this);
 		} else if (id == -2 && level >= 35) {
-			result = new Pokemon(-3, level, this.moveset, this.ivs);
+			result = new Pokemon(-3, this);
 		} else if (id == -4 && level >= 16) {
-			result = new Pokemon(-5, level, this.moveset, this.ivs);
+			result = new Pokemon(-5, this);
 		} else if (id == -5 && level >= 34) {
-			result = new Pokemon(-6, level, this.moveset, this.ivs);
+			result = new Pokemon(-6, this);
 		} else if (id == -7 && level >= 20) {
-			result = new Pokemon(-8, level, this.moveset, this.ivs);
+			result = new Pokemon(-8, this);
 		} else if (id == -8 && level >= 31) {
-			result = new Pokemon(-9, level, this.moveset, this.ivs);
+			result = new Pokemon(-9, this);
 		} else if (id == -10 && level >= 16) {
-			result = new Pokemon(-11, level, this.moveset, this.ivs);
+			result = new Pokemon(-11, this);
 		} else if (id == -12 && level >= 28) {
-			result = new Pokemon(-13, level, this.moveset, this.ivs);
+			result = new Pokemon(-13, this);
 		} else if (id == -14 && level >= 16) {
-			result = new Pokemon(-15, level, this.moveset, this.ivs);
+			result = new Pokemon(-15, this);
 		} else if (id == -16 && level >= 32 && this.contains(Move.ROLLOUT)) {
-			result = new Pokemon(-17, level, this.moveset, this.ivs);
+			result = new Pokemon(-17, this);
 		} else if (id == -18 && level >= 21) {
-			result = new Pokemon(-19, level, this.moveset, this.ivs);
+			result = new Pokemon(-19, this);
 		} else if (id == -19 && level >= 36 && this.contains(Move.ROCK_BLAST)) {
-			result = new Pokemon(-20, level, this.moveset, this.ivs);
+			result = new Pokemon(-20, this);
 		} else if (id == -21 && level >= 25) {
-			result = new Pokemon(-22, level, this.moveset, this.ivs);
+			result = new Pokemon(-22, this);
 		} else if (id == -22 && level >= 40) {
-			result = new Pokemon(id - 1-23, level, this.moveset, this.ivs);
+			result = new Pokemon(id - 1-23, this);
 		} else if (id == -24 && level >= 21) {
-			result = new Pokemon(id - 1, level, this.moveset, this.ivs);
+			result = new Pokemon(id - 1, this);
 		} else if (id == -26 && level >= 18) {
-			result = new Pokemon(id - 1, level, this.moveset, this.ivs);
+			result = new Pokemon(id - 1, this);
 		} else if (id == -27 && level >= 36) {
-			result = new Pokemon(id - 1, level, this.moveset, this.ivs);
+			result = new Pokemon(id - 1, this);
 		} else if (id == -29 && level >= 18) {
-			result = new Pokemon(id - 1, level, this.moveset, this.ivs);
+			result = new Pokemon(id - 1, this);
 		} else if (id == -33 && level >= 21) {
-			result = new Pokemon(id - 1, level, this.moveset, this.ivs);
+			result = new Pokemon(id - 1, this);
 		} else if (id == -38 && level >= 25) {
-			result = new Pokemon(id - 1, level, this.moveset, this.ivs);
+			result = new Pokemon(id - 1, this);
 		} else if (id == -40 && level >= 21) {
-			result = new Pokemon(id - 1, level, this.moveset, this.ivs);
+			result = new Pokemon(id - 1, this);
 		} else if (id == -44 && level >= 30) {
-			result = new Pokemon(id - 1, level, this.moveset, this.ivs);
+			result = new Pokemon(id - 1, this);
 		} else if (id == -46 && level >= 31) {
-			result = new Pokemon(id - 1, level, this.moveset, this.ivs);
+			result = new Pokemon(id - 1, this);
 		} else if (id == -48 && level >= 15) {
-			result = new Pokemon(id - 1, level, this.moveset, this.ivs);
+			result = new Pokemon(id - 1, this);
 		} else if (id == -49 && level >= 25) {
-			result = new Pokemon(id - 1, level, this.moveset, this.ivs);
+			result = new Pokemon(id - 1, this);
 		} else if (id == -51 && level >= 25 && this.contains(Move.MACH_PUNCH)) {
-			result = new Pokemon(-52, level, this.moveset, this.ivs);
+			result = new Pokemon(-52, this);
 		} else if (id == -51 && level >= 25 && this.contains(Move.HI_JUMP_KICK)) {
-			result = new Pokemon(-53, level, this.moveset, this.ivs);
+			result = new Pokemon(-53, this);
 		} else if (id == -51 && level >= 25 && this.contains(Move.SWORD_SLICE)) {
-			result = new Pokemon(-54, level, this.moveset, this.ivs);
+			result = new Pokemon(-54, this);
 		} else if (id == -55 && level >= 25) {
-			result = new Pokemon(id - 1, level, this.moveset, this.ivs);
+			result = new Pokemon(id - 1, this);
 		} else if (id == -57 && level >= 21) {
-			result = new Pokemon(id - 1, level, this.moveset, this.ivs);
+			result = new Pokemon(id - 1, this);
 		} else if (id == -59 && level >= 28) {
-			result = new Pokemon(id - 1, level, this.moveset, this.ivs);
+			result = new Pokemon(id - 1, this);
 		} else if (id == -141 && level >= 28) {
-			result = new Pokemon(-143, level, this.moveset, this.ivs);
+			result = new Pokemon(-143, this);
 		} else if (id == -142 && level >= 28) {
-			result = new Pokemon(-144, level, this.moveset, this.ivs);
+			result = new Pokemon(-144, this);
 		} else if (id == -61 && level >= 29) {
-			result = new Pokemon(id - 1, level, this.moveset, this.ivs);
+			result = new Pokemon(id - 1, this);
 		} else if (id == -63 && level >= 25) {
-			result = new Pokemon(id - 1, level, this.moveset, this.ivs);
+			result = new Pokemon(id - 1, this);
 		} else if (id == -65 && level >= 27) {
-			result = new Pokemon(id - 1, level, this.moveset, this.ivs);
+			result = new Pokemon(id - 1, this);
 		} else if (id == -67 && level >= 18) {
-			result = new Pokemon(id - 1, level, this.moveset, this.ivs);
+			result = new Pokemon(id - 1, this);
 		} else if (id == -71 && level >= 30) {
-			result = new Pokemon(id - 1, level, this.moveset, this.ivs);
+			result = new Pokemon(id - 1, this);
 		} else if (id == -72 && level >= 55) {
-			result = new Pokemon(id - 1, level, this.moveset, this.ivs);
+			result = new Pokemon(id - 1, this);
 		} else if (id == -74 && level >= 16) {
-			result = new Pokemon(id - 1, level, this.moveset, this.ivs);
+			result = new Pokemon(id - 1, this);
 		} else if (id == -75 && level >= 36) {
-			result = new Pokemon(id - 1, level, this.moveset, this.ivs);
+			result = new Pokemon(id - 1, this);
 		} else if (id == -77 && level >= 35) {
-			result = new Pokemon(id - 1, level, this.moveset, this.ivs);
+			result = new Pokemon(id - 1, this);
 		} else if (id == -78 && level >= 55) {
-			result = new Pokemon(id - 1, level, this.moveset, this.ivs);
+			result = new Pokemon(id - 1, this);
 		} else if (id == -80 && level >= 28) {
-			result = new Pokemon(id - 1, level, this.moveset, this.ivs);
+			result = new Pokemon(id - 1, this);
 		} else if (id == -82 && level >= 26) {
-			result = new Pokemon(id - 1, level, this.moveset, this.ivs);
+			result = new Pokemon(id - 1, this);
 		} else if (id == -84 && level >= 31) {
-			result = new Pokemon(id - 1, level, this.moveset, this.ivs);
+			result = new Pokemon(id - 1, this);
 		} else if (id == -86 && level >= 36) {
-			result = new Pokemon(id - 1, level, this.moveset, this.ivs);
+			result = new Pokemon(id - 1, this);
 		} else if (id == -89 && level >= 31) {
-			result = new Pokemon(id - 1, level, this.moveset, this.ivs);
+			result = new Pokemon(id - 1, this);
 		} else if (id == -93 && level >= 32) {
-			result = new Pokemon(id - 1, level, this.moveset, this.ivs);
+			result = new Pokemon(id - 1, this);
 		} else if (id == -95 && level >= 30) {
-			result = new Pokemon(id - 1, level, this.moveset, this.ivs);
+			result = new Pokemon(id - 1, this);
 		} else if (id == -97 && level >= 25) {
-			result = new Pokemon(id - 1, level, this.moveset, this.ivs);
+			result = new Pokemon(id - 1, this);
 		} else if (id == -98 && level >= 50) {
-			result = new Pokemon(id - 1, level, this.moveset, this.ivs);
+			result = new Pokemon(id - 1, this);
 		} else if (id == -100 && level >= 35) {
-			result = new Pokemon(id - 1, level, this.moveset, this.ivs);
+			result = new Pokemon(id - 1, this);
 		} else if (id == -101 && level >= 55) {
-			result = new Pokemon(id - 1, level, this.moveset, this.ivs);
+			result = new Pokemon(id - 1, this);
 		} else if (id == -105 && level >= 25) {
-			result = new Pokemon(id - 1, level, this.moveset, this.ivs);
+			result = new Pokemon(id - 1, this);
 		} else if (id == -107 && level >= 30) {
-			result = new Pokemon(id - 1, level, this.moveset, this.ivs);
+			result = new Pokemon(id - 1, this);
 		} else if (id == -109 && level >= 30) {
-			result = new Pokemon(id - 1, level, this.moveset, this.ivs);
+			result = new Pokemon(id - 1, this);
 		} else if (id == -110 && level >= 50) {
-			result = new Pokemon(id - 1, level, this.moveset, this.ivs);
+			result = new Pokemon(id - 1, this);
 		} else if (id == -112 && level >= 25) {
-			result = new Pokemon(Battle.dogoEvo(this), level, this.moveset, this.ivs);
+			result = new Pokemon(Battle.dogoEvo(this), this);
 		} else if (id == -124 && level >= 16) {
-			result = new Pokemon(id - 1, level, this.moveset, this.ivs);
+			result = new Pokemon(id - 1, this);
 		} else if (id == -125 && level >= 36) {
-			result = new Pokemon(id - 1, level, this.moveset, this.ivs);
+			result = new Pokemon(id - 1, this);
 		} else if (id == -127 && level >= 16) {
-			result = new Pokemon(id - 1, level, this.moveset, this.ivs);
+			result = new Pokemon(id - 1, this);
 		} else if (id == -128 && level >= 36) {
-			result = new Pokemon(id - 1, level, this.moveset, this.ivs);
+			result = new Pokemon(id - 1, this);
 		} else if (id == -130 && level >= 15) {
-			result = new Pokemon(id - 1, level, this.moveset, this.ivs);
+			result = new Pokemon(id - 1, this);
 		} else if (id == -131 && level >= 35) {
-			result = new Pokemon(id - 1, level, this.moveset, this.ivs);
+			result = new Pokemon(id - 1, this);
 		} else if (id == -135 && level >= 50) {
-			result = new Pokemon(-138, level, this.moveset, this.ivs);
+			result = new Pokemon(-138, this);
 		} else if (id == -136 && level >= 50) {
-			result = new Pokemon(-139, level, this.moveset, this.ivs);
+			result = new Pokemon(-139, this);
 		} else if (id == -137 && level >= 55) {
-			result = new Pokemon(-140, level, this.moveset, this.ivs);
+			result = new Pokemon(-140, this);
 		}
 		if (result != null) {
 			boolean shouldEvolve = Battle.displayEvolution(this);
@@ -1288,15 +1293,15 @@ public class Pokemon implements Serializable {
 		stats[0] = (int) (Math.floor(HPnum/100) + level + 10);
 		if (id == 131) stats[0] = 1;
 		double Atknum = (2 * baseStats[1] + ivs[1]) * level;
-		stats[1] = (int) (Math.floor(Atknum/100) + 5);
+		stats[1] = (int) Math.floor((Math.floor(Atknum/100) + 5) * nature[0]);
 		double Defnum = (2 * baseStats[2] + ivs[2]) * level;
-		stats[2] = (int) (Math.floor(Defnum/100) + 5);
+		stats[2] = (int) Math.floor((Math.floor(Defnum/100) + 5) * nature[1]);
 		double SpAnum = (2 * baseStats[3] + ivs[3]) * level;
-		stats[3] = (int) (Math.floor(SpAnum/100) + 5);
+		stats[3] = (int) Math.floor((Math.floor(SpAnum/100) + 5) * nature[2]);
 		double SpDnum = (2 * baseStats[4] + ivs[4]) * level;
-		stats[4] = (int) (Math.floor(SpDnum/100) + 5);
+		stats[4] = (int) Math.floor((Math.floor(SpDnum/100) + 5) * nature[3]);
 		double Spenum = (2 * baseStats[5] + ivs[5]) * level;
-		stats[5] = (int) (Math.floor(Spenum/100) + 5);
+		stats[5] = (int) Math.floor((Math.floor(Spenum/100) + 5) * nature[4]);
 		return stats;
 	}
 	
@@ -6832,4 +6837,143 @@ public class Pokemon implements Serializable {
 	public int[] getIVs() {
 		return ivs;
 	}
+	
+	private void setNature() {
+		nature = new double[] {1,1,1,1,1,-1};
+		Random random = new Random();
+        int increaseIndex = random.nextInt(5);
+        int decreaseIndex = random.nextInt(5);
+        
+        if (increaseIndex == decreaseIndex) {
+        	nature[5] = increaseIndex;
+        } else {
+        	nature[decreaseIndex] = 0.9; // Decreased stat multiplied by 0.9
+            nature[increaseIndex] = 1.1; // Increased stat multiplied by 1.1
+        }
+	}
+	
+	public String getNature() {
+		StringBuilder s = new StringBuilder();
+		for (int i = 0; i < nature.length; i++) {
+			s.append(nature[i]);
+			if (i != nature.length - 1) s.append(",");
+		}
+		String ns = s.toString();
+		String natureString;
+		switch (ns) {
+		case "1.0,1.0,1.0,1.0,1.0,0.0":
+			natureString = "Hardy";
+			break;
+		case "1.0,1.0,1.0,1.0,1.0,1.0":
+			natureString = "Docile";
+			break;
+		case "1.0,1.0,1.0,1.0,1.0,2.0":
+			natureString = "Bashful";
+			break;
+		case "1.0,1.0,1.0,1.0,1.0,3.0":
+			natureString = "Quirky";
+			break;
+		case "1.0,1.0,1.0,1.0,1.0,4.0":
+			natureString = "Serious";
+			break;
+		case "1.1,0.9,1.0,1.0,1.0,-1.0":
+			natureString = "Lonely";
+			break;
+		case "1.1,1.0,0.9,1.0,1.0,-1.0":
+			natureString = "Adamant";
+			break;
+		case "1.1,1.0,1.0,0.9,1.0,-1.0":
+			natureString = "Naughty";
+			break;
+		case "1.1,1.0,1.0,1.0,0.9,-1.0":
+			natureString = "Brave";
+			break;
+		case "0.9,1.1,1.0,1.0,1.0,-1.0":
+			natureString = "Bold";
+			break;
+		case "1.0,1.1,0.9,1.0,1.0,-1.0":
+			natureString = "Impish";
+			break;
+		case "1.0,1.1,1.0,0.9,1.0,-1.0":
+			natureString = "Lax";
+			break;
+		case "1.0,1.1,1.0,1.0,0.9,-1.0":
+			natureString = "Relaxed";
+			break;
+		case "0.9,1.0,1.1,1.0,1.0,-1.0":
+			natureString = "Modest";
+			break;
+		case "1.0,0.9,1.1,1.0,1.0,-1.0":
+			natureString = "Mild";
+			break;
+		case "1.0,1.0,1.1,0.9,1.0,-1.0":
+			natureString = "Rash";
+			break;
+		case "1.0,1.0,1.1,1.0,0.9,-1.0":
+			natureString = "Quiet";
+			break;
+		case "0.9,1.0,1.0,1.1,1.0,-1.0":
+			natureString = "Calm";
+			break;
+		case "1.0,0.9,1.0,1.1,1.0,-1.0":
+			natureString = "Gentle";
+			break;
+		case "1.0,1.0,0.9,1.1,1.0,-1.0":
+			natureString = "Careful";
+			break;
+		case "1.0,1.0,1.0,1.1,0.9,-1.0":
+			natureString = "Sassy";
+			break;
+		case "0.9,1.0,1.0,1.0,1.1,-1.0":
+			natureString = "Timid";
+			break;
+		case "1.0,0.9,1.0,1.0,1.1,-1.0":
+			natureString = "Hasty";
+			break;
+		case "1.0,1.0,0.9,1.0,1.1,-1.0":
+			natureString = "Jolly";
+			break;
+		case "1.0,1.0,1.0,0.9,1.1,-1.0":
+			natureString = "Naive";
+			break;
+		default:
+			natureString = ns;
+			break;
+		}
+			
+//		natureString += " (";
+//		int increasedStat, decreasedStat;
+//		increasedStat = decreasedStat = -1;
+//		for (int i = 0; i < nature.length; i++) {
+//			if (nature[i] == 1.1) increasedStat = i;
+//			if (nature[i] == 0.9) decreasedStat = i;
+//		}
+//		if (increasedStat != -1 || decreasedStat != -1) {
+//			natureString += "+" + getStatName(increasedStat) + ",-" + getStatName(decreasedStat);
+//		} else {
+//			natureString += "Neutral";
+//		}
+//		natureString += ")";
+		
+		return natureString;
+	}
+
+
+
+//	private String getStatName(int stat) {
+//		switch(stat) {
+//		case 0:
+//			return "Atk";
+//		case 1:
+//			return "Def";
+//		case 2:
+//			return "SpA";
+//		case 3:
+//			return "SpD";
+//		case 4:
+//			return "Spe";
+//		default:
+//			return "null";
+//		}
+//	}
 }

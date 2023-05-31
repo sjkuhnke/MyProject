@@ -29,6 +29,7 @@ public class Player implements Serializable{
 		current = null;
 		trainersBeat = new ArrayList<String>();
 		bag = new Bag();
+		posX = posY = 23;
 	}
 	
 	public Pokemon getCurrent() {

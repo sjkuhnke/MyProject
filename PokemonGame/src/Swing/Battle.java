@@ -68,8 +68,8 @@ public class Battle extends JFrame {
 	private JRadioButton rdbtnFishing;
 	private JRadioButton rdbtnSurfing;
 	private JRadioButton rdbtnHeadbutt;
-	private JComboBox<Trainer> trainerSelect;
-	private Trainer[] trainers;
+	//private JComboBox<Trainer> trainerSelect;
+	//private Trainer[] trainers;
 	private JButton infoButton;
 	private JButton exitButton;
 	private int trainerIndex;
@@ -1692,28 +1692,28 @@ public class Battle extends JFrame {
 	    return result == JOptionPane.CLOSED_OPTION ? JOptionPane.CLOSED_OPTION : choice[0];
 	}
 	
-	private Trainer[] getUnbeatenTrainers() {
-		// First, create a list to store trainers that haven't been beaten
-		ArrayList<Trainer> unbeatenTrainers = new ArrayList<>();
-
-		// Iterate through all trainers and add unbeaten trainers to the list
-		for (Trainer trainer : trainers) {
-		    if (!me.trainersBeat.contains(trainer.toString())) {
-		        unbeatenTrainers.add(trainer);
-		    }
-		}
-		// Create a new array with the unbeaten trainers
-		Trainer[] unbeatenTrainersArray = unbeatenTrainers.toArray(new Trainer[0]);
-		return unbeatenTrainersArray;
-	}
+//	private Trainer[] getUnbeatenTrainers() {
+//		// First, create a list to store trainers that haven't been beaten
+//		ArrayList<Trainer> unbeatenTrainers = new ArrayList<>();
+//
+//		// Iterate through all trainers and add unbeaten trainers to the list
+//		for (Trainer trainer : trainers) {
+//		    if (!me.trainersBeat.contains(trainer.toString())) {
+//		        unbeatenTrainers.add(trainer);
+//		    }
+//		}
+//		// Create a new array with the unbeaten trainers
+//		Trainer[] unbeatenTrainersArray = unbeatenTrainers.toArray(new Trainer[0]);
+//		return unbeatenTrainersArray;
+//	}
 	
-	private void updateTrainers() {
-		Trainer[] unbeatenTrainers = getUnbeatenTrainers();
-	    DefaultComboBoxModel<Trainer> model = new DefaultComboBoxModel<>(unbeatenTrainers);
-	    model.insertElementAt(new Trainer(true), 0); // Add placeholder at index 0
-	    trainerSelect.setModel(model);
-	    trainerSelect.setSelectedIndex(0); // Set placeholder as default selection
-	}
+//	private void updateTrainers() {
+//		Trainer[] unbeatenTrainers = getUnbeatenTrainers();
+//	    DefaultComboBoxModel<Trainer> model = new DefaultComboBoxModel<>(unbeatenTrainers);
+//	    model.insertElementAt(new Trainer(true), 0); // Add placeholder at index 0
+//	    trainerSelect.setModel(model);
+//	    trainerSelect.setSelectedIndex(0); // Set placeholder as default selection
+//	}
 	
 	public void setBattleCloseListener(BattleCloseListener listener) {
         this.battleCloseListener = listener;

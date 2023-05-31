@@ -7,6 +7,7 @@ import java.io.ObjectInputStream;
 
 import javax.swing.*;
 
+import Swing.Item;
 import Swing.Player;
 import Swing.Pokemon;
 import Swing.Trainer;
@@ -37,6 +38,7 @@ public class Main {
 	        // If there's an error reading the file, create a new Player object
 	        gamePanel.player.p = new Player();
 	        gamePanel.player.p.catchPokemon(new Pokemon(-4,5, true, false));
+	        gamePanel.player.p.bag.add(new Item(22), 999);
 	    }
 		window.add(gamePanel);
 		
