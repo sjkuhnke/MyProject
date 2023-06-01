@@ -64,6 +64,67 @@ public class TileManager {
 		try {
 			tile[7] = new GrassTile();
 			tile[7].image = ImageIO.read(getClass().getResourceAsStream("/tiles/007.png"));
+			
+			tile[37] = new Tile();
+			tile[37].image = ImageIO.read(getClass().getResourceAsStream("/tiles/037.png"));
+			tile[37].collisionDirection = "down";
+			tile[37].collision = true;
+			
+			tile[38] = new Tile();
+			tile[38].image = ImageIO.read(getClass().getResourceAsStream("/tiles/038.png"));
+			tile[38].collisionDirection = "down";
+			tile[38].collision = true;
+			
+			tile[39] = new Tile();
+			tile[39].image = ImageIO.read(getClass().getResourceAsStream("/tiles/039.png"));
+			tile[39].collisionDirection = "down";
+			tile[39].collision = true;
+			
+			tile[40] = new Tile();
+			tile[40].image = ImageIO.read(getClass().getResourceAsStream("/tiles/040.png"));
+			tile[40].collisionDirection = "up";
+			tile[40].collision = true;
+			
+			tile[41] = new Tile();
+			tile[41].image = ImageIO.read(getClass().getResourceAsStream("/tiles/041.png"));
+			tile[41].collisionDirection = "up";
+			tile[41].collision = true;
+			
+			tile[42] = new Tile();
+			tile[42].image = ImageIO.read(getClass().getResourceAsStream("/tiles/042.png"));
+			tile[42].collisionDirection = "up";
+			tile[42].collision = true;
+			
+			tile[43] = new Tile();
+			tile[43].image = ImageIO.read(getClass().getResourceAsStream("/tiles/043.png"));
+			tile[43].collisionDirection = "right";
+			tile[43].collision = true;
+			
+			tile[44] = new Tile();
+			tile[44].image = ImageIO.read(getClass().getResourceAsStream("/tiles/044.png"));
+			tile[44].collisionDirection = "right";
+			tile[44].collision = true;
+			
+			tile[45] = new Tile();
+			tile[45].image = ImageIO.read(getClass().getResourceAsStream("/tiles/045.png"));
+			tile[45].collisionDirection = "right";
+			tile[45].collision = true;
+			
+			tile[46] = new Tile();
+			tile[46].image = ImageIO.read(getClass().getResourceAsStream("/tiles/046.png"));
+			tile[46].collisionDirection = "left";
+			tile[46].collision = true;
+			
+			tile[47] = new Tile();
+			tile[47].image = ImageIO.read(getClass().getResourceAsStream("/tiles/047.png"));
+			tile[47].collisionDirection = "left";
+			tile[47].collision = true;
+			
+			tile[48] = new Tile();
+			tile[48].image = ImageIO.read(getClass().getResourceAsStream("/tiles/048.png"));
+			tile[48].collisionDirection = "left";
+			tile[48].collision = true;
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -76,11 +137,15 @@ public class TileManager {
 		try {
 			tile[index].image = ImageIO.read(getClass().getResourceAsStream("/tiles/" + imageName + ".png"));
 			tile[index].collision = collision;
+			if (collision) {
+				tile[index].collisionDirection = "all";
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
 	}
+	
 	public void loadMap(String filePath) {
 		try {
 			InputStream is = getClass().getResourceAsStream(filePath);
