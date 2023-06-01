@@ -6,6 +6,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.Arrays;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -16,6 +17,7 @@ import tile.TileManager;
 import Swing.Battle;
 import Swing.Battle.BattleCloseListener;
 import Swing.PBox;
+import Swing.Pokemon;
 
 public class GamePanel extends JPanel implements Runnable, BattleCloseListener {
 
@@ -121,6 +123,7 @@ public class GamePanel extends JPanel implements Runnable, BattleCloseListener {
 		if (player.trainersBeat[trainer]) return;
 		inBattle = true;
 		keyH.pause();
+		setSlots();
 		
 		Battle frame = new Battle(player, Main.trainers[trainer], trainer);
 		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -132,10 +135,11 @@ public class GamePanel extends JPanel implements Runnable, BattleCloseListener {
 	    // Create the Battle instance and set the window listener to save on close
 		inBattle = true;
 		keyH.pause();
+		setSlots();
 		
 		Battle frame = new Battle(player, null, -1);
 		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		frame.encounterPokemon("Route 1");
+		frame.encounterPokemon("Route 1"); // TODO
         frame.setBattleCloseListener(this);
         frame.setVisible(true);
 	}
@@ -160,12 +164,25 @@ public class GamePanel extends JPanel implements Runnable, BattleCloseListener {
 	public void onBattleClosed(int trainer) {
 		inBattle = false;
 		if (trainer > -1) player.trainersBeat[trainer] = true;
+		Pokemon[] teamTemp = Arrays.copyOf(player.p.team, 6);
+		for (int i = 0; i < 6; i++) {
+			if (teamTemp[i] != null) {
+				player.p.team[teamTemp[i].slot] = teamTemp[i];
+				if (teamTemp[i].slot == 0) player.p.current = player.p.team[0];
+			}
+		}
 		keyH.resume();
 	}
 
 	public void setupGame() {
 		aSetter.setNPC();
 		
+	}
+	
+	public void setSlots() {
+		for (int i = 0; i < 6; i++) {
+			if (player.p.team[i] != null) player.p.team[i].slot = i;
+		}
 	}
 
 

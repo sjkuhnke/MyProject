@@ -291,8 +291,8 @@ public class PBox extends JFrame {
                     ArrayList<Move> forgottenMoves = new ArrayList<>();
                     for (int i = 0; i < box[index].getLevel(); i++) {
                     	if (i < box[index].movebank.length) {
-                            if (box[index].movebank[i] != null && !box[index].knowsMove(box[index].movebank[i])) {
-                                forgottenMoves.add(box[index].movebank[i]);
+                            if (box[index].movebank[i] != null && !box[index].knowsMove(box[index].movebank[i].data)) {
+                                forgottenMoves.add(box[index].movebank[i].data);
                             }
                     	}
                     }
