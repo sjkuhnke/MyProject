@@ -34,8 +34,8 @@ public class GamePanel extends JPanel implements Runnable, BattleCloseListener {
 	public final int screenWidth = tileSize * maxScreenCol;
 	public final int screenHeight = tileSize * maxScreenRow;
 	
-	public final int maxWorldCol = 50;
-	public final int maxWorldRow = 50;
+	public final int maxWorldCol = 100;
+	public final int maxWorldRow = 100;
 	public final int worldWidth = tileSize * maxWorldCol;
 	public final int worldHeight = tileSize * maxWorldRow;
 	
@@ -128,6 +128,18 @@ public class GamePanel extends JPanel implements Runnable, BattleCloseListener {
         frame.setVisible(true);
 	}
 	
+	public void startWild() {
+	    // Create the Battle instance and set the window listener to save on close
+		inBattle = true;
+		keyH.pause();
+		
+		Battle frame = new Battle(player, null, -1);
+		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		frame.encounterPokemon("Route 1");
+        frame.setBattleCloseListener(this);
+        frame.setVisible(true);
+	}
+	
 	public void openBox() {
 	    // Create the Battle instance and set the window listener to save on close
 	    keyH.pause();
@@ -147,7 +159,7 @@ public class GamePanel extends JPanel implements Runnable, BattleCloseListener {
 	@Override
 	public void onBattleClosed(int trainer) {
 		inBattle = false;
-		player.trainersBeat[trainer] = true;
+		if (trainer > -1) player.trainersBeat[trainer] = true;
 		keyH.resume();
 	}
 
