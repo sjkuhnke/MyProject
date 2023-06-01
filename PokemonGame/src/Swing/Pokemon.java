@@ -1,13 +1,18 @@
 package Swing;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
+import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -6972,68 +6977,126 @@ public class Pokemon implements Serializable {
 
 
 	public JPanel showSummary() {
-		JPanel teamMemberPanel = new JPanel();
-        teamMemberPanel.setLayout(new BoxLayout(teamMemberPanel, BoxLayout.Y_AXIS));
-        
-        JLabel nameLabel, hp, at, de, sa, sd, sp, natureLabel, hpLabel, movesLabel, statusLabel;
-        nameLabel = hp = at = de = sa = sd = sp = natureLabel = hpLabel = movesLabel = statusLabel = new JLabel("N/A");
-        JGradientButton type1B, type2B;
-        type1B = new JGradientButton("");
-        type2B = new JGradientButton("");
-        if (this != null) {
-        	nameLabel = new JLabel(this.getName() + " Lv. " + this.getLevel());
-        	nameLabel.setForeground(this.type1.getColor().darker());
-        	nameLabel.setFont(new Font(nameLabel.getFont().getName(), Font.BOLD,16));
-        	hpLabel = new JLabel(this.currentHP + " / " + this.getStat(0) + " HP");
-        	hpLabel.setFont(new Font(hpLabel.getFont().getName(), Font.BOLD,14));
-        	type1B.setText(this.type1.toString());
-        	type1B.setBackground(this.type1.getColor());
-        	if (this.type2 != null) {
-        		type2B.setText(this.type2.toString());
-            	type2B.setBackground(this.type2.getColor());
-        	}
-        	hp = new JLabel("HP: " + this.stats[0] + ", IV: " + this.getIVs()[0]);
-        	at = new JLabel("Atk: " + this.stats[1] + ", IV: " + this.getIVs()[1]);
-        	de = new JLabel("Def: " + this.stats[2] + ", IV: " + this.getIVs()[2]);
-        	sa = new JLabel("SpA: " + this.stats[3] + ", IV: " + this.getIVs()[3]);
-        	sd = new JLabel("SpD: " + this.stats[4] + ", IV: " + this.getIVs()[4]);
-        	sp = new JLabel("Spe: " + this.stats[5] + ", IV: " + this.getIVs()[5]);
-        	if (this.nature[0] == 1.1) at.setForeground(Color.red.darker().darker());
-        	if (this.nature[0] == 0.9) at.setForeground(Color.blue.darker().darker());
-        	if (this.nature[1] == 1.1) de.setForeground(Color.red.darker().darker());
-        	if (this.nature[1] == 0.9) de.setForeground(Color.blue.darker().darker());
-        	if (this.nature[2] == 1.1) sa.setForeground(Color.red.darker().darker());
-        	if (this.nature[2] == 0.9) sa.setForeground(Color.blue.darker().darker());
-        	if (this.nature[3] == 1.1) sd.setForeground(Color.red.darker().darker());
-        	if (this.nature[3] == 0.9) sd.setForeground(Color.blue.darker().darker());
-        	if (this.nature[4] == 1.1) sp.setForeground(Color.red.darker().darker());
-        	if (this.nature[4] == 0.9) sp.setForeground(Color.blue.darker().darker());
-        	natureLabel = new JLabel(this.getNature() + " Nature");
-        	movesLabel = new JLabel(movesToString(this));
-        	statusLabel = (this.isFainted()) ? new JLabel("Status: FAINTED") : new JLabel("Status: " + this.status.toString());
-        	if (!this.isFainted() && this.status == Status.HEALTHY) { 
-        		statusLabel.setForeground(Color.GREEN.darker());
-        	} else if (this.isFainted()) { 
-        		statusLabel.setForeground(Color.RED.darker());
-        	} else { statusLabel.setForeground(this.status.getColor()); }
-        }
-        
-        teamMemberPanel.add(nameLabel);
-        teamMemberPanel.add(hpLabel);
-        teamMemberPanel.add(type1B);
-        if (type2 != null) teamMemberPanel.add(type2B);
-        teamMemberPanel.add(natureLabel);
-        teamMemberPanel.add(hp);
-        teamMemberPanel.add(at);
-        teamMemberPanel.add(de);
-        teamMemberPanel.add(sa);
-        teamMemberPanel.add(sd);
-        teamMemberPanel.add(sp);
-        teamMemberPanel.add(movesLabel);
-        teamMemberPanel.add(statusLabel);
-        return teamMemberPanel;
+	    JPanel teamMemberPanel = new JPanel();
+	    teamMemberPanel.setLayout(new BoxLayout(teamMemberPanel, BoxLayout.Y_AXIS));
 
+	    JLabel nameLabel, hp, at, de, sa, sd, sp, natureLabel, hpLabel, statusLabel;
+	    nameLabel = hp = at = de = sa = sd = sp = natureLabel = hpLabel = statusLabel = new JLabel("N/A");
+	    JGradientButton type1B, type2B;
+	    JPanel movesPanel = new JPanel(new GridLayout(2, 2));
+	    type1B = new JGradientButton("");
+	    type2B = new JGradientButton("");
+	    if (this != null) {
+	        nameLabel = new JLabel(this.getName() + " Lv. " + this.getLevel());
+	        nameLabel.setForeground(this.type1.getColor().darker());
+	        nameLabel.setFont(new Font(nameLabel.getFont().getName(), Font.BOLD, 16));
+	        hpLabel = new JLabel(this.currentHP + " / " + this.getStat(0) + " HP");
+	        hpLabel.setFont(new Font(hpLabel.getFont().getName(), Font.BOLD, 14));
+	        type1B.setText(this.type1.toString());
+	        type1B.setBackground(this.type1.getColor());
+	        if (this.type2 != null) {
+	            type2B.setText(this.type2.toString());
+	            type2B.setBackground(this.type2.getColor());
+	        }
+	        hp = new JLabel("HP: " + this.stats[0] + ", IV: " + this.getIVs()[0]);
+	        at = new JLabel("Atk: " + this.stats[1] + ", IV: " + this.getIVs()[1]);
+	        de = new JLabel("Def: " + this.stats[2] + ", IV: " + this.getIVs()[2]);
+	        sa = new JLabel("SpA: " + this.stats[3] + ", IV: " + this.getIVs()[3]);
+	        sd = new JLabel("SpD: " + this.stats[4] + ", IV: " + this.getIVs()[4]);
+	        sp = new JLabel("Spe: " + this.stats[5] + ", IV: " + this.getIVs()[5]);
+	        if (this.nature[0] == 1.1) at.setForeground(Color.red.darker().darker());
+	        if (this.nature[0] == 0.9) at.setForeground(Color.blue.darker().darker());
+	        if (this.nature[1] == 1.1) de.setForeground(Color.red.darker().darker());
+	        if (this.nature[1] == 0.9) de.setForeground(Color.blue.darker().darker());
+	        if (this.nature[2] == 1.1) sa.setForeground(Color.red.darker().darker());
+	        if (this.nature[2] == 0.9) sa.setForeground(Color.blue.darker().darker());
+	        if (this.nature[3] == 1.1) sd.setForeground(Color.red.darker().darker());
+	        if (this.nature[3] == 0.9) sd.setForeground(Color.blue.darker().darker());
+	        if (this.nature[4] == 1.1) sp.setForeground(Color.red.darker().darker());
+	        if (this.nature[4] == 0.9) sp.setForeground(Color.blue.darker().darker());
+	        natureLabel = new JLabel(this.getNature() + " Nature");
+
+	        for (int i = 0; i < 4; i++) {
+	        	JButton moveButton = new JGradientButton("");
+	            if (moveset[i] != null) {
+	                moveButton.setText(moveset[i].toString());
+	                moveButton.setBackground(moveset[i].mtype.getColor());
+	                int index = i;
+	                moveButton.addActionListener(e -> {
+	                	String message = "Move: " + moveset[index].toString() + "\n";
+			            message += "Type: " + moveset[index].mtype + "\n";
+			            message += "BP: " + moveset[index].getbp() + "\n";
+			            message += "Accuracy: " + moveset[index].accuracy + "\n";
+			            message += "Category: " + moveset[index].getCategory() + "\n";
+			            message += "Description: " + moveset[index].getDescription();
+			            JOptionPane.showMessageDialog(null, message, "Move Description", JOptionPane.INFORMATION_MESSAGE);
+	                });
+	            }
+	            movesPanel.add(moveButton);
+	        }
+	        statusLabel = (this.isFainted()) ? new JLabel("Status: FAINTED") : new JLabel("Status: " + this.status.toString());
+	        if (!this.isFainted() && this.status == Status.HEALTHY) {
+	            statusLabel.setForeground(Color.GREEN.darker());
+	        } else if (this.isFainted()) {
+	            statusLabel.setForeground(Color.RED.darker());
+	        } else {
+	            statusLabel.setForeground(this.status.getColor());
+	        }
+	    }
+
+	    JPanel nameLabelPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+	    nameLabelPanel.add(nameLabel);
+	    teamMemberPanel.add(nameLabelPanel);
+
+	    JPanel hpLabelPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+	    hpLabelPanel.add(hpLabel);
+	    teamMemberPanel.add(hpLabelPanel);
+
+	    JPanel typesPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+	    typesPanel.add(type1B);
+	    typesPanel.add(type2B);
+	    teamMemberPanel.add(typesPanel);
+
+	    JPanel natureLabelPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+	    natureLabelPanel.add(natureLabel);
+	    teamMemberPanel.add(natureLabelPanel);
+	    
+	    JPanel hpPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+	    hpPanel.add(hp);
+	    teamMemberPanel.add(hpPanel);
+	    
+	    JPanel atPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+	    atPanel.add(at);
+	    teamMemberPanel.add(atPanel);
+	    
+	    JPanel dePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+	    dePanel.add(de);
+	    teamMemberPanel.add(dePanel);
+	    
+	    JPanel saPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+	    saPanel.add(sa);
+	    teamMemberPanel.add(saPanel);
+	    
+	    JPanel sdPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+	    sdPanel.add(sd);
+	    teamMemberPanel.add(sdPanel);
+	    
+	    JPanel spPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+	    spPanel.add(sp);
+	    teamMemberPanel.add(spPanel);
+	    
+	    teamMemberPanel.add(movesPanel);
+	    
+	    JPanel statusLabelPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+	    statusLabelPanel.add(statusLabel);
+	    teamMemberPanel.add(statusLabelPanel);
+	    
+	    teamMemberPanel.add(Box.createHorizontalGlue());
+
+	    return teamMemberPanel;
 	}
+
+
 
 
 
@@ -7053,19 +7116,4 @@ public class Pokemon implements Serializable {
 //			return "null";
 //		}
 //	}
-	
-	private String movesToString(Pokemon p) {
-		String moveString = "";
-	    
-	    for (int i = 0; i < p.moveset.length; i++) {
-	    	if (p.moveset[i] != null) {
-	    		moveString += p.moveset[i].toString();
-	    		if (i != p.moveset.length - 1) {
-	    			moveString += " / ";
-	    		}
-	    	}
-	    }
-	    
-	    return moveString;
-	}
 }

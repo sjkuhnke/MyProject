@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 import javax.swing.*;
 
-public class Box extends JFrame {
+public class PBox extends JFrame {
 
 	/**
 	 * 
@@ -25,7 +25,7 @@ public class Box extends JFrame {
 	private JGradientButton[] boxButtons;
 	private int currentBox = 1;
 
-	public Box(PlayerCharacter playerCharacter) {
+	public PBox(PlayerCharacter playerCharacter) {
 	    me = playerCharacter.p;
 	    setTitle("Box 1");
 	    

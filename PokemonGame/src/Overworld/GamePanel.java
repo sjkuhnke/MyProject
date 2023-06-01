@@ -7,6 +7,7 @@ import java.awt.Graphics2D;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import Entity.Entity;
@@ -14,7 +15,7 @@ import Entity.PlayerCharacter;
 import tile.TileManager;
 import Swing.Battle;
 import Swing.Battle.BattleCloseListener;
-import Swing.Box;
+import Swing.PBox;
 
 public class GamePanel extends JPanel implements Runnable, BattleCloseListener {
 
@@ -122,6 +123,7 @@ public class GamePanel extends JPanel implements Runnable, BattleCloseListener {
 		keyH.pause();
 		
 		Battle frame = new Battle(player, Main.trainers[trainer], trainer);
+		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         frame.setBattleCloseListener(this);
         frame.setVisible(true);
 	}
@@ -130,7 +132,7 @@ public class GamePanel extends JPanel implements Runnable, BattleCloseListener {
 	    // Create the Battle instance and set the window listener to save on close
 	    keyH.pause();
 
-	    Box box = new Box(player);
+	    PBox box = new PBox(player);
 	    box.addWindowListener(new WindowAdapter() {
 	        @Override
 	        public void windowClosing(WindowEvent e) {
