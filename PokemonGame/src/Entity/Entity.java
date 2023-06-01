@@ -23,6 +23,7 @@ public class Entity {
 	public Rectangle solidArea = new Rectangle(0, 0, 48, 48);
 	public int solidAreaDefaultX, solidAreaDefaultY;
 	public boolean collisionOn = false;
+	public boolean inTallGrass;
 	
 	public int trainer;
 	

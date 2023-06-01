@@ -97,17 +97,17 @@ public class Battle extends JFrame {
 		// Initialize frame
 		initialize();
 		updateFoe();
-		
-		foeTrainer = foeT;
-		if (me.trainersBeat.contains(foeTrainer.toString())) {
-			JOptionPane.showMessageDialog(null, foeTrainer.toString() + " already beaten!");
-            return;
+		if (foeT != null) {
+			foeTrainer = foeT;
+			if (me.trainersBeat.contains(foeTrainer.toString())) {
+				JOptionPane.showMessageDialog(null, foeTrainer.toString() + " already beaten!");
+	            return;
+			}
+			foe = foeTrainer.getTeam()[0];
+			JOptionPane.showMessageDialog(null, "\nYou are challenged by " + foeTrainer.toString() + "!\n" + foeTrainer.toString() + " sends out " + foeTrainer.getCurrent().name + "!");
+		} else {
+			foe = encounterPokemon("Route 1");
 		}
-		if (foeT == null) {
-			return;
-		}
-		foe = foeTrainer.getTeam()[0];
-		JOptionPane.showMessageDialog(null, "\nYou are challenged by " + foeTrainer.toString() + "!\n" + foeTrainer.toString() + " sends out " + foeTrainer.getCurrent().name + "!");
 		updateFoe();
 		me.clearBattled();
 		me.getCurrent().clearVolatile();
@@ -280,7 +280,7 @@ public class Battle extends JFrame {
 		
 		addButton.addActionListener(e -> {
 			if (!foe.isFainted()) {
-				me.catchPokemon(foe);
+				me.catchPokemon(new Pokemon(foe.id, foe.getLevel(), true, false));
 				displayParty();
 				updateFoe();
 			}
@@ -621,9 +621,9 @@ public class Battle extends JFrame {
 
 	public Pokemon encounterPokemon(String routeName) {
 	    // Create an ArrayList of PokemonEncounter objects for the route
-		String selectedEncounterType = encounterType.getSelection().getActionCommand();
-		String selectedTime = time.getSelection().getActionCommand();
-	    ArrayList<Encounter> encounters = Encounter.getEncounters(routeName, selectedEncounterType, selectedTime);
+		//String selectedEncounterType = encounterType.getSelection().getActionCommand();
+		//String selectedTime = time.getSelection().getActionCommand();
+	    ArrayList<Encounter> encounters = Encounter.getEncounters(routeName, "Standard", "D");
 
 	    // Calculate the total encounter chance for the route
 	    double totalChance = 0.0;
@@ -875,13 +875,6 @@ public class Battle extends JFrame {
 					me.getCurrent().battled = true;
 					
 				} else {
-					//me.trainersBeat.add(foeTrainer.toString());
-//					boxButton.setVisible(true);
-//					healButton.setVisible(true);
-//					encounterButton.setVisible(true);
-//					encounterInput.setVisible(true);
-//					trainerSelect.setVisible(true);
-//					updateTrainers();
 					// Show the prompt with the specified text
 					me.money += foeTrainer.getMoney();
 		            JOptionPane.showMessageDialog(null, foeTrainer.toString() + " was defeated!\nWon $" + foeTrainer.getMoney() + "!");
@@ -891,7 +884,8 @@ public class Battle extends JFrame {
 		            dispose();
 				}
 			} else {
-				healButton.setVisible(true);
+				JOptionPane.showMessageDialog(null, foe.name + " was defeated!");
+				dispose();
 			}
 		}
 		updateBars();

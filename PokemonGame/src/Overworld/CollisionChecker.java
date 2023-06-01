@@ -4,6 +4,7 @@ import java.awt.Rectangle;
 
 import Entity.Entity;
 import Entity.NPC_Trainer;
+import tile.GrassTile;
 
 public class CollisionChecker {
 	
@@ -25,6 +26,14 @@ public class CollisionChecker {
 		int entityBottomRow = entityBottomWorldY/gp.tileSize;
 		
 		int tileNum1, tileNum2;
+		
+		tileNum1 = gp.tileM.mapTileNum[entityLeftCol][entityTopRow];
+	    tileNum2 = gp.tileM.mapTileNum[entityRightCol][entityTopRow];
+	    if (gp.tileM.tile[tileNum1] instanceof GrassTile || gp.tileM.tile[tileNum2] instanceof GrassTile) {
+	        entity.inTallGrass = true;
+	    } else {
+	        entity.inTallGrass = false;
+	    }
 		
 		switch(entity.direction) {
 		case "up":

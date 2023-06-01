@@ -17,40 +17,69 @@ public class TileManager {
 	
 	public TileManager(GamePanel gp) {
 		this.gp = gp;
-		tile = new Tile[10];
+		tile = new Tile[500];
 		mapTileNum = new int[gp.maxWorldCol][gp.maxWorldRow];
 		
 		getTileImage();
-		loadMap("/maps/world01.txt");
+		loadMap("/maps/map01.txt");
 	}
 	
 	public void getTileImage() {
+		setup(0, true);
+		setup(1, false);
+		setup(2, true);
+		setup(3, true);
+		setup(4, false);
+		setup(5, true);
+		setup(6, false);
+		setup(8, false);
+		setup(9, false);
+		setup(10, false);
+		setup(11, false);
+		setup(12, false);
+		setup(13, false);
+		setup(14, false);
+		setup(15, false);
+		setup(16, false);
+		setup(17, false);
+		setup(18, false);
+		setup(19, false);
+		setup(20, false);
+		setup(21, false);
+		setup(22, true);
+		setup(23, true);
+		setup(24, true);
+		setup(25, true);
+		setup(26, true);
+		setup(27, true);
+		setup(28, true);
+		setup(29, true);
+		setup(30, true);
+		setup(31, true);
+		setup(32, true);
+		setup(33, true);
+		setup(34, true);
+		setup(35, true);
+		setup(36, true);
 		try {
-			
-			tile[0] = new Tile();
-			tile[0].image = ImageIO.read(getClass().getResourceAsStream("/tiles/grass01.png"));
-			
-			tile[1] = new Tile();
-			tile[1].image = ImageIO.read(getClass().getResourceAsStream("/tiles/wall.png"));
-			tile[1].collision = true;
-			
-			tile[2] = new Tile();
-			tile[2].image = ImageIO.read(getClass().getResourceAsStream("/tiles/water01.png"));
-			tile[2].collision = true;
-			
-			tile[3] = new Tile();
-			tile[3].image = ImageIO.read(getClass().getResourceAsStream("/tiles/earth.png"));
-			
-			tile[4] = new Tile();
-			tile[4].image = ImageIO.read(getClass().getResourceAsStream("/tiles/tree.png"));
-			tile[4].collision = true;
-			
-			tile[5] = new Tile();
-			tile[5].image = ImageIO.read(getClass().getResourceAsStream("/tiles/road00.png"));
-			
-		} catch(IOException e) {
+			tile[7] = new GrassTile();
+			tile[7].image = ImageIO.read(getClass().getResourceAsStream("/tiles/007.png"));
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public void setup(int index, boolean collision) {
+		tile[index] = new Tile();
+		String imageName = index + "";
+		while (imageName.length() < 3) imageName = "0" + imageName;
+		try {
+			tile[index].image = ImageIO.read(getClass().getResourceAsStream("/tiles/" + imageName + ".png"));
+			tile[index].collision = collision;
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
 	}
 	public void loadMap(String filePath) {
 		try {

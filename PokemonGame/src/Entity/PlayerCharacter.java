@@ -12,6 +12,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Random;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -125,6 +126,13 @@ public class PlayerCharacter extends Entity {
 					spriteNum = 1;
 				}
 				spriteCounter = 0;
+			}
+			if (spriteCounter % 4 == 0 && inTallGrass) {
+				Random r = new Random();
+				int random = r.nextInt(150);
+				if (random < speed) {
+					gp.startWild();
+				}
 			}
 		}
 		if (keyH.dPressed) {
