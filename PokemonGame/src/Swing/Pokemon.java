@@ -234,7 +234,715 @@ public class Pokemon implements Serializable {
 	
 
 	private void setType() {
-		if (id == -1) {
+		if (id == 1) {
+			this.type1 = PType.GRASS;
+			this.type2 = null;
+		} else if (id == 2) {
+			this.type1 = PType.GRASS;
+			this.type2 = PType.ROCK;
+		} else if (id == 3) {
+			this.type1 = PType.GRASS;
+			this.type2 = PType.ROCK;
+		} else if (id == 4) {
+			this.type1 = PType.FIRE;
+			this.type2 = null;
+		} else if (id == 5) {
+			this.type1 = PType.FIRE;
+			this.type2 = null;
+		} else if (id == 6) {
+			this.type1 = PType.FIRE;
+			this.type2 = PType.STEEL;
+		} else if (id == 7) {
+			this.type1 = PType.WATER;
+			this.type2 = null;
+		} else if (id == 8) {
+			this.type1 = PType.WATER;
+			this.type2 = null;
+		} else if (id == 9) {
+			this.type1 = PType.WATER;
+			this.type2 = PType.FIGHTING;
+		} else if (id == 10) {
+			this.type1 = PType.LIGHT;
+			this.type2 = PType.FLYING;
+		} else if (id == 11) {
+			this.type1 = PType.LIGHT;
+			this.type2 = PType.FLYING;
+		} else if (id == 12) {
+			this.type1 = PType.LIGHT;
+			this.type2 = PType.FLYING;
+		} else if (id == 13) {
+			this.type1 = PType.NORMAL;
+			this.type2 = PType.FLYING;
+		} else if (id == 14) {
+			this.type1 = PType.NORMAL;
+			this.type2 = PType.FLYING;
+		} else if (id == 15) {
+			this.type1 = PType.STEEL;
+			this.type2 = PType.FLYING;
+		} else if (id == 16) {
+			this.type1 = PType.NORMAL;
+			this.type2 = null;
+		} else if (id == 17) {
+			this.type1 = PType.NORMAL;
+			this.type2 = null;
+		} else if (id == 18) {
+			this.type1 = PType.NORMAL;
+			this.type2 = PType.ROCK;
+		} else if (id == 19) {
+			this.type1 = PType.NORMAL;
+			this.type2 = null;
+		} else if (id == 20) {
+			this.type1 = PType.NORMAL;
+			this.type2 = PType.MAGIC;
+		} else if (id == 21) {
+			this.type1 = PType.NORMAL;
+			this.type2 = PType.GALACTIC;
+		} else if (id == 22) {
+			this.type1 = PType.BUG;
+			this.type2 = null;
+		} else if (id == 23) {
+			this.type1 = PType.BUG;
+			this.type2 = null;
+		} else if (id == 24) {
+			this.type1 = PType.BUG;
+			this.type2 = null;
+		} else if (id == 25) {
+			this.type1 = PType.BUG;
+			this.type2 = PType.ROCK;
+		} else if (id == 26) {
+			this.type1 = PType.GRASS;
+			this.type2 = null;
+		} else if (id == 27) {
+			this.type1 = PType.GRASS;
+			this.type2 = PType.FIGHTING;
+		} else if (id == 28) {
+			this.type1 = PType.GRASS;
+			this.type2 = PType.DRAGON;
+		} else if (id == 29) {
+			this.type1 = PType.GRASS;
+			this.type2 = PType.POISON;
+		} else if (id == 30) {
+			this.type1 = PType.GRASS;
+			this.type2 = PType.POISON;
+		} else if (id == 31) {
+			this.type1 = PType.GRASS;
+			this.type2 = PType.POISON;
+		} else if (id == 32) {
+			this.type1 = PType.BUG;
+			this.type2 = PType.GRASS;
+		} else if (id == 33) {
+			this.type1 = PType.BUG;
+			this.type2 = PType.GRASS;
+		} else if (id == 34) {
+			this.type1 = PType.BUG;
+			this.type2 = PType.GRASS;
+		} else if (id == 35) {
+			this.type1 = PType.BUG;
+			this.type2 = null;
+		} else if (id == 36) {
+			this.type1 = PType.BUG;
+			this.type2 = PType.ELECTRIC;
+		} else if (id == 37) {
+			this.type1 = PType.BUG;
+			this.type2 = PType.ELECTRIC;
+		} else if (id == 38) {
+			this.type1 = PType.GRASS;
+			this.type2 = null;
+		} else if (id == 39) {
+			this.type1 = PType.GRASS;
+			this.type2 = null;
+		} else if (id == 40) {
+			this.type1 = PType.GRASS;
+			this.type2 = PType.LIGHT;
+		} else if (id == 41) {
+			this.type1 = PType.BUG;
+			this.type2 = PType.FIGHTING;
+		} else if (id == 42) {
+			this.type1 = PType.BUG;
+			this.type2 = PType.FIGHTING;
+		} else if (id == 43) {
+			this.type1 = PType.BUG;
+			this.type2 = PType.FIGHTING;
+		} else if (id == 44) {
+			this.type1 = PType.WATER;
+			this.type2 = PType.GRASS;
+		} else if (id == 45) {
+			this.type1 = PType.WATER;
+			this.type2 = PType.GRASS;
+		} else if (id == 46) {
+			this.type1 = PType.WATER;
+			this.type2 = PType.GRASS;
+		} else if (id == 47) {
+			this.type1 = PType.MAGIC;
+			this.type2 = PType.LIGHT;
+		} else if (id == 48) {
+			this.type1 = PType.ROCK;
+			this.type2 = PType.GROUND;
+		} else if (id == 49) {
+			this.type1 = PType.ROCK;
+			this.type2 = PType.GROUND;
+		} else if (id == 50) {
+			this.type1 = PType.ROCK;
+			this.type2 = PType.GROUND;
+		} else if (id == 51) {
+			this.type1 = PType.ROCK;
+			this.type2 = PType.LIGHT;
+		} else if (id == 52) {
+			this.type1 = PType.ROCK;
+			this.type2 = null;
+		} else if (id == 53) {
+			this.type1 = PType.ROCK;
+			this.type2 = PType.PSYCHIC;
+		} else if (id == 54) {
+			this.type1 = PType.ROCK;
+			this.type2 = PType.DRAGON;
+		} else if (id == 55) {
+			this.type1 = PType.ROCK;
+			this.type2 = null;
+		} else if (id == 56) {
+			this.type1 = PType.ROCK;
+			this.type2 = PType.DARK;
+		} else if (id == 57) {
+			this.type1 = PType.FIGHTING;
+			this.type2 = PType.GROUND;
+		} else if (id == 58) {
+			this.type1 = PType.FIGHTING;
+			this.type2 = PType.FLYING;
+		} else if (id == 59) {
+			this.type1 = PType.ICE;
+			this.type2 = PType.PSYCHIC;
+		} else if (id == 60) {
+			this.type1 = PType.ICE;
+			this.type2 = PType.PSYCHIC;
+		} else if (id == 61) {
+			this.type1 = PType.ICE;
+			this.type2 = PType.MAGIC;
+		} else if (id == 62) {
+			this.type1 = PType.ICE;
+			this.type2 = PType.BUG;
+		} else if (id == 63) {
+			this.type1 = PType.ICE;
+			this.type2 = PType.BUG;
+		} else if (id == 64) {
+			this.type1 = PType.GROUND;
+			this.type2 = PType.ICE;
+		} else if (id == 65) {
+			this.type1 = PType.FIGHTING;
+			this.type2 = PType.ICE;
+		} else if (id == 66) {
+			this.type1 = PType.ROCK;
+			this.type2 = PType.LIGHT;
+		} else if (id == 67) {
+			this.type1 = PType.ROCK;
+			this.type2 = PType.FIGHTING;
+		} else if (id == 68) {
+			this.type1 = PType.ICE;
+			this.type2 = PType.WATER;
+		} else if (id == 69) {
+			this.type1 = PType.ICE;
+			this.type2 = PType.WATER;
+		} else if (id == 70) {
+			this.type1 = PType.ICE;
+			this.type2 = PType.WATER;
+		} else if (id == 71) {
+			this.type1 = PType.WATER;
+			this.type2 = null;
+		} else if (id == 72) {
+			this.type1 = PType.WATER;
+			this.type2 = PType.LIGHT;
+		} else if (id == 73) {
+			this.type1 = PType.BUG;
+			this.type2 = PType.DARK;
+		} else if (id == 74) {
+			this.type1 = PType.BUG;
+			this.type2 = PType.DARK;
+		} else if (id == 75) {
+			this.type1 = PType.PSYCHIC;
+			this.type2 = PType.MAGIC;
+		} else if (id == 76) {
+			this.type1 = PType.PSYCHIC;
+			this.type2 = PType.MAGIC;
+		} else if (id == 77) {
+			this.type1 = PType.PSYCHIC;
+			this.type2 = PType.MAGIC;
+		} else if (id == 78) {
+			this.type1 = PType.WATER;
+			this.type2 = PType.PSYCHIC;
+		} else if (id == 79) {
+			this.type1 = PType.WATER;
+			this.type2 = PType.PSYCHIC;
+		} else if (id == 80) {
+			this.type1 = PType.GRASS;
+			this.type2 = PType.PSYCHIC;
+		} else if (id == 81) {
+			this.type1 = PType.GRASS;
+			this.type2 = PType.PSYCHIC;
+		} else if (id == 82) {
+			this.type1 = PType.PSYCHIC;
+			this.type2 = null;
+		} else if (id == 83) {
+			this.type1 = PType.PSYCHIC;
+			this.type2 = PType.STEEL;
+		} else if (id == 84) {
+			this.type1 = PType.PSYCHIC;
+			this.type2 = PType.STEEL;
+		} else if (id == 85) {
+			this.type1 = PType.PSYCHIC;
+			this.type2 = PType.LIGHT;
+		} else if (id == 86) {
+			this.type1 = PType.PSYCHIC;
+			this.type2 = PType.LIGHT;
+		} else if (id == 87) {
+			this.type1 = PType.PSYCHIC;
+			this.type2 = PType.LIGHT;
+		} else if (id == 88) {
+			this.type1 = PType.PSYCHIC;
+			this.type2 = PType.FIGHTING;
+		} else if (id == 89) {
+			this.type1 = PType.LIGHT;
+			this.type2 = PType.NORMAL;
+		} else if (id == 90) {
+			this.type1 = PType.PSYCHIC;
+			this.type2 = PType.DARK;
+		} else if (id == 91) {
+			this.type1 = PType.PSYCHIC;
+			this.type2 = PType.DARK;
+		} else if (id == 92) {
+			this.type1 = PType.FIRE;
+			this.type2 = PType.NORMAL;
+		} else if (id == 93) {
+			this.type1 = PType.FIRE;
+			this.type2 = PType.NORMAL;
+		} else if (id == 94) {
+			this.type1 = PType.FIRE;
+			this.type2 = null;
+		} else if (id == 95) {
+			this.type1 = PType.FIRE;
+			this.type2 = PType.FIGHTING;
+		} else if (id == 96) {
+			this.type1 = PType.FIRE;
+			this.type2 = PType.FIGHTING;
+		} else if (id == 97) {
+			this.type1 = PType.FIRE;
+			this.type2 = PType.GHOST;
+		} else if (id == 98) {
+			this.type1 = PType.FIRE;
+			this.type2 = PType.GROUND;
+		} else if (id == 99) {
+			this.type1 = PType.FIRE;
+			this.type2 = PType.FLYING;
+		} else if (id == 100) {
+			this.type1 = PType.FIRE;
+			this.type2 = PType.DRAGON;
+		} else if (id == 101) {
+			this.type1 = PType.FIRE;
+			this.type2 = PType.ROCK;
+		} else if (id == 102) {
+			this.type1 = PType.FIRE;
+			this.type2 = PType.ROCK;
+		} else if (id == 103) {
+			this.type1 = PType.FIRE;
+			this.type2 = PType.ROCK;
+		} else if (id == 104) {
+			this.type1 = PType.FIRE;
+			this.type2 = PType.DARK;
+		} else if (id == 105) {
+			this.type1 = PType.FIRE;
+			this.type2 = PType.DARK;
+		} else if (id == 106) {
+			this.type1 = PType.MAGIC;
+			this.type2 = null;
+		} else if (id == 107) {
+			this.type1 = PType.MAGIC;
+			this.type2 = PType.FIRE;
+		} else if (id == 108) {
+			this.type1 = PType.FIRE;
+			this.type2 = PType.LIGHT;
+		} else if (id == 109) {
+			this.type1 = PType.FIRE;
+			this.type2 = null;
+		} else if (id == 110) {
+			this.type1 = PType.FIRE;
+			this.type2 = PType.LIGHT;
+		} else if (id == 111) {
+			this.type1 = PType.ELECTRIC;
+			this.type2 = null;
+		} else if (id == 112) {
+			this.type1 = PType.ELECTRIC;
+			this.type2 = PType.STEEL;
+		} else if (id == 113) {
+			this.type1 = PType.ELECTRIC;
+			this.type2 = PType.STEEL;
+		} else if (id == 114) {
+			this.type1 = PType.ELECTRIC;
+			this.type2 = PType.GROUND;
+		} else if (id == 115) {
+			this.type1 = PType.ELECTRIC;
+			this.type2 = PType.GROUND;
+		} else if (id == 116) {
+			this.type1 = PType.ELECTRIC;
+			this.type2 = PType.GROUND;
+		} else if (id == 117) {
+			this.type1 = PType.GRASS;
+			this.type2 = PType.ELECTRIC;
+		} else if (id == 118) {
+			this.type1 = PType.GRASS;
+			this.type2 = PType.ELECTRIC;
+		} else if (id == 119) {
+			this.type1 = PType.GRASS;
+			this.type2 = PType.ELECTRIC;
+		} else if (id == 120) {
+			this.type1 = PType.STEEL;
+			this.type2 = PType.NORMAL;
+		} else if (id == 121) {
+			this.type1 = PType.STEEL;
+			this.type2 = PType.LIGHT;
+		} else if (id == 122) {
+			this.type1 = PType.STEEL;
+			this.type2 = PType.MAGIC;
+		} else if (id == 123) {
+			this.type1 = PType.ELECTRIC;
+			this.type2 = PType.NORMAL;
+		} else if (id == 124) {
+			this.type1 = PType.ELECTRIC;
+			this.type2 = PType.LIGHT;
+		} else if (id == 125) {
+			this.type1 = PType.ELECTRIC;
+			this.type2 = PType.MAGIC;
+		} else if (id == 126) {
+			this.type1 = PType.FIGHTING;
+			this.type2 = PType.NORMAL;
+		} else if (id == 127) {
+			this.type1 = PType.FIGHTING;
+			this.type2 = PType.LIGHT;
+		} else if (id == 128) {
+			this.type1 = PType.FIGHTING;
+			this.type2 = PType.MAGIC;
+		} else if (id == 129) {
+			this.type1 = PType.BUG;
+			this.type2 = PType.GROUND;;
+		} else if (id == 130) {
+			this.type1 = PType.BUG;
+			this.type2 = PType.FLYING;;
+		} else if (id == 131) {
+			this.type1 = PType.BUG;
+			this.type2 = PType.GHOST;;
+		} else if (id == 132) {
+			this.type1 = PType.WATER;
+			this.type2 = PType.GHOST;
+		} else if (id == 133) {
+			this.type1 = PType.WATER;
+			this.type2 = PType.GHOST;
+		} else if (id == 134) {
+			this.type1 = PType.WATER;
+			this.type2 = null;
+		} else if (id == 135) {
+			this.type1 = PType.WATER;
+			this.type2 = PType.FLYING;
+		} else if (id == 136) {
+			this.type1 = PType.WATER;
+			this.type2 = PType.DRAGON;
+		} else if (id == 137) {
+			this.type1 = PType.WATER;
+			this.type2 = null;
+		} else if (id == 138) {
+			this.type1 = PType.WATER;
+			this.type2 = PType.FLYING;
+		} else if (id == 139) {
+			this.type1 = PType.WATER;
+			this.type2 = PType.GALACTIC;
+		} else if (id == 140) {
+			this.type1 = PType.WATER;
+			this.type2 = PType.GALACTIC;
+		} else if (id == 141) {
+			this.type1 = PType.DARK;
+			this.type2 = PType.WATER;
+		} else if (id == 142) {
+			this.type1 = PType.DARK;
+			this.type2 = PType.FLYING;
+		} else if (id == 143) {
+			this.type1 = PType.MAGIC;
+			this.type2 = PType.DRAGON;
+		} else if (id == 144) {
+			this.type1 = PType.WATER;
+			this.type2 = PType.DRAGON;
+		} else if (id == 145) {
+			this.type1 = PType.MAGIC;
+			this.type2 = PType.DRAGON;
+		} else if (id == 146) {
+			this.type1 = PType.WATER;
+			this.type2 = PType.ROCK;
+		} else if (id == 147) {
+			this.type1 = PType.WATER;
+			this.type2 = PType.ROCK;
+		} else if (id == 148) {
+			this.type1 = PType.WATER;
+			this.type2 = PType.GROUND;
+		} else if (id == 149) {
+			this.type1 = PType.WATER;
+			this.type2 = PType.GROUND;
+		} else if (id == 150) {
+			this.type1 = PType.WATER;
+			this.type2 = PType.MAGIC;
+		} else if (id == 151) {
+			this.type1 = PType.POISON;
+			this.type2 = null;
+		} else if (id == 152) {
+			this.type1 = PType.POISON;
+			this.type2 = null;
+		} else if (id == 153) {
+			this.type1 = PType.POISON;
+			this.type2 = PType.FLYING;
+		} else if (id == 154) {
+			this.type1 = PType.POISON;
+			this.type2 = PType.FLYING;
+		} else if (id == 155) {
+			this.type1 = PType.POISON;
+			this.type2 = PType.FLYING;
+		} else if (id == 156) {
+			this.type1 = PType.GHOST;
+			this.type2 = null;
+		} else if (id == 157) {
+			this.type1 = PType.GHOST;
+			this.type2 = PType.STEEL;
+		} else if (id == 158) {
+			this.type1 = PType.GHOST;
+			this.type2 = PType.DARK;
+		} else if (id == 159) {
+			this.type1 = PType.GHOST;
+			this.type2 = PType.DARK;
+		} else if (id == 160) {
+			this.type1 = PType.GHOST;
+			this.type2 = PType.POISON;
+		} else if (id == 161) {
+			this.type1 = PType.GHOST;
+			this.type2 = PType.ROCK;
+		} else if (id == 162) {
+			this.type1 = PType.GHOST;
+			this.type2 = PType.ROCK;
+		} else if (id == 163) {
+			this.type1 = PType.FIGHTING;
+			this.type2 = null;
+		} else if (id == 164) {
+			this.type1 = PType.FIGHTING;
+			this.type2 = null;
+		} else if (id == 165) {
+			this.type1 = PType.FIGHTING;
+			this.type2 = null;
+		} else if (id == 166) {
+			this.type1 = PType.GROUND;
+			this.type2 = null;
+		} else if (id == 167) {
+			this.type1 = PType.GROUND;
+			this.type2 = null;
+		} else if (id == 168) {
+			this.type1 = PType.GROUND;
+			this.type2 = PType.FIGHTING;
+		} else if (id == 169) {
+			this.type1 = PType.GROUND;
+			this.type2 = null;
+		} else if (id == 170) {
+			this.type1 = PType.GROUND;
+			this.type2 = PType.LIGHT;
+		} else if (id == 171) {
+			this.type1 = PType.GROUND;
+			this.type2 = null;
+		} else if (id == 172) {
+			this.type1 = PType.GROUND;
+			this.type2 = PType.STEEL;
+		} else if (id == 173) {
+			this.type1 = PType.GROUND;
+			this.type2 = PType.DRAGON;
+		} else if (id == 174) {
+			this.type1 = PType.GALACTIC;
+			this.type2 = PType.LIGHT;
+		} else if (id == 175) {
+			this.type1 = PType.GALACTIC;
+			this.type2 = PType.LIGHT;
+		} else if (id == 176) {
+			this.type1 = PType.GALACTIC;
+			this.type2 = PType.LIGHT;
+		} else if (id == 177) {
+			this.type1 = PType.MAGIC;
+			this.type2 = PType.FLYING;
+		} else if (id == 178) {
+			this.type1 = PType.MAGIC;
+			this.type2 = PType.FLYING;
+		} else if (id == 179) {
+			this.type1 = PType.DARK;
+			this.type2 = null;
+		} else if (id == 180) {
+			this.type1 = PType.DARK;
+			this.type2 = null;
+		} else if (id == 181) {
+			this.type1 = PType.STEEL;
+			this.type2 = null;
+		} else if (id == 182) {
+			this.type1 = PType.STEEL;
+			this.type2 = null;
+		} else if (id == 183) {
+			this.type1 = PType.STEEL;
+			this.type2 = null;
+		} else if (id == 184) {
+			this.type1 = PType.MAGIC;
+			this.type2 = PType.GALACTIC;
+		} else if (id == 185) {
+			this.type1 = PType.MAGIC;
+			this.type2 = PType.GALACTIC;
+		} else if (id == 186) {
+			this.type1 = PType.MAGIC;
+			this.type2 = PType.GALACTIC;
+		} else if (id == 187) {
+			this.type1 = PType.DRAGON;
+			this.type2 = PType.LIGHT;
+		} else if (id == 188) {
+			this.type1 = PType.DRAGON;
+			this.type2 = PType.LIGHT;
+		} else if (id == 189) {
+			this.type1 = PType.DRAGON;
+			this.type2 = PType.LIGHT;
+		} else if (id == 190) {
+			this.type1 = PType.GALACTIC;
+			this.type2 = null;
+		} else if (id == 191) {
+			this.type1 = PType.GALACTIC;
+			this.type2 = null;
+		} else if (id == 192) {
+			this.type1 = PType.GALACTIC;
+			this.type2 = PType.FIGHTING;
+		} else if (id == 193) {
+			this.type1 = PType.GALACTIC;
+			this.type2 = PType.ICE;
+		} else if (id == 194) {
+			this.type1 = PType.GALACTIC;
+			this.type2 = PType.ICE;
+		} else if (id == 195) {
+			this.type1 = PType.GALACTIC;
+			this.type2 = PType.ROCK;
+		} else if (id == 196) {
+			this.type1 = PType.GALACTIC;
+			this.type2 = PType.ROCK;
+		} else if (id == 197) {
+			this.type1 = PType.GHOST;
+			this.type2 = PType.ELECTRIC;
+		} else if (id == 198) {
+			this.type1 = PType.GHOST;
+			this.type2 = PType.ELECTRIC;
+		} else if (id == 199) {
+			this.type1 = PType.FIGHTING;
+			this.type2 = PType.ELECTRIC;
+		} else if (id == 200) {
+			this.type1 = PType.FIGHTING;
+			this.type2 = PType.ELECTRIC;
+		} else if (id == 201) {
+			this.type1 = PType.FIGHTING;
+			this.type2 = PType.ELECTRIC;
+		} else if (id == 202) {
+			this.type1 = PType.FIRE;
+			this.type2 = PType.ELECTRIC;
+		} else if (id == 203) {
+			this.type1 = PType.FIRE;
+			this.type2 = PType.ELECTRIC;
+		} else if (id == 204) {
+			this.type1 = PType.FIRE;
+			this.type2 = PType.ELECTRIC;
+		} else if (id == 205) {
+			this.type1 = PType.ROCK;
+			this.type2 = PType.ELECTRIC;
+		} else if (id == 206) {
+			this.type1 = PType.ROCK;
+			this.type2 = PType.ELECTRIC;
+		} else if (id == 207) {
+			this.type1 = PType.ROCK;
+			this.type2 = PType.ELECTRIC;
+		} else if (id == 208) {
+			this.type1 = PType.LIGHT;
+			this.type2 = PType.ELECTRIC;
+		} else if (id == 209) {
+			this.type1 = PType.WATER;
+			this.type2 = PType.ELECTRIC;
+		} else if (id == 210) {
+			this.type1 = PType.WATER;
+			this.type2 = PType.ELECTRIC;
+		} else if (id == 211) {
+			this.type1 = PType.DRAGON;
+			this.type2 = PType.ELECTRIC;
+		} else if (id == 212) {
+			this.type1 = PType.DRAGON;
+			this.type2 = PType.ELECTRIC;
+		} else if (id == 213) {
+			this.type1 = PType.DRAGON;
+			this.type2 = PType.DARK;
+		} else if (id == 214) {
+			this.type1 = PType.DRAGON;
+			this.type2 = PType.DARK;
+		} else if (id == 215) {
+			this.type1 = PType.GROUND;
+			this.type2 = PType.GHOST;
+		} else if (id == 216) {
+			this.type1 = PType.DRAGON;
+			this.type2 = PType.GHOST;
+		} else if (id == 217) {
+			this.type1 = PType.GROUND;
+			this.type2 = PType.DARK;
+		} else if (id == 218) {
+			this.type1 = PType.GROUND;
+			this.type2 = PType.DARK;
+		} else if (id == 219) {
+			this.type1 = PType.GROUND;
+			this.type2 = PType.DARK;
+		} else if (id == 220) {
+			this.type1 = PType.POISON;
+			this.type2 = PType.DARK;
+		} else if (id == 221) {
+			this.type1 = PType.POISON;
+			this.type2 = PType.DARK;
+		} else if (id == 222) {
+			this.type1 = PType.POISON;
+			this.type2 = PType.DARK;
+		} else if (id == 223) {
+			this.type1 = PType.FIRE;
+			this.type2 = PType.DARK;
+		} else if (id == 224) {
+			this.type1 = PType.FIGHTING;
+			this.type2 = PType.DARK;
+		} else if (id == 225) {
+			this.type1 = PType.FIGHTING;
+			this.type2 = PType.DARK;
+		} else if (id == 226) {
+			this.type1 = PType.FLYING;
+			this.type2 = PType.GHOST;
+		} else if (id == 227) {
+			this.type1 = PType.FLYING;
+			this.type2 = PType.GHOST;
+		} else if (id == 228) {
+			this.type1 = PType.WATER;
+			this.type2 = PType.FLYING;
+		} else if (id == 229) {
+			this.type1 = PType.DARK;
+			this.type2 = PType.MAGIC;
+		} else if (id == 230) {
+			this.type1 = PType.ICE;
+			this.type2 = PType.LIGHT;
+		} else if (id == 231) {
+			this.type1 = PType.ICE;
+			this.type2 = PType.MAGIC;
+		} else if (id == 232) {
+			this.type1 = PType.POISON;
+			this.type2 = PType.MAGIC;
+		} else if (id == 233) {
+			this.type1 = PType.ICE;
+			this.type2 = PType.DRAGON;
+		} else if (id == 234) {
+			this.type1 = PType.PSYCHIC;
+			this.type2 = PType.DRAGON;
+		} else if (id == 235) {
+			this.type1 = PType.GALACTIC;
+			this.type2 = PType.DRAGON;
+		} else if (id == 236) {
+			this.type1 = PType.FIRE;
+			this.type2 = PType.GALACTIC;
+		} else if (id == -1) {
 			this.type1 = PType.GRASS;
 			this.type2 = null;
 		} else if (id == -2) {

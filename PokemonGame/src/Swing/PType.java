@@ -8,6 +8,7 @@ public enum PType {
 	FIRE(new Color(238, 129, 48)),
 	WATER(new Color(99, 144, 240)),
 	GRASS(new Color(122, 199, 76)),
+	ICE(new Color(150, 217, 214)),
 	ELECTRIC(new Color(247, 208, 44)),
 	FIGHTING(new Color(194, 46, 40)),
 	POISON(new Color(163, 62, 161)),
