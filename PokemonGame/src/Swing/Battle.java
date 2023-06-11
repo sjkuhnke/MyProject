@@ -42,6 +42,7 @@ public class Battle extends JFrame {
 	private JTextField levelInput; // debug
 	private JLabel currentText;
 	private JGradientButton[] party;
+	public Field field;
 	
 	private JButton catchButton;
 	private JButton addButton; // debug
@@ -82,6 +83,8 @@ public class Battle extends JFrame {
 		foe = new Pokemon(-10, 5, false, false);
 	    foe.currentHP = 0;
 	    foe.faint(false, me);
+	    
+	    field = new Field();
 		
 	    // Initializing panel
 	    setResizable(false);
@@ -359,9 +362,10 @@ public class Battle extends JFrame {
 					healButton.setVisible(true);
 		        } else {
 		            System.out.println("Oh no! " + foe.name + " broke free!");
-		            foe.move(me.getCurrent(),foe.randomMove(), me);
+		            foe.move(me.getCurrent(),foe.randomMove(), me, field);
 					Pokemon.endOfTurn(foe, me.getCurrent(), me);
 					Pokemon.endOfTurn(me.getCurrent(), foe, me);
+					field.endOfTurn();
 					updateBars();
 					updateCurrent();
 					updateStatus();
@@ -419,12 +423,13 @@ public class Battle extends JFrame {
 	            }
 				if (!me.team[index].isFainted()) {
 					if (foe.trainerOwned()) {
-		        		foe.move(me.getCurrent(),foe.bestMove(me.team[index]), me);
+		        		foe.move(me.getCurrent(),foe.bestMove(me.team[index]), me, field);
 		        	} else {
-		        		foe.move(me.getCurrent(),foe.randomMove(), me);
+		        		foe.move(me.getCurrent(),foe.randomMove(), me, field);
 		        	}
 					Pokemon.endOfTurn(foe, me.getCurrent(), me);
 					Pokemon.endOfTurn(me.getCurrent(), foe, me);
+					field.endOfTurn();
 				}
 				if (foe.isFainted()) {
 					if (foeTrainer != null && foeTrainer.getTeam() != null) {
@@ -783,88 +788,23 @@ public class Battle extends JFrame {
 		if (p1.isFainted() || p2.isFainted()) return;
 		int p1speed = p1.getSpeed();
 		int p2speed = p2.getSpeed();
+		Pokemon faster = p1speed > p2speed ? p1 : p2;
+		faster = m2.priority > m1.priority ? p2 : p1;
 		
-		// Check for priority moves
-	    if (m1.isPriority() && !m2.isPriority()) {
-	    	if (m1 == Move.SUCKER_PUNCH) {
-	    		if (m2.isAttack()) {
-	    			p1.move(p2, m1, me);
-	    			p2.move(p1, m2, me);
-	    	        Pokemon.endOfTurn(p1, p2, me);
-	    			Pokemon.endOfTurn(p2, p1, me);
-	    		} else {
-	    			m1 = Move.FAILED_SUCKER;
-	    			p1.move(p2, m1, me);
-	    			p2.move(p1, m2, me);
-	    	        Pokemon.endOfTurn(p1, p2, me);
-	    			Pokemon.endOfTurn(p2, p1, me);
-	    		}
-	    	} else {
-	    		p1.move(p2, m1, me);
-		        p2.move(p1, m2, me);
-		        Pokemon.endOfTurn(p1, p2, me);
-				Pokemon.endOfTurn(p2, p1, me);
-	    	}
-	    } else if (!m1.isPriority() && m2.isPriority()) {
-	    	if (m2 == Move.SUCKER_PUNCH) {
-	    		if (m1.isAttack()) {
-	    			p2.move(p1, m2, me);
-	    	        p1.move(p2, m1, me);
-	    	        Pokemon.endOfTurn(p2, p1, me);
-	    			Pokemon.endOfTurn(p1, p2, me);
-	    		} else {
-	    			m2 = Move.FAILED_SUCKER;
-	    			p2.move(p1, m2, me);
-	    	        p1.move(p2, m1, me);
-	    	        Pokemon.endOfTurn(p2, p1, me);
-	    			Pokemon.endOfTurn(p1, p2, me);
-	    		}
-	    	} else {
-	    		p2.move(p1, m2, me);
-		        p1.move(p2, m1, me);
-		        Pokemon.endOfTurn(p2, p1, me);
-				Pokemon.endOfTurn(p1, p2, me);
-	    	}
-	    } else if (m1.isPriority() && m2.isPriority()) {
-	        if (p1speed >= p2speed) {
-	            p1.move(p2, m1, me);
-	            p2.move(p1, m2, me);
-	            Pokemon.endOfTurn(p1, p2, me);
-				Pokemon.endOfTurn(p2, p1, me);
-	        } else {
-	            p2.move(p1, m2, me);
-	            p1.move(p2, m1, me);
-	            Pokemon.endOfTurn(p2, p1, me);
-				Pokemon.endOfTurn(p1, p2, me);
-	        }
-	    } else {
-	        // Regular turn order
-	        if (p1speed > p2speed) {
-	            p1.move(p2, m1, me);
-	            p2.move(p1, m2, me);
-	            Pokemon.endOfTurn(p1, p2, me);
-				Pokemon.endOfTurn(p2, p1, me);
-	        } else if (p1speed < p2speed) {
-	            p2.move(p1, m2, me);
-	            p1.move(p2, m1, me);
-	            Pokemon.endOfTurn(p2, p1, me);
-				Pokemon.endOfTurn(p1, p2, me);
-	        } else {
-	            Random speedTie = new Random();
-	            double random = speedTie.nextDouble();
-	            if (random < 0.5) {
-	                p1.move(p2, m1, me);
-	                p2.move(p1, m2, me);
-	                Pokemon.endOfTurn(p1, p2, me);
-	    			Pokemon.endOfTurn(p2, p1, me);
-	            } else {
-	                p2.move(p1, m2, me);
-	                p1.move(p2, m1, me);
-	                Pokemon.endOfTurn(p2, p1, me);
-	    			Pokemon.endOfTurn(p1, p2, me);
-	            }
-	        }
-	    }
+		if (p1speed == p2speed && m1.priority == m2.priority) {
+			Random random = new Random();
+			boolean isHeads = random.nextBoolean();
+			faster = isHeads ? p1 : p2;
+		}
+		
+		Pokemon slower = faster == p1 ? p2 : p1;
+		
+        faster.move(slower, m1, me, field);
+        slower.move(faster, m2, me, field);
+        Pokemon.endOfTurn(faster, slower, me);
+		Pokemon.endOfTurn(slower, faster, me);
+		field.endOfTurn();
+		
 		if (foe.isFainted()) {
 			if (foeTrainer != null && foeTrainer.getTeam() != null) {
 				if (foeTrainer.hasNext()) {

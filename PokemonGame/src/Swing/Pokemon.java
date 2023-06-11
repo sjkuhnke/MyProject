@@ -17,6 +17,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import Swing.Battle.JGradientButton;
+import Swing.Field.Effect;
 
 public class Pokemon implements Serializable {
 	/**
@@ -81,7 +82,13 @@ public class Pokemon implements Serializable {
 		setNature();
 		getStats();
 		setType();
-		setAbility((int)Math.round(Math.random()));
+		if (t) {
+			setAbility(0);
+		} else {
+			slot = (int)Math.round(Math.random());
+			setAbility(slot);
+		}
+		
 		
 		expMax = level * 2;
 		exp = 0;
@@ -216,6 +223,7 @@ public class Pokemon implements Serializable {
 		setBaseStats();
 		getStats();
 		setType();
+		setAbility(pokemon.slot);
 		
 		expMax = level * 2;
 		exp = 0;
@@ -2010,7 +2018,7 @@ public class Pokemon implements Serializable {
 		} else if (id == 236) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
 		} else if (id == 237) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
 		} else {
-			abilities = new Ability[] {Ability.SAND_VEIL, Ability.SAND_VEIL};
+			abilities = new Ability[] {Ability.SAND_VEIL, Ability.SNOW_CLOAK};
 		}
 		
 		ability = abilities[i];
@@ -2060,10 +2068,10 @@ public class Pokemon implements Serializable {
 	                int choice = Battle.displayMoveOptions(this, move);
 	                if (choice == JOptionPane.CLOSED_OPTION) {
 	                    System.out.println(this.name + " did not learn " + move.toString() + ".");
-	                    return;
+	                } else {
+		                System.out.println(this.name + " has learned " + move.toString() + " and forgot " + this.moveset[choice] + "!");
+		                this.moveset[choice] = move;
 	                }
-	                System.out.println(this.name + " has learned " + move.toString() + " and forgot " + this.moveset[choice] + "!");
-	                this.moveset[choice] = move;
 	            }
 	        }
 	        node = node.next;
@@ -3698,7 +3706,7 @@ public class Pokemon implements Serializable {
 	}
 
 	
-	public void move(Pokemon foe, Move move, Player player) {
+	public void move(Pokemon foe, Move move, Player player, Field field) {
 		if (this.fainted || foe.fainted) return;
 
 		double attackStat;
@@ -3815,14 +3823,14 @@ public class Pokemon implements Serializable {
 			}
 		}
 		if (foe.vStatuses.contains(Status.REFLECT) && move != Move.BRICK_BREAK) {
-			this.move(this, move, player);
+			this.move(this, move, player, field);
 			System.out.println(move + " was reflected on itself!");
 			foe.vStatuses.remove(Status.REFLECT);
 			return;
 		}
 		if (this.vStatuses.contains(Status.POSESSED)) {
 			this.vStatuses.remove(Status.POSESSED);
-			this.move(this, move, player);
+			this.move(this, move, player, field);
 			System.out.println(move + " was used on itself!");
 			return;
 		}
@@ -3893,7 +3901,7 @@ public class Pokemon implements Serializable {
 			return;
 		}
 		if (move.cat == 2) {
-			statusEffect(foe, move, player);
+			statusEffect(foe, move, player, field);
 			this.impressive = false;
 			return;
 		}
@@ -4039,7 +4047,7 @@ public class Pokemon implements Serializable {
 				}
 			}
 			Move[] validMoves = moves.toArray(new Move[moves.size()]);
-			move(foe, validMoves[new Random().nextInt(validMoves.length)], player);
+			move(foe, validMoves[new Random().nextInt(validMoves.length)], player, field);
 		}
 		this.impressive = false;
 		return;
@@ -4504,7 +4512,7 @@ public class Pokemon implements Serializable {
 		}
 	}
 
-	private void statusEffect(Pokemon foe, Move move, Player player) {
+	private void statusEffect(Pokemon foe, Move move, Player player, Field field) {
 		if (move == Move.AGILITY) {
 			stat(this, 4, 2);
 		} else if (move == Move.AQUA_RING) {
@@ -4682,6 +4690,20 @@ public class Pokemon implements Serializable {
 			this.status = Status.HEALTHY;
 			removeBad(this.vStatuses);
 			stat(this, 4, 1);
+		} else if (move == Move.REFLECT) {
+			if (this.trainerOwned) {
+				if (!(field.contains(field.playerSide, Effect.REFLECT))) {
+					field.playerSide.add(field.new FieldEffect(Effect.REFLECT));
+				} else {
+					System.out.println("But it failed!");
+				}
+			} else {
+				if (!(field.contains(field.foeSide, Effect.REFLECT))) {
+					field.foeSide.add(field.new FieldEffect(Effect.REFLECT));
+				} else {
+					System.out.println("But it failed!");
+				}
+			}
 		} else if (move == Move.ROOST) {
 			if (this.currentHP == this.getStat(0)) {
 				System.out.println(this.name + "'s HP is full!");
@@ -5339,6 +5361,7 @@ public class Pokemon implements Serializable {
 		    movebank = new Node[12];
 		    movebank[0] = new Node(Move.SCRATCH);
 		    movebank[1] = new Node(Move.LEER);
+		    movebank[1].next = new Node(Move.REFLECT);
 		    movebank[3] = new Node(Move.TAIL_WHIP);
 		    movebank[6] = new Node(Move.TACKLE);
 		    movebank[11] = new Node(Move.TAIL_WHACK);
@@ -7523,6 +7546,7 @@ public class Pokemon implements Serializable {
 		if (p.vStatuses.contains(Status.BONDED)) {
 			p.vStatuses.remove(Status.BONDED);
 		}
+		
 		p.vStatuses.remove(Status.FLINCHED);
 		
 	}
@@ -7920,8 +7944,8 @@ public class Pokemon implements Serializable {
 	    JPanel teamMemberPanel = new JPanel();
 	    teamMemberPanel.setLayout(new BoxLayout(teamMemberPanel, BoxLayout.Y_AXIS));
 
-	    JLabel nameLabel, hp, at, de, sa, sd, sp, natureLabel, hpLabel, statusLabel;
-	    nameLabel = hp = at = de = sa = sd = sp = natureLabel = hpLabel = statusLabel = new JLabel("N/A");
+	    JLabel nameLabel, hp, at, de, sa, sd, sp, abilityLabel, abilityDescLabel, natureLabel, hpLabel, statusLabel;
+	    nameLabel = hp = at = de = sa = sd = sp = abilityLabel = abilityDescLabel = natureLabel = hpLabel = statusLabel = new JLabel("N/A");
 	    JGradientButton type1B, type2B;
 	    JPanel movesPanel = new JPanel(new GridLayout(2, 2));
 	    type1B = new JGradientButton("");
@@ -7954,6 +7978,9 @@ public class Pokemon implements Serializable {
 	        if (this.nature[3] == 0.9) sd.setForeground(Color.blue.darker().darker());
 	        if (this.nature[4] == 1.1) sp.setForeground(Color.red.darker().darker());
 	        if (this.nature[4] == 0.9) sp.setForeground(Color.blue.darker().darker());
+	        abilityLabel = new JLabel("Ability: " + this.ability.toString());
+	        abilityDescLabel = new JLabel(this.ability.desc);
+	        abilityLabel.setFont(new Font(hpLabel.getFont().getName(), Font.BOLD, 14));
 	        natureLabel = new JLabel(this.getNature() + " Nature");
 
 	        for (int i = 0; i < 4; i++) {
@@ -7996,6 +8023,14 @@ public class Pokemon implements Serializable {
 	    typesPanel.add(type1B);
 	    typesPanel.add(type2B);
 	    teamMemberPanel.add(typesPanel);
+	    
+	    JPanel abilityLabelPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+	    abilityLabelPanel.add(abilityLabel);
+	    teamMemberPanel.add(abilityLabelPanel);
+	    
+	    JPanel abilityDescLabelPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+	    abilityDescLabelPanel.add(abilityDescLabel);
+	    teamMemberPanel.add(abilityDescLabelPanel);
 
 	    JPanel natureLabelPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 	    natureLabelPanel.add(natureLabel);
