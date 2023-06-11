@@ -70,9 +70,9 @@ public class TileManager {
 		setup(54, true);
 		setup(55, true);
 		setup(56, true);
-		setup(57, true);
+		setup(57, false); // door
 		setup(58, true);
-		setup(59, false);
+		setup(59, true);
 		setup(60, true);
 		setup(61, true);
 		setup(62, true);
@@ -92,7 +92,7 @@ public class TileManager {
 		setup(76, true);
 		setup(77, true);
 		setup(78, true);
-		setup(79, false);
+		setup(79, false); // door
 		setup(80, true);
 		setup(81, true);
 		setup(82, true);
@@ -105,7 +105,7 @@ public class TileManager {
 		setup(89, true);
 		setup(90, true);
 		setup(91, true);
-		setup(92, false);
+		setup(92, false); // door
 		setup(93, true);
 //		setup(94, true);
 //		setup(95, true);
