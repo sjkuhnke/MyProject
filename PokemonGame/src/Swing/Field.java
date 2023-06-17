@@ -11,11 +11,13 @@ public class Field {
 	int terrainTurns;
 	public ArrayList<FieldEffect> playerSide;
 	public ArrayList<FieldEffect> foeSide;
+	public ArrayList<FieldEffect> fieldEffects;
 	
 	public Field() {
 		weather = null;
 		playerSide = new ArrayList<>();
 		foeSide = new ArrayList<>();
+		fieldEffects = new ArrayList<>();
 	}
 	
 	public enum Effect {
@@ -28,7 +30,10 @@ public class Field {
 		PSYCHIC(5, false, true),
 		SPARKLY(5, false, true), 
 		REFLECT(5, false, false),
-		LIGHT_SCREEN(5, false, false);
+		LIGHT_SCREEN(5, false, false),
+		TRICK_ROOM(5, false, false),
+		GRAVITY(5, false, false),
+		;
 		
 		private Effect(int turns, boolean isWeather, boolean isTerrain) {
 			this.turns = turns;
@@ -67,6 +72,7 @@ public class Field {
 		if (weather.effect.isWeather) {
 			this.weather = weather;
 			this.weatherTurns = weather.turns;
+			System.out.println("The weather became " + weather.toString());
 		}
 	}
 	
@@ -74,7 +80,18 @@ public class Field {
 		if (terrain.effect.isTerrain) {
 			this.terrain = terrain;
 			this.terrainTurns = terrain.turns;
+			System.out.println("The terrain became " + weather.toString());
 		}
+	}
+	
+	public void setEffect(FieldEffect effect) {
+		if (effect.effect == Effect.TRICK_ROOM) {
+			if (fieldEffects.contains(effect)) {
+				fieldEffects.remove(effect);
+				System.out.println("The twisted dimensions returned to normal!");
+			}
+		}
+		fieldEffects.add(effect);
 	}
 
 	public boolean contains(ArrayList<FieldEffect> side, Effect reflect) {
@@ -100,7 +117,17 @@ public class Field {
 	        }
 	    }
 	    
-	    Iterator<FieldEffect> iterator = playerSide.iterator();
+	    Iterator<FieldEffect> iterator = fieldEffects.iterator();
+	    while (iterator.hasNext()) {
+	        FieldEffect effect = iterator.next();
+	        if (effect.turns > 0) effect.turns--;
+	        if (effect.turns == 0) {
+	            System.out.println(effect.effect.toString() + " wore off!");
+	            iterator.remove();
+	        }
+	    }
+	    
+	    iterator = playerSide.iterator();
 	    while (iterator.hasNext()) {
 	        FieldEffect effect = iterator.next();
 	        if (effect.turns > 0) effect.turns--;

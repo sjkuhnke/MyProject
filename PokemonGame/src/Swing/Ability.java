@@ -101,7 +101,8 @@ public enum Ability {
 	VOLT_ABSORB(""),
 	WATER_ABSORB(""),
 	WATER_VEIL(""),
-	WONDER_GUARD("");
+	WONDER_GUARD(""),
+	NULL("");
 
 	Ability(String string) {
 		desc = string;

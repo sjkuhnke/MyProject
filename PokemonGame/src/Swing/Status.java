@@ -8,7 +8,7 @@ public enum Status {
 	ASLEEP("SLP", new Color(105, 105, 102), Color.WHITE),
 	POISONED("PSN", new Color(68, 2, 161), Color.WHITE),
 	HEALTHY("", new Color(255, 255, 255), Color.BLACK),
-	BLEEDING("FRZ", new Color(150, 217, 214), Color.BLACK),
+	FROSTBITE("FRS", new Color(150, 217, 214), Color.BLACK),
 	CONFUSED("CNF", new Color(32, 37, 61), Color.WHITE),
 	CURSED("CRS", new Color(30, 32, 41), Color.WHITE),
 	LEECHED("LCH", new Color(21, 143, 40), Color.BLACK),
@@ -23,7 +23,9 @@ public enum Status {
 	LOCKED("LCK", new Color(219, 216, 15), Color.BLACK),
 	REFLECT("RFL", new Color(219, 216, 15), Color.BLACK),
 	AUTO("AUT", new Color(219, 216, 15), Color.BLACK),
-	BONDED("AUT", new Color(219, 216, 15), Color.BLACK);
+	BONDED("AUT", new Color(219, 216, 15), Color.BLACK), 
+	STUCK("AUT", Color.BLACK, Color.BLACK),
+	;
 	
 	Status(String name, Color color, Color textColor) {
 		this.name = name;

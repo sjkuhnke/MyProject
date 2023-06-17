@@ -52,6 +52,7 @@ public class Player implements Serializable{
 	        for (int i = 0; i < team.length; i++) {
 	            if (team[i] == null) {
 	                team[i] = p;
+	                p.slot = i;
 	                System.out.println("Caught " + p.name + ", added to party!");
 	                current = team[0];
 	                break;
