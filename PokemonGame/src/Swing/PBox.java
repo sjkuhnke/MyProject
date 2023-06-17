@@ -3,6 +3,7 @@ package Swing;
 import javax.swing.border.EmptyBorder;
 
 import Entity.PlayerCharacter;
+import Swing.Pokemon.Node;
 
 import java.awt.*;
 import java.awt.event.ActionListener;
@@ -291,9 +292,13 @@ public class PBox extends JFrame {
                     ArrayList<Move> forgottenMoves = new ArrayList<>();
                     for (int i = 0; i < box[index].getLevel(); i++) {
                     	if (i < box[index].movebank.length) {
-                            if (box[index].movebank[i] != null && !box[index].knowsMove(box[index].movebank[i].data)) {
-                                forgottenMoves.add(box[index].movebank[i].data);
-                            }
+                    		Node move = box[index].movebank[i];
+                    		while (move != null) {
+                    			if (!box[index].knowsMove(move.data)) {
+                    				forgottenMoves.add(move.data);
+                    			}
+                    			move = move.next;
+                    		}
                     	}
                     }
                     if (forgottenMoves.isEmpty()) {

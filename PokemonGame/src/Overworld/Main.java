@@ -37,7 +37,17 @@ public class Main {
 	    } catch (IOException | ClassNotFoundException e) {
 	        // If there's an error reading the file, create a new Player object
 	        gamePanel.player.p = new Player();
-	        gamePanel.player.p.catchPokemon(new Pokemon(-4,5, true, false));
+	        String[] options = {"Twigle", "Lagma", "Lizish"};
+	        int choice = JOptionPane.showOptionDialog(null, "Choose your starter Pokemon", "Starter Pokemon", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+	        // Add the chosen starter to the player's team
+	        if (choice == 0) {
+	            gamePanel.player.p.catchPokemon(new Pokemon(1, 5, true, false));
+	        } else if (choice == 1) {
+	            gamePanel.player.p.catchPokemon(new Pokemon(4, 5, true, false));
+	        } else if (choice == 2) {
+	            gamePanel.player.p.catchPokemon(new Pokemon(7, 5, true, false));
+	        }
+	        gamePanel.player.p.starter = choice;
 	        gamePanel.player.p.bag.add(new Item(22), 999);
 	    }
 		window.add(gamePanel);

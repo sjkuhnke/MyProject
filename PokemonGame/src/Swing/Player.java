@@ -21,6 +21,7 @@ public class Player implements Serializable{
 	private int posY;
 	public Bag bag;
 	public int badges;
+	public int starter;
 	
 	public Player() {
 		team = new Pokemon[6];

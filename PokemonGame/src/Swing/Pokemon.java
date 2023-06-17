@@ -1783,12 +1783,12 @@ public class Pokemon implements Serializable {
 		if (id == 1) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
 		} else if (id == 2) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
 		} else if (id == 3) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 4) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 5) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 6) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 7) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 8) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 9) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
+		} else if (id == 4) { abilities = new Ability[] {Ability.BLAZE, Ability.SOLAR_POWER};
+		} else if (id == 5) { abilities = new Ability[] {Ability.BLAZE, Ability.SOLAR_POWER};
+		} else if (id == 6) { abilities = new Ability[] {Ability.BLAZE, Ability.SOLAR_POWER};
+		} else if (id == 7) { abilities = new Ability[] {Ability.TORRENT, Ability.PROTEAN};
+		} else if (id == 8) { abilities = new Ability[] {Ability.TORRENT, Ability.PROTEAN};
+		} else if (id == 9) { abilities = new Ability[] {Ability.TORRENT, Ability.PROTEAN};
 		} else if (id == 10) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
 		} else if (id == 11) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
 		} else if (id == 12) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
@@ -2081,7 +2081,22 @@ public class Pokemon implements Serializable {
 
 	private Pokemon checkEvo() {
 		Pokemon result = null;
-		if (id == -1 && level >= 15) {
+		if (id == 1 && level >= 18) {
+			result = new Pokemon(2, this);
+		} else if (id == 2 && level >= 36) {
+			result = new Pokemon(3, this);
+		} else if (id == 4 && level >= 16) {
+			result = new Pokemon(5, this);
+		} else if (id == 5 && level >= 36) {
+			result = new Pokemon(6, this);
+		} else if (id == 7 && level >= 16) {
+			result = new Pokemon(8, this);
+		} else if (id == 8 && level >= 36) {
+			result = new Pokemon(9, this);
+		} else if (id == 10 && level >= 16) {
+			result = new Pokemon(11, this);
+			
+		} else if (id == -1 && level >= 15) {
 			result = new Pokemon(-2, this);
 		} else if (id == -2 && level >= 35) {
 			result = new Pokemon(-3, this);
@@ -2311,15 +2326,15 @@ public class Pokemon implements Serializable {
 	}
 	
 	public int[] setBaseStats() {
-		if (this.id == 1) { this.baseStats = new int[]{35,46,45,67,70,63};
-		} else if (this.id == 2) { this.baseStats = new int[]{35,46,45,67,70,63};
-		} else if (this.id == 3) { this.baseStats = new int[]{35,46,45,67,70,63};
-		} else if (this.id == 4) { this.baseStats = new int[]{35,46,45,67,70,63};
-		} else if (this.id == 5) { this.baseStats = new int[]{35,46,45,67,70,63};
-		} else if (this.id == 6) { this.baseStats = new int[]{35,46,45,67,70,63};
-		} else if (this.id == 7) { this.baseStats = new int[]{35,46,45,67,70,63};
-		} else if (this.id == 8) { this.baseStats = new int[]{35,46,45,67,70,63};
-		} else if (this.id == 9) { this.baseStats = new int[]{35,46,45,67,70,63};
+		if (this.id == 1) { this.baseStats = new int[]{58,58,69,46,69,35};
+		} else if (this.id == 2) { this.baseStats = new int[]{73,75,80,48,89,37};
+		} else if (this.id == 3) { this.baseStats = new int[]{95,87,91,95,110,39};
+		} else if (this.id == 4) { this.baseStats = new int[]{60,49,54,74,58,34};
+		} else if (this.id == 5) { this.baseStats = new int[]{85,53,69,90,66,36};
+		} else if (this.id == 6) { this.baseStats = new int[]{89,59,81,115,75,102};
+		} else if (this.id == 7) { this.baseStats = new int[]{45,70,56,46,45,63};
+		} else if (this.id == 8) { this.baseStats = new int[]{60,90,76,49,55,70};
+		} else if (this.id == 9) { this.baseStats = new int[]{85,115,110,50,85,85};
 		} else if (this.id == 10) { this.baseStats = new int[]{35,46,45,67,70,63};
 		} else if (this.id == 11) { this.baseStats = new int[]{35,46,45,67,70,63};
 		} else if (this.id == 12) { this.baseStats = new int[]{35,46,45,67,70,63};
@@ -4738,7 +4753,7 @@ public class Pokemon implements Serializable {
 		if (currentHP > this.getStat(0)) currentHP = this.getStat(0);
 	}
 
-	private void stat(Pokemon p, int i, int amt) {
+	private void stat(Pokemon p, int i, int amt) throws IllegalArgumentException {
 		if (amt == 0) throw new IllegalArgumentException("Stat change amount cannot be 0");
 		String type = "";
 		if (i == 0) type = "Attack";
@@ -4751,8 +4766,10 @@ public class Pokemon implements Serializable {
 		String amount = "";
 		if (amt == 1) amount = " rose";
 		if (amt == -1) amount = " fell";
-		if (amt > 1) amount = " Sharply rose";
-		if (amt < -1) amount = " Harshly fell";
+		if (amt == 2) amount = " Sharply rose";
+		if (amt == -2) amount = " Harshly fell";
+		if (amt > 2) amount = " Drastically rose";
+		if (amt < -2) amount = " Dramatically fell";
 		p.statStages[i] += amt;
 		if (p.statStages[i] > 6 && amt > 0) {
 			p.statStages[i] = 6;
@@ -5097,124 +5114,531 @@ public class Pokemon implements Serializable {
 	}
 	
 	public PType[] getWeaknesses(PType type) {
-	    ArrayList<PType> resistantTypes = new ArrayList<>();
+	    ArrayList<PType> weakTypes = new ArrayList<>();
 	    switch(type) {
 	        case NORMAL:
-	        	resistantTypes.add(PType.MAGIC);
+	        	weakTypes.add(PType.MAGIC);
 	            break;
 	        case ROCK: 
-	            resistantTypes.add(PType.FIRE);
-	            resistantTypes.add(PType.ICE);
-	            resistantTypes.add(PType.FLYING);
-	            resistantTypes.add(PType.BUG);
-	            resistantTypes.add(PType.GALACTIC);
+	            weakTypes.add(PType.FIRE);
+	            weakTypes.add(PType.ICE);
+	            weakTypes.add(PType.FLYING);
+	            weakTypes.add(PType.BUG);
+	            weakTypes.add(PType.GALACTIC);
 	            break;
 			case BUG:
-				resistantTypes.add(PType.GRASS);
-	            resistantTypes.add(PType.PSYCHIC);
-	            resistantTypes.add(PType.DARK);
-	            resistantTypes.add(PType.LIGHT);
+				weakTypes.add(PType.GRASS);
+	            weakTypes.add(PType.PSYCHIC);
+	            weakTypes.add(PType.DARK);
+	            weakTypes.add(PType.LIGHT);
 	            break;
 			case DARK:
-				resistantTypes.add(PType.MAGIC);
-				resistantTypes.add(PType.PSYCHIC);
-	            resistantTypes.add(PType.GHOST);
+				weakTypes.add(PType.MAGIC);
+				weakTypes.add(PType.PSYCHIC);
+	            weakTypes.add(PType.GHOST);
 	            break;
 			case DRAGON:
-				resistantTypes.add(PType.DRAGON);
+				weakTypes.add(PType.DRAGON);
 	            break;
 			case ELECTRIC:
-				resistantTypes.add(PType.WATER);
-				resistantTypes.add(PType.STEEL);
-	            resistantTypes.add(PType.FLYING);
+				weakTypes.add(PType.WATER);
+				weakTypes.add(PType.STEEL);
+	            weakTypes.add(PType.FLYING);
 	            break;
 			case FIGHTING:
-				resistantTypes.add(PType.NORMAL);
-	            resistantTypes.add(PType.ROCK);
-	            resistantTypes.add(PType.ICE);
-	            resistantTypes.add(PType.DARK);
-	            resistantTypes.add(PType.STEEL);
+				weakTypes.add(PType.NORMAL);
+	            weakTypes.add(PType.ROCK);
+	            weakTypes.add(PType.ICE);
+	            weakTypes.add(PType.DARK);
+	            weakTypes.add(PType.STEEL);
 	            break;
 			case FIRE:
-				resistantTypes.add(PType.GRASS);
-				resistantTypes.add(PType.ICE);
-	            resistantTypes.add(PType.BUG);
-	            resistantTypes.add(PType.STEEL);
+				weakTypes.add(PType.GRASS);
+				weakTypes.add(PType.ICE);
+	            weakTypes.add(PType.BUG);
+	            weakTypes.add(PType.STEEL);
 	            break;
 			case FLYING:
-				resistantTypes.add(PType.GRASS);
-				resistantTypes.add(PType.FIGHTING);
-	            resistantTypes.add(PType.BUG);
-	            resistantTypes.add(PType.GALACTIC);
+				weakTypes.add(PType.GRASS);
+				weakTypes.add(PType.FIGHTING);
+	            weakTypes.add(PType.BUG);
+	            weakTypes.add(PType.GALACTIC);
 	            break;
 			case GHOST:
-				resistantTypes.add(PType.ELECTRIC);
-				resistantTypes.add(PType.GHOST);
-				resistantTypes.add(PType.PSYCHIC);
+				weakTypes.add(PType.ELECTRIC);
+				weakTypes.add(PType.GHOST);
+				weakTypes.add(PType.PSYCHIC);
 	            break;
 			case GRASS:
-				resistantTypes.add(PType.WATER);
-	            resistantTypes.add(PType.ROCK);
-	            resistantTypes.add(PType.GROUND);
-	            resistantTypes.add(PType.LIGHT);
+				weakTypes.add(PType.WATER);
+	            weakTypes.add(PType.ROCK);
+	            weakTypes.add(PType.GROUND);
+	            weakTypes.add(PType.LIGHT);
 	            break;
 			case GROUND:
-				resistantTypes.add(PType.ELECTRIC);
-	            resistantTypes.add(PType.FIRE);
-	            resistantTypes.add(PType.POISON);
-	            resistantTypes.add(PType.ROCK);
-	            resistantTypes.add(PType.STEEL);
+				weakTypes.add(PType.ELECTRIC);
+	            weakTypes.add(PType.FIRE);
+	            weakTypes.add(PType.POISON);
+	            weakTypes.add(PType.ROCK);
+	            weakTypes.add(PType.STEEL);
 				break;
 			case MAGIC:
-				resistantTypes.add(PType.NORMAL);
-	            resistantTypes.add(PType.STEEL);
-	            resistantTypes.add(PType.DRAGON);
+				weakTypes.add(PType.NORMAL);
+	            weakTypes.add(PType.STEEL);
+	            weakTypes.add(PType.DRAGON);
 				break;
 			case POISON:
-				resistantTypes.add(PType.GRASS);
-				resistantTypes.add(PType.WATER);
-				resistantTypes.add(PType.POISON);
+				weakTypes.add(PType.GRASS);
+				weakTypes.add(PType.WATER);
+				weakTypes.add(PType.POISON);
 				break;
 			case STEEL:
-				resistantTypes.add(PType.ICE);
-				resistantTypes.add(PType.ROCK);
-	            resistantTypes.add(PType.LIGHT);
+				weakTypes.add(PType.ICE);
+				weakTypes.add(PType.ROCK);
+	            weakTypes.add(PType.LIGHT);
 				break;
 			case WATER:
-				resistantTypes.add(PType.FIRE);
-	            resistantTypes.add(PType.ROCK);
-	            resistantTypes.add(PType.GROUND);
+				weakTypes.add(PType.FIRE);
+	            weakTypes.add(PType.ROCK);
+	            weakTypes.add(PType.GROUND);
 				break;
 			case LIGHT:
-				resistantTypes.add(PType.ICE);
-				resistantTypes.add(PType.GHOST);
-				resistantTypes.add(PType.DARK);
-				resistantTypes.add(PType.GALACTIC);
+				weakTypes.add(PType.ICE);
+				weakTypes.add(PType.GHOST);
+				weakTypes.add(PType.DARK);
+				weakTypes.add(PType.GALACTIC);
 				break;
 			case PSYCHIC:
-				resistantTypes.add(PType.FIGHTING);
-				resistantTypes.add(PType.POISON);
+				weakTypes.add(PType.FIGHTING);
+				weakTypes.add(PType.POISON);
 				break;
 			case ICE:
-				resistantTypes.add(PType.GRASS);
-				resistantTypes.add(PType.GROUND);
-				resistantTypes.add(PType.FLYING);
-				resistantTypes.add(PType.DRAGON);
+				weakTypes.add(PType.GRASS);
+				weakTypes.add(PType.GROUND);
+				weakTypes.add(PType.FLYING);
+				weakTypes.add(PType.DRAGON);
 				break;
 			case GALACTIC:
-				resistantTypes.add(PType.FIRE);
-				resistantTypes.add(PType.FIGHTING);
-				resistantTypes.add(PType.GROUND);
+				weakTypes.add(PType.FIRE);
+				weakTypes.add(PType.FIGHTING);
+				weakTypes.add(PType.GROUND);
 				break;
 			default:
 				break;
 	    }
-	    PType[] toReturn = new PType[resistantTypes.size()];
-	    return resistantTypes.toArray(toReturn);
+	    PType[] toReturn = new PType[weakTypes.size()];
+	    return weakTypes.toArray(toReturn);
 	}
 	
 	private void setMoveBank() {
 		switch(this.id) {
+		case 1:
+			movebank = new Node[18];
+			movebank[0] = new Node(Move.POUND);
+			movebank[0].next = new Node(Move.WITHDRAW);
+			movebank[6] = new Node(Move.ABSORB);
+			movebank[10] = new Node(Move.RAZOR_LEAF);
+			movebank[14] = new Node(Move.SAND_ATTACK);
+			movebank[17] = new Node(Move.HEADBUTT);
+			break;
+		case 2:
+			movebank = new Node[31];
+			movebank[0] = new Node(Move.POUND);
+			movebank[0].next = new Node(Move.WITHDRAW);
+			movebank[6] = new Node(Move.ABSORB);
+			movebank[10] = new Node(Move.RAZOR_LEAF);
+			movebank[14] = new Node(Move.SAND_ATTACK);
+			movebank[17] = new Node(Move.HEADBUTT);
+			movebank[20] = new Node(Move.SLEEP_POWDER);
+			movebank[24] = new Node(Move.MEGA_DRAIN);
+			movebank[27] = new Node(Move.MAGNITUDE);
+			movebank[30] = new Node(Move.ROCK_TOMB);
+			break;
+		case 3:
+		    movebank = new Node[75];
+		    movebank[0] = new Node(Move.POUND);
+			movebank[0].next = new Node(Move.WITHDRAW);
+			movebank[6] = new Node(Move.ABSORB);
+			movebank[10] = new Node(Move.RAZOR_LEAF);
+			movebank[14] = new Node(Move.SAND_ATTACK);
+			movebank[17] = new Node(Move.HEADBUTT);
+			movebank[20] = new Node(Move.SLEEP_POWDER);
+			movebank[24] = new Node(Move.MEGA_DRAIN);
+			movebank[27] = new Node(Move.MAGNITUDE);
+			movebank[30] = new Node(Move.ROCK_TOMB);
+			movebank[35] = new Node(Move.ROCKFALL_FRENZY);
+			movebank[39] = new Node(Move.EARTHQUAKE);
+			movebank[41] = new Node(Move.POWER_GEM);
+			movebank[44] = new Node(Move.DRAGON_TAIL);
+			movebank[49] = new Node(Move.LEAF_STORM);
+			movebank[52] = new Node(Move.EARTH_POWER);
+			movebank[56] = new Node(Move.SPIKY_SHIELD);
+			movebank[64] = new Node(Move.HEAD_SMASH);
+			movebank[74] = new Node(Move.FRENZY_PLANT);
+		    break;
+		case 4:
+		    movebank = new Node[14];
+		    movebank[0] = new Node(Move.TACKLE);
+		    movebank[0].next = new Node(Move.LEER);
+		    movebank[6] = new Node(Move.EMBER);
+		    movebank[10] = new Node(Move.SMOKESCREEN);
+		    movebank[13] = new Node(Move.SLAM);
+		    break;
+		case 5:
+		    movebank = new Node[36];
+		    movebank[0] = new Node(Move.TACKLE);
+		    movebank[0].next = new Node(Move.LEER);
+		    movebank[6] = new Node(Move.EMBER);
+		    movebank[10] = new Node(Move.SMOKESCREEN);
+		    movebank[13] = new Node(Move.SLAM);
+		    movebank[16] = new Node(Move.HARDEN);
+		    movebank[19] = new Node(Move.FLAME_WHEEL);
+		    movebank[23] = new Node(Move.HEADBUTT);
+		    movebank[26] = new Node(Move.MUD_BOMB);
+		    movebank[31] = new Node(Move.FLAMETHROWER);
+		    movebank[35] = new Node(Move.IRON_DEFENSE);
+		    break;
+		case 6:
+		    movebank = new Node[75];
+		    movebank[0] = new Node(Move.TACKLE);
+		    movebank[0].next = new Node(Move.LEER);
+		    movebank[6] = new Node(Move.EMBER);
+		    movebank[10] = new Node(Move.SMOKESCREEN);
+		    movebank[13] = new Node(Move.SLAM);
+		    movebank[16] = new Node(Move.HARDEN);
+		    movebank[19] = new Node(Move.FLAME_WHEEL);
+		    movebank[23] = new Node(Move.HEADBUTT);
+		    movebank[26] = new Node(Move.MUD_BOMB);
+		    movebank[31] = new Node(Move.FLAMETHROWER);
+		    movebank[35] = new Node(Move.IRON_DEFENSE);
+		    movebank[35].next = new Node(Move.MOLTEN_STEELSPIKE);
+		    movebank[40] = new Node(Move.LAVA_PLUME);
+		    movebank[45] = new Node(Move.PSYBEAM);
+		    movebank[50] = new Node(Move.AURA_SPHERE);
+		    movebank[54] = new Node(Move.ERUPTION);
+		    movebank[59] = new Node(Move.EARTH_POWER);
+		    movebank[69] = new Node(Move.HYPER_BEAM);
+		    movebank[74] = new Node(Move.STEEL_BEAM);
+		    break;
+		case 7:
+			movebank = new Node[15];
+		    movebank[0] = new Node(Move.SCRATCH);
+		    movebank[0].next = new Node(Move.GROWL);
+		    movebank[6] = new Node(Move.WATER_GUN);
+		    movebank[10] = new Node(Move.BUBBLEBEAM);
+		    movebank[14] = new Node(Move.MUD_SPORT);
+		    break;
+		case 8:
+		    movebank = new Node[32];
+		    movebank[0] = new Node(Move.SCRATCH);
+		    movebank[0].next = new Node(Move.GROWL);
+		    movebank[6] = new Node(Move.WATER_GUN);
+		    movebank[10] = new Node(Move.BUBBLEBEAM);
+		    movebank[14] = new Node(Move.MUD_SPORT);
+		    movebank[15] = new Node(Move.BITE);
+		    movebank[18] = new Node(Move.MEAN_LOOK);
+		    movebank[22] = new Node(Move.SLAM);
+		    movebank[25] = new Node(Move.AQUA_JET);
+		    movebank[31] = new Node(Move.DRAGON_TAIL);
+		    break;
+		case 9:
+			movebank = new Node[80];
+		    movebank[0] = new Node(Move.SCRATCH);
+		    movebank[0].next = new Node(Move.GROWL);
+		    movebank[6] = new Node(Move.WATER_GUN);
+		    movebank[10] = new Node(Move.BUBBLEBEAM);
+		    movebank[14] = new Node(Move.MUD_SPORT);
+		    movebank[15] = new Node(Move.BITE);
+		    movebank[18] = new Node(Move.MEAN_LOOK);
+		    movebank[22] = new Node(Move.SLAM);
+		    movebank[25] = new Node(Move.AQUA_JET);
+		    movebank[31] = new Node(Move.DRAGON_TAIL);
+		    movebank[35] = new Node(Move.CHANNELING_BLOW);
+		    movebank[37] = new Node(Move.LIQUIDATION);
+		    movebank[40] = new Node(Move.HAMMER_ARM);
+		    movebank[45] = new Node(Move.DRAGON_RUSH);
+		    movebank[49] = new Node(Move.BULK_UP);
+		    movebank[53] = new Node(Move.CLOSE_COMBAT);
+		    movebank[58] = new Node(Move.GIGA_IMPACT);
+		    movebank[65] = new Node(Move.WAVE_CRASH);
+		    movebank[71] = new Node(Move.OUTRAGE);
+		    movebank[79] = new Node(Move.HYDRO_CANNON);
+		    break;
+		case 10:
+		    movebank = new Node[15];
+		    movebank[0] = new Node(Move.POUND);
+		    movebank[3] = new Node(Move.BRANCH_POKE);
+		    //movebank[4] = new Node(Move.STARE);
+		    //movebank[7] = new Node(Move.PUNCH);
+		    //movebank[10] = new Node(Move.WOOD_FANG);
+		    //movebank[14] = new Node(Move.LEAF_PULSE);
+		    break;
+		case 11:
+		    movebank = new Node[55];
+		    movebank[0] = new Node(Move.LEAF_BLADE);
+		    //movebank[3] = new Node(Move.LEAF_SLAP);
+		    //movebank[4] = new Node(Move.STARE);
+		    //movebank[7] = new Node(Move.PUNCH);
+		    //movebank[10] = new Node(Move.WOOD_FANG);
+		    //movebank[14] = new Node(Move.LEAF_PULSE);
+		    movebank[18] = new Node(Move.HEADBUTT);
+		    //movebank[23] = new Node(Move.BRANCH_WHACK);
+		    //movebank[28] = new Node(Move.LEAF_BALL);
+		    movebank[35] = new Node(Move.GLARE);
+		    //movebank[44] = new Node(Move.FAINT_ATTACK);
+		    movebank[54] = new Node(Move.LEAF_STORM);
+		    break;
+		case 12:
+		    movebank = new Node[27];
+		    movebank[0] = new Node(Move.POUND);
+		    //movebank[2] = new Node(Move.LEAF_SLAP);
+		    movebank[4] = new Node(Move.ROOT_KICK);
+		    movebank[5] = new Node(Move.LEER);
+		    movebank[8] = new Node(Move.HEADBUTT);
+		    movebank[12] = new Node(Move.LEAF_TORNADO);
+		    movebank[16] = new Node(Move.ROCK_THROW);
+		    movebank[21] = new Node(Move.ROCK_TOMB);
+		    movebank[26] = new Node(Move.ROCK_BLAST);
+		    break;
+		case 13:
+		    movebank = new Node[55];
+		    movebank[0] = new Node(Move.POUND);
+		    //movebank[2] = new Node(Move.LEAF_SLAP);
+		    movebank[4] = new Node(Move.ROOT_KICK);
+		    movebank[5] = new Node(Move.LEER);
+		    movebank[8] = new Node(Move.HEADBUTT);
+		    movebank[12] = new Node(Move.LEAF_TORNADO);
+		    movebank[16] = new Node(Move.ROCK_THROW);
+		    movebank[21] = new Node(Move.ROCK_TOMB);
+		    movebank[26] = new Node(Move.ROCK_BLAST);
+		    //movebank[30] = new Node(Move.LEAF_BALL);
+		    //movebank[34] = new Node(Move.STRONG_ARM);
+		    //movebank[35] = new Node(Move.SMASH);
+		    movebank[38] = new Node(Move.GROWTH);
+		    movebank[44] = new Node(Move.EARTHQUAKE);
+		    movebank[48] = new Node(Move.ROLLOUT);
+		    movebank[52] = new Node(Move.SUPERPOWER);
+		    movebank[54] = new Node(Move.LEAF_STORM);
+		    break;
+		case 14:
+		    movebank = new Node[12];
+		    movebank[0] = new Node(Move.SCRATCH);
+		    movebank[1] = new Node(Move.LEER);
+		    movebank[1].next = new Node(Move.REFLECT);
+		    movebank[3] = new Node(Move.TAIL_WHIP);
+		    movebank[6] = new Node(Move.TACKLE);
+		    //movebank[11] = new Node(Move.TAIL_WHACK);
+		    break;
+		case 15:
+		    movebank = new Node[45];
+		    movebank[0] = new Node(Move.SCRATCH);
+		    movebank[1] = new Node(Move.LEER);
+		    movebank[3] = new Node(Move.TAIL_WHIP);
+		    movebank[6] = new Node(Move.TACKLE);
+		    //movebank[11] = new Node(Move.TAIL_WHACK);
+		    movebank[16] = new Node(Move.BITE);
+		    movebank[25] = new Node(Move.BOUNCE);
+		    movebank[30] = new Node(Move.ZEN_HEADBUTT);
+		    //movebank[37] = new Node(Move.CHOMP);
+		    movebank[44] = new Node(Move.HYPER_FANG);
+		    break;
+		case 16:
+		    movebank = new Node[32];
+		    movebank[0] = new Node(Move.SCRATCH);
+		    movebank[2] = new Node(Move.TAIL_WHIP);
+		    //movebank[5] = new Node(Move.NIBBLE);
+		    //movebank[10] = new Node(Move.SLAP);
+		    movebank[14] = new Node(Move.DOUBLE_SLAP);
+		    //movebank[18] = new Node(Move.PUNCH);
+		    movebank[22] = new Node(Move.BITE);
+		    movebank[27] = new Node(Move.HEADBUTT);
+		    movebank[31] = new Node(Move.ROLLOUT);
+		    break;
+		case 17:
+		    movebank = new Node[55];
+		    movebank[0] = new Node(Move.SCRATCH);
+		    movebank[2] = new Node(Move.TAIL_WHIP);
+		    //movebank[5] = new Node(Move.NIBBLE);
+		    //movebank[10] = new Node(Move.SLAP);
+		    movebank[14] = new Node(Move.DOUBLE_SLAP);
+		    //movebank[18] = new Node(Move.PUNCH);
+		    movebank[22] = new Node(Move.BITE);
+		    movebank[27] = new Node(Move.HEADBUTT);
+		    movebank[31] = new Node(Move.ROLLOUT);
+		    //movebank[34] = new Node(Move.CHOMP);
+		    movebank[41] = new Node(Move.ZEN_HEADBUTT);
+		    movebank[48] = new Node(Move.SUPER_FANG);
+		    movebank[54] = new Node(Move.HYPER_FANG);
+		    break;
+		case 18:
+		    movebank = new Node[21];
+		    movebank[0] = new Node(Move.TACKLE);
+		    movebank[2] = new Node(Move.DEFENSE_CURL);
+		    movebank[5] = new Node(Move.MUD_SPORT);
+		    movebank[8] = new Node(Move.ROCK_POLISH);
+		    movebank[11] = new Node(Move.ROCK_THROW);
+		    movebank[15] = new Node(Move.ROCK_TOMB);
+		    movebank[20] = new Node(Move.MAGNITUDE);
+		    break;
+		case 19:
+		    movebank = new Node[36];
+		    movebank[0] = new Node(Move.TACKLE);
+		    movebank[2] = new Node(Move.DEFENSE_CURL);
+		    movebank[5] = new Node(Move.MUD_SPORT);
+		    movebank[8] = new Node(Move.ROCK_POLISH);
+		    movebank[11] = new Node(Move.ROCK_THROW);
+		    movebank[15] = new Node(Move.ROCK_TOMB);
+		    movebank[20] = new Node(Move.MAGNITUDE);
+		    movebank[25] = new Node(Move.ROLLOUT);
+		    movebank[30] = new Node(Move.SLAM);
+		    movebank[35] = new Node(Move.ROCK_BLAST);
+		    break;
+		case 20:
+		    movebank = new Node[70];
+		    movebank[0] = new Node(Move.TACKLE);
+		    movebank[2] = new Node(Move.DEFENSE_CURL);
+		    movebank[5] = new Node(Move.MUD_SPORT);
+		    movebank[8] = new Node(Move.ROCK_POLISH);
+		    movebank[11] = new Node(Move.ROCK_THROW);
+		    movebank[15] = new Node(Move.ROCK_TOMB);
+		    movebank[20] = new Node(Move.MAGNITUDE);
+		    movebank[25] = new Node(Move.ROLLOUT);
+		    movebank[30] = new Node(Move.SLAM);
+		    movebank[35] = new Node(Move.ROCK_BLAST);
+		    movebank[38] = new Node(Move.STONE_EDGE);
+		    movebank[42] = new Node(Move.EARTHQUAKE);
+		    //movebank[46] = new Node(Move.ROCKET);
+		    movebank[50] = new Node(Move.SUPERPOWER);
+		    movebank[54] = new Node(Move.EARTH_POWER);
+		    movebank[60] = new Node(Move.FIRE_BLAST);
+		    movebank[69] = new Node(Move.HYPER_BEAM);
+		    break;
+		case 21:
+		    movebank = new Node[21];
+		    movebank[0] = new Node(Move.TACKLE);
+		    movebank[1] = new Node(Move.DEFENSE_CURL);
+		    movebank[4] = new Node(Move.ROCK_POLISH);
+		    movebank[10] = new Node(Move.SLAM);
+		    movebank[15] = new Node(Move.RAPID_SPIN);
+		    movebank[20] = new Node(Move.ROLLOUT);
+		    break;
+		case 22:
+		    movebank = new Node[39];
+		    movebank[0] = new Node(Move.TACKLE);
+		    movebank[1] = new Node(Move.DEFENSE_CURL);
+		    movebank[4] = new Node(Move.ROCK_POLISH);
+		    movebank[10] = new Node(Move.SLAM);
+		    movebank[15] = new Node(Move.RAPID_SPIN);
+		    movebank[20] = new Node(Move.ROLLOUT);
+		    movebank[27] = new Node(Move.STOMP);
+		    movebank[33] = new Node(Move.ROCK_TOMB);
+		    //movebank[38] = new Node(Move.ROCK_BLADE);
+		    break;
+		case 23:
+		    movebank = new Node[60];
+		    movebank[0] = new Node(Move.TACKLE);
+		    movebank[1] = new Node(Move.DEFENSE_CURL);
+		    movebank[4] = new Node(Move.ROCK_POLISH);
+		    movebank[10] = new Node(Move.SLAM);
+		    movebank[15] = new Node(Move.RAPID_SPIN);
+		    movebank[20] = new Node(Move.ROLLOUT);
+		    movebank[27] = new Node(Move.STOMP);
+		    movebank[33] = new Node(Move.ROCK_TOMB);
+		    //movebank[38] = new Node(Move.ROCK_BLADE);
+		    movebank[39] = new Node(Move.WING_ATTACK);
+		    //movebank[44] = new Node(Move.BOULDER_SLAM);
+		    //movebank[49] = new Node(Move.SPIKE_SHOT);
+		    //movebank[54] = new Node(Move.DOUBLE_EDGE);
+		    movebank[59] = new Node(Move.SKY_ATTACK);
+		    break;
+		case 24:
+			movebank = new Node[19];
+			//movebank[0] = new Node(Move.NIBBLE);
+			movebank[1] = new Node(Move.LEER);
+			movebank[3] = new Node(Move.BUBBLE);
+			movebank[6] = new Node(Move.BITE);
+			movebank[9] = new Node(Move.WATER_GUN);
+			//movebank[13] = new Node(Move.CHOMP);
+			movebank[18] = new Node(Move.HYPER_FANG);
+			break;
+		case 25:
+			movebank = new Node[55];
+			movebank[0] = new Node(Move.THUNDER);
+			movebank[1] = new Node(Move.LEER);
+			movebank[3] = new Node(Move.BUBBLE);
+			movebank[6] = new Node(Move.BITE);
+			movebank[9] = new Node(Move.WATER_GUN);
+			//movebank[13] = new Node(Move.CHOMP);
+			movebank[18] = new Node(Move.HYPER_FANG);
+			movebank[22] = new Node(Move.SPARK);
+			movebank[27] = new Node(Move.DOUBLE_SLAP);
+			//movebank[31] = new Node(Move.TIDAL_WAVE);
+			//movebank[36] = new Node(Move.DOUBLE_BLAST);
+			movebank[45] = new Node(Move.THUNDERBOLT);
+			movebank[54] = new Node(Move.ELECTROBALL);
+			break;
+		case 26:
+			movebank = new Node[15];
+			movebank[0] = new Node(Move.TACKLE);
+			movebank[4] = new Node(Move.SAND_ATTACK);
+			movebank[6] = new Node(Move.FORESIGHT);
+			movebank[9] = new Node(Move.GUST);
+			movebank[12] = new Node(Move.PECK);
+			movebank[14] = new Node(Move.WING_ATTACK);
+			break;
+		case 27:
+			movebank = new Node[33];
+			movebank[0] = new Node(Move.TACKLE);
+			movebank[4] = new Node(Move.SAND_ATTACK);
+			movebank[6] = new Node(Move.FORESIGHT);
+			movebank[9] = new Node(Move.GUST);
+			movebank[12] = new Node(Move.PECK);
+			movebank[14] = new Node(Move.WING_ATTACK);
+			movebank[17] = new Node(Move.QUICK_ATTACK);
+			movebank[19] = new Node(Move.AIR_CUTTER);
+			movebank[23] = new Node(Move.TWISTER);
+			movebank[27] = new Node(Move.AGILITY);
+			movebank[32] = new Node(Move.ROOST);
+			break;
+		case 28:
+			movebank = new Node[55];
+			movebank[0] = new Node(Move.TACKLE);
+			movebank[4] = new Node(Move.SAND_ATTACK);
+			movebank[6] = new Node(Move.FORESIGHT);
+			movebank[9] = new Node(Move.GUST);
+			movebank[12] = new Node(Move.PECK);
+			movebank[14] = new Node(Move.WING_ATTACK);
+			movebank[17] = new Node(Move.QUICK_ATTACK);
+			movebank[19] = new Node(Move.AIR_CUTTER);
+			movebank[23] = new Node(Move.TWISTER);
+			movebank[27] = new Node(Move.AGILITY);
+			movebank[32] = new Node(Move.ROOST);
+			//movebank[39] = new Node(Move.MIRROR_MOVE);
+			movebank[44] = new Node(Move.DRILL_PECK);
+			movebank[49] = new Node(Move.AIR_SLASH);
+			movebank[54] = new Node(Move.BRAVE_BIRD);
+			break;
+		case 29:
+			movebank = new Node[15];
+			movebank[0] = new Node(Move.SAND_ATTACK);
+			movebank[9] = new Node(Move.PECK);
+			movebank[14] = new Node(Move.WING_ATTACK);
+			break;
+		case 30:
+			movebank = new Node[55];
+			movebank[0] = new Node(Move.SAND_ATTACK);
+			movebank[9] = new Node(Move.PECK);
+			movebank[14] = new Node(Move.WING_ATTACK);
+			movebank[17] = new Node(Move.GUST);
+			movebank[20] = new Node(Move.TWISTER);
+			movebank[25] = new Node(Move.FURY_ATTACK);
+			movebank[32] = new Node(Move.AGILITY);
+			movebank[39] = new Node(Move.ROOST);
+			//movebank[49] = new Node(Move.MIRROR_MOVE);
+			movebank[54] = new Node(Move.DRILL_PECK);
+			break;
+			
+			
 		case -1:
 			movebank = new Node[15];
 			//movebank[0] = new Node(Move.POKE);
@@ -8007,12 +8431,12 @@ public class Pokemon implements Serializable {
 	            type2B.setText(this.type2.toString());
 	            type2B.setBackground(this.type2.getColor());
 	        }
-	        hp = new JLabel("HP: " + this.stats[0] + ", IV: " + this.getIVs()[0]);
-	        at = new JLabel("Atk: " + this.stats[1] + ", IV: " + this.getIVs()[1]);
-	        de = new JLabel("Def: " + this.stats[2] + ", IV: " + this.getIVs()[2]);
-	        sa = new JLabel("SpA: " + this.stats[3] + ", IV: " + this.getIVs()[3]);
-	        sd = new JLabel("SpD: " + this.stats[4] + ", IV: " + this.getIVs()[4]);
-	        sp = new JLabel("Spe: " + this.stats[5] + ", IV: " + this.getIVs()[5]);
+	        hp = new JLabel("HP: " + this.stats[0] + ", IV: " + this.getIVs()[0] + "  (" + this.getBaseStat(0) + ")");
+	        at = new JLabel("Atk: " + this.stats[1] + ", IV: " + this.getIVs()[1] + "  (" + this.getBaseStat(1) + ")");
+	        de = new JLabel("Def: " + this.stats[2] + ", IV: " + this.getIVs()[2] + "  (" + this.getBaseStat(2) + ")");
+	        sa = new JLabel("SpA: " + this.stats[3] + ", IV: " + this.getIVs()[3] + "  (" + this.getBaseStat(3) + ")");
+	        sd = new JLabel("SpD: " + this.stats[4] + ", IV: " + this.getIVs()[4] + "  (" + this.getBaseStat(4) + ")");
+	        sp = new JLabel("Spe: " + this.stats[5] + ", IV: " + this.getIVs()[5] + "  (" + this.getBaseStat(5) + ")");
 	        if (this.nature[0] == 1.1) at.setForeground(Color.red.darker().darker());
 	        if (this.nature[0] == 0.9) at.setForeground(Color.blue.darker().darker());
 	        if (this.nature[1] == 1.1) de.setForeground(Color.red.darker().darker());
