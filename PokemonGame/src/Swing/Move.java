@@ -6,7 +6,7 @@ public enum Move {
 	ACCELEROCK(40,100,0,0,0,1,PType.ROCK,"Always goes first"),
 	ACID(40,100,10,0,1,0,PType.POISON,"% chance to lower foe's Sp.Def by 1"),
 	ACID_ARMOR(0,1000,0,0,2,0,PType.POISON,"Raises user's Defense by 2"),
-	ACID_SPRAY(40,100,100,0,1,0,PType.POISON,"% chance to lower foe's Sp.Def by 2"), // TODO
+	ACID_SPRAY(40,100,100,0,1,0,PType.POISON,"% chance to lower foe's Sp.Def by 2"),
 	ACROBATICS(90,100,30,0,0,0,PType.FLYING,"% chance of causing foe to flinch"), // TODO
 	AERIAL_ACE(60,1000,0,0,0,0,PType.FLYING,"This attack always hits"),
 	AEROBLAST(100,95,0,1,1,0,PType.FLYING,"Boosted Crit Rate"),
@@ -320,7 +320,6 @@ public enum Move {
 	MINIMIZE(0,1000,0,0,2,0,PType.GHOST,"Raises user's Evasion by 2"),
 	MIRROR_SHOT(65,85,30,0,1,0,PType.GALACTIC,""), // TODO
 	//MIRROR_MOVE(0,1000,0,0,1,0,PType.FLYING,"Uses the move last used by the foe, fails if foe hasn't used a move yet"),
-	MIST(0,1000,0,0,2,0,PType.ICE,""), // TODO
 	MIST_BALL(70,100,100,0,1,0,PType.PSYCHIC,""), // TODO
 	MOLTEN_CONSUME(0,100,0,0,0,0,PType.FIRE,""), // TODO
 	MOLTEN_LAIR(0,100,0,0,2,0,PType.FIRE,""), // TODO
@@ -386,7 +385,7 @@ public enum Move {
 	PSYCHIC_FANGS(85,100,100,0,0,0,PType.PSYCHIC,""), // TODO
 	PSYCHIC_TERRAIN(0,1000,0,0,2,0,PType.PSYCHIC,""), // TODO
 	PSYCHO_CUT(70,100,0,1,0,0,PType.PSYCHIC,"Boosted Crit rate"),
-	PSYSHOCK(80,100,0,0,1,0,PType.PSYCHIC,""), // TODO
+	PSYSHOCK(80,100,0,0,1,0,PType.PSYCHIC,""),
 	PSYWAVE(0,100,0,0,2,0,PType.PSYCHIC,""), // TODO
 	//PUNCH(40,90,0,0,0,0,PType.FIGHTING,"A normal attack"),
 	PURSUIT(40,100,0,0,0,0,PType.DARK,"A normal attack"), //TODO
@@ -487,7 +486,7 @@ public enum Move {
 	SPIT_UP(-1,100,0,0,1,0,PType.NORMAL,""), // TODO
 	SPLASH(0,1000,0,0,2,0,PType.NORMAL,""), // TODO
 	STAR_STORM(110,85,0,0,1,0,PType.GALACTIC,"A normal attack"),
-	STAR_STRUCK_ARCHER(75,85,0,3,0,0,PType.GALACTIC,""), // TODO
+	STAR_STRUCK_ARCHER(75,85,0,3,0,0,PType.GALACTIC,""),
 	STEALTH_ROCK(0,1000,0,0,2,0,PType.ROCK,""), // TODO
 	STEEL_BEAM(140,95,100,0,1,0,PType.STEEL,""), // TODO
 	STEEL_WING(70,90,10,0,0,0,PType.STEEL,""), // TODO

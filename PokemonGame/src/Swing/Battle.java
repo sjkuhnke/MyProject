@@ -363,9 +363,9 @@ public class Battle extends JFrame {
 		        } else {
 		            System.out.println("Oh no! " + foe.name + " broke free!");
 		            if (foeTrainer != null) {
-		            	foe.move(me.getCurrent(),foe.randomMove(), me, field, foeTrainer.getTeam());
+		            	foe.move(me.getCurrent(),foe.randomMove(), me, field, foeTrainer.getTeam(), false);
 		            } else {
-		            	foe.move(me.getCurrent(),foe.randomMove(), me, field, null);
+		            	foe.move(me.getCurrent(),foe.randomMove(), me, field, null, false);
 		            }
 					Pokemon.endOfTurn(foe, me.getCurrent(), me);
 					Pokemon.endOfTurn(me.getCurrent(), foe, me);
@@ -411,11 +411,13 @@ public class Battle extends JFrame {
 			final int index = i + 1;
 			
 			party[i].addActionListener(e -> {
-				if (me.getCurrent().vStatuses.contains(Status.SPUN) || me.getCurrent().vStatuses.contains(Status.CHARGING) || me.getCurrent().vStatuses.contains(Status.RECHARGE) || me.getCurrent().vStatuses.contains(Status.LOCKED) || me.getCurrent().vStatuses.contains(Status.STUCK)) {
+				if (me.getCurrent().vStatuses.contains(Status.SPUN) || me.getCurrent().vStatuses.contains(Status.CHARGING) || me.getCurrent().vStatuses.contains(Status.RECHARGE) || me.getCurrent().vStatuses.contains(Status.LOCKED) || me.getCurrent().vStatuses.contains(Status.TRAPPED)) {
 	        		JOptionPane.showMessageDialog(null, "You are trapped and cannot switch!");
 	                return;
 				}
 				me.swap(me.team[index], index);
+				foe.vStatuses.remove(Status.TRAPPED);
+				foe.vStatuses.remove(Status.SPUN);
 				healthBar.setMaximum(me.getCurrent().getStat(0));
 				healthBar.setValue(me.getCurrent().currentHP);
 				if (healthBar.getPercentComplete() > 0.5) {
@@ -428,15 +430,15 @@ public class Battle extends JFrame {
 				if (!me.team[index].isFainted()) {
 					if (foe.trainerOwned()) {
 		        		if (foeTrainer != null) {
-		        			foe.move(me.getCurrent(),foe.bestMove(me.team[index]), me, field, foeTrainer.getTeam());
+		        			foe.move(me.getCurrent(),foe.bestMove(me.team[index]), me, field, foeTrainer.getTeam(), false);
 		        		} else {
-		        			foe.move(me.getCurrent(),foe.bestMove(me.team[index]), me, field, null);
+		        			foe.move(me.getCurrent(),foe.bestMove(me.team[index]), me, field, null, false);
 		        		}
 		        	} else {
 		        		if (foeTrainer != null) {
-		        			foe.move(me.getCurrent(),foe.randomMove(), me, field, foeTrainer.getTeam());
+		        			foe.move(me.getCurrent(),foe.randomMove(), me, field, foeTrainer.getTeam(), false);
 		        		} else {
-		        			foe.move(me.getCurrent(),foe.randomMove(), me, field, null);
+		        			foe.move(me.getCurrent(),foe.randomMove(), me, field, null, false);
 		        		}
 		        	}
 					Pokemon.endOfTurn(foe, me.getCurrent(), me);
@@ -798,27 +800,18 @@ public class Battle extends JFrame {
 
 	public void turn(Pokemon p1, Pokemon p2, Move m1, Move m2) {
 		if (p1.isFainted() || p2.isFainted()) return;
-		int p1speed = p1.getSpeed();
-		int p2speed = p2.getSpeed();
-		Pokemon faster = p1speed > p2speed ? p1 : p2;
-		faster = m2.priority > m1.priority ? p2 : p1;
-		
-		if (p1speed == p2speed && m1.priority == m2.priority) {
-			Random random = new Random();
-			boolean isHeads = random.nextBoolean();
-			faster = isHeads ? p1 : p2;
-		}
+		Pokemon faster = p1.getFaster(p2, field, m1.priority, m2.priority);
 		
 		Pokemon slower = faster == p1 ? p2 : p1;
 		
 		if (faster == p1) {
-			faster.move(slower, m1, me, field, me.getTeam());
-	        if (foeTrainer != null) slower.move(faster, m2, me, field, foeTrainer.getTeam());
-	        else slower.move(faster, m2, me, field, null);
+			faster.move(slower, m1, me, field, me.getTeam(), true);
+	        if (foeTrainer != null) slower.move(faster, m2, me, field, foeTrainer.getTeam(), false);
+	        else slower.move(faster, m2, me, field, null, false);
 		} else {
-			if (foeTrainer != null) { faster.move(slower, m1, me, field, foeTrainer.getTeam()); }
-			else { faster.move(slower, m1, me, field, null); }
-	        slower.move(faster, m2, me, field, me.getTeam());
+			if (foeTrainer != null) { faster.move(slower, m1, me, field, foeTrainer.getTeam(), true); }
+			else { faster.move(slower, m1, me, field, null, true); }
+	        slower.move(faster, m2, me, field, me.getTeam(), false);
 		}
         Pokemon.endOfTurn(faster, slower, me);
 		Pokemon.endOfTurn(slower, faster, me);

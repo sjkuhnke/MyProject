@@ -2,13 +2,13 @@ package Swing;
 
 public enum Ability {
 
-	ADAPTABILITY(""),
-	ANGER_POINT(""),
+	ADAPTABILITY(""), // done
+	ANGER_POINT(""), // done
 	ANTICIPATION(""),
 	BERZERK(""),
-	BIG_PECKS(""),
+	INSOMNIA(""),
 	BLAZE(""),
-	CHLOROPHYL(""),
+	CHLOROPHYL(""), // done
 	CLEAR_BODY(""),
 	COMPETITIVE(""),
 	COMPOUND_EYES(""),
@@ -61,10 +61,10 @@ public enum Ability {
 	RATTLED(""),
 	RECKLESS(""),
 	REGENERATOR(""),
-	ROCK_HEAD(""),
+	ROCK_HEAD(""), // done
 	ROUGH_SKIN(""),
 	SAND_FORCE(""),
-	SAND_RUSH(""),
+	SAND_RUSH(""), // done
 	SAND_STREAM(""),
 	SAND_VEIL("When SANDSTORM is active, this Pokemon is evasive."),
 	SAP_SIPPER(""),
@@ -73,7 +73,7 @@ public enum Ability {
 	SHEER_FORCE(""),
 	SHIELD_DUST(""),
 	SIMPLE(""),
-	SLUSH_RUSH(""),
+	SLUSH_RUSH(""), // done
 	SNIPER(""),
 	SNOW_CLOAK("When SNOW is active, this Pokemon is evasive."),
 	SNOW_WARNING(""),
@@ -89,7 +89,7 @@ public enum Ability {
 	SUPER_LUCK(""),
 	SWAG(""),
 	SWARM(""),
-	SWIFT_SWIM(""),
+	SWIFT_SWIM(""), // done
 	SYNCHRONIZE(""),
 	TECHNICIAN(""),
 	THICK_FAT(""),

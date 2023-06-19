@@ -32,7 +32,8 @@ public class Field {
 		REFLECT(5, false, false),
 		LIGHT_SCREEN(5, false, false),
 		TRICK_ROOM(5, false, false),
-		GRAVITY(5, false, false),
+		GRAVITY(5, false, false), 
+		TAILWIND(4, false, false),
 		;
 		
 		private Effect(int turns, boolean isWeather, boolean isTerrain) {
@@ -94,10 +95,15 @@ public class Field {
 		fieldEffects.add(effect);
 	}
 
-	public boolean contains(ArrayList<FieldEffect> side, Effect reflect) {
-		for (FieldEffect effect : side) {
-			if (effect.effect == reflect) return true;
+	public boolean contains(ArrayList<FieldEffect> side, Effect effect) {
+		for (FieldEffect e : side) {
+			if (e.effect == effect) return true;
 		}
+		return false;
+	}
+	
+	public boolean equals(FieldEffect fe, Effect e) {
+		if (fe.effect == e) return true;
 		return false;
 	}
 	

@@ -67,6 +67,7 @@ public class Pokemon implements Serializable {
 	private double trainer;
 	public int slot;
 	public int abilitySlot;
+	public boolean success;
 	
 	public Pokemon(int i, int l, boolean o, boolean t) {
 		id = i;
@@ -1790,100 +1791,100 @@ public class Pokemon implements Serializable {
 		} else if (id == 7) { abilities = new Ability[] {Ability.TORRENT, Ability.PROTEAN};
 		} else if (id == 8) { abilities = new Ability[] {Ability.TORRENT, Ability.PROTEAN};
 		} else if (id == 9) { abilities = new Ability[] {Ability.TORRENT, Ability.PROTEAN};
-		} else if (id == 10) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 11) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 12) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 13) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 14) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 15) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 16) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 17) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 18) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 19) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 20) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 21) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 22) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 23) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 24) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 25) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 26) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 27) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 28) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 29) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 30) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 31) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 32) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 33) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 34) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 35) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 36) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 37) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 38) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 39) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 40) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 41) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 42) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 43) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 44) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 45) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 46) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 47) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 48) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 49) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 50) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 51) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 52) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 53) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 54) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 55) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 56) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 57) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 58) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 59) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 60) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 61) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 62) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 63) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 64) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 65) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 66) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 67) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 68) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 69) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 70) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 71) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 72) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 73) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 74) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 75) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 76) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 77) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 78) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 79) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 80) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 81) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 82) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 83) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 84) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 85) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 86) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 87) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 88) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 89) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 90) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 91) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 92) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 93) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 94) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 95) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 96) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 97) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 98) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 99) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 100) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 101) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 102) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 103) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
+		} else if (id == 10) { abilities = new Ability[] {Ability.KEEN_EYE, Ability.INSECT_FEEDER};
+		} else if (id == 11) { abilities = new Ability[] {Ability.KEEN_EYE, Ability.INSECT_FEEDER};
+		} else if (id == 12) { abilities = new Ability[] {Ability.MAGIC_GUARD, Ability.INSECT_FEEDER};
+		} else if (id == 13) { abilities = new Ability[] {Ability.INSOMNIA, Ability.INSECT_FEEDER};
+		} else if (id == 14) { abilities = new Ability[] {Ability.INSOMNIA, Ability.INSECT_FEEDER};
+		} else if (id == 15) { abilities = new Ability[] {Ability.MIRROR_ARMOR, Ability.TOUGH_CLAWS};
+		} else if (id == 16) { abilities = new Ability[] {Ability.MOUTHWATER, Ability.THICK_FAT};
+		} else if (id == 17) { abilities = new Ability[] {Ability.MOUTHWATER, Ability.THICK_FAT};
+		} else if (id == 18) { abilities = new Ability[] {Ability.ROUGH_SKIN, Ability.ROCK_HEAD};
+		} else if (id == 19) { abilities = new Ability[] {Ability.ADAPTABILITY, Ability.ANGER_POINT};
+		} else if (id == 20) { abilities = new Ability[] {Ability.ADAPTABILITY, Ability.SHIELD_DUST};
+		} else if (id == 21) { abilities = new Ability[] {Ability.ADAPTABILITY, Ability.LEVITATE};
+		} else if (id == 22) { abilities = new Ability[] {Ability.SWARM, Ability.COMPOUND_EYES};
+		} else if (id == 23) { abilities = new Ability[] {Ability.SWARM, Ability.COMPOUND_EYES};
+		} else if (id == 24) { abilities = new Ability[] {Ability.SWARM, Ability.COMPOUND_EYES};
+		} else if (id == 25) { abilities = new Ability[] {Ability.ROUGH_SKIN, Ability.COMPOUND_EYES};
+		} else if (id == 26) { abilities = new Ability[] {Ability.ANGER_POINT, Ability.CHLOROPHYL};
+		} else if (id == 27) { abilities = new Ability[] {Ability.ANGER_POINT, Ability.CHLOROPHYL};
+		} else if (id == 28) { abilities = new Ability[] {Ability.BERZERK, Ability.CHLOROPHYL};
+		} else if (id == 29) { abilities = new Ability[] {Ability.NATURAL_CURE, Ability.POISON_POINT};
+		} else if (id == 30) { abilities = new Ability[] {Ability.NATURAL_CURE, Ability.POISON_POINT};
+		} else if (id == 31) { abilities = new Ability[] {Ability.NATURAL_CURE, Ability.TECHNICIAN};
+		} else if (id == 32) { abilities = new Ability[] {Ability.SWARM, Ability.CHLOROPHYL};
+		} else if (id == 33) { abilities = new Ability[] {Ability.SWARM, Ability.CHLOROPHYL};
+		} else if (id == 34) { abilities = new Ability[] {Ability.SWARM, Ability.CHLOROPHYL};
+		} else if (id == 35) { abilities = new Ability[] {Ability.SWARM, Ability.SWARM};
+		} else if (id == 36) { abilities = new Ability[] {Ability.STATIC, Ability.STATIC};
+		} else if (id == 37) { abilities = new Ability[] {Ability.LEVITATE, Ability.LEVITATE};
+		} else if (id == 38) { abilities = new Ability[] {Ability.LEAF_GUARD, Ability.FLUFFY};
+		} else if (id == 39) { abilities = new Ability[] {Ability.MOXIE, Ability.DEFIANT};
+		} else if (id == 40) { abilities = new Ability[] {Ability.SERENE_GRACE, Ability.COMPETITIVE};
+		} else if (id == 41) { abilities = new Ability[] {Ability.HYPER_CUTTER, Ability.SWARM};
+		} else if (id == 42) { abilities = new Ability[] {Ability.HYPER_CUTTER, Ability.JUSTIFIED};
+		} else if (id == 43) { abilities = new Ability[] {Ability.SPEED_BOOST, Ability.JUSTIFIED};
+		} else if (id == 44) { abilities = new Ability[] {Ability.SWIFT_SWIM, Ability.RAIN_DISH};
+		} else if (id == 45) { abilities = new Ability[] {Ability.SWIFT_SWIM, Ability.RAIN_DISH};
+		} else if (id == 46) { abilities = new Ability[] {Ability.SWIFT_SWIM, Ability.RAIN_DISH};
+		} else if (id == 47) { abilities = new Ability[] {Ability.MAGIC_GUARD, Ability.FLASH_FIRE};
+		} else if (id == 48) { abilities = new Ability[] {Ability.STURDY, Ability.UNERODIBLE};
+		} else if (id == 49) { abilities = new Ability[] {Ability.STURDY, Ability.UNERODIBLE};
+		} else if (id == 50) { abilities = new Ability[] {Ability.STURDY, Ability.UNERODIBLE};
+		} else if (id == 51) { abilities = new Ability[] {Ability.STURDY, Ability.FILTER};
+		} else if (id == 52) { abilities = new Ability[] {Ability.SHED_SKIN, Ability.REGENERATOR};
+		} else if (id == 53) { abilities = new Ability[] {Ability.SYNCHRONIZE, Ability.REGENERATOR};
+		} else if (id == 54) { abilities = new Ability[] {Ability.PSYCHIC_SURGE, Ability.REGENERATOR};
+		} else if (id == 55) { abilities = new Ability[] {Ability.INTIMIDATE, Ability.TECHNICIAN};
+		} else if (id == 56) { abilities = new Ability[] {Ability.INTIMIDATE, Ability.TECHNICIAN};
+		} else if (id == 57) { abilities = new Ability[] {Ability.GUTS, Ability.NO_GUARD};
+		} else if (id == 58) { abilities = new Ability[] {Ability.GUTS, Ability.NO_GUARD};
+		} else if (id == 59) { abilities = new Ability[] {Ability.SNOW_CLOAK, Ability.MOUTHWATER};
+		} else if (id == 60) { abilities = new Ability[] {Ability.SNOW_CLOAK, Ability.ICE_BODY};
+		} else if (id == 61) { abilities = new Ability[] {Ability.SNOW_CLOAK, Ability.SPARKLY_SURGE};
+		} else if (id == 62) { abilities = new Ability[] {Ability.ICY_SCALES, Ability.SWARM};
+		} else if (id == 63) { abilities = new Ability[] {Ability.ICY_SCALES, Ability.SWARM};
+		} else if (id == 64) { abilities = new Ability[] {Ability.STURDY, Ability.TECHNICIAN};
+		} else if (id == 65) { abilities = new Ability[] {Ability.GUTS, Ability.SLUSH_RUSH};
+		} else if (id == 66) { abilities = new Ability[] {Ability.ROCK_HEAD, Ability.SAND_FORCE};
+		} else if (id == 67) { abilities = new Ability[] {Ability.ROCK_HEAD, Ability.SAND_FORCE};
+		} else if (id == 68) { abilities = new Ability[] {Ability.THICK_FAT, Ability.ICE_BODY};
+		} else if (id == 69) { abilities = new Ability[] {Ability.THICK_FAT, Ability.ICE_BODY};
+		} else if (id == 70) { abilities = new Ability[] {Ability.THICK_FAT, Ability.ICE_BODY};
+		} else if (id == 71) { abilities = new Ability[] {Ability.TORRENT, Ability.SLUSH_RUSH};
+		} else if (id == 72) { abilities = new Ability[] {Ability.TORRENT, Ability.SLUSH_RUSH};
+		} else if (id == 73) { abilities = new Ability[] {Ability.TECHNICIAN, Ability.REGENERATOR};
+		} else if (id == 74) { abilities = new Ability[] {Ability.TECHNICIAN, Ability.REGENERATOR};
+		} else if (id == 75) { abilities = new Ability[] {Ability.ANTICIPATION, Ability.NATURAL_CURE};
+		} else if (id == 76) { abilities = new Ability[] {Ability.ANTICIPATION, Ability.NATURAL_CURE};
+		} else if (id == 77) { abilities = new Ability[] {Ability.ANTICIPATION, Ability.NATURAL_CURE};
+		} else if (id == 78) { abilities = new Ability[] {Ability.WATER_VEIL, Ability.ANTICIPATION};
+		} else if (id == 79) { abilities = new Ability[] {Ability.WATER_VEIL, Ability.SWIFT_SWIM};
+		} else if (id == 80) { abilities = new Ability[] {Ability.GRASSY_SURGE, Ability.GRASSY_SURGE};
+		} else if (id == 81) { abilities = new Ability[] {Ability.GRASSY_SURGE, Ability.GRASSY_SURGE};
+		} else if (id == 82) { abilities = new Ability[] {Ability.PSYCHIC_SURGE, Ability.LEVITATE};
+		} else if (id == 83) { abilities = new Ability[] {Ability.PSYCHIC_SURGE, Ability.LEVITATE};
+		} else if (id == 84) { abilities = new Ability[] {Ability.PSYCHIC_SURGE, Ability.LEVITATE};
+		} else if (id == 85) { abilities = new Ability[] {Ability.SYNCHRONIZE, Ability.NATURAL_CURE};
+		} else if (id == 86) { abilities = new Ability[] {Ability.SYNCHRONIZE, Ability.NATURAL_CURE};
+		} else if (id == 87) { abilities = new Ability[] {Ability.SYNCHRONIZE, Ability.NATURAL_CURE};
+		} else if (id == 88) { abilities = new Ability[] {Ability.JUSTIFIED, Ability.NO_GUARD};
+		} else if (id == 89) { abilities = new Ability[] {Ability.SIMPLE, Ability.NORMALIZE};
+		} else if (id == 90) { abilities = new Ability[] {Ability.CONTRARY, Ability.CONTRARY};
+		} else if (id == 91) { abilities = new Ability[] {Ability.CONTRARY, Ability.CONTRARY};
+		} else if (id == 92) { abilities = new Ability[] {Ability.FLASH_FIRE, Ability.INTIMIDATE};
+		} else if (id == 93) { abilities = new Ability[] {Ability.FLASH_FIRE, Ability.INTIMIDATE};
+		} else if (id == 94) { abilities = new Ability[] {Ability.FLAME_BODY, Ability.FLAME_BODY};
+		} else if (id == 95) { abilities = new Ability[] {Ability.FLAME_BODY, Ability.FLAME_BODY};
+		} else if (id == 96) { abilities = new Ability[] {Ability.FLAME_BODY, Ability.FLAME_BODY};
+		} else if (id == 97) { abilities = new Ability[] {Ability.STEELWORKER, Ability.STEELWORKER};
+		} else if (id == 98) { abilities = new Ability[] {Ability.FLAME_BODY, Ability.FLAME_BODY};
+		} else if (id == 99) { abilities = new Ability[] {Ability.INTIMIDATE, Ability.INTIMIDATE};
+		} else if (id == 100) { abilities = new Ability[] {Ability.LEVITATE, Ability.LEVITATE};
+		} else if (id == 101) { abilities = new Ability[] {Ability.SOLID_ROCK, Ability.SOLID_ROCK};
+		} else if (id == 102) { abilities = new Ability[] {Ability.SOLID_ROCK, Ability.SOLID_ROCK};
+		} else if (id == 103) { abilities = new Ability[] {Ability.SOLID_ROCK, Ability.SOLID_ROCK};
 		} else if (id == 104) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
 		} else if (id == 105) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
 		} else if (id == 106) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
@@ -3722,13 +3723,15 @@ public class Pokemon implements Serializable {
 	}
 
 	
-	public void move(Pokemon foe, Move move, Player player, Field field, Pokemon[] team) {
+	public void move(Pokemon foe, Move move, Player player, Field field, Pokemon[] team, boolean first) {
 		if (this.fainted || foe.fainted) return;
 
 		double attackStat;
 		double defenseStat;
 		int damage = 0;
 		int bp = move.basePower;
+		PType moveType = move.mtype;
+		
 		if (!this.vStatuses.contains(Status.CHARGING) && !this.vStatuses.contains(Status.LOCKED) && move != Move.MAGIC_REFLECT && move != Move.TAKE_OVER && move != Move.ABDUCT && move != Move.DESTINY_BOND) this.lastMoveUsed = move;
 		if (move == Move.FAILED_SUCKER) this.lastMoveUsed = Move.SUCKER_PUNCH;
 		
@@ -3752,7 +3755,7 @@ public class Pokemon implements Serializable {
 						foe.awardxp((int) Math.ceil(this.level * trainer), player);
 					}
 					confusionCounter--;
-					this.impressive = false;
+					endMove();
 					this.vStatuses.remove(Status.LOCKED);
 					this.vStatuses.remove(Status.CHARGING);
 					return;
@@ -3814,8 +3817,9 @@ public class Pokemon implements Serializable {
 			}
 		}
 		if (this.vStatuses.contains(Status.LOCKED) && this.lastMoveUsed == Move.OUTRAGE) move = Move.OUTRAGE;
+		if (this.vStatuses.contains(Status.LOCKED) && this.lastMoveUsed == Move.PETAL_DANCE) move = Move.PETAL_DANCE;
 		if (this.vStatuses.contains(Status.LOCKED) && this.lastMoveUsed == Move.ROLLOUT) move = Move.ROLLOUT;
-		if (move == Move.OUTRAGE) {
+		if (move == Move.OUTRAGE || move == Move.PETAL_DANCE) {
 			if (!this.vStatuses.contains(Status.LOCKED)) {
 				this.vStatuses.add(Status.LOCKED);
 				this.outCount = (int)(Math.random()*2) + 2;
@@ -3839,20 +3843,20 @@ public class Pokemon implements Serializable {
 //			}
 //		}
 		if (foe.vStatuses.contains(Status.REFLECT) && move != Move.BRICK_BREAK) {
-			this.move(this, move, player, field, team);
+			this.move(this, move, player, field, team, false);
 			System.out.println(move + " was reflected on itself!");
 			foe.vStatuses.remove(Status.REFLECT);
 			return;
 		}
 		if (this.vStatuses.contains(Status.POSESSED)) {
 			this.vStatuses.remove(Status.POSESSED);
-			this.move(this, move, player, field, team);
+			this.move(this, move, player, field, team, false);
 			System.out.println(move + " was used on itself!");
 			return;
 		}
 		if (move == Move.FAILED_SUCKER) {
 			System.out.println("\n" + this.name + " used Sucker Punch!");
-			System.out.println("But it failed!");
+			fail();
 			this.impressive = false;
 			return;
 		}
@@ -3864,7 +3868,7 @@ public class Pokemon implements Serializable {
 		}
 		if ((move == Move.FIRST_IMPRESSION || move == Move.BELCH) && !this.impressive) {
 			System.out.print("\n" + this.name + " used " + move + "!");
-			System.out.println("\nBut it failed!");
+			fail();
 			return;
 		}
 		int accEv = this.statStages[5] - foe.statStages[6];
@@ -3881,30 +3885,30 @@ public class Pokemon implements Serializable {
 					foe.awardxp((int) Math.ceil(this.level * trainer), player);
 				}
 			}
-			this.impressive = false;
+			endMove();
 			this.vStatuses.remove(Status.LOCKED);
 			return; // Check for miss
 		}
 		
 		if (move.accuracy <= 100 && move.cat != 2) {
-			if (getImmune(foe, move.mtype)) {
+			if (getImmune(foe, moveType)) {
 				System.out.println("\n" + this.name + " used " + move + "!");
 				System.out.println("It doesn't effect " + foe.name + "...");
-				this.impressive = false;
+				endMove();
 				return; // Check for immunity
 			}
 		} else if (move.accuracy > 100 && move.cat != 2) {
-			if (getImmune(foe, move.mtype)) {
+			if (getImmune(foe, moveType)) {
 				System.out.println("\n" + this.name + " used " + move + "!");
 				System.out.println("It doesn't effect " + foe.name + "...");
-				this.impressive = false;
+				endMove();
 				return; // Check for immunity
 			}
 		}
-		if (move.cat != 2 && move.mtype == PType.GROUND && foe.magCount > 0) {
+		if (move.cat != 2 && moveType == PType.GROUND && foe.magCount > 0) {
 			System.out.println("\n" + this.name + " used " + move + "!");
 			System.out.println("It doesn't effect " + foe.name + "...");
-			this.impressive = false;
+			endMove();
 			return; // Check for immunity
 		}
 		if (foe.magCount > 0) foe.magCount--;
@@ -3913,12 +3917,12 @@ public class Pokemon implements Serializable {
 		
 		if (move == Move.DREAM_EATER && foe.status != Status.ASLEEP) {
 			System.out.println("It doesn't effect " + foe.name + "...");
-			this.impressive = false;
+			endMove();
 			return;
 		}
 		if (move.cat == 2) {
 			statusEffect(foe, move, player, field, team);
-			this.impressive = false;
+			endMove();
 			return;
 		}
 		
@@ -3938,6 +3942,7 @@ public class Pokemon implements Serializable {
 			defenseStat = foe.getStat(4);
 			attackStat *= this.asModifier(2);
 			defenseStat *= foe.asModifier(3);
+			if (move == Move.PSYSHOCK) defenseStat = foe.getStat(2) * foe.asModifier(1);
 			if (this.status == Status.FROSTBITE) attackStat /= 2;
 		}
 		
@@ -3956,30 +3961,33 @@ public class Pokemon implements Serializable {
 			if (!move.isPhysical() && defenseStat > foe.getStat(4)) attackStat = foe.getStat(4);
 			damage = calc(attackStat, defenseStat, bp, this.level);
 			damage *= 1.5;
+			if (foe.ability == Ability.ANGER_POINT) System.out.print("[" + this.name + "'s Anger Point]"); stat(foe, 0, 12);
 		} else {
 			damage = calc(attackStat, defenseStat, bp, this.level);
 		}
 		
 		// Stab
-		if (move.mtype == this.type1) damage *= 1.5;
-		if (move.mtype == this.type2) damage *= 1.5;
+		if (moveType == this.type1 || moveType == this.type2) {
+			damage *= 1.5;
+			if (ability == Ability.ADAPTABILITY) damage *= 2;
+		}
 		
 		// Charged
-		if (move.mtype == PType.ELECTRIC && this.vStatuses.contains(Status.CHARGED)) {
+		if (moveType == PType.ELECTRIC && this.vStatuses.contains(Status.CHARGED)) {
 			damage *= 2;
 			this.vStatuses.remove(Status.CHARGED);
 		}
 		
 		double multiplier = 1;
 		// Check type effectiveness
-		PType[] resist = getResistances(move.mtype);
+		PType[] resist = getResistances(moveType);
 		for (PType type : resist) {
 			if (foe.type1 == type) multiplier /= 2;
 			if (foe.type2 == type) multiplier /= 2;
 		}
 		
 		// Check type effectiveness
-		PType[] weak = getWeaknesses(move.mtype);
+		PType[] weak = getWeaknesses(moveType);
 		for (PType type : weak) {
 			if (foe.type1 == type) multiplier *= 2;
 			if (foe.type2 == type) multiplier *= 2;
@@ -3992,7 +4000,12 @@ public class Pokemon implements Serializable {
 		if (move == Move.NIGHT_SHADE || move == Move.SEISMIC_TOSS) damage = this.level;
 		if (move == Move.SUPER_FANG) damage = foe.currentHP / 2;
 		if (move == Move.DRAGON_RAGE) damage = 40;
-		if (move == Move.HORN_DRILL) {
+		if (move == Move.HORN_DRILL || move == Move.SHEER_COLD || move == Move.GUILLOTINE || move == Move.FISSURE) {
+			if (move == Move.SHEER_COLD && (foe.type1 == PType.ICE || foe.type2 == PType.ICE)) {
+				System.out.println("It doesn't effect " + foe.name + "...");
+				endMove();
+				return;
+			}
 			damage = foe.currentHP;
 			System.out.println("It's a one-hit KO!");
 		}
@@ -4013,13 +4026,14 @@ public class Pokemon implements Serializable {
 		damage = Math.max(damage, 1);
 		
 		if (checkSecondary(move.secondary)) {
-			secondaryEffect(foe, move);
+			secondaryEffect(foe, move, field, first);
 		}
 		int recoil = 0;
-		if (move == Move.BRAVE_BIRD || move == Move.FLARE_BLITZ || move == Move.HEAD_SMASH || move == Move.TAKE_DOWN || move == Move.VOLT_TACKLE || move == Move.ROCK_WRECKER) {
+		if ((move == Move.BRAVE_BIRD || move == Move.FLARE_BLITZ || move == Move.HEAD_SMASH || move == Move.TAKE_DOWN || move == Move.VOLT_TACKLE || move == Move.ROCK_WRECKER) && ability != Ability.ROCK_HEAD) {
 			recoil = Math.max(Math.floorDiv(damage, 3), 1);
 			if (damage >= foe.currentHP) recoil = Math.max(Math.floorDiv(foe.currentHP, 3), 1);
 		}
+		
 		// Damage foe
 		foe.currentHP -= damage;
 		if (foe.currentHP <= 0 && move == Move.FALSE_SWIPE) foe.currentHP = 1;
@@ -4052,11 +4066,24 @@ public class Pokemon implements Serializable {
 				}
 			}
 			Move[] validMoves = moves.toArray(new Move[moves.size()]);
-			move(foe, validMoves[new Random().nextInt(validMoves.length)], player, field, team);
+			move(foe, validMoves[new Random().nextInt(validMoves.length)], player, field, team, first);
 		}
-		this.impressive = false;
+		endMove();
 		return;
 	}
+
+	private void endMove() {
+		impressive = false;
+		success = true;
+	}
+
+	private void fail() {
+		System.out.println("But it failed!");
+		success = false;
+	}
+
+
+
 
 	public void awardxp(int amt, Player player) {
 	    if (this.fainted) return;
@@ -4098,16 +4125,18 @@ public class Pokemon implements Serializable {
 
 
 
-	private void secondaryEffect(Pokemon foe, Move move) {
+	private void secondaryEffect(Pokemon foe, Move move, Field field, boolean first) {
 		if (move == Move.ACID) {
 			stat(foe, 3, -1);
+		} else if (move == Move.ACID_SPRAY) {
+			stat(foe, 3, -2);
 		} else if (move == Move.ANCIENT_POWER) {
 			for (int i = 0; i < 5; ++i) {
 				stat(this, i, 1);
 			}
-		} else if (move == Move.AIR_SLASH && this.getSpeed() >= foe.getSpeed()) {
+		} else if (move == Move.AIR_SLASH && first) {
 			foe.vStatuses.add(Status.FLINCHED);
-		} else if (move == Move.ASTONISH && this.getSpeed() >= foe.getSpeed()) {
+		} else if (move == Move.ASTONISH && first) {
 			foe.vStatuses.add(Status.FLINCHED);
 		} else if (move == Move.BEAT_UP) {
 			if (foe.status == Status.HEALTHY) {
@@ -4116,7 +4145,7 @@ public class Pokemon implements Serializable {
 			}
 //		} else if (move == Move.BIG_BULLET) {
 //			foe.paralyze(false);
-		} else if (move == Move.BITE && this.getSpeed() >= foe.getSpeed()) {
+		} else if (move == Move.BITE && first) {
 			foe.vStatuses.add(Status.FLINCHED);
 //		} else if (move == Move.BLACK_HOLE) {
 //			stat(foe, 5, -1);
@@ -4130,7 +4159,7 @@ public class Pokemon implements Serializable {
 			foe.paralyze(false);
 		} else if (move == Move.BOLT_STRIKE) {
 			foe.paralyze(false);
-//		} else if (move == Move.BOULDER_CRUSH && this.getSpeed() >= foe.getSpeed()) {
+//		} else if (move == Move.BOULDER_CRUSH && first) {
 //			foe.vStatuses.add(Status.FLINCHED);
 		} else if (move == Move.BOUNCE) {
 			foe.paralyze(false);
@@ -4151,7 +4180,7 @@ public class Pokemon implements Serializable {
 			foe.poison(false);
 		} else if (move == Move.CRUNCH) {
 			stat(foe, 1, -1);
-		} else if (move == Move.DARK_PULSE && this.getSpeed() >= foe.getSpeed()) {
+		} else if (move == Move.DARK_PULSE && first) {
 			foe.vStatuses.add(Status.FLINCHED);
 		} else if (move == Move.DISCHARGE) {
 			foe.paralyze(false);
@@ -4168,7 +4197,7 @@ public class Pokemon implements Serializable {
 //			}
 		} else if (move == Move.DRACO_METEOR) {
 			stat(this, 2, -2);
-		} else if (move == Move.DRAGON_RUSH && this.getSpeed() >= foe.getSpeed()) {
+		} else if (move == Move.DRAGON_RUSH && first) {
 			foe.vStatuses.add(Status.FLINCHED);
 		} else if (move == Move.DRAGON_BREATH) {
 			foe.paralyze(false);
@@ -4189,11 +4218,11 @@ public class Pokemon implements Serializable {
 //			int randomNum = ((int) Math.random() * 3);
 //			if (randomNum == 0) {
 //				foe.burn(false);
-//			} else if (randomNum == 1 && this.getSpeed() >= foe.getSpeed()) {
+//			} else if (randomNum == 1 && first) {
 //				foe.vStatuses.add(Status.FLINCHED);
 //			}
 //			 else if (randomNum == 2) {
-//				if (this.getSpeed() >= foe.getSpeed()) foe.vStatuses.add(Status.FLINCHED);
+//				if (first) foe.vStatuses.add(Status.FLINCHED);
 //				foe.burn(false);
 //			}
 //		} else if (move == Move.FIRE_DASH) {
@@ -4202,11 +4231,11 @@ public class Pokemon implements Serializable {
 			int randomNum = ((int) Math.random() * 3);
 			if (randomNum == 0) {
 				foe.burn(false);
-			} else if (randomNum == 1 && this.getSpeed() >= foe.getSpeed()) {
+			} else if (randomNum == 1 && first) {
 				foe.vStatuses.add(Status.FLINCHED);
 			}
 			 else if (randomNum == 2) {
-				if (this.getSpeed() >= foe.getSpeed()) foe.vStatuses.add(Status.FLINCHED);
+				if (first) foe.vStatuses.add(Status.FLINCHED);
 				foe.burn(false);
 			}
 		} else if (move == Move.FIRE_PUNCH) {
@@ -4252,15 +4281,15 @@ public class Pokemon implements Serializable {
 			foe.poison(false);
 		} else if (move == Move.HAMMER_ARM) {
 			stat(this, 4, -1);
-		} else if (move == Move.HEADBUTT && this.getSpeed() >= foe.getSpeed()) {
+		} else if (move == Move.HEADBUTT && first) {
 			foe.vStatuses.add(Status.FLINCHED);
 		} else if (move == Move.HEAT_WAVE) {
 			foe.burn(false);
-		} else if (move == Move.HYPER_FANG && this.getSpeed() >= foe.getSpeed()) {
+		} else if (move == Move.HYPER_FANG && first) {
 			foe.vStatuses.add(Status.FLINCHED);
 //		} else if (move == Move.INJECT) {
 //			foe.poison(false);
-		} else if (move == Move.IRON_HEAD && this.getSpeed() >= foe.getSpeed()) {
+		} else if (move == Move.IRON_HEAD && first) {
 			foe.vStatuses.add(Status.FLINCHED);
 		} else if (move == Move.IRON_TAIL) {
 			stat(foe, 1, -1);
@@ -4284,11 +4313,11 @@ public class Pokemon implements Serializable {
 //			int randomNum = ((int) Math.random() * 3);
 //			if (randomNum == 0) {
 //				foe.paralyze(false);
-//			} else if (randomNum == 1 && this.getSpeed() >= foe.getSpeed()) {
+//			} else if (randomNum == 1 && first) {
 //				foe.vStatuses.add(Status.FLINCHED);
 //			}
 //			 else if (randomNum == 2) {
-//				if (this.getSpeed() >= foe.getSpeed()) foe.vStatuses.add(Status.FLINCHED);
+//				if (first) foe.vStatuses.add(Status.FLINCHED);
 //				foe.paralyze(false);
 //			}
 		} else if (move == Move.LOW_KICK) {
@@ -4320,7 +4349,7 @@ public class Pokemon implements Serializable {
 			default:
 				return;
 			}
-		} else if (move == Move.MAGIC_FANG && this.getSpeed() >= foe.getSpeed()) {
+		} else if (move == Move.MAGIC_FANG && first) {
 			double multiplier = 1;
 			// Check type effectiveness
 			PType[] resist = getResistances(move.mtype);
@@ -4361,11 +4390,11 @@ public class Pokemon implements Serializable {
 			int randomNum = ((int) Math.random() * 3);
 			if (randomNum == 0) {
 				foe.poison(false);
-			} else if (randomNum == 1 && this.getSpeed() >= foe.getSpeed()) {
+			} else if (randomNum == 1 && first) {
 				foe.vStatuses.add(Status.FLINCHED);
 			}
 			 else if (randomNum == 2) {
-				if (this.getSpeed() >= foe.getSpeed()) foe.vStatuses.add(Status.FLINCHED);
+				if (first) foe.vStatuses.add(Status.FLINCHED);
 				foe.poison(false);
 			}
 		} else if (move == Move.POISON_JAB) {
@@ -4398,7 +4427,7 @@ public class Pokemon implements Serializable {
 //		} else if (move == Move.SHURIKEN && foe.status == Status.HEALTHY) {
 //			foe.status = Status.BLEEDING;
 //			System.out.println(foe.name + " is bleeding!");
-		} else if (move == Move.SKY_ATTACK && this.getSpeed() >= foe.getSpeed()) {
+		} else if (move == Move.SKY_ATTACK && first) {
 			foe.vStatuses.add(Status.FLINCHED);
 		} else if (move == Move.SLUDGE) {
 			foe.poison(false);
@@ -4413,20 +4442,20 @@ public class Pokemon implements Serializable {
 //		} else if (move == Move.STING && foe.status == Status.HEALTHY) {
 //			foe.status = Status.BLEEDING;
 //			System.out.println(foe.name + " is bleeding!");
-		} else if (move == Move.STOMP && this.getSpeed() >= foe.getSpeed()) {
+		} else if (move == Move.STOMP && first) {
 			foe.vStatuses.add(Status.FLINCHED);
 //		} else if (move == Move.STRONG_ARM) {
 //			int randomNum = ((int) Math.random() * 3);
 //			if (randomNum == 0) {
 //				foe.paralyze(false);
-//			} else if (randomNum == 1 && this.getSpeed() >= foe.getSpeed()) {
+//			} else if (randomNum == 1 && first) {
 //				foe.vStatuses.add(Status.FLINCHED);
 //			}
 //			 else if (randomNum == 2) {
-//				if (this.getSpeed() >= foe.getSpeed()) foe.vStatuses.add(Status.FLINCHED);
+//				if (first) foe.vStatuses.add(Status.FLINCHED);
 //				foe.paralyze(false);
 //			}
-//		} else if (move == Move.SUPER_CHARGE && this.getSpeed() >= foe.getSpeed()) {
+//		} else if (move == Move.SUPER_CHARGE && first) {
 //			foe.vStatuses.add(Status.FLINCHED);
 		} else if (move == Move.SUPERPOWER) {
 			stat(this, 0, -1);
@@ -4446,11 +4475,11 @@ public class Pokemon implements Serializable {
 			int randomNum = ((int) Math.random() * 3);
 			if (randomNum == 0) {
 				foe.paralyze(false);
-			} else if (randomNum == 1 && this.getSpeed() >= foe.getSpeed()) {
+			} else if (randomNum == 1 && first) {
 				foe.vStatuses.add(Status.FLINCHED);
 			}
 			 else if (randomNum == 2) {
-				if (this.getSpeed() >= foe.getSpeed()) foe.vStatuses.add(Status.FLINCHED);
+				if (first) foe.vStatuses.add(Status.FLINCHED);
 				foe.paralyze(false);
 			}
 //		} else if (move == Move.THUNDER_KICK) {
@@ -4467,19 +4496,19 @@ public class Pokemon implements Serializable {
 				System.out.println(this.name + " was freed!");
 				this.spunCount = 0;
 			}
-		} else if (move == Move.TWISTER && this.getSpeed() >= foe.getSpeed()) {
+		} else if (move == Move.TWISTER && first) {
 			foe.vStatuses.add(Status.FLINCHED);
 		} else if (move == Move.VOLT_TACKLE) {
 			foe.paralyze(false);
 		} else if (move == Move.WATER_PULSE) {
 			foe.confuse();
-		} else if (move == Move.WATERFALL && this.getSpeed() >= foe.getSpeed()) {
+		} else if (move == Move.WATERFALL && first) {
 			foe.vStatuses.add(Status.FLINCHED);
-//		} else if (move == Move.WOOD_FANG && this.getSpeed() >= foe.getSpeed()) {
+//		} else if (move == Move.WOOD_FANG && first) {
 //			foe.vStatuses.add(Status.FLINCHED);
-		} else if (move == Move.ZEN_HEADBUTT && this.getSpeed() >= foe.getSpeed()) {
+		} else if (move == Move.ZEN_HEADBUTT && first) {
 			foe.vStatuses.add(Status.FLINCHED);
-		} else if (move == Move.ROCK_SLIDE && this.getSpeed() >= foe.getSpeed()) {
+		} else if (move == Move.ROCK_SLIDE && first) {
 			foe.vStatuses.add(Status.FLINCHED);
 		} 
 	}
@@ -4498,7 +4527,7 @@ public class Pokemon implements Serializable {
 			if (this.lastMoveUsed != Move.ABDUCT) {
 				foe.vStatuses.add(Status.POSESSED);
 				System.out.println(this.name + " posessed " + foe.name + "!");
-			} else System.out.println("But it failed!");
+			} else fail();
 			this.impressive = false;
 			this.lastMoveUsed = move;
 		} else if (move == Move.ACID_ARMOR) {
@@ -4526,7 +4555,7 @@ public class Pokemon implements Serializable {
 			if (!(this.vStatuses.contains(Status.AQUA_RING))) {
 			    this.vStatuses.add(Status.AQUA_RING);
 			} else {
-			    System.out.println("But it failed!");
+			    fail();
 			}
 		} else if (move == Move.AUTOMOTIZE) {
 			stat(this, 4, 2);
@@ -4560,7 +4589,7 @@ public class Pokemon implements Serializable {
 			if (!foe.vStatuses.contains(Status.CONFUSED)) {
 				foe.confuse();
 			} else {
-				System.out.println("But it failed!");
+				fail();
 			}
 		} else if (move == Move.COSMIC_POWER) {
 			stat(this, 1, 1);
@@ -4577,7 +4606,7 @@ public class Pokemon implements Serializable {
 					foe.awardxp((int) Math.ceil(this.level * trainer), player);
 				}
 			} else {
-				System.out.println("But it failed!");
+				fail();
 			}
 //		} else if (move == Move.DARK_VOID) {
 //			foe.sleep(true);
@@ -4590,7 +4619,7 @@ public class Pokemon implements Serializable {
 			if (this.lastMoveUsed != Move.DESTINY_BOND) {
 				foe.vStatuses.add(Status.BONDED);
 				System.out.println(this.name + " is ready to take its attacker down with it!");
-			} else System.out.println("But it failed!");
+			} else fail();
 			this.impressive = false;
 			this.lastMoveUsed = move;
 			
@@ -4672,9 +4701,9 @@ public class Pokemon implements Serializable {
 			if (!(this.vStatuses.contains(Status.AQUA_RING))) {
 			    this.vStatuses.add(Status.AQUA_RING);
 			} else {
-			    System.out.println("But it failed!");
+			    fail();
 			}
-			this.vStatuses.add(Status.STUCK);
+			this.vStatuses.add(Status.TRAPPED);
 		} else if (move == Move.IRON_DEFENSE) {
 			stat(this, 1, 2);
 		} else if (move == Move.LIFE_DEW) {
@@ -4694,7 +4723,7 @@ public class Pokemon implements Serializable {
 				foe.vStatuses.add(Status.LEECHED);
 				System.out.println(foe.name + " was seeded!");
 			} else {
-				System.out.println("But it failed!");
+				fail();
 			}
 		} else if (move == Move.LEER) {
 			stat(foe, 1, -1);
@@ -4703,22 +4732,29 @@ public class Pokemon implements Serializable {
 				if (!(field.contains(field.playerSide, Effect.LIGHT_SCREEN))) {
 					field.playerSide.add(field.new FieldEffect(Effect.LIGHT_SCREEN));
 				} else {
-					System.out.println("But it failed!");
+					fail();
 				}
 			} else {
 				if (!(field.contains(field.foeSide, Effect.LIGHT_SCREEN))) {
 					field.foeSide.add(field.new FieldEffect(Effect.LIGHT_SCREEN));
 				} else {
-					System.out.println("But it failed!");
+					fail();
 				}
 			}
 		} else if (move == Move.LOCK_ON) {
 			System.out.println(this.name + " took aim at " + foe.name + "!\n");
 			stat(this, 5, 6);
+		} else if (move == Move.MAGIC_POWDER) {
+			foe.type1 = PType.MAGIC;
+			foe.type2 = null;
+			System.out.println(foe.name + "'s type changed to MAGIC!");
+		} else if (move == Move.MEAN_LOOK) {
+			foe.vStatuses.add(Status.TRAPPED);
+			System.out.println(foe.name + " can no longer escape!");
 		} else if (move == Move.MAGIC_REFLECT) {
 			if (this.lastMoveUsed != Move.MAGIC_REFLECT) {
 				this.vStatuses.add(Status.REFLECT);
-			} else System.out.println("But it failed!");
+			} else fail();
 			this.impressive = false;
 			this.lastMoveUsed = move;
 		} else if (move == Move.MAGNET_RISE) {
@@ -4726,7 +4762,7 @@ public class Pokemon implements Serializable {
 				this.magCount = 5;
 				System.out.println(this.name + " floated with electromagnetism!");
 			} else {
-				System.out.println("But it failed!");
+				fail();
 			}
 		} else if (move == Move.METAL_SOUND) {
 			stat(foe, 3, -2);
@@ -4747,7 +4783,7 @@ public class Pokemon implements Serializable {
 				foe.vStatuses.add(Status.NIGHTMARE);
 				System.out.println(foe.name + " had a nightmare!");
 			} else {
-				System.out.println("But it failed!");
+				fail();
 			}
 		} else if (move == Move.ODOR_SLEUTH) {
 			if (foe.type1 == PType.GHOST) foe.type1 = PType.NORMAL;
@@ -4785,13 +4821,13 @@ public class Pokemon implements Serializable {
 				if (!(field.contains(field.playerSide, Effect.REFLECT))) {
 					field.playerSide.add(field.new FieldEffect(Effect.REFLECT));
 				} else {
-					System.out.println("But it failed!");
+					fail();
 				}
 			} else {
 				if (!(field.contains(field.foeSide, Effect.REFLECT))) {
 					field.foeSide.add(field.new FieldEffect(Effect.REFLECT));
 				} else {
-					System.out.println("But it failed!");
+					fail();
 				}
 			}
 		} else if (move == Move.ROOST) {
@@ -4823,7 +4859,7 @@ public class Pokemon implements Serializable {
 			if (!foe.vStatuses.contains(Status.CONFUSED)) {
 				foe.confuse();
 			} else {
-				System.out.println("But it failed!");
+				fail();
 			}
 		} else if (move == Move.SWAGGER) {
 			stat(foe, 0, 2);
@@ -4844,7 +4880,7 @@ public class Pokemon implements Serializable {
 			if (this.lastMoveUsed != Move.TAKE_OVER) {
 				foe.vStatuses.add(Status.POSESSED);
 				System.out.println(this.name + " posessed " + foe.name + "!");
-			} else System.out.println("But it failed!");
+			} else fail();
 			this.impressive = false;
 			this.lastMoveUsed = move;
 		} else if (move == Move.THUNDER_WAVE) {
@@ -5080,6 +5116,8 @@ public class Pokemon implements Serializable {
 		    baseCrit = 13;
 		  } else if (m.critChance == 2) {
 		    baseCrit = 25;
+		  } else if (m.critChance == 3) {
+			  return true;
 		  } else {
 			  baseCrit = 5;
 		  }
@@ -8138,6 +8176,36 @@ public class Pokemon implements Serializable {
 		return (int) speed;
 	}
 	
+	public Pokemon getFaster(Pokemon other, Field field, int thisP, int otherP) {
+		int speed1 = this.getSpeed();
+		if (field.contains(field.playerSide, Effect.TAILWIND)) speed1 *= 2;
+		if (checkAbilitySpeedBoost(this.ability, field)) speed1 *= 2;
+		int speed2 = other.getSpeed();
+		if (field.contains(field.foeSide, Effect.TAILWIND)) speed2 *= 2;
+		if (checkAbilitySpeedBoost(other.ability, field)) speed2 *= 2;
+		Pokemon faster = speed1 > speed2 ? this : other;
+		if (speed1 == speed2) {
+			Random random = new Random();
+			boolean isHeads = random.nextBoolean();
+			faster = isHeads ? this : other;
+		}
+		if (field.contains(field.fieldEffects, Effect.TRICK_ROOM)) {
+			faster = faster == this ? other : this;
+		}
+		faster = otherP > thisP ? other : faster;
+		faster = thisP > otherP ? this : faster;
+		return faster;
+	}
+	
+	private boolean checkAbilitySpeedBoost(Ability ability, Field field) {
+		if (field.equals(field.weather, Effect.SUN) && ability == Ability.CHLOROPHYL) return true;
+		if (field.equals(field.weather, Effect.RAIN) && ability == Ability.SWIFT_SWIM) return true;
+		if (field.equals(field.weather, Effect.SANDSTORM) && ability == Ability.SAND_RUSH) return true;
+		if (field.equals(field.weather, Effect.SNOW) && ability == Ability.SLUSH_RUSH) return true;
+		return false;
+	}
+
+
 	public void confuse() {
 		this.vStatuses.add(Status.CONFUSED);
 		this.confusionCounter = (int)(Math.random() * 4) + 1;
@@ -8150,7 +8218,7 @@ public class Pokemon implements Serializable {
 			this.sleepCounter = (int)(Math.random() * 3) + 1;
 			System.out.println(this.name + " fell asleep!");
 		} else {
-			if (announce) System.out.println("But it failed!");
+			if (announce) fail();
 		}
 		
 	}
@@ -8164,7 +8232,7 @@ public class Pokemon implements Serializable {
 			this.status = Status.PARALYZED;
 			System.out.println(this.name + " was paralyzed!");
 		} else {
-			if (announce) System.out.println("But it failed!");
+			if (announce) fail();
 		}
 	}
 	
@@ -8177,7 +8245,7 @@ public class Pokemon implements Serializable {
 			this.status = Status.BURNED;
 			System.out.println(this.name + " was burned!");
 		} else {
-			if (announce) System.out.println("But it failed!");
+			if (announce) fail();
 		}
 	}
 	
@@ -8190,7 +8258,7 @@ public class Pokemon implements Serializable {
 			this.status = Status.POISONED;
 			System.out.println(this.name + " was poisoned!");
 		} else {
-			if (announce) System.out.println("But it failed!");
+			if (announce) fail();
 		}
 	}
 	
