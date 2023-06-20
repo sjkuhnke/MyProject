@@ -103,6 +103,7 @@ public class Field {
 	}
 	
 	public boolean equals(FieldEffect fe, Effect e) {
+		if (fe == null) return false;
 		if (fe.effect == e) return true;
 		return false;
 	}
