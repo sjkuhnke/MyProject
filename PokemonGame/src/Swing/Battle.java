@@ -77,6 +77,10 @@ public class Battle extends JFrame {
 	public Battle(PlayerCharacter playerCharacter, Trainer foeT, int trainerIndex) {
 		me = playerCharacter.p;
 		this.trainerIndex = trainerIndex;
+		int faintIndex = 0;
+		while (me.getCurrent().isFainted()) {
+			me.swap(me.team[++faintIndex], faintIndex);
+		}
 		
 		setTitle("Battle");
 		
@@ -411,7 +415,7 @@ public class Battle extends JFrame {
 			final int index = i + 1;
 			
 			party[i].addActionListener(e -> {
-				if (me.getCurrent().vStatuses.contains(Status.SPUN) || me.getCurrent().vStatuses.contains(Status.CHARGING) || me.getCurrent().vStatuses.contains(Status.RECHARGE) || me.getCurrent().vStatuses.contains(Status.LOCKED) || me.getCurrent().vStatuses.contains(Status.TRAPPED)) {
+				if (me.getCurrent().vStatuses.contains(Status.SPUN) || me.getCurrent().vStatuses.contains(Status.CHARGING) || me.getCurrent().vStatuses.contains(Status.RECHARGE) || me.getCurrent().vStatuses.contains(Status.LOCKED) || me.getCurrent().vStatuses.contains(Status.TRAPPED) || me.getCurrent().vStatuses.contains(Status.SEMI_INV)) {
 	        		JOptionPane.showMessageDialog(null, "You are trapped and cannot switch!");
 	                return;
 				}
@@ -809,9 +813,9 @@ public class Battle extends JFrame {
 	        if (foeTrainer != null) slower.move(faster, m2, me, field, foeTrainer.getTeam(), false);
 	        else slower.move(faster, m2, me, field, null, false);
 		} else {
-			if (foeTrainer != null) { faster.move(slower, m1, me, field, foeTrainer.getTeam(), true); }
-			else { faster.move(slower, m1, me, field, null, true); }
-	        slower.move(faster, m2, me, field, me.getTeam(), false);
+			if (foeTrainer != null) { faster.move(slower, m2, me, field, foeTrainer.getTeam(), true); }
+			else { faster.move(slower, m2, me, field, null, true); }
+	        slower.move(faster, m1, me, field, me.getTeam(), false);
 		}
         Pokemon.endOfTurn(faster, slower, me);
 		Pokemon.endOfTurn(slower, faster, me);

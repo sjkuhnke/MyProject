@@ -31,9 +31,15 @@ public class Field {
 		SPARKLY(5, false, true), 
 		REFLECT(5, false, false),
 		LIGHT_SCREEN(5, false, false),
+		AUORA_VEIL(5, false, false),
 		TRICK_ROOM(5, false, false),
 		GRAVITY(5, false, false), 
 		TAILWIND(4, false, false),
+		STEALTH_ROCKS(-1, false, false),
+		SPIKES(-1, false, false),
+		TOXIC_SPIKES(-1, false, false),
+		STICKY_WEBS(-1, false, false),
+		SAFEGUARD(5, false, false),
 		;
 		
 		private Effect(int turns, boolean isWeather, boolean isTerrain) {
@@ -153,6 +159,14 @@ public class Field {
 	            iterator.remove();
 	        }
 	    }
+	}
+
+	public ArrayList<FieldEffect> getHazards(ArrayList<FieldEffect> side) {
+		ArrayList<FieldEffect> result = new ArrayList<>();
+		for (FieldEffect fe : side) {
+			if (fe.effect == Effect.STEALTH_ROCKS || fe.effect == Effect.SPIKES || fe.effect == Effect.TOXIC_SPIKES || fe.effect == Effect.STICKY_WEBS) result.add(fe);
+		}
+		return result;
 	}
 
 

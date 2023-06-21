@@ -21,7 +21,7 @@ public enum Move {
 	AROMATHERAPY(0,1000,0,0,2,0,PType.GRASS,"Cures team of any status conditions"),
 	//ASSURANCE(50,100,0,0,0,0,PType.DARK,"A normal attack"),
 	ASTONISH(30,100,30,0,0,0,PType.GHOST,"% chance of causing foe to flinch"),
-	AUORA_VEIL(0,1000,0,0,2,0,PType.ICE,"Can only be used in SNOW, reduces both physical and special damage recieved for 5 turns"), // TODO
+	AUORA_VEIL(0,1000,0,0,2,0,PType.ICE,"Can only be used in SNOW, reduces both physical and special damage recieved for 5 turns"),
 	AURA_SPHERE(90,1000,0,0,1,0,PType.FIGHTING,"This attack always hits"),
 	//AUTO_SHOT(0,1000,0,0,2,0,PType.STEEL,"Causes all of user's \"Shooting\" moves to hit twice"),
 	AURORA_BEAM(65,100,10,0,1,0,PType.ICE,"% chance to lower foe's Attack by 1"),
@@ -43,7 +43,7 @@ public enum Move {
 	//BLIND(0,100,0,0,2,0,PType.NORMAL,"Lowers foe's Accuracy by 2"),
 	BLIZZARD(110,70,20,0,1,0,PType.ICE,""),
 	BLUE_FLARE(130,85,20,0,1,0,PType.FIRE,"% chance to Burn foe"),
-	BODY_PRESS(80,100,0,0,0,0,PType.FIGHTING,""), // TODO
+	BODY_PRESS(80,100,0,0,0,0,PType.FIGHTING,""),
 	BODY_SLAM(85,100,30,0,0,0,PType.NORMAL,"% chance to Paralyze foe"),
 	BOLT_STRIKE(130,85,20,0,0,0,PType.ELECTRIC,"% chance to Paralyze foe"),
 	//BOULDER_CRUSH(85,80,50,0,0,0,PType.ROCK,"% chance of causing foe to flinch"),
@@ -52,7 +52,7 @@ public enum Move {
 	//BRANCH_WHACK(50,95,0,0,0,0,PType.ROCK,"A normal attack"),
 	BRANCH_POKE(40,100,0,0,0,0,PType.GRASS,""),
 	BRAVE_BIRD(120,100,0,0,0,0,PType.FLYING,"User takes 1/3 of damage inflicted"), // recoil
-	BRICK_BREAK(75,100,0,0,0,0,PType.FIGHTING,"Breaks Screen effects"), //TODO
+	BRICK_BREAK(75,100,100,0,0,0,PType.FIGHTING,"Breaks Screen effects"), //TODO
 	BRINE(-1,100,0,0,1,0,PType.WATER,"Damage is doubled if foe is below 50% HP"), 
 	BRUTAL_SWING(60,100,0,0,0,0,PType.DARK,"A normal attack"),
 	BUBBLE(20,100,0,0,1,0,PType.WATER,"A normal attack"),
@@ -93,13 +93,13 @@ public enum Move {
 	DEEP_SEA_BUBBLE(0,100,0,0,2,0,PType.WATER,""), // TODO
 	//DARK_VOID(0,80,0,0,2,0,PType.DARK,"Foe falls asleep"),
 	DEFENSE_CURL(0,1000,0,0,2,0,PType.NORMAL,"Raises user's Defense by 1"),
-	DEFOG(0,1000,0,0,2,0,PType.FLYING,""), // TODO
+	DEFOG(0,1000,0,0,2,0,PType.FLYING,""),
 	DESOLATE_VOID(65,85,50,0,1,0,PType.GALACTIC,""),
 	DESTINY_BOND(0,1000,0,0,2,1,PType.GHOST,"Always goes first; can't be used twice in a row. If foe knocks out user the same turn, foe faints as well"),
 	//DISAPPEAR(0,1000,50,0,2,0,PType.GHOST,"% chance to Confuse foe; raises user's Evasion by 2"),
 	DETECT(0,1000,0,0,2,4,PType.FIGHTING,""), // TODO
 	DIAMOND_STORM(100,95,50,0,0,0,PType.FIGHTING,""),
-	DIG(80,100,0,0,0,0,PType.GROUND,""), // TODO
+	DIG(80,100,0,0,0,0,PType.GROUND,""),
 	DISCHARGE(80,100,30,0,1,0,PType.ELECTRIC,"% chance to Paralyze foe"),
 	DIVE(80,100,0,0,0,0,PType.WATER,"A normal attack"),
 	//DOUBLE_BLAST(-1,60,30,0,1,0,PType.NORMAL,"% chance to Confuse foe"),
@@ -134,9 +134,9 @@ public enum Move {
 	//ELECTROEXPLOSION(300,100,0,0,1,0,PType.ELECTRIC,"User faints. Bypasses Ground's immunity to Electric"),
 	ELEMENTAL_SPARKLE(45,90,0,0,1,0,PType.MAGIC,""),
 	EMBER(40,100,10,0,1,0,PType.FIRE,"% chance to Burn foe"),
-	ENCORE(0,100,0,0,2,0,PType.NORMAL,""), // TODO
+	ENCORE(0,100,0,0,2,0,PType.NORMAL,""),
 	ENDEAVOR(0,100,0,0,0,0,PType.NORMAL,""),
-	ENDURE(0,1000,0,0,2,0,PType.NORMAL,""), // TODO
+	ENDURE(0,1000,0,0,2,4,PType.NORMAL,""),
 	ENERGY_BALL(90,100,10,0,1,0,PType.GRASS,""),
 	ENTRAINMENT(0,100,0,0,2,0,PType.NORMAL,"Changes foe's ability to the user's"),
 	ERUPTION(-1,100,0,0,1,0,PType.FIRE,"Power is higher the more HP the user has"),
@@ -149,7 +149,7 @@ public enum Move {
 	FAKE_TEARS(0,100,0,0,2,0,PType.DARK,"Lowers foe's Sp.Def by 2"),
 	FAILED_SUCKER(0,100,0,0,0,0,PType.DARK,"If you're seeing this, something went horribly wrong"),
 	FALSE_SURRENDER(80,1000,0,0,0,0,PType.DARK,""),
-	FATAL_BIND(70,100,85,0,0,0,PType.BUG,"Causes foe to faint in 3 turns"), // TODO
+	FATAL_BIND(70,85,100,0,0,0,PType.BUG,"Causes foe to faint in 3 turns"), // TODO
 	FEATHER_DANCE(0,100,0,0,2,0,PType.FLYING,"Lowers foe's Attack by 2"),
 	FEINT(30,100,0,0,0,2,PType.NORMAL,""), // TODO
 	FEINT_ATTACK(60,1000,0,0,0,0,PType.DARK,"This attack always hits"),
@@ -176,9 +176,9 @@ public enum Move {
 	FLASH_CANNON(80,100,10,0,1,0,PType.STEEL,"% chance to lower foe's Sp.Def by 1"),
 	FLASH_RAY(40,100,50,0,1,0,PType.LIGHT,""),
 	FLATTER(0,100,100,0,2,0,PType.DARK,"Confuses foe, and raises their Sp.Atk by 2"),
-	FLY(90,100,0,0,0,0,PType.FLYING,"A normal attack"), //TODO
+	FLY(90,100,0,0,0,0,PType.FLYING,"A normal attack"),
 	FOCUS_BLAST(120,70,0,0,1,0,PType.FIGHTING,""),
-	FOCUS_ENERGY(0,1000,0,0,2,0,PType.NORMAL,""), // TODO
+	FOCUS_ENERGY(0,1000,0,0,2,0,PType.NORMAL,""),
 	FOCUS_PUNCH(150,100,0,0,0,0,PType.FIGHTING,""), // TODO
 	FORCE_PALM(60,100,30,0,0,0,PType.FIGHTING,""),
 	FORESIGHT(0,1000,0,0,2,0,PType.MAGIC,"Indentifies foe, replacing their Ghost typing with Normal if they have it. It also raises user's Accuracy by 1 stage"),
@@ -198,7 +198,7 @@ public enum Move {
 	GALAXY_BLAST(90,100,0,0,1,0,PType.GALACTIC,""),
 	GASTRO_ACID(0,100,0,0,2,0,PType.POISON,""),
 	GENESIS_SUPERNOVA(120,95,0,0,1,0,PType.GALACTIC,""),
-	GEOMANCY(0,1000,0,0,2,0,PType.LIGHT,""), // TODO
+	GEOMANCY(0,1000,0,0,2,0,PType.LIGHT,""),
 	GIGA_DRAIN(75,100,0,0,1,0,PType.GRASS,"Heals 50% of damage dealt to foe"),
 	//GIGA_HIT(110,75,50,0,0,0,PType.FIGHTING,"% chance to Paralyze foe"),
 	GIGA_IMPACT(150,90,0,0,0,0,PType.NORMAL,"User must rest after using this move"),
@@ -233,7 +233,7 @@ public enum Move {
 	HEAVY_SLAM(-1,100,0,0,0,0,PType.STEEL,""), // TODO
 	HEX(-1,100,0,0,1,0,PType.GHOST,""), // TODO
 	HI_JUMP_KICK(130,90,0,0,0,0,PType.FIGHTING,"If this attack misses, user takes 50% of its max HP"),
-	HIDDEN_POWER(60,100,0,0,1,0,PType.NORMAL,""), // TODO
+	HIDDEN_POWER(60,100,0,0,1,0,PType.NORMAL,""),
 	HONE_CLAWS(0,1000,0,0,2,0,PType.DARK,"Raises user's Attack and Accuracy by 1"),
 	HORN_ATTACK(65,100,0,0,0,0,PType.NORMAL,"A normal attack"), // recharge
 	HORN_DRILL(0,30,0,0,0,0,PType.NORMAL,"If this move hits, it always K.Os foe"),
@@ -245,7 +245,7 @@ public enum Move {
 	HYPER_BEAM(150,90,0,0,1,0,PType.NORMAL,"User must rest after using this move"),
 	HYPER_FANG(80,90,10,0,0,0,PType.NORMAL,"% of causing foe to flinch"),
 	HYPNOSIS(0,60,0,0,2,0,PType.PSYCHIC,"Causes foe to sleep"),
-	ICE_BALL(-1,90,0,0,0,0,PType.ICE,""), // TODO
+	ICE_BALL(-1,90,0,0,0,0,PType.ICE,""),
 	ICE_BEAM(90,100,10,0,1,0,PType.ICE,""),
 	ICE_FANG(65,95,10,0,0,0,PType.ICE,""),
 	ICE_PUNCH(75,100,10,0,0,0,PType.ICE,""),
@@ -259,13 +259,13 @@ public enum Move {
 	INCINERATE(60,100,0,0,1,0,PType.FIRE,""),
 	INFERNO(100,50,100,0,1,0,PType.FIRE,""),
 	INFESTATION(20,100,100,0,1,0,PType.BUG,""),
-	INGRAIN(0,1000,0,0,2,0,PType.GRASS,""), // TODO
+	INGRAIN(0,1000,0,0,2,0,PType.GRASS,""),
 	//INJECT(55,100,100,0,0,0,PType.BUG,"% to Poison foe, heals 50% of damage dealt"),
 	IRON_BLAST(85,90,30,0,1,0,PType.STEEL,""),
 	IRON_DEFENSE(0,1000,0,0,2,0,PType.STEEL,"Raises user's Defense by 2"),
 	IRON_HEAD(80,100,30,0,0,0,PType.STEEL,"% of causing foe to flinch"),
 	IRON_TAIL(100,75,30,0,0,0,PType.STEEL,"% of lowering foe's Defense by 1"),
-	JAW_LOCK(80,100,100,0,0,0,PType.DARK,""), // TODO
+	JAW_LOCK(80,100,100,0,0,0,PType.DARK,""),
 	KARATE_CHOP(50,100,0,1,0,1,PType.FIGHTING,"Boosted Crit rate"),
 	LAVA_PLUME(80,100,30,0,1,0,PType.FIRE,"% to Burn foe"),
 	//LEAF_BALL(75,95,0,0,1,0,PType.GRASS,"A normal attack"),
@@ -285,11 +285,11 @@ public enum Move {
 	LIFE_DEW(0,1000,0,0,2,0,PType.WATER,"Restores 25% HP"),
 	LIGHT_BEAM(60,100,20,0,1,0,PType.LIGHT,""),
 	LIGHT_OF_RUIN(140,90,0,0,1,0,PType.LIGHT,""),
-	LIGHT_SCREEN(0,1000,0,0,2,0,PType.PSYCHIC,""), // TODO
+	LIGHT_SCREEN(0,1000,0,0,2,0,PType.PSYCHIC,""),
 	LIQUIDATION(85,100,20,0,0,0,PType.WATER,""),
 	LOAD_FIREARMS(0,100,0,0,2,0,PType.STEEL,""), // TODO
 	LOCK_ON(0,1000,0,0,2,0,PType.NORMAL,"Raises user's Accuracy by 6"),
-	LOVELY_KISS(0,75,0,0,2,0,PType.NORMAL,""), // TODO
+	LOVELY_KISS(0,75,0,0,2,0,PType.NORMAL,""),
 	LOW_KICK(60,100,100,0,0,0,PType.FIGHTING,"% to lower foe's Speed by 1"), //TODO
 	LOW_SWEEP(65,100,100,0,0,0,PType.FIGHTING,""),
 	LUNAR_DANCE(0,1000,0,0,2,0,PType.PSYCHIC,""), // TODO
@@ -299,14 +299,14 @@ public enum Move {
 	MAGIC_BLAST(30,100,0,0,1,0,PType.MAGIC,"A random Rock, Ground or Grass move is also used"),
 	MAGIC_CRASH(110,80,100,0,0,0,PType.MAGIC,"% to inflict foe with a random Status condition. User must rest after using"),
 	MAGIC_FANG(70,95,75,0,0,0,PType.MAGIC,"% to flinch foe if this move is Super-Effective against it"),
-	MAGIC_POWDER(0,100,0,0,2,0,PType.MAGIC,""), // TODO
+	MAGIC_POWDER(0,100,0,0,2,0,PType.MAGIC,""),
 	MAGIC_REFLECT(0,1000,0,0,2,0,PType.MAGIC,"Foe's next attack will be reflected against them. Can be used every other turn"),
 	MAGIC_TOMB(90,100,0,0,1,0,PType.MAGIC,"A normal attack"),
 	MAGICAL_LEAF(60,1000,0,0,1,0,PType.GRASS,"This move will never miss"),
 	MAGNET_BOMB(60,1000,0,0,0,0,PType.STEEL,""),
 	MAGNET_RISE(0,1000,0,0,2,0,PType.STEEL,"User will float for 5 turns, causing it to be immune to all Ground-type attacks"),
 	MAGNITUDE(-1,100,0,0,0,0,PType.GROUND,"A random Magnitude between 4-10 will be used, corresponding to its power"),
-	MEAN_LOOK(0,100,0,0,2,0,PType.NORMAL,""), // TODO
+	MEAN_LOOK(0,100,0,0,2,0,PType.NORMAL,""),
 	MEGA_DRAIN(40,100,0,0,1,0,PType.GRASS,"Heals 50% of damage dealt"),
 	MEGAHORN(120,85,0,0,0,0,PType.BUG,""),
 	MEMENTO(0,100,0,0,2,0,PType.DARK,""), // TODO
@@ -326,14 +326,14 @@ public enum Move {
 	MOLTEN_STEELSPIKE(100,100,30,0,1,0,PType.FIRE,""),
 	MOONBLAST(95,100,30,0,1,0,PType.LIGHT,""),
 	MOONLIGHT(0,1000,0,0,2,0,PType.LIGHT,"Restores 1/2 of user's max HP"),
-	MORNING_SUN(0,1000,0,0,2,0,PType.LIGHT,""), // TODO
+	MORNING_SUN(0,1000,0,0,2,0,PType.LIGHT,""),
 	MUD_BOMB(65,85,30,0,1,0,PType.GROUND,"% to lower foe's Accuracy by 1"),
 	MUD_SHOT(55,95,100,0,1,0,PType.GROUND,""),
 	MUD_SLAP(20,100,100,0,1,0,PType.GROUND,"% to lower foe's Accuracy by 1"),
 	MUD_SPORT(0,1000,0,0,2,0,PType.GROUND,"Does nothing"),
 	MUDDY_WATER(90,85,30,0,1,0,PType.WATER,""),
 	MYSTICAL_FIRE(75,100,100,0,1,0,PType.FIRE,""),
-	NASTY_PLOT(0,1000,0,0,2,0,PType.DARK,""), // TODO
+	NASTY_PLOT(0,1000,0,0,2,0,PType.DARK,""),
 	NEEDLE_ARM(60,100,30,0,1,0,PType.GRASS,""),
 	//NEEDLE_SPRAY(55,95,10,0,0,0,PType.POISON,"% to Poison or Paralyze foe"),
 	//NIBBLE(10,100,0,0,0,0,PType.NORMAL,"A normal attack"),
@@ -342,7 +342,7 @@ public enum Move {
 	NIGHT_SLASH(70,100,0,1,0,0,PType.DARK,"Boosted Crit rate"),
 	NIGHTMARE(0,100,0,0,2,0,PType.GHOST,"Foe loses 1/4 of max HP each turn; wears off when foe wakes up"),
 	NO_RETREAT(0,1000,0,0,2,0,PType.FIGHTING,""), // TODO
-	NOBLE_ROAR(0,100,0,0,2,0,PType.NORMAL,""), // TODO
+	NOBLE_ROAR(0,100,0,0,2,0,PType.NORMAL,""),
 	NUZZLE(20,100,100,0,0,0,PType.ELECTRIC,""),
 	OBSTRUCT(0,1000,0,0,2,4,PType.DARK,""), // TODO
 	ODOR_SLEUTH(0,1000,0,0,2,0,PType.NORMAL,"Indentifies foe, replacing their Ghost typing with Normal if they have it. It also lowers foe's Evasion by 1"),
@@ -354,12 +354,12 @@ public enum Move {
 	PERISH_SONG(0,1000,0,0,2,0,PType.GHOST,"All Pokemon hearing this song will faint in 3 turns"),
 	PETAL_BLIZZARD(90,100,0,0,0,0,PType.GRASS,""),
 	PETAL_DANCE(120,100,0,0,1,0,PType.GRASS,""),
-	PHANTOM_FORCE(100,100,0,0,0,0,PType.GHOST,""), // TODO
+	PHANTOM_FORCE(100,100,0,0,0,0,PType.GHOST,""),
 	PHOTON_GEYSER(130,90,100,0,1,0,PType.LIGHT,""),
 	PIN_MISSILE(25,95,0,0,0,0,PType.BUG,""), // TODO
-	PISTOL_POP(110,70,0,0,0,0,PType.STEEL,""), // TODO
+	PISTOL_POP(110,70,0,0,0,0,PType.STEEL,""),
 	PLASMA_FISTS(100,100,0,0,0,0,PType.ELECTRIC,""),
-	PLAY_NICE(0,100,0,0,2,0,PType.NORMAL,""), // TODO
+	PLAY_NICE(0,100,0,0,2,0,PType.NORMAL,""),
 	PLAY_ROUGH(90,90,10,0,0,0,PType.LIGHT,""),
 	PLUCK(60,100,0,0,0,0,PType.FLYING,""),
 	//PHASE_SHIFT(0,1000,0,0,2,0,PType.MAGIC,"Switches user's type to Magic and the type of the move that the foe just used"),
@@ -383,24 +383,24 @@ public enum Move {
 	PSYBEAM(65,100,10,0,1,0,PType.PSYCHIC,""),
 	PSYCHIC(90,100,10,0,1,0,PType.PSYCHIC,""),
 	PSYCHIC_FANGS(85,100,100,0,0,0,PType.PSYCHIC,""), // TODO
-	PSYCHIC_TERRAIN(0,1000,0,0,2,0,PType.PSYCHIC,""), // TODO
+	PSYCHIC_TERRAIN(0,1000,0,0,2,0,PType.PSYCHIC,""),
 	PSYCHO_CUT(70,100,0,1,0,0,PType.PSYCHIC,"Boosted Crit rate"),
 	PSYSHOCK(80,100,0,0,1,0,PType.PSYCHIC,""),
-	PSYWAVE(0,100,0,0,2,0,PType.PSYCHIC,""), // TODO
+	PSYWAVE(0,100,0,0,2,0,PType.PSYCHIC,""),
 	//PUNCH(40,90,0,0,0,0,PType.FIGHTING,"A normal attack"),
 	PURSUIT(40,100,0,0,0,0,PType.DARK,"A normal attack"), //TODO
 	QUICK_ATTACK(40,100,0,0,0,1,PType.NORMAL,"Always attacks first"),
-	QUIVER_DANCE(0,1000,0,0,2,0,PType.BUG,""), // TODO
+	QUIVER_DANCE(0,1000,0,0,2,0,PType.BUG,""),
 	RAGE(-1,100,0,0,0,0,PType.NORMAL,"Power increases the more times this move is used in succession"),
-	RAIN_DANCE(0,1000,0,0,2,0,PType.WATER,""), // TODO
+	RAIN_DANCE(0,1000,0,0,2,0,PType.WATER,""),
 	RAPID_SPIN(20,100,100,0,0,0,PType.NORMAL,"% to raise user's Speed by 1, and frees user of being Spun"),
 	RAZOR_LEAF(55,95,0,1,0,0,PType.GRASS,"Boosted Crit rate"),
 	RAZOR_SHELL(75,95,50,0,0,0,PType.WATER,""),
 	REBOOT(0,1000,0,0,2,0,PType.STEEL,"Clears user or any Status condition, and raises user's Speed by 1"),
-	RECOVER(0,1000,0,0,2,0,PType.NORMAL,""), // TODO
-	RED_NOSE_BOOST(0,1000,0,0,2,0,PType.MAGIC,""), // TODO
+	RECOVER(0,1000,0,0,2,0,PType.NORMAL,""),
+	RED_NOSE_BOOST(0,1000,0,0,2,0,PType.MAGIC,""),
 	REFLECT(0,1000,0,0,2,0,PType.PSYCHIC,""),
-	REST(0,1000,0,0,2,0,PType.PSYCHIC,""), // TODO
+	REST(0,1000,0,0,2,0,PType.PSYCHIC,""),
 	RETURN(-1,100,0,0,0,0,PType.NORMAL,""), // TODO
 	REVENGE(-1,100,0,0,0,0,PType.FIGHTING,"Power is doubled if user is slower than foe"),
 	REVERSAL(-1,100,0,0,2,0,PType.FIGHTING,""), // TODO
@@ -424,7 +424,7 @@ public enum Move {
 	SACRED_SWORD(90,100,0,0,0,0,PType.FIGHTING,""),
 	SAFEGUARD(0,1000,0,0,2,0,PType.NORMAL,""), // TODO
 	SAND_ATTACK(0,100,0,0,2,0,PType.GROUND,"Lowers foe's Accuracy by 1"),
-	SANDSTORM(0,1000,0,0,2,0,PType.ROCK,""), // TODO
+	SANDSTORM(0,1000,0,0,2,0,PType.ROCK,""),
 	SCALD(80,100,30,0,2,0,PType.WATER,""),
 	SCALE_SHOT(25,90,0,0,2,0,PType.DRAGON,""), // TODO
 	SCARY_FACE(0,100,0,0,2,0,PType.NORMAL,"Lowers foe's Speed by 2"),
@@ -441,7 +441,7 @@ public enum Move {
 	SHEER_COLD(0,30,0,0,1,0,PType.ICE,""),
 	//SHELL_BASH(70,100,0,1,0,0,PType.NORMAL,"User takes 1/3 of damage dealt as recoil"),
 	SHELL_SMASH(0,1000,0,0,2,0,PType.NORMAL,"Raises user's Attack, Sp.Atk, and Speed by 2, at the cost of lowering its Defense and Sp.Def by 1"),
-	SHIFT_GEAR(0,1000,0,0,2,0,PType.STEEL,""), // TODO
+	SHIFT_GEAR(0,1000,0,0,2,0,PType.STEEL,""),
 	//SHOCK(15,100,100,0,1,0,PType.ELECTRIC,"% to Paralyze foe"),
 	SHOCK_WAVE(60,1000,0,0,1,0,PType.ELECTRIC,"This attack never misses"),
 	SILVER_WIND(60,100,10,0,1,0,PType.BUG,""),
@@ -449,7 +449,7 @@ public enum Move {
 	SKULL_BASH(100,100,100,0,0,0,PType.NORMAL,"% to raise the user's Defense by 1, user must charge on the first turn"),
 	SKY_ATTACK(140,90,30,1,0,0,PType.FLYING,"% chance to flinch. User must charge up on the first turn, attacks on the second. Boosted Crit rate"),
 	SKY_UPPERCUT(85,90,0,0,0,0,PType.FIGHTING,"A normal attack"),
-	SLACK_OFF(0,1000,0,0,2,0,PType.NORMAL,""), // TODO
+	SLACK_OFF(0,1000,0,0,2,0,PType.NORMAL,""),
 	SLAM(80,75,0,0,0,0,PType.NORMAL,"A normal attack"),
 	//SLAP(20,100,0,0,0,0,PType.NORMAL,"A normal attack"),
 	SLASH(70,100,0,1,0,0,PType.NORMAL,"Boosted Crit rate"),
@@ -465,13 +465,13 @@ public enum Move {
 	SNARL(55,95,100,0,1,0,PType.DARK,""),
 	SNORE(50,100,0,0,1,0,PType.NORMAL,""), // TODO
 	SOLAR_BEAM(120,100,0,0,1,0,PType.GRASS,"User must charge up on the first turn, attacks on the second"),
-	SOLAR_BLADE(125,100,0,0,0,0,PType.GRASS,""), // TODO
+	SOLAR_BLADE(125,100,0,0,0,0,PType.GRASS,""),
 	SPACE_BEAM(60,100,30,0,1,0,PType.GALACTIC,""),
 	SPACIAL_REND(100,95,0,1,1,0,PType.GALACTIC,""),
 	SPARK(65,100,30,0,0,0,PType.ELECTRIC,"% to Paralyze foe"),
 	SPARKLE_STRIKE(80,1000,0,0,0,0,PType.MAGIC,""),
 	SPARKLING_ARIA(90,100,100,0,1,0,PType.WATER,""),
-	SPARKLING_TERRAIN(0,1000,0,0,2,0,PType.MAGIC,""), // TODO
+	SPARKLING_TERRAIN(0,1000,0,0,2,0,PType.MAGIC,""),
 	SPARKLING_WATER(0,100,0,0,2,0,PType.WATER,""), // TODO
 	SPARKLY_SWIRL(70,100,10,0,1,0,PType.MAGIC,""),
 	SPECTRAL_THIEF(90,100,100,0,0,0,PType.GHOST,""),
@@ -479,32 +479,31 @@ public enum Move {
 	SPIKE_CANNON(20,100,0,0,0,0,PType.NORMAL,""), // TODO
 	//SPIKE_JAB(55,80,100,0,0,0,PType.POISON,"% to Poison foe"),
 	//SPIKE_SHOT(-1,100,0,0,0,0,PType.POISON,"Attacks 2-5 times"),
-	SPIKES(0,1000,0,0,2,0,PType.GROUND,""), // TODO
+	SPIKES(0,1000,0,0,2,0,PType.GROUND,""),
 	//SPIKE_SLAM(65,90,0,0,0,0,PType.NORMAL,"A normal attack"),
 	SPIKY_SHIELD(0,1000,0,0,2,4,PType.GRASS,""), // TODO
 	SPIRIT_BREAK(75,100,100,0,2,0,PType.LIGHT,""),
-	SPIT_UP(-1,100,0,0,1,0,PType.NORMAL,""), // TODO
-	SPLASH(0,1000,0,0,2,0,PType.NORMAL,""), // TODO
+	SPLASH(0,1000,0,0,2,0,PType.NORMAL,""),
 	STAR_STORM(110,85,0,0,1,0,PType.GALACTIC,"A normal attack"),
 	STAR_STRUCK_ARCHER(75,85,0,3,0,0,PType.GALACTIC,""),
-	STEALTH_ROCK(0,1000,0,0,2,0,PType.ROCK,""), // TODO
-	STEEL_BEAM(140,95,100,0,1,0,PType.STEEL,""), // TODO
+	STEALTH_ROCK(0,1000,0,0,2,0,PType.ROCK,""),
+	STEEL_BEAM(140,95,100,0,1,0,PType.STEEL,""),
 	STEEL_WING(70,90,10,0,0,0,PType.STEEL,""),
-	STICKY_WEB(0,1000,0,0,2,0,PType.BUG,""), // TODO
-	STOCKPILE(0,1000,0,0,2,0,PType.NORMAL,""), // TODO
+	STICKY_WEB(0,1000,0,0,2,0,PType.BUG,""),
+	STOCKPILE(0,1000,0,0,2,0,PType.NORMAL,""),
 	//STARE(0,100,0,0,2,0,PType.NORMAL,"Confuses foe, but raises foe's Attack by 1"), // recoil
 	//STING(55,100,100,0,0,0,PType.BUG,"% to make foe Bleed"),
 	STOMP(65,100,30,0,0,0,PType.NORMAL,"% of causing foe to flinch"),
 	STONE_EDGE(100,80,0,1,0,0,PType.ROCK,"Boosted Crit rate"),
-	STRENGTH_SAP(0,100,0,0,2,0,PType.GRASS,""), // TODO
+	STRENGTH_SAP(0,100,0,0,2,0,PType.GRASS,""),
 	STRENGTH(80,100,0,0,0,0,PType.NORMAL,"A normal attack"),
 	STRING_SHOT(0,100,0,0,2,0,PType.BUG,"Lowers foe's Speed by 2"),
 	STRUGGLE_BUG(50,100,100,0,1,0,PType.BUG,""),
 	//STRONG_ARM(90,85,30,0,0,0,PType.FIGHTING,"% chance of Paralyzing and/or causing foe to flinch"),
-	STUN_SPORE(0,75,0,0,2,0,PType.GRASS,""), // TODO
+	STUN_SPORE(0,75,0,0,2,0,PType.GRASS,""),
 	SUBMISSION(80,90,0,0,0,0,PType.FIGHTING,""),
 	SUCKER_PUNCH(80,100,0,0,0,2,PType.DARK,"Always attacks first. Fails if foe didn't use an attacking move"),
-	SUNNY_DAY(0,1000,0,0,2,0,PType.FIRE,""), // TODO
+	SUNNY_DAY(0,1000,0,0,2,0,PType.FIRE,""),
 	SUNSTEEL_STRIKE(100,100,0,0,0,0,PType.STEEL,""),
 	//SUPER_CHARGE(90,50,100,0,0,0,PType.ELECTRIC,"% of causing foe to flinch, user takes 1/3 of damage dealt as recoil"),
 	SUPER_FANG(0,100,0,0,0,0,PType.NORMAL,"Halves foe's remaining HP"),
@@ -515,9 +514,8 @@ public enum Move {
 	SURF(95,100,0,0,1,0,PType.WATER,"A normal attack"),
 	SWAGGER(0,85,0,0,2,0,PType.NORMAL,"Confuses foe, but raises foe's Attack by 2"),
 	//SWEEP_KICK(60,95,100,0,0,0,PType.FIGHTING,"% to lower foe's Attack by 1"),
-	SWALLOW(0,1000,0,0,2,0,PType.NORMAL,""), // TODO
-	SWEET_KISS(0,75,0,0,2,0,PType.LIGHT,""), // TODO
-	SWEET_SCENT(0,1000,0,0,2,0,PType.NORMAL,""), // TODO
+	SWEET_KISS(0,75,0,0,2,0,PType.LIGHT,""),
+	SWEET_SCENT(0,1000,0,0,2,0,PType.NORMAL,""),
 	SWIFT(60,1000,0,0,1,0,PType.MAGIC,"This attack never misses"),
 	//SWORD_SLASH(75,90,0,1,0,0,PType.STEEL,"Boosted Crit rate"), // recoil
 	//SWORD_SLICE(65,85,0,1,0,0,PType.STEEL,"Boosted Crit rate. If it Crits, foe is Bleeding"),
@@ -527,15 +525,15 @@ public enum Move {
 	SYNTHESIS(0,1000,0,0,2,0,PType.GRASS,"Restores 1/2 of user's max HP"),
 	TACKLE(50,100,0,0,0,0,PType.NORMAL,"Really? You're looking what tackle does?"),
 	//TAIL_WHACK(90,85,0,0,0,0,PType.NORMAL,"A normal attack"),
-	TAIL_GLOW(0,1000,0,0,2,0,PType.BUG,""), // TODO
+	TAIL_GLOW(0,1000,0,0,2,0,PType.BUG,""),
 	TAIL_WHIP(0,100,0,0,2,0,PType.NORMAL,"Lowers foe's Defense by 1"),
-	TAILWIND(0,1000,0,0,2,0,PType.FLYING,""), // TODO
+	TAILWIND(0,1000,0,0,2,0,PType.FLYING,""),
 	TAKE_DOWN(90,85,0,0,0,0,PType.NORMAL,"User takes 1/3 of damage dealt as recoil"),
 	TAKE_OVER(0,100,0,0,2,0,PType.GHOST,"Foe's next attack is used on itself. Can be used once every other turn"),
 	TAUNT(0,100,0,0,2,0,PType.DARK,""), // TODO
-	TEETER_DANCE(0,100,0,0,2,0,PType.NORMAL,""), // TODO
+	TEETER_DANCE(0,100,0,0,2,0,PType.NORMAL,""),
 	TELEPORT(0,1000,0,0,2,-6,PType.PSYCHIC,""), // TODO
-	THRASH(120,100,0,0,0,0,PType.NORMAL,""), // TODO
+	THRASH(120,100,0,0,0,0,PType.NORMAL,""),
 	THROAT_CHOP(80,100,100,0,0,0,PType.DARK,""), // TODO
 	THUNDER(120,70,30,0,1,0,PType.ELECTRIC,"% of Paralyzing foe"),
 	THUNDER_FANG(65,95,10,0,0,0,PType.ELECTRIC,"% of Paralyzing and/or flinching foe"),
@@ -544,14 +542,14 @@ public enum Move {
 	THUNDER_WAVE(0,100,0,0,2,0,PType.ELECTRIC,"Paralyzes foe"),
 	THUNDERBOLT(95,100,10,0,1,0,PType.ELECTRIC,"% of Paralyzing foe"), // recoil
 	THUNDERSHOCK(40,100,10,0,1,0,PType.ELECTRIC,"% of Paralyzing foe"),
-	TOPSY_TURVY(0,1000,0,0,2,0,PType.DARK,""), // TODO
+	TOPSY_TURVY(0,1000,0,0,2,0,PType.DARK,""),
 	TORMENT(0,100,0,0,2,0,PType.DARK,""), // TODO
 	//TIDAL_WAVE(-1,100,0,0,1,0,PType.WATER,"Picks a random tide level from the time of day. Morning = 90, Day = 50, and Evening = 130 Base Power"),
 	TORNADO_SPIN(60,95,100,0,0,0,PType.FIGHTING,"% to raise user's Speed and Accuracy by 1, and frees user of being Spun"),
 	TOXIC(0,100,0,0,2,0,PType.POISON,"Poisons foe"),
-	TOXIC_SPIKES(0,1000,0,0,2,0,PType.POISON,""), // TODO
+	TOXIC_SPIKES(0,1000,0,0,2,0,PType.POISON,""),
 	TRI_ATTACK(80,100,20,0,1,0,PType.NORMAL,""),
-	TRICK_ROOM(0,1000,0,0,2,-7,PType.PSYCHIC,""), // TODO
+	TRICK_ROOM(0,1000,0,0,2,-7,PType.PSYCHIC,""),
 	TWINKLE_TACKLE(85,90,20,0,0,0,PType.MAGIC,""),
 	TWINNEEDLE(25,100,20,0,0,0,PType.BUG,""),
 	TWISTER(40,100,10,0,1,0,PType.DRAGON,"% of causing foe to flinch"),
@@ -559,7 +557,7 @@ public enum Move {
 	U_TURN(70,100,0,0,0,0,PType.BUG,""), // TODO
 	VACUUM_WAVE(40,100,0,0,1,1,PType.FIGHTING,""),
 	V_CREATE(180,95,100,0,0,0,PType.FIRE,""),
-	VENOM_DRENCH(0,100,0,0,2,0,PType.POISON,""), // TODO
+	VENOM_DRENCH(0,100,0,0,2,0,PType.POISON,""),
 	VENOSHOCK(-1,100,0,0,1,0,PType.POISON,""), // TODO
 	VISE_GRIP(55,100,0,0,0,0,PType.NORMAL,""),
 	VINE_WHIP(45,100,0,0,0,0,PType.GRASS,"A normal attack"),
@@ -581,12 +579,12 @@ public enum Move {
 	WEATHER_BALL(-1,100,0,0,1,0,PType.NORMAL,""), // TODO
 	WHIP_SMASH(120,100,0,0,0,0,PType.NORMAL,"A normal attack"),
 	WHIRLPOOL(35,85,100,0,1,0,PType.WATER,"% to spin foe for 2-5 turns. While foe is spun, it takes 1/16 HP in damage, and cannot switch"),
-	WHIRLWIND(35,85,100,0,2,0,PType.WATER,""), // TODO
+	WHIRLWIND(0,1000,0,0,2,-6,PType.WATER,""), // TODO
 	WILL_O_WISP(0,80,0,0,2,0,PType.FIRE,"Burns foe"),
 	WING_ATTACK(60,100,0,0,0,0,PType.FLYING,"A normal attack"),
 	WISH(0,1000,0,0,2,0,PType.NORMAL,""), // TODO
-	WITHDRAW(0,1000,0,0,2,0,PType.WATER,""), // TODO
-	WORRY_SEED(0,100,0,0,2,0,PType.GRASS,""), // TODO
+	WITHDRAW(0,1000,0,0,2,0,PType.WATER,""),
+	WORRY_SEED(0,100,0,0,2,0,PType.GRASS,""),
 	//WOOD_FANG(50,100,50,0,0,0,PType.ROCK,"% to cause foe to flinch"), // recoil
 	WRAP(15,90,100,0,0,0,PType.NORMAL,"% to spin foe for 2-5 turns. While foe is spun, it takes 1/16 HP in damage, and cannot switch"),
 	//WRING_OUT(-1,100,0,0,0,0,PType.NORMAL,"Attack's power is greater the more HP the foe has"),

@@ -26,6 +26,12 @@ public enum Status {
 	BONDED("AUT", new Color(219, 216, 15), Color.BLACK), 
 	TRAPPED("AUT", Color.BLACK, Color.BLACK),
 	PROTECT("AUT",Color.BLACK,Color.BLACK),
+	SEMI_INV("AUT",Color.BLACK,Color.BLACK),
+	ENCORED("AUT",Color.BLACK,Color.BLACK),
+	TAUNTED("AUT",Color.BLACK,Color.BLACK),
+	TORMENTED("AUT",Color.BLACK,Color.BLACK),
+	ENDURE("AUT",Color.BLACK,Color.BLACK),
+	FOCUS_ENERGY("AUT",Color.BLACK,Color.BLACK),
 	;
 	
 	Status(String name, Color color, Color textColor) {
