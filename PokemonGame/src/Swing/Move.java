@@ -26,6 +26,7 @@ public enum Move {
 	//AUTO_SHOT(0,1000,0,0,2,0,PType.STEEL,"Causes all of user's \"Shooting\" moves to hit twice"),
 	AURORA_BEAM(65,100,10,0,1,0,PType.ICE,"% chance to lower foe's Attack by 1"),
 	AUTOMOTIZE(0,1000,0,0,2,0,PType.STEEL,"Raises user's Speed by 2"),
+	BABY_DOLL_EYES(0,100,0,0,2,1,PType.LIGHT,""), //TODO
 	//BAWL(0,100,0,0,2,0,PType.DARK,"Lowers foe's Attack by 2"),
 	BEAT_UP(-1,100,0,0,0,0,PType.DARK,"% chance to cause foe to Bleed"), //TODO
 	BEEFY_BASH(100,85,50,0,0,-1,PType.FIGHTING,"% chance to paralyze foe, moves last"),
@@ -319,7 +320,7 @@ public enum Move {
 	METEOR_MASH(90,90,20,0,0,0,PType.STEEL,""),
 	MINIMIZE(0,1000,0,0,2,0,PType.GHOST,"Raises user's Evasion by 2"),
 	MIRROR_SHOT(65,85,30,0,1,0,PType.GALACTIC,""),
-	//MIRROR_MOVE(0,1000,0,0,1,0,PType.FLYING,"Uses the move last used by the foe, fails if foe hasn't used a move yet"),
+	MIRROR_MOVE(0,1000,0,0,1,0,PType.FLYING,"Uses the move last used by the foe, fails if foe hasn't used a move yet"),
 	MIST_BALL(70,100,50,0,1,0,PType.PSYCHIC,""),
 	MOLTEN_CONSUME(0,100,0,0,0,0,PType.FIRE,""), // TODO
 	MOLTEN_LAIR(0,100,0,0,2,0,PType.FIRE,""), // TODO
