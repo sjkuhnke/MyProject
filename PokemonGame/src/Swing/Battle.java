@@ -120,6 +120,11 @@ public class Battle extends JFrame {
 		me.getCurrent().clearVolatile();
 		me.getCurrent().battled = true;
 		
+		Pokemon fasterInit = me.getCurrent().getFaster(foe, field, 0, 0);
+		Pokemon slowerInit = fasterInit == me.getCurrent() ? foe : me.getCurrent();
+		fasterInit.swapIn(slowerInit, field);
+		slowerInit.swapIn(fasterInit, field);
+		
 		addButton = createJButton("ADD", new Font("Tahoma", Font.BOLD, 9), 10, 200, 75, 23);
 		fightButton = createJButton("FIGHT", new Font("Tahoma", Font.BOLD, 11), 20, 80, 89, 23);
 		catchButton = createJButton("CATCH", new Font("Tahoma", Font.BOLD, 11), 20, 120, 89, 23);
@@ -371,8 +376,8 @@ public class Battle extends JFrame {
 		            } else {
 		            	foe.move(me.getCurrent(),foe.randomMove(), me, field, null, false);
 		            }
-					Pokemon.endOfTurn(foe, me.getCurrent(), me);
-					Pokemon.endOfTurn(me.getCurrent(), foe, me);
+					Pokemon.endOfTurn(foe, me.getCurrent(), me, field);
+					Pokemon.endOfTurn(me.getCurrent(), foe, me, field);
 					field.endOfTurn();
 					updateBars();
 					updateCurrent();
@@ -445,8 +450,8 @@ public class Battle extends JFrame {
 		        			foe.move(me.getCurrent(),foe.randomMove(), me, field, null, false);
 		        		}
 		        	}
-					Pokemon.endOfTurn(foe, me.getCurrent(), me);
-					Pokemon.endOfTurn(me.getCurrent(), foe, me);
+					Pokemon.endOfTurn(foe, me.getCurrent(), me, field);
+					Pokemon.endOfTurn(me.getCurrent(), foe, me, field);
 					field.endOfTurn();
 				}
 				if (foe.isFainted()) {
@@ -804,7 +809,17 @@ public class Battle extends JFrame {
 
 	public void turn(Pokemon p1, Pokemon p2, Move m1, Move m2) {
 		if (p1.isFainted() || p2.isFainted()) return;
-		Pokemon faster = p1.getFaster(p2, field, m1.priority, m2.priority);
+
+		int m1P, m2P;
+		m1P = m1.priority;
+		m2P = m2.priority;
+		if (p1.ability == Ability.PRANKSTER && m1.cat == 2) ++m1P;
+		if (p2.ability == Ability.PRANKSTER && m2.cat == 2) ++m2P;
+		
+		if (p1.ability == Ability.STEALTHY_PREDATOR && p1.impressive) ++m1P;
+		if (p2.ability == Ability.STEALTHY_PREDATOR && p2.impressive) ++m2P;
+		
+		Pokemon faster = p1.getFaster(p2, field, m1P, m2P);
 		
 		Pokemon slower = faster == p1 ? p2 : p1;
 		
@@ -817,8 +832,8 @@ public class Battle extends JFrame {
 			else { faster.move(slower, m2, me, field, null, true); }
 	        slower.move(faster, m1, me, field, me.getTeam(), false);
 		}
-        Pokemon.endOfTurn(faster, slower, me);
-		Pokemon.endOfTurn(slower, faster, me);
+        Pokemon.endOfTurn(faster, slower, me, field);
+		Pokemon.endOfTurn(slower, faster, me, field);
 		field.endOfTurn();
 		
 		if (foe.isFainted()) {

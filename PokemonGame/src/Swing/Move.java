@@ -185,7 +185,7 @@ public enum Move {
 	FORESIGHT(0,1000,0,0,2,0,PType.MAGIC,"Indentifies foe, replacing their Ghost typing with Normal if they have it. It also raises user's Accuracy by 1 stage"),
 	FORESTS_CURSE(0,100,0,0,2,0,PType.GRASS,""),
 	FOUL_PLAY(95,100,0,0,0,0,PType.DARK,""),
-	FREEZE_DRY(70,100,10,0,1,0,PType.ICE,""),
+	FREEZE_DRY(70,100,10,0,1,0,PType.ICE,""), // TODO
 	FREEZING_GLARE(90,100,20,0,1,0,PType.PSYCHIC,""),
 	FRENZY_PLANT(150,90,0,0,1,0,PType.GRASS,"User must rest after using this move"),
 	FRUSTERATION(102,100,0,0,0,0,PType.NORMAL,"A normal attack"),
