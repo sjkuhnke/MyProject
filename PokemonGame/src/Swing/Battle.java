@@ -376,8 +376,8 @@ public class Battle extends JFrame {
 		            } else {
 		            	foe.move(me.getCurrent(),foe.randomMove(), me, field, null, false);
 		            }
-					Pokemon.endOfTurn(foe, me.getCurrent(), me, field);
-					Pokemon.endOfTurn(me.getCurrent(), foe, me, field);
+					foe.endOfTurn(me.getCurrent(), me, field);
+					me.getCurrent().endOfTurn(foe, me, field);
 					field.endOfTurn();
 					updateBars();
 					updateCurrent();
@@ -450,8 +450,8 @@ public class Battle extends JFrame {
 		        			foe.move(me.getCurrent(),foe.randomMove(), me, field, null, false);
 		        		}
 		        	}
-					Pokemon.endOfTurn(foe, me.getCurrent(), me, field);
-					Pokemon.endOfTurn(me.getCurrent(), foe, me, field);
+					foe.endOfTurn(me.getCurrent(), me, field);
+					me.getCurrent().endOfTurn(foe, me, field);
 					field.endOfTurn();
 				}
 				if (foe.isFainted()) {
@@ -832,8 +832,8 @@ public class Battle extends JFrame {
 			else { faster.move(slower, m2, me, field, null, true); }
 	        slower.move(faster, m1, me, field, me.getTeam(), false);
 		}
-        Pokemon.endOfTurn(faster, slower, me, field);
-		Pokemon.endOfTurn(slower, faster, me, field);
+        faster.endOfTurn(slower, me, field);
+		slower.endOfTurn(faster, me, field);
 		field.endOfTurn();
 		
 		if (foe.isFainted()) {

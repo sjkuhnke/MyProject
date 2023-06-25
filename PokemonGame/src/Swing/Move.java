@@ -32,7 +32,7 @@ public enum Move {
 	BEEFY_BASH(100,85,50,0,0,-1,PType.FIGHTING,"% chance to paralyze foe, moves last"),
 	BELCH(120,100,0,0,1,0,PType.POISON,"Only works on the first turn out"),
 	//BIG_BULLET(70,90,30,0,0,0,PType.STEEL,"% chance to Paralyze foe"),
-	BIND(20,85,100,0,0,0,PType.NORMAL,""),
+	BIND(15,85,100,0,0,0,PType.NORMAL,""),
 	BITE(60,100,30,0,0,0,PType.DARK,"% chance of causing foe to flinch"),
 	//BLACK_DUST(0,100,0,0,2,0,PType.FIRE,"Lowers foe's Accuracy by 2"),
 	//BLACK_HOLE(90,90,100,0,1,0,PType.DARK,"% chance of lowering foe's Accuracy by 1"),
@@ -458,7 +458,7 @@ public enum Move {
 	SLUDGE(65,100,30,0,1,0,PType.POISON,"% to Poison foe"),
 	SLUDGE_BOMB(90,100,30,0,1,0,PType.POISON,"% to Poison foe"),
 	SLUDGE_WAVE(95,100,10,0,1,0,PType.POISON,""),
-	SMACK_DOWN(50,100,100,0,0,0,PType.ROCK,""), // TODO
+	SMACK_DOWN(50,100,100,0,0,0,PType.ROCK,""),
 	SMART_STRIKE(70,1000,0,0,0,0,PType.STEEL,""),
 	//SMASH(70,90,0,0,0,0,PType.NORMAL,"A normal attack"),
 	SMOG(20,70,50,0,1,0,PType.POISON,"% to Poison foe"),
@@ -540,7 +540,7 @@ public enum Move {
 	THUNDER_FANG(65,95,10,0,0,0,PType.ELECTRIC,"% of Paralyzing and/or flinching foe"),
 	//THUNDER_KICK(80,90,10,0,0,0,PType.ELECTRIC,"% of Paralyzing foe"),
 	THUNDER_PUNCH(75,100,10,0,0,0,PType.ELECTRIC,"% of Paralyzing foe"),
-	THUNDER_WAVE(0,100,0,0,2,0,PType.ELECTRIC,"Paralyzes foe"),
+	THUNDER_WAVE(0,90,0,0,2,0,PType.ELECTRIC,"Paralyzes foe"),
 	THUNDERBOLT(95,100,10,0,1,0,PType.ELECTRIC,"% of Paralyzing foe"), // recoil
 	THUNDERSHOCK(40,100,10,0,1,0,PType.ELECTRIC,"% of Paralyzing foe"),
 	TOPSY_TURVY(0,1000,0,0,2,0,PType.DARK,""),

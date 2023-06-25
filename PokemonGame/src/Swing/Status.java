@@ -32,7 +32,8 @@ public enum Status {
 	TORMENTED("AUT",Color.BLACK,Color.BLACK),
 	ENDURE("AUT",Color.BLACK,Color.BLACK),
 	FOCUS_ENERGY("AUT",Color.BLACK,Color.BLACK),
-	FLASH_FIRE("AUT",Color.BLACK,Color.BLACK),
+	FLASH_FIRE("AUT",Color.BLACK,Color.BLACK), 
+	SMACK_DOWN("AUT",Color.BLACK,Color.BLACK),
 	;
 	
 	Status(String name, Color color, Color textColor) {

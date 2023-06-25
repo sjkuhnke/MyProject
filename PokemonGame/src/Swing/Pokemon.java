@@ -217,7 +217,11 @@ public class Pokemon implements Serializable {
 	        }
 
 	        // If all valid moves have the same damage, randomly select one of them
-	        if (bestMoves.size() > 1) {
+	        if (bestMoves.isEmpty()) {
+	            // Fallback: Choose a random status move
+	            int randomIndex = (int) (Math.random() * statusMoves.size());
+	            return statusMoves.get(randomIndex);
+	        } else if (bestMoves.size() > 1) {
 	            int randomIndex = (int) (Math.random() * bestMoves.size());
 	            return bestMoves.get(randomIndex);
 	        }
@@ -3915,6 +3919,7 @@ public class Pokemon implements Serializable {
 		}
 		
 		if (this.ability == Ability.COMPOUND_EYES) acc *= 1.3;
+		if (field.contains(field.fieldEffects, Effect.GRAVITY)) acc = acc * 5 / 3;
 		if (this.ability != Ability.NO_GUARD && foe.ability != Ability.NO_GUARD) {
 			int accEv = this.statStages[5] - foe.statStages[6];
 			if (move == Move.DARKEST_LARIAT || move == Move.SACRED_SWORD) accEv += foe.statStages[6];
@@ -3962,7 +3967,7 @@ public class Pokemon implements Serializable {
 			}
 		}
 		
-		if ((moveType == PType.ELECTRIC && (foe.ability == Ability.MOTOR_DRIVE || foe.ability == Ability.LIGHTNING_ROD)) || moveType == PType.GRASS || foe.ability == Ability.SAP_SIPPER) {
+		if ((moveType == PType.ELECTRIC && (foe.ability == Ability.MOTOR_DRIVE || foe.ability == Ability.LIGHTNING_ROD)) || (moveType == PType.GRASS && foe.ability == Ability.SAP_SIPPER)) {
 			System.out.println("\n" + this.name + " used " + move + "!");
 			System.out.print("[" + foe.name + "'s " + foe.ability.toString() + "]: ");
 			if (foe.ability == Ability.MOTOR_DRIVE) stat(foe, 4, 1);
@@ -3972,27 +3977,22 @@ public class Pokemon implements Serializable {
 			return;
 		}
 		
-		if (move.accuracy <= 100 && move.cat != 2) {
-			if (getImmune(foe, moveType)) {
-				System.out.println("\n" + this.name + " used " + move + "!");
-				System.out.println("It doesn't effect " + foe.name + "...");
-				endMove();
-				return; // Check for immunity
-			}
-		} else if (move.accuracy > 100 && move.cat != 2) {
-			if (getImmune(foe, moveType)) {
-				System.out.println("\n" + this.name + " used " + move + "!");
-				System.out.println("It doesn't effect " + foe.name + "...");
-				endMove();
-				return; // Check for immunity
-			}
-		}
-		if (move.cat != 2 && moveType == PType.GROUND && foe.magCount > 0) {
+		if (moveType == PType.GROUND && !foe.isGrounded(field, foe)) {
 			System.out.println("\n" + this.name + " used " + move + "!");
 			System.out.println("It doesn't effect " + foe.name + "...");
 			endMove();
 			return; // Check for immunity
 		}
+		
+		if (moveType != PType.GROUND && (move.cat != 2 || move == Move.THUNDER_WAVE)) {
+			if (getImmune(foe, moveType)) {
+				System.out.println("\n" + this.name + " used " + move + "!");
+				System.out.println("It doesn't effect " + foe.name + "...");
+				endMove();
+				return; // Check for immunity
+			}
+		}
+		
 		if (foe.magCount > 0) foe.magCount--;
 		
 		System.out.println("\n" + this.name + " used " + move + "!");
@@ -4018,6 +4018,16 @@ public class Pokemon implements Serializable {
 			bp *= 1.2;
 		}
 		
+		if (this.ability == Ability.PROTEAN) {
+			if (this.type1 == moveType && this.type2 == null) {
+				
+			} else {
+				this.type1 = moveType;
+				this.type2 = null;
+				System.out.println(this.name + "'s type was updated to " + this.type1.toString() + "!");
+			}
+		}
+		
 		if (this.ability == Ability.SHEER_FORCE && move.cat != 2 && secChance > 0) {
 			secChance = 0;
 			bp *= 1.3;
@@ -4035,6 +4045,16 @@ public class Pokemon implements Serializable {
 		
 		if (this.ability == Ability.STRONG_JAW && (move == Move.BITE || move == Move.CRUNCH || move == Move.FIRE_FANG || move == Move.HYPER_FANG
 				|| move == Move.ICE_FANG || move == Move.JAW_LOCK || move == Move.POISON_FANG || move == Move.PSYCHIC_FANGS || move == Move.THUNDER_FANG)) {
+			bp *= 1.5;
+		}
+		
+		if (moveType == PType.GRASS && this.ability == Ability.OVERGROW && this.currentHP <= this.getStat(0) / 3) {
+			bp *= 1.5;
+		} else if (moveType == PType.FIRE && this.ability == Ability.BLAZE && this.currentHP <= this.getStat(0) / 3) {
+			bp *= 1.5;
+		} else if (moveType == PType.WATER && this.ability == Ability.TORRENT && this.currentHP <= this.getStat(0) / 3) {
+			bp *= 1.5;
+		} else if (moveType == PType.BUG && this.ability == Ability.SWARM && this.currentHP <= this.getStat(0) / 3) {
 			bp *= 1.5;
 		}
 		
@@ -4059,6 +4079,7 @@ public class Pokemon implements Serializable {
 			if (this.ability != Ability.UNAWARE) defenseStat *= foe.asModifier(3);
 			if (move == Move.PSYSHOCK) defenseStat = foe.getStat(2) * foe.asModifier(1);
 			if (this.status == Status.FROSTBITE) attackStat /= 2;
+			if (this.ability == Ability.SOLAR_POWER && field.equals(field.weather, Effect.SUN)) attackStat *= 1.5;
 		}
 		
 		// Crit Check
@@ -4127,6 +4148,13 @@ public class Pokemon implements Serializable {
 			if (foe.type2 == type) multiplier *= 2;
 		}
 		
+		if (foe.ability == Ability.WONDER_GUARD && multiplier <= 1) {
+			System.out.println("\n" + this.name + " used " + move + "!");
+			System.out.println("It doesn't effect " + foe.name + "...");
+			endMove();
+			return; // Check for immunity
+		}
+		
 		damage *= multiplier;
 		
 		if (foe.ability == Ability.UNERODIBLE && (moveType == PType.GRASS || moveType == PType.WATER || moveType == PType.GROUND)) damage /= 4;
@@ -4146,7 +4174,7 @@ public class Pokemon implements Serializable {
 		if (move == Move.SUPER_FANG) damage = foe.currentHP / 2;
 		if (move == Move.DRAGON_RAGE) damage = 40;
 		if (move == Move.HORN_DRILL || move == Move.SHEER_COLD || move == Move.GUILLOTINE || move == Move.FISSURE) {
-			if (move == Move.SHEER_COLD && (foe.type1 == PType.ICE || foe.type2 == PType.ICE)) {
+			if ((move == Move.SHEER_COLD && (foe.type1 == PType.ICE || foe.type2 == PType.ICE)) || foe.ability == Ability.STURDY) {
 				System.out.println("It doesn't effect " + foe.name + "...");
 				endMove();
 				return;
@@ -4179,9 +4207,11 @@ public class Pokemon implements Serializable {
 			if (move == Move.STEEL_BEAM) recoil = this.getStat(0) / 2;
 		}
 		
+		boolean fullHP = foe.currentHP == foe.getStat(0);
+		
 		// Damage foe
 		foe.currentHP -= damage;
-		if (foe.currentHP <= 0 && (move == Move.FALSE_SWIPE || foe.vStatuses.contains(Status.ENDURE))) foe.currentHP = 1;
+		if (foe.currentHP <= 0 && (move == Move.FALSE_SWIPE || foe.vStatuses.contains(Status.ENDURE) || (fullHP && foe.ability == Ability.STURDY))) foe.currentHP = 1;
 		if (foe.currentHP <= 0) { // Check for kill
 			foe.faint(true, player);
 			if (move == Move.FELL_STINGER) stat(this, 0, 3);
@@ -4739,6 +4769,9 @@ public class Pokemon implements Serializable {
 			for (int i = 0; i < 5; ++i) {
 				stat(this, i, 1);
 			}
+		} else if (move == Move.SMACK_DOWN && !foe.vStatuses.contains(Status.SMACK_DOWN)) {
+			foe.vStatuses.add(Status.SMACK_DOWN);
+			System.out.println(foe.name + " was grounded!");
 		} else if (move == Move.SLUDGE_WAVE) {
 			foe.poison(false);
 		} else if (move == Move.NUZZLE) {
@@ -5667,8 +5700,6 @@ public class Pokemon implements Serializable {
         	if (p.type2 == PType.NORMAL) return true;
             return false;
 		case GRASS:
-			if (p.type1 == PType.LIGHT) return true;
-        	if (p.type2 == PType.LIGHT) return true;
 			return false;
 		case GROUND:
 			if (p.type1 == PType.FLYING) return true;
@@ -8761,136 +8792,148 @@ public class Pokemon implements Serializable {
 		return damage;
 	}
 
-	public static void endOfTurn(Pokemon p, Pokemon f, Player player, Field field) {
-		if (p.isFainted()) return;
-		if (p.status == Status.FROSTBITE && p.ability != Ability.MAGIC_GUARD) {
-			p.currentHP -= Math.max(p.getStat(0) / 16, 1);
-			System.out.println("\n" + p.name + " was hurt by frostbite!");
-			if (p.currentHP <= 0) { // Check for kill
-				p.faint(true, player);
-				f.awardxp((int) Math.ceil(p.level * p.trainer), player);
+	public void endOfTurn(Pokemon f, Player player, Field field) {
+		if (this.isFainted()) return;
+		if (this.status == Status.FROSTBITE && this.ability != Ability.MAGIC_GUARD) {
+			this.currentHP -= Math.max(this.getStat(0) / 16, 1);
+			System.out.println("\n" + this.name + " was hurt by frostbite!");
+			if (this.currentHP <= 0) { // Check for kill
+				this.faint(true, player);
+				f.awardxp((int) Math.ceil(this.level * this.trainer), player);
 			}
 			
-		} else if (p.status == Status.BURNED && p.ability != Ability.MAGIC_GUARD) {
-			p.currentHP -= Math.max(p.getStat(0) / 16, 1);
-			System.out.println("\n" + p.name + " was hurt by its burn!");
-			if (p.currentHP <= 0) { // Check for kill
-				p.faint(true, player);
-				f.awardxp((int) Math.ceil(p.level * p.trainer), player);
+		} else if (this.status == Status.BURNED && this.ability != Ability.MAGIC_GUARD) {
+			this.currentHP -= Math.max(this.getStat(0) / 16, 1);
+			System.out.println("\n" + this.name + " was hurt by its burn!");
+			if (this.currentHP <= 0) { // Check for kill
+				this.faint(true, player);
+				f.awardxp((int) Math.ceil(this.level * this.trainer), player);
 			}
 			
-		} else if (p.status == Status.POISONED && p.ability != Ability.MAGIC_GUARD) {
-			p.currentHP -= Math.max(p.getStat(0) / 8, 1);
-			System.out.println("\n" + p.name + " was hurt by poison!");
-			if (p.currentHP <= 0) { // Check for kill
-				p.faint(true, player);
-				f.awardxp((int) Math.ceil(p.level * p.trainer), player);
-			}
-			
-		}
-		if (p.vStatuses.contains(Status.CURSED) && p.ability != Ability.MAGIC_GUARD) {
-			p.currentHP -= Math.max(p.getStat(0) / 4, 1);
-			System.out.println("\n" + p.name + " was hurt by the curse!");
-			if (p.currentHP <= 0) { // Check for kill
-				p.faint(true, player);
-				f.awardxp((int) Math.ceil(p.level * p.trainer), player);
+		} else if (this.status == Status.POISONED && this.ability != Ability.MAGIC_GUARD) {
+			this.currentHP -= Math.max(this.getStat(0) / 8, 1);
+			System.out.println("\n" + this.name + " was hurt by poison!");
+			if (this.currentHP <= 0) { // Check for kill
+				this.faint(true, player);
+				f.awardxp((int) Math.ceil(this.level * this.trainer), player);
 			}
 			
 		}
-		if (p.vStatuses.contains(Status.LEECHED) && p.ability != Ability.MAGIC_GUARD) {
-			int hp = Math.max(p.getStat(0) / 8, 1);
-			if (hp >= p.currentHP) hp = p.currentHP;
+		if (this.vStatuses.contains(Status.CURSED) && this.ability != Ability.MAGIC_GUARD) {
+			this.currentHP -= Math.max(this.getStat(0) / 4, 1);
+			System.out.println("\n" + this.name + " was hurt by the curse!");
+			if (this.currentHP <= 0) { // Check for kill
+				this.faint(true, player);
+				f.awardxp((int) Math.ceil(this.level * this.trainer), player);
+			}
+			
+		}
+		if (this.vStatuses.contains(Status.LEECHED) && this.ability != Ability.MAGIC_GUARD) {
+			int hp = Math.max(this.getStat(0) / 8, 1);
+			if (hp >= this.currentHP) hp = this.currentHP;
 			if (f.currentHP > f.getStat(0)) f.currentHP = f.getStat(0);
-			p.currentHP -= hp;
-			System.out.println("\n" + f.name + " sucked health from " + p.name + "!");
+			this.currentHP -= hp;
+			System.out.println("\n" + f.name + " sucked health from " + this.name + "!");
 			f.currentHP += hp;
-			if (p.currentHP <= 0) {
-				p.faint(true, player);
-				f.awardxp((int) Math.ceil(p.level * p.trainer), player);
+			if (this.currentHP <= 0) {
+				this.faint(true, player);
+				f.awardxp((int) Math.ceil(this.level * this.trainer), player);
 			}
 			
 		}
-		if (p.vStatuses.contains(Status.NIGHTMARE) && p.ability != Ability.MAGIC_GUARD) {
-			if (p.status == Status.ASLEEP) {
-				p.currentHP -= Math.max(p.getStat(0) / 4, 1);
-				System.out.println("\n" + p.name + " had a nightmare!");
-				if (p.currentHP <= 0) { // Check for kill
-					p.faint(true, player);
-					f.awardxp((int) Math.ceil(p.level * p.trainer), player);
+		if (this.vStatuses.contains(Status.NIGHTMARE) && this.ability != Ability.MAGIC_GUARD) {
+			if (this.status == Status.ASLEEP) {
+				this.currentHP -= Math.max(this.getStat(0) / 4, 1);
+				System.out.println("\n" + this.name + " had a nightmare!");
+				if (this.currentHP <= 0) { // Check for kill
+					this.faint(true, player);
+					f.awardxp((int) Math.ceil(this.level * this.trainer), player);
 				}
 			} else {
-				p.vStatuses.remove(Status.NIGHTMARE);
+				this.vStatuses.remove(Status.NIGHTMARE);
 			}
-		} if (p.vStatuses.contains(Status.AQUA_RING)) {
-			if (p.currentHP < p.getStat(0)) {
-				p.currentHP += Math.max(p.getStat(0) / 16, 1);
-				if (p.currentHP > p.getStat(0)) {
-					p.currentHP = p.getStat(0);
+		} if (this.vStatuses.contains(Status.AQUA_RING)) {
+			if (this.currentHP < this.getStat(0)) {
+				this.currentHP += Math.max(this.getStat(0) / 16, 1);
+				if (this.currentHP > this.getStat(0)) {
+					this.currentHP = this.getStat(0);
 				}
-				System.out.println("\n" + p.name + " restored HP.");
+				System.out.println("\n" + this.name + " restored HP.");
 			}
-		} if (p.vStatuses.contains(Status.SPUN)) {
-			if (p.spunCount == 0) {
-				System.out.println("\n" + p.name + " was freed from wrap!");
-				p.vStatuses.remove(Status.SPUN);
+		} if (this.vStatuses.contains(Status.SPUN)) {
+			if (this.spunCount == 0) {
+				System.out.println("\n" + this.name + " was freed from wrap!");
+				this.vStatuses.remove(Status.SPUN);
 			} else {
-				if (p.ability != Ability.MAGIC_GUARD) {
-					p.currentHP -= Math.max(p.getStat(0) / 16, 1);
-					System.out.println("\n" + p.name + " was hurt by being wrapped!");
+				if (this.ability != Ability.MAGIC_GUARD) {
+					this.currentHP -= Math.max(this.getStat(0) / 16, 1);
+					System.out.println("\n" + this.name + " was hurt by being wrapped!");
 				}
-				p.spunCount--;
-				if (p.currentHP <= 0) { // Check for kill
-					p.faint(true, player);
-					f.awardxp((int) Math.ceil(p.level * p.trainer), player);
+				this.spunCount--;
+				if (this.currentHP <= 0) { // Check for kill
+					this.faint(true, player);
+					f.awardxp((int) Math.ceil(this.level * this.trainer), player);
 				}
 			}
 		}
-		if (field.equals(field.weather, Effect.SANDSTORM) && p.type1 != PType.ROCK && p.type1 != PType.STEEL && p.type1 != PType.GROUND
-				&& p.ability != Ability.SAND_FORCE && p.ability != Ability.SAND_RUSH && p.type2 != PType.ROCK && p.type2 != PType.STEEL
-				&& p.type2 != PType.GROUND && p.ability != Ability.MAGIC_GUARD) {
-			p.currentHP -= Math.max(p.getStat(0) / 16, 1);
-			System.out.println("\n" + p.name + " was buffeted by the sandstorm!");
-			if (p.currentHP <= 0) { // Check for kill
-				p.faint(true, player);
-				f.awardxp((int) Math.ceil(p.level * p.trainer), player);
+		if (field.equals(field.weather, Effect.SANDSTORM) && this.type1 != PType.ROCK && this.type1 != PType.STEEL && this.type1 != PType.GROUND
+				&& this.ability != Ability.SAND_FORCE && this.ability != Ability.SAND_RUSH && this.type2 != PType.ROCK && this.type2 != PType.STEEL
+				&& this.type2 != PType.GROUND && this.ability != Ability.MAGIC_GUARD) {
+			this.currentHP -= Math.max(this.getStat(0) / 16, 1);
+			System.out.println("\n" + this.name + " was buffeted by the sandstorm!");
+			if (this.currentHP <= 0) { // Check for kill
+				this.faint(true, player);
+				f.awardxp((int) Math.ceil(this.level * this.trainer), player);
 			}
-				
 		}
 		
-		if (p.perishCount > 0) {
-			p.perishCount--;
-			System.out.println("\n" + p.getName() + "'s perish count fell to " + p.perishCount + "!");
-			if (p.perishCount == 0) {
-				p.faint(true, player);
-				f.awardxp((int) Math.ceil(p.level * p.trainer), player);
+		if (this.ability == Ability.SOLAR_POWER && field.equals(field.weather, Effect.SUN) && field.weatherTurns > 1) {
+			this.currentHP -= Math.max(this.getStat(0) / 8, 1);
+			System.out.println("\n" + this.name + " was hurt!");
+			if (this.currentHP <= 0) { // Check for kill
+				this.faint(true, player);
+				f.awardxp((int) Math.ceil(this.level * this.trainer), player);
 			}
 		}
-		if (p.vStatuses.contains(Status.LOCKED) && p.outCount == 0 && (p.lastMoveUsed == Move.OUTRAGE || p.lastMoveUsed == Move.PETAL_DANCE || p.lastMoveUsed == Move.THRASH)) {
-			p.confuse(false);
-			p.vStatuses.remove(Status.LOCKED);
+		
+		if (this.perishCount > 0) {
+			this.perishCount--;
+			System.out.println("\n" + this.getName() + "'s perish count fell to " + this.perishCount + "!");
+			if (this.perishCount == 0) {
+				this.faint(true, player);
+				f.awardxp((int) Math.ceil(this.level * this.trainer), player);
+			}
 		}
-		if (p.vStatuses.contains(Status.ENCORED) && --p.encoreCount == 0) {
-			p.vStatuses.remove(Status.ENCORED);
-			System.out.println(p.name + "'s encore ended!");
+		if (this.vStatuses.contains(Status.LOCKED) && this.outCount == 0 && (this.lastMoveUsed == Move.OUTRAGE || this.lastMoveUsed == Move.PETAL_DANCE || this.lastMoveUsed == Move.THRASH)) {
+			this.confuse(false);
+			this.vStatuses.remove(Status.LOCKED);
 		}
-		if (p.vStatuses.contains(Status.TAUNTED) && --p.tauntCount == 0) {
-			p.vStatuses.remove(Status.TAUNTED);
-			System.out.println(p.name + "shook off the taunt!");
+		if (this.vStatuses.contains(Status.ENCORED) && --this.encoreCount == 0) {
+			this.vStatuses.remove(Status.ENCORED);
+			System.out.println(this.name + "'s encore ended!");
 		}
-		if (p.vStatuses.contains(Status.TORMENTED) && --p.tormentCount == 0) {
-			p.vStatuses.remove(Status.TORMENTED);
-			System.out.println(p.name + "'s torment ended!");
+		if (this.vStatuses.contains(Status.TAUNTED) && --this.tauntCount == 0) {
+			this.vStatuses.remove(Status.TAUNTED);
+			System.out.println(this.name + "shook off the taunt!");
 		}
-		if (p.vStatuses.contains(Status.LOCKED) && p.rollCount == 5) {
-			p.vStatuses.remove(Status.LOCKED);
+		if (this.vStatuses.contains(Status.TORMENTED) && --this.tormentCount == 0) {
+			this.vStatuses.remove(Status.TORMENTED);
+			System.out.println(this.name + "'s torment ended!");
 		}
-		if (p.vStatuses.contains(Status.BONDED)) {
-			p.vStatuses.remove(Status.BONDED);
+		if (this.vStatuses.contains(Status.LOCKED) && this.rollCount == 5) {
+			this.vStatuses.remove(Status.LOCKED);
+		}
+		if (this.vStatuses.contains(Status.BONDED)) {
+			this.vStatuses.remove(Status.BONDED);
 		}
 		
-		p.vStatuses.remove(Status.FLINCHED);
-		p.vStatuses.remove(Status.PROTECT);
-		p.vStatuses.remove(Status.ENDURE);
+		if (this.ability == Ability.SPEED_BOOST) {
+			if (this.statStages[4] != 6) stat(this, 4, 1);
+		}
+		
+		this.vStatuses.remove(Status.FLINCHED);
+		this.vStatuses.remove(Status.PROTECT);
+		this.vStatuses.remove(Status.ENDURE);
 		
 	}
 
@@ -9188,6 +9231,7 @@ public class Pokemon implements Serializable {
 //			hpRatio *= 120;
 //			bp = Math.max((int) hpRatio, 1);
 		}
+		
 		return bp;
 	}
 	
@@ -9496,6 +9540,8 @@ public class Pokemon implements Serializable {
 		} else if (this.ability == Ability.PSYCHIC_SURGE) { field.setTerrain(field.new FieldEffect(Effect.PSYCHIC));
 		} else if (this.ability == Ability.SPARKLY_SURGE) { field.setTerrain(field.new FieldEffect(Effect.SPARKLY));
 		
+		} else if (this.ability == Ability.GRAVITATIONAL_PULL) { field.setEffect(field.new FieldEffect(Effect.GRAVITY));
+		
 		} else if (this.ability == Ability.INTIMIDATE) { System.out.print("[" + this.name + "'s Intimidate]: "); stat(foe, 0, -1);
 		} else if (this.ability == Ability.MOUTHWATER) { foe.vStatuses.add(Status.TAUNTED);
 		} else if (this.ability == Ability.REGENERATOR) {
@@ -9503,6 +9549,16 @@ public class Pokemon implements Serializable {
 			verifyHP();
 		}
 		
+	}
+	
+	private boolean isGrounded(Field field, Pokemon foe) {
+		boolean result = true;
+		if (this.type1 == PType.FLYING || this.type2 == PType.FLYING) result = false;
+		if (this.ability == Ability.LEVITATE) result = false;
+		if (foe.magCount > 0) result = false;
+		if (this.vStatuses.contains(Status.SMACK_DOWN)) result = true;
+		if (field.contains(field.fieldEffects, Effect.GRAVITY)) result = true;
+		return result;
 	}
 
 
