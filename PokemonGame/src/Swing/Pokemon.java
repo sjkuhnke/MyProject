@@ -3989,7 +3989,7 @@ public class Pokemon implements Serializable {
 				System.out.println("\n" + this.name + " used " + move + "!");
 				System.out.println("It doesn't effect " + foe.name + "...");
 				endMove();
-				return; // Check for immunity
+				return; // Check for immunity 
 			}
 		}
 		
