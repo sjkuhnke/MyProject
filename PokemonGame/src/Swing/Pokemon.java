@@ -4661,7 +4661,7 @@ public class Pokemon implements Serializable {
 			}
 			if (multiplier > 1) foe.vStatuses.add(Status.FLINCHED);
 //		} else if (move == Move.MEGA_KICK) {
-//			foe.paralyze(false);
+//			foe.paralyze(false); 
 //		} else if (move == Move.MEGA_PUNCH) {
 //			foe.paralyze(false);
 //		} else if (move == Move.MEGA_SWORD) {
