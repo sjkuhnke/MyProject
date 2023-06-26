@@ -102,12 +102,12 @@ public class Pokemon implements Serializable {
 		setNature();
 		getStats();
 		setType();
-		if (t) {
-			setAbility(0);
-		} else {
+		//if (t) {
+			//setAbility(0);
+		//} else {
 			abilitySlot = (int)Math.round(Math.random());
 			setAbility(abilitySlot);
-		}
+		//}
 		
 		
 		expMax = level * 2;
@@ -3979,14 +3979,16 @@ public class Pokemon implements Serializable {
 		
 		if (moveType == PType.GROUND && !foe.isGrounded(field, foe)) {
 			System.out.println("\n" + this.name + " used " + move + "!");
+			if (foe.ability == Ability.LEVITATE) System.out.print("[" + foe.name + "'s Levitate]: ");
 			System.out.println("It doesn't effect " + foe.name + "...");
 			endMove();
 			return; // Check for immunity
 		}
 		
 		if (moveType != PType.GROUND && (move.cat != 2 || move == Move.THUNDER_WAVE)) {
-			if (getImmune(foe, moveType)) {
+			if (getImmune(foe, moveType) || (moveType == PType.GHOST && foe.ability == Ability.FRIENDLY_GHOST)) {
 				System.out.println("\n" + this.name + " used " + move + "!");
+				if (foe.ability == Ability.FRIENDLY_GHOST) System.out.print("[" + foe.name + "'s Friendly Ghost]: ");
 				System.out.println("It doesn't effect " + foe.name + "...");
 				endMove();
 				return; // Check for immunity 
@@ -4141,6 +4143,13 @@ public class Pokemon implements Serializable {
 			if (foe.type2 == type) multiplier /= 2;
 		}
 		
+		if (foe.ability == Ability.FALSE_ILLUMINATION) {
+			PType[] lightResist = new PType[]{PType.GHOST, PType.GALACTIC, PType.LIGHT};
+			for (PType type : lightResist) {
+				if (moveType == type) multiplier /= 2;
+			}
+		}
+		
 		// Check type effectiveness
 		PType[] weak = getWeaknesses(moveType);
 		for (PType type : weak) {
@@ -4154,6 +4163,8 @@ public class Pokemon implements Serializable {
 			endMove();
 			return; // Check for immunity
 		}
+		
+		if (foe.ability == Ability.FLUFFY && move.mtype == PType.FIRE) multiplier *= 2;
 		
 		damage *= multiplier;
 		
@@ -5537,6 +5548,7 @@ public class Pokemon implements Serializable {
 		
 		if (this != p) {
 			if (p.ability == Ability.MIRROR_ARMOR && a < 0) {
+				System.out.print("[" + p.name + "'s Mirror Armor]: ");
 				stat(this, i, amt);
 				return;
 			} else if (p.ability == Ability.DEFIANT && a < 0) {
@@ -5802,7 +5814,6 @@ public class Pokemon implements Serializable {
 	            resistantTypes.add(PType.GRASS);
 	            resistantTypes.add(PType.DRAGON);
 	            resistantTypes.add(PType.GHOST);
-	            resistantTypes.add(PType.LIGHT);
 	            break;
 			case FIGHTING:
 				resistantTypes.add(PType.GALACTIC);

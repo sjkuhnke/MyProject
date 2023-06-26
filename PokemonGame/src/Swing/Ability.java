@@ -18,12 +18,12 @@ public enum Ability {
 	DROUGHT("Turns the sunlight HARSH when it enters a battle."),
 	EARLY_BIRD("The Pokemon awakens quickly from sleep."),
 	ELECTRIC_SURGE("Turns the ground into ELECTRIC TERRAIN when the Pokemon enters a battle."),
-	FALSE_ILLUMINATION(""), // TODO
+	FALSE_ILLUMINATION("Grants the user all the resistances from the LIGHT type."),
 	FILTER("Reduces damage from supereffective attacks."),
 	FLAME_BODY(""), // TODO
 	FLASH_FIRE("It powers up FIRE moves if it's hit by one."),
 	FLUFFY("Halves the damage taken from moves that make direct contact, but doubles that of FIRE moves."),
-	FRIENDLY_GHOST(""), // TODO
+	FRIENDLY_GHOST("Gives full immunity to all GHOST moves."),
 	GALACTIC_AURA(""), // TODO
 	GLACIER_AURA(""), // TODO
 	GRASSY_SURGE("Turns the ground into GRASSY TERRAIN when the Pokemon enters a battle."),
@@ -40,7 +40,7 @@ public enum Ability {
 	IRON_FIST("Boosts the power of punching moves."),
 	JUSTIFIED("Boosts the Attack stat when it's hit by a DARK move."),
 	KEEN_EYE("Prevents the Pokemon from losing accuracy."),
-	LEVITATE(""), // TODO
+	LEVITATE("Gives full immunity to all GROUND moves."),
 	LIGHTNING_ROD("Raises Special Attack if hit by an ELECTRIC move."),
 	MAGIC_GUARD("The Pokemon only takes damage from attacks."),
 	MIRROR_ARMOR("Bounces back only the stat-lowering effects that the Pokemon receives."),
