@@ -46,7 +46,7 @@ public class GamePanel extends JPanel implements Runnable, BattleCloseListener {
 	Thread gameThread;
 	public CollisionChecker cChecker = new CollisionChecker(this);
 	public PlayerCharacter player = new PlayerCharacter(this,keyH);
-	public Entity npc[] = new Entity[10];
+	public Entity npc[] = new Entity[24];
 	
 	TileManager tileM = new TileManager(this);
 	
@@ -125,21 +125,21 @@ public class GamePanel extends JPanel implements Runnable, BattleCloseListener {
 		keyH.pause();
 		setSlots();
 		
-		Battle frame = new Battle(player, Main.trainers[trainer], trainer);
+		Battle frame = new Battle(player, Main.trainers[trainer], trainer, this);
 		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         frame.setBattleCloseListener(this);
         frame.setVisible(true);
 	}
 	
-	public void startWild() {
+	public void startWild(String loc) {
 	    // Create the Battle instance and set the window listener to save on close
 		inBattle = true;
 		keyH.pause();
 		setSlots();
 		
-		Battle frame = new Battle(player, null, -1);
+		Battle frame = new Battle(player, null, -1, this);
 		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		frame.encounterPokemon("Route 1"); // TODO
+		frame.encounterPokemon(loc); // TODO
         frame.setBattleCloseListener(this);
         frame.setVisible(true);
 	}

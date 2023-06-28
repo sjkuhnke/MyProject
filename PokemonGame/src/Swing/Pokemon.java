@@ -166,7 +166,7 @@ public class Pokemon implements Serializable {
 	    return validMoves.get(index);
 	}
 	
-	public Move bestMove(Pokemon foe) {
+	public Move bestMove(Pokemon foe, Field field, boolean first) {
 	    ArrayList<Move> validMoves = new ArrayList<>();
 
 	    // Add all non-null moves to the validMoves list
@@ -205,7 +205,7 @@ public class Pokemon implements Serializable {
 	        ArrayList<Move> bestMoves = new ArrayList<>();
 
 	        for (Move move : damagingMoves) {
-	            int damage = calcWithTypes(foe, move);
+	            int damage = calcWithTypes(foe, move, first);
 	            if (damage > foe.currentHP) damage = foe.currentHP;
 	            if (damage > maxDamage) {
 	                maxDamage = damage;
@@ -656,13 +656,13 @@ public class Pokemon implements Serializable {
 			this.type2 = PType.MAGIC;
 		} else if (id == 129) {
 			this.type1 = PType.BUG;
-			this.type2 = PType.GROUND;;
+			this.type2 = PType.GROUND;
 		} else if (id == 130) {
 			this.type1 = PType.BUG;
-			this.type2 = PType.FLYING;;
+			this.type2 = PType.FLYING;
 		} else if (id == 131) {
 			this.type1 = PType.BUG;
-			this.type2 = PType.GHOST;;
+			this.type2 = PType.GHOST;
 		} else if (id == 132) {
 			this.type1 = PType.WATER;
 			this.type2 = PType.GHOST;
@@ -1907,58 +1907,58 @@ public class Pokemon implements Serializable {
 		} else if (id == 101) { abilities = new Ability[] {Ability.SOLID_ROCK, Ability.SOLID_ROCK};
 		} else if (id == 102) { abilities = new Ability[] {Ability.SOLID_ROCK, Ability.SOLID_ROCK};
 		} else if (id == 103) { abilities = new Ability[] {Ability.SOLID_ROCK, Ability.SOLID_ROCK};
-		} else if (id == 104) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 105) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 106) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 107) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 108) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 109) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 110) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 111) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 112) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 113) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 114) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 115) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 116) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 117) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 118) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 119) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 120) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 121) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 122) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 123) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 124) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 125) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 126) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 127) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 128) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 129) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 130) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 131) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 132) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 133) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 134) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 135) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 136) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 137) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 138) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 139) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 140) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 141) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 142) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 143) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 144) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 145) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 146) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 147) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 148) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 149) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 150) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 151) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 152) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 153) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 154) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 155) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
+		} else if (id == 104) { abilities = new Ability[] {Ability.EARLY_BIRD, Ability.FLASH_FIRE};
+		} else if (id == 105) { abilities = new Ability[] {Ability.EARLY_BIRD, Ability.FLASH_FIRE};
+		} else if (id == 106) { abilities = new Ability[] {Ability.SHIELD_DUST, Ability.MAGIC_GUARD};
+		} else if (id == 107) { abilities = new Ability[] {Ability.SHIELD_DUST, Ability.MAGIC_GUARD};
+		} else if (id == 108) { abilities = new Ability[] {Ability.ANTICIPATION, Ability.ANTICIPATION};
+		} else if (id == 109) { abilities = new Ability[] {Ability.DROUGHT, Ability.DROUGHT};
+		} else if (id == 110) { abilities = new Ability[] {Ability.COMPETITIVE, Ability.COMPETITIVE};
+		} else if (id == 111) { abilities = new Ability[] {Ability.STATIC, Ability.VOLT_ABSORB};
+		} else if (id == 112) { abilities = new Ability[] {Ability.STATIC, Ability.ELECTRIC_SURGE};
+		} else if (id == 113) { abilities = new Ability[] {Ability.HUGE_POWER, Ability.ELECTRIC_SURGE};
+		} else if (id == 114) { abilities = new Ability[] {Ability.STATIC, Ability.FLUFFY};
+		} else if (id == 115) { abilities = new Ability[] {Ability.STATIC, Ability.FLUFFY};
+		} else if (id == 116) { abilities = new Ability[] {Ability.SPEED_BOOST, Ability.FLUFFY};
+		} else if (id == 117) { abilities = new Ability[] {Ability.SAP_SIPPER, Ability.VOLT_ABSORB};
+		} else if (id == 118) { abilities = new Ability[] {Ability.SAP_SIPPER, Ability.VOLT_ABSORB};
+		} else if (id == 119) { abilities = new Ability[] {Ability.SAP_SIPPER, Ability.VOLT_ABSORB};
+		} else if (id == 120) { abilities = new Ability[] {Ability.TOUGH_CLAWS, Ability.TOUGH_CLAWS};
+		} else if (id == 121) { abilities = new Ability[] {Ability.TOUGH_CLAWS, Ability.TOUGH_CLAWS};
+		} else if (id == 122) { abilities = new Ability[] {Ability.TOUGH_CLAWS, Ability.TOUGH_CLAWS};
+		} else if (id == 123) { abilities = new Ability[] {Ability.MOTOR_DRIVE, Ability.MOTOR_DRIVE};
+		} else if (id == 124) { abilities = new Ability[] {Ability.MOTOR_DRIVE, Ability.MOTOR_DRIVE};
+		} else if (id == 125) { abilities = new Ability[] {Ability.MOTOR_DRIVE, Ability.MOTOR_DRIVE};
+		} else if (id == 126) { abilities = new Ability[] {Ability.GUTS, Ability.GUTS};
+		} else if (id == 127) { abilities = new Ability[] {Ability.GUTS, Ability.GUTS};
+		} else if (id == 128) { abilities = new Ability[] {Ability.GUTS, Ability.GUTS};
+		} else if (id == 129) { abilities = new Ability[] {Ability.COMPOUND_EYES, Ability.COMPOUND_EYES};
+		} else if (id == 130) { abilities = new Ability[] {Ability.SPEED_BOOST, Ability.SPEED_BOOST};
+		} else if (id == 131) { abilities = new Ability[] {Ability.WONDER_GUARD, Ability.WONDER_GUARD};
+		} else if (id == 132) { abilities = new Ability[] {Ability.SWIFT_SWIM, Ability.REGENERATOR};
+		} else if (id == 133) { abilities = new Ability[] {Ability.SWIFT_SWIM, Ability.REGENERATOR};
+		} else if (id == 134) { abilities = new Ability[] {Ability.UNAWARE, Ability.WATER_ABSORB};
+		} else if (id == 135) { abilities = new Ability[] {Ability.UNAWARE, Ability.WATER_ABSORB};
+		} else if (id == 136) { abilities = new Ability[] {Ability.DRIZZLE, Ability.WATER_ABSORB};
+		} else if (id == 137) { abilities = new Ability[] {Ability.SWIFT_SWIM, Ability.RATTLED};
+		} else if (id == 138) { abilities = new Ability[] {Ability.INTIMIDATE, Ability.MOXIE};
+		} else if (id == 139) { abilities = new Ability[] {Ability.FALSE_ILLUMINATION, Ability.NATURAL_CURE};
+		} else if (id == 140) { abilities = new Ability[] {Ability.FALSE_ILLUMINATION, Ability.NATURAL_CURE};
+		} else if (id == 141) { abilities = new Ability[] {Ability.STEALTHY_PREDATOR, Ability.STRONG_JAW};
+		} else if (id == 142) { abilities = new Ability[] {Ability.STEALTHY_PREDATOR, Ability.STRONG_JAW};
+		} else if (id == 143) { abilities = new Ability[] {Ability.REGENERATOR, Ability.MAGIC_GUARD};
+		} else if (id == 144) { abilities = new Ability[] {Ability.SWIFT_SWIM, Ability.SNIPER};
+		} else if (id == 145) { abilities = new Ability[] {Ability.SWIFT_SWIM, Ability.MAGIC_GUARD};
+		} else if (id == 146) { abilities = new Ability[] {Ability.TOUGH_CLAWS, Ability.SNIPER};
+		} else if (id == 147) { abilities = new Ability[] {Ability.TOUGH_CLAWS, Ability.MAGIC_GUARD};
+		} else if (id == 148) { abilities = new Ability[] {Ability.FALSE_ILLUMINATION, Ability.PRANKSTER};
+		} else if (id == 149) { abilities = new Ability[] {Ability.FALSE_ILLUMINATION, Ability.PRANKSTER};
+		} else if (id == 150) { abilities = new Ability[] {Ability.WATER_VEIL, Ability.REGENERATOR};
+		} else if (id == 151) { abilities = new Ability[] {Ability.INTIMIDATE, Ability.SHED_SKIN};
+		} else if (id == 152) { abilities = new Ability[] {Ability.INTIMIDATE, Ability.SHED_SKIN};
+		} else if (id == 153) { abilities = new Ability[] {Ability.INNER_FOCUS, Ability.INNER_FOCUS};
+		} else if (id == 154) { abilities = new Ability[] {Ability.INNER_FOCUS, Ability.INNER_FOCUS};
+		} else if (id == 155) { abilities = new Ability[] {Ability.INNER_FOCUS, Ability.INNER_FOCUS};
 		} else if (id == 156) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
 		} else if (id == 157) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
 		} else if (id == 158) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
@@ -2486,25 +2486,25 @@ public class Pokemon implements Serializable {
 		} else if (this.id == 134) { this.baseStats = new int[]{34,14,20,27,90,15};
 		} else if (this.id == 135) { this.baseStats = new int[]{100,28,45,72,110,45};
 		} else if (this.id == 136) { this.baseStats = new int[]{100,100,76,34,94,91};
-		} else if (this.id == 137) { this.baseStats = new int[]{35,46,45,67,70,63};
-		} else if (this.id == 138) { this.baseStats = new int[]{35,46,45,67,70,63};
-		} else if (this.id == 139) { this.baseStats = new int[]{35,46,45,67,70,63};
-		} else if (this.id == 140) { this.baseStats = new int[]{35,46,45,67,70,63};
-		} else if (this.id == 141) { this.baseStats = new int[]{35,46,45,67,70,63};
-		} else if (this.id == 142) { this.baseStats = new int[]{35,46,45,67,70,63};
-		} else if (this.id == 143) { this.baseStats = new int[]{35,46,45,67,70,63};
-		} else if (this.id == 144) { this.baseStats = new int[]{35,46,45,67,70,63};
-		} else if (this.id == 145) { this.baseStats = new int[]{35,46,45,67,70,63};
-		} else if (this.id == 146) { this.baseStats = new int[]{35,46,45,67,70,63};
-		} else if (this.id == 147) { this.baseStats = new int[]{35,46,45,67,70,63};
-		} else if (this.id == 148) { this.baseStats = new int[]{35,46,45,67,70,63};
-		} else if (this.id == 149) { this.baseStats = new int[]{35,46,45,67,70,63};
-		} else if (this.id == 150) { this.baseStats = new int[]{35,46,45,67,70,63};
-		} else if (this.id == 151) { this.baseStats = new int[]{35,46,45,67,70,63};
-		} else if (this.id == 152) { this.baseStats = new int[]{35,46,45,67,70,63};
-		} else if (this.id == 153) { this.baseStats = new int[]{35,46,45,67,70,63};
-		} else if (this.id == 154) { this.baseStats = new int[]{35,46,45,67,70,63};
-		} else if (this.id == 155) { this.baseStats = new int[]{35,46,45,67,70,63};
+		} else if (this.id == 137) { this.baseStats = new int[]{20,10,55,15,20,80};
+		} else if (this.id == 138) { this.baseStats = new int[]{95,125,79,60,100,81};
+		} else if (this.id == 139) { this.baseStats = new int[]{30,45,55,70,55,85};
+		} else if (this.id == 140) { this.baseStats = new int[]{60,75,85,100,85,115};
+		} else if (this.id == 141) { this.baseStats = new int[]{105,125,100,45,55,95};
+		} else if (this.id == 142) { this.baseStats = new int[]{110,140,100,75,55,95};
+		} else if (this.id == 143) { this.baseStats = new int[]{35,35,35,100,45,45};
+		} else if (this.id == 144) { this.baseStats = new int[]{81,103,63,113,90,75};
+		} else if (this.id == 145) { this.baseStats = new int[]{100,100,90,100,90,100};
+		} else if (this.id == 146) { this.baseStats = new int[]{42,52,67,39,56,50};
+		} else if (this.id == 147) { this.baseStats = new int[]{72,105,115,54,86,68};
+		} else if (this.id == 148) { this.baseStats = new int[]{55,60,64,62,55,49};
+		} else if (this.id == 149) { this.baseStats = new int[]{75,125,110,35,80,60};
+		} else if (this.id == 150) { this.baseStats = new int[]{40,40,75,55,50,90};
+		} else if (this.id == 151) { this.baseStats = new int[]{35,60,44,40,54,55};
+		} else if (this.id == 152) { this.baseStats = new int[]{60,110,70,55,50,80};
+		} else if (this.id == 153) { this.baseStats = new int[]{40,45,35,30,40,55};
+		} else if (this.id == 154) { this.baseStats = new int[]{75,80,70,65,75,90};
+		} else if (this.id == 155) { this.baseStats = new int[]{85,90,80,70,80,130};
 		} else if (this.id == 156) { this.baseStats = new int[]{35,46,45,67,70,63};
 		} else if (this.id == 157) { this.baseStats = new int[]{35,46,45,67,70,63};
 		} else if (this.id == 158) { this.baseStats = new int[]{35,46,45,67,70,63};
@@ -4011,7 +4011,7 @@ public class Pokemon implements Serializable {
 		}
 		
 		if (move.basePower < 0) {
-			bp = determineBasePower(foe, move);
+			bp = determineBasePower(foe, move, first);
 		}
 		
 		if (moveType == PType.FIRE && this.vStatuses.contains(Status.FLASH_FIRE)) bp *= 1.5;
@@ -4037,6 +4037,10 @@ public class Pokemon implements Serializable {
 		
 		if (this.ability == Ability.TECHNICIAN && bp <= 60) {
 			bp *= 1.5;
+		}
+		
+		if (this.ability == Ability.TOUGH_CLAWS && move.contact) {
+			bp *= 1.3;
 		}
 		
 		if (this.ability == Ability.IRON_FIST && (move == Move.BULLET_PUNCH || move == Move.COMET_PUNCH || move == Move.DRAIN_PUNCH || move == Move.FOCUS_PUNCH
@@ -4244,6 +4248,21 @@ public class Pokemon implements Serializable {
 		
 		if (!foe.isFainted() && checkSecondary(secChance)) {
 			secondaryEffect(foe, move, field, first);
+		}
+		
+		if (move.contact && checkSecondary(30)) {
+			if (foe.ability == Ability.FLAME_BODY) foe.burn(false);
+			if (foe.ability == Ability.STATIC) foe.paralyze(false);
+			if (foe.ability == Ability.POISON_POINT) foe.poison(false);
+		}
+		
+		if (move.contact && (foe.ability == Ability.ROUGH_SKIN || foe.ability == Ability.IRON_BARBS)) {
+			this.currentHP -= Math.max(this.getStat(0) / 8, 1);
+			if (this.currentHP <= 0) { // Check for kill
+				this.faint(true, player);
+				if (move == Move.FELL_STINGER) stat(this, 0, 3);
+				this.awardxp((int) Math.ceil(foe.level * foe.trainer), player);
+			}
 		}
 		
 		if ((moveType == PType.BUG || moveType == PType.GHOST || moveType == PType.DARK) && foe.ability == Ability.RATTLED && !foe.isFainted()) {
@@ -4969,17 +4988,17 @@ public class Pokemon implements Serializable {
 			} else {
 			    fail();
 			}
-		} else if (move == Move.AUORA_VEIL) {
+		} else if (move == Move.AURORA_VEIL) {
 			if (field.equals(field.weather, Effect.SNOW)) {
 				if (this.trainerOwned) {
-					if (!(field.contains(field.playerSide, Effect.AUORA_VEIL))) {
-						field.playerSide.add(field.new FieldEffect(Effect.AUORA_VEIL));
+					if (!(field.contains(field.playerSide, Effect.AURORA_VEIL))) {
+						field.playerSide.add(field.new FieldEffect(Effect.AURORA_VEIL));
 					} else {
 						fail();
 					}
 				} else {
-					if (!(field.contains(field.foeSide, Effect.AUORA_VEIL))) {
-						field.foeSide.add(field.new FieldEffect(Effect.AUORA_VEIL));
+					if (!(field.contains(field.foeSide, Effect.AURORA_VEIL))) {
+						field.foeSide.add(field.new FieldEffect(Effect.AURORA_VEIL));
 					} else {
 						fail();
 					}
@@ -5561,6 +5580,9 @@ public class Pokemon implements Serializable {
 			} else if (p.ability == Ability.KEEN_EYE && a < 0 && i == 6) {
 				System.out.println("[" + p.name + "'s Keen Eye]: " + this.name + "'s " + type + " was not lowered!");
 				return;
+			} else if (p.ability == Ability.HYPER_CUTTER && a < 0 && i == 0) {
+				System.out.println("[" + p.name + "'s Hyper Cutter]: " + this.name + "'s " + type + " was not lowered!");
+				return;
 			}
 		}
 		p.statStages[i] += a;
@@ -5878,7 +5900,7 @@ public class Pokemon implements Serializable {
 				break;
 			case LIGHT:
 				resistantTypes.add(PType.FIRE);
-				resistantTypes.add(PType.WATER);
+				resistantTypes.add(PType.WATER); // ???
 				resistantTypes.add(PType.STEEL);
 				resistantTypes.add(PType.LIGHT);
 				resistantTypes.add(PType.BUG);
@@ -6496,10 +6518,13 @@ public class Pokemon implements Serializable {
 			movebank[79] = new Node(Move.DRACO_METEOR);
 			break;
 		case 29:
-			movebank = new Node[15];
-			movebank[0] = new Node(Move.SAND_ATTACK);
-			movebank[9] = new Node(Move.PECK);
-			movebank[14] = new Node(Move.WING_ATTACK);
+			movebank = new Node[16];
+			movebank[0] = new Node(Move.ABSORB);
+			movebank[3] = new Node(Move.GROWTH);
+			movebank[6] = new Node(Move.WATER_SPORT);
+			movebank[9] = new Node(Move.STUN_SPORE);
+			movebank[12] = new Node(Move.MEGA_DRAIN);
+			movebank[15] = new Node(Move.WORRY_SEED);
 			break;
 		case 30:
 			movebank = new Node[55];
@@ -6514,7 +6539,159 @@ public class Pokemon implements Serializable {
 			//movebank[49] = new Node(Move.MIRROR_MOVE);
 			movebank[54] = new Node(Move.DRILL_PECK);
 			break;
+		case 31:
+			movebank = new Node[16];
+			movebank[0] = new Node(Move.ABSORB);
+			movebank[3] = new Node(Move.GROWTH);
+			movebank[6] = new Node(Move.WATER_SPORT);
+			movebank[9] = new Node(Move.STUN_SPORE);
+			movebank[12] = new Node(Move.MEGA_DRAIN);
+			movebank[15] = new Node(Move.WORRY_SEED);
+			break;
+		case 32:
+			movebank = new Node[15];
+			movebank[0] = new Node(Move.STRING_SHOT);
+			movebank[0].next = new Node(Move.TACKLE);
+			movebank[7] = new Node(Move.BUG_BITE);
+			movebank[14] = new Node(Move.RAZOR_LEAF);
+			break;
 			
+		case 38:
+			movebank = new Node[55];
+			movebank[0] = new Node(Move.TACKLE);
+			movebank[0].next = new Node(Move.DEFENSE_CURL);
+			movebank[5] = new Node(Move.LEAFAGE);
+			movebank[8] = new Node(Move.ENDURE);
+			movebank[11] = new Node(Move.ODOR_SLEUTH);
+			movebank[14] = new Node(Move.PROTECT);
+			movebank[18] = new Node(Move.ROUND);
+			movebank[22] = new Node(Move.SLACK_OFF);
+			movebank[25] = new Node(Move.CHARM);
+			movebank[28] = new Node(Move.ENDEAVOR);
+			movebank[31] = new Node(Move.COTTON_GUARD);
+			movebank[35] = new Node(Move.LEAF_TORNADO);
+			movebank[39] = new Node(Move.LEECH_SEED);
+			movebank[42] = new Node(Move.GIGA_DRAIN);
+			movebank[44] = new Node(Move.ROLLOUT);
+			movebank[54] = new Node(Move.LEAF_STORM);
+			break;
+			
+		case 41:
+			movebank = new Node[30];
+			movebank[0] = new Node(Move.LOW_KICK);
+			movebank[2] = new Node(Move.LEER);
+			movebank[4] = new Node(Move.FURY_CUTTER);
+			movebank[7] = new Node(Move.KARATE_CHOP);
+			movebank[11] = new Node(Move.BRUTAL_SWING);
+			movebank[19] = new Node(Move.QUIVER_DANCE);
+			movebank[29] = new Node(Move.STICKY_WEB);
+			break;
+			
+		case 44:
+			movebank = new Node[12];
+			movebank[0] = new Node(Move.ASTONISH);
+			movebank[1] = new Node(Move.GROWL);
+			movebank[2] = new Node(Move.ABSORB);
+			movebank[5] = new Node(Move.WATER_GUN);
+			movebank[8] = new Node(Move.HAZE);
+			movebank[11] = new Node(Move.MEGA_DRAIN);
+			break;
+			
+		case 52:
+			movebank = new Node[28];
+			movebank[0] = new Node(Move.HARDEN);
+			movebank[0].next = new Node(Move.TACKLE);
+			movebank[5] = new Node(Move.SCREECH);
+			movebank[8] = new Node(Move.CONFUSION);
+			movebank[10] = new Node(Move.BIND);
+			movebank[14] = new Node(Move.ROCK_THROW);
+			movebank[18] = new Node(Move.LOW_SWEEP);
+			movebank[21] = new Node(Move.PSYCHO_CUT);
+			movebank[23] = new Node(Move.ROCK_TOMB);
+			movebank[27] = new Node(Move.SLAM);
+			break;
+			
+		case 59:
+			movebank = new Node[30];
+			movebank[0] = new Node(Move.POWDER_SNOW);
+			movebank[0].addToEnd(new Node(Move.MEAN_LOOK));
+			movebank[0].addToEnd(new Node(Move.CONFUSION));
+			movebank[0].addToEnd(new Node(Move.GLARE));
+			movebank[9] = new Node(Move.GUST);
+			movebank[29] = new Node(Move.NIGHT_SHADE);
+			break;
+			
+		case 66:
+			movebank = new Node[40];
+			movebank[0] = new Node(Move.HEADBUTT);
+			movebank[0].next = new Node(Move.BEAT_UP);
+			movebank[4] = new Node(Move.FEINT_ATTACK);
+			movebank[7] = new Node(Move.HOWL);
+			movebank[14] = new Node(Move.DRILL_RUN);
+			movebank[19] = new Node(Move.HEAD_SMASH);
+			movebank[29] = new Node(Move.STEALTH_ROCK);
+			movebank[39] = new Node(Move.BODY_PRESS);
+			break;
+			
+		case 73:
+			movebank = new Node[35];
+			movebank[0] = new Node(Move.INFESTATION);
+			movebank[0].next = new Node(Move.FLASH);
+			movebank[3] = new Node(Move.PAYBACK);
+			movebank[6] = new Node(Move.SLASH);
+			movebank[9] = new Node(Move.PURSUIT);
+			movebank[16] = new Node(Move.BUG_BITE);
+			movebank[20] = new Node(Move.FEINT_ATTACK);
+			movebank[29] = new Node(Move.MOONLIGHT);
+			movebank[34] = new Node(Move.LEECH_LIFE);
+			break;
+			
+		case 90:
+			movebank = new Node[27];
+			movebank[0] = new Node(Move.PECK);
+			movebank[0].next = new Node(Move.TACKLE);
+			movebank[2] = new Node(Move.HYPNOSIS);
+			movebank[5] = new Node(Move.WRAP);
+			movebank[8] = new Node(Move.PAYBACK);
+			movebank[11] = new Node(Move.PLUCK);
+			movebank[14] = new Node(Move.PSYBEAM);
+			movebank[17] = new Node(Move.SWAGGER);
+			movebank[20] = new Node(Move.SLASH);
+			movebank[23] = new Node(Move.NIGHT_SLASH);
+			movebank[26] = new Node(Move.PSYCHO_CUT);
+			break;
+			
+		case 111:
+			movebank = new Node[25];
+			movebank[0] = new Node(Move.THUNDERSHOCK);
+			movebank[3] = new Node(Move.CHARGE);
+			movebank[7] = new Node(Move.WRAP);
+			movebank[12] = new Node(Move.THUNDER_WAVE);
+			movebank[16] = new Node(Move.SLAM);
+			movebank[24] = new Node(Move.SPARK);
+			break;
+			
+		case 120:
+			movebank = new Node[20];
+			movebank[0] = new Node(Move.SCRATCH);
+			movebank[0].next = new Node(Move.DEFENSE_CURL);
+			movebank[4] = new Node(Move.QUICK_ATTACK);
+			movebank[9] = new Node(Move.GROWL);
+			movebank[11] = new Node(Move.IRON_DEFENSE);
+			movebank[14] = new Node(Move.GYRO_BALL);
+			movebank[19] = new Node(Move.METAL_SOUND);
+			break;
+			
+		case 153:
+			movebank = new Node[25];
+			movebank[0] = new Node(Move.ABSORB);
+			movebank[0].next = new Node(Move.SUPERSONIC);
+			movebank[4] = new Node(Move.ASTONISH);
+			movebank[9] = new Node(Move.MEAN_LOOK);
+			movebank[14] = new Node(Move.POISON_FANG);
+			movebank[19] = new Node(Move.BITE);
+			movebank[24] = new Node(Move.WING_ATTACK);
+			break;
 			
 		case -1:
 			movebank = new Node[15];
@@ -8734,7 +8911,7 @@ public class Pokemon implements Serializable {
 		return damage;
 	}
 	
-	public int calcWithTypes(Pokemon foe, Move move) {
+	public int calcWithTypes(Pokemon foe, Move move, boolean first) {
 		double attackStat;
 		double defenseStat;
 		int damage = 0;
@@ -8749,7 +8926,7 @@ public class Pokemon implements Serializable {
 		
 		if (move == Move.DREAM_EATER && foe.status != Status.ASLEEP) return 0;
 		
-		if (move.basePower < 0) bp = determineBasePower(foe, move);
+		if (move.basePower < 0) bp = determineBasePower(foe, move, first);
 		
 		//if (this.vStatuses.contains(Status.AUTO) && (move == Move.BIG_BULLET || move == Move.GUNSHOT || move == Move.ROCKET)) bp *= 2;
 		// Use either physical or special attack/defense
@@ -8864,6 +9041,22 @@ public class Pokemon implements Serializable {
 				this.vStatuses.remove(Status.NIGHTMARE);
 			}
 		} if (this.vStatuses.contains(Status.AQUA_RING)) {
+			if (this.currentHP < this.getStat(0)) {
+				this.currentHP += Math.max(this.getStat(0) / 16, 1);
+				if (this.currentHP > this.getStat(0)) {
+					this.currentHP = this.getStat(0);
+				}
+				System.out.println("\n" + this.name + " restored HP.");
+			}
+		} if (this.ability == Ability.RAIN_DISH && field.equals(field.weather, Effect.RAIN)) {
+			if (this.currentHP < this.getStat(0)) {
+				this.currentHP += Math.max(this.getStat(0) / 16, 1);
+				if (this.currentHP > this.getStat(0)) {
+					this.currentHP = this.getStat(0);
+				}
+				System.out.println("\n" + this.name + " restored HP.");
+			}
+		} if (this.ability == Ability.ICE_BODY && field.equals(field.weather, Effect.SNOW)) {
 			if (this.currentHP < this.getStat(0)) {
 				this.currentHP += Math.max(this.getStat(0) / 16, 1);
 				if (this.currentHP > this.getStat(0)) {
@@ -9076,7 +9269,7 @@ public class Pokemon implements Serializable {
 	    return false;
 	}
 	
-	private int determineBasePower(Pokemon foe, Move move) {
+	private int determineBasePower(Pokemon foe, Move move, boolean first) {
 		int bp = 0;
 		if (move == Move.BRINE) {
 			if (foe.currentHP / foe.getStat(0) > 0.5) {
@@ -9203,6 +9396,12 @@ public class Pokemon implements Serializable {
 				this.moveMultiplier *= 2;
 			}
 			bp = Math.min(160, 20 * this.moveMultiplier);
+		} else if (move == Move.PAYBACK) {
+			if (first) {
+				bp = 40;
+			} else {
+				bp = 80;
+			}
 		} else if (move == Move.REVENGE) {
 			if (this.getSpeed() > foe.getSpeed()) {
 				bp = 60;

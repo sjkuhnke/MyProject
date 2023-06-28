@@ -43,20 +43,75 @@ public class Encounter {
 		} else if (routeName.equals("New Pheonix Town") && type.equals("Headbutt") && time.equals("D")) {
 			encounters.add(new Encounter(-10, 2, 3, 0.4));
 		} else if (routeName.equals("New Pheonix Town") && type.equals("Headbutt") && time.equals("N")) {
-			encounters.add(new Encounter(-10, 2, 3, 0.4));
-			encounters.add(new Encounter(-33, 3, 4, 0.3));
+			encounters.add(new Encounter(10, 2, 3, 0.4));
+			encounters.add(new Encounter(33, 3, 4, 0.3));
+		} else if (routeName.equals("Route 22") && type.equals("Standard") && time.equals("M")) {
+			encounters.add(new Encounter(13, 2, 2, 0.34));
+			encounters.add(new Encounter(16, 2, 4, 0.35));
+			encounters.add(new Encounter(22, 2, 3, 0.09));
+			encounters.add(new Encounter(26, 2, 4, 0.2));
+			encounters.add(new Encounter(29, 3, 3, 0.02));
+		} else if (routeName.equals("Route 22") && type.equals("Standard") && time.equals("D")) {
+			encounters.add(new Encounter(13, 2, 2, 0.3));
+			encounters.add(new Encounter(16, 2, 4, 0.3));
+			encounters.add(new Encounter(22, 2, 3, 0.04));
+			encounters.add(new Encounter(26, 2, 4, 0.35));
+			encounters.add(new Encounter(29, 3, 3, 0.01));
+		} else if (routeName.equals("Route 22") && type.equals("Standard") && time.equals("N")) {
+			encounters.add(new Encounter(13, 2, 2, 0.25));
+			encounters.add(new Encounter(22, 2, 3, 0.6));
+			encounters.add(new Encounter(26, 2, 4, 0.15));
+		} else if (routeName.equals("Route 23") && type.equals("Standard") && time.equals("M")) {
+			encounters.add(new Encounter(10, 2, 3, 0.4));
+			encounters.add(new Encounter(12, 3, 3, 0.2));
+			encounters.add(new Encounter(14, 2, 3, 0.3));
+		} else if (routeName.equals("Route 23") && type.equals("Standard") && time.equals("D")) {
+			encounters.add(new Encounter(10, 2, 3, 0.05));
+			encounters.add(new Encounter(13, 3, 4, 0.36));
+			encounters.add(new Encounter(16, 4, 4, 0.40));
+			encounters.add(new Encounter(32, 2, 3, 0.03));
+			encounters.add(new Encounter(38, 3, 5, 0.15));
+			encounters.add(new Encounter(41, 2, 3, 0.01));
+		} else if (routeName.equals("Route 23") && type.equals("Standard") && time.equals("N")) {
+			encounters.add(new Encounter(10, 2, 3, 0.4));
+			encounters.add(new Encounter(12, 3, 3, 0.2));
+			encounters.add(new Encounter(33, 2, 3, 0.3));
 		} else if (routeName.equals("Route 1")&& type.equals("Standard") && time.equals("M")) {
-			encounters.add(new Encounter(-10, 2, 3, 0.4));
-			encounters.add(new Encounter(-12, 3, 3, 0.2));
-			encounters.add(new Encounter(-14, 2, 3, 0.3));
+			encounters.add(new Encounter(13, 2, 2, 0.1));
+			encounters.add(new Encounter(16, 2, 4, 0.1));
+			encounters.add(new Encounter(22, 2, 3, 0.1));
+			encounters.add(new Encounter(26, 2, 4, 0.1));
+			encounters.add(new Encounter(29, 3, 3, 0.06));
+			encounters.add(new Encounter(10, 2, 3, 0.04));
+			encounters.add(new Encounter(13, 3, 4, 0.1));
+			encounters.add(new Encounter(16, 4, 4, 0.1));
+			encounters.add(new Encounter(32, 2, 3, 0.1));
+			encounters.add(new Encounter(38, 3, 5, 0.1));
+			encounters.add(new Encounter(41, 2, 3, 0.1));
 		} else if (routeName.equals("Route 1")&& type.equals("Standard") && time.equals("D")) {
-			encounters.add(new Encounter(-10, 2, 3, 0.4));
-			encounters.add(new Encounter(-12, 3, 3, 0.2));
-			encounters.add(new Encounter(-14, 2, 3, 0.3));
+			encounters.add(new Encounter(13, 2, 2, 0.1));
+			encounters.add(new Encounter(16, 2, 4, 0.1));
+			encounters.add(new Encounter(22, 2, 3, 0.1));
+			encounters.add(new Encounter(26, 2, 4, 0.1));
+			encounters.add(new Encounter(29, 3, 3, 0.06));
+			encounters.add(new Encounter(10, 2, 3, 0.04));
+			encounters.add(new Encounter(13, 3, 4, 0.1));
+			encounters.add(new Encounter(16, 4, 4, 0.1));
+			encounters.add(new Encounter(32, 2, 3, 0.1));
+			encounters.add(new Encounter(38, 3, 5, 0.1));
+			encounters.add(new Encounter(41, 2, 3, 0.1));
 		} else if (routeName.equals("Route 1")&& type.equals("Standard") && time.equals("N")) {
-			encounters.add(new Encounter(-10, 2, 3, 0.4));
-			encounters.add(new Encounter(-12, 3, 3, 0.2));
-			encounters.add(new Encounter(-33, 2, 3, 0.3));
+			encounters.add(new Encounter(13, 2, 2, 0.1));
+			encounters.add(new Encounter(16, 2, 4, 0.1));
+			encounters.add(new Encounter(22, 2, 3, 0.1));
+			encounters.add(new Encounter(26, 2, 4, 0.1));
+			encounters.add(new Encounter(29, 3, 3, 0.06));
+			encounters.add(new Encounter(10, 2, 3, 0.04));
+			encounters.add(new Encounter(13, 3, 4, 0.1));
+			encounters.add(new Encounter(16, 4, 4, 0.1));
+			encounters.add(new Encounter(32, 2, 3, 0.1));
+			encounters.add(new Encounter(38, 3, 5, 0.1));
+			encounters.add(new Encounter(41, 2, 3, 0.1));
 		} else if (routeName.equals("Blueberry Grove")&& type.equals("Standard")) {
 			encounters.add(new Encounter(-10, 15, 25, 0.3));
 			encounters.add(new Encounter(-11, 15, 25, 0.2));

@@ -25,7 +25,9 @@ public class Main {
 		setTrainers();
 		
 		GamePanel gamePanel = new GamePanel();
+		
 		gamePanel.setupGame();
+		
 		try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("player.dat"))) {
 	        gamePanel.player.p = (Player) ois.readObject();
 	        for (Pokemon p : gamePanel.player.p.team) {
@@ -50,6 +52,11 @@ public class Main {
 	        gamePanel.player.p.starter = choice;
 	        gamePanel.player.p.bag.add(new Item(22), 999);
 	    }
+		
+		if (gamePanel.player.p.starter == 0) trainers[0] = new Trainer("Scott 1", new Pokemon[]{new Pokemon(7, 5, false, true)}, 500);
+		else if (gamePanel.player.p.starter == 1) trainers[0] = new Trainer("Scott 1", new Pokemon[]{new Pokemon(1, 5, false, true)}, 500);
+		else if (gamePanel.player.p.starter == 2) trainers[0] = new Trainer("Scott 1", new Pokemon[]{new Pokemon(4, 5, false, true)}, 500);
+		
 		window.add(gamePanel);
 		
 		window.pack();
@@ -75,21 +82,30 @@ public class Main {
 	
 	private static void setTrainers() {
 		trainers = new Trainer[]{
-				new Trainer("A", new Pokemon[]{new Pokemon(-14, 3, false, true)}, 100),
-				new Trainer("B", new Pokemon[]{new Pokemon(-24, 4, false, true), new Pokemon(-24, 4, false, true)}, 100),
-				new Trainer("C", new Pokemon[]{new Pokemon(-12, 5, false, true), new Pokemon(-10, 6, false, true)}, 100),
-				new Trainer("D", new Pokemon[]{new Pokemon(-33, 7, false, true), new Pokemon(-33, 7, false, true)}, 100),
+				new Trainer("Scott 1", new Pokemon[]{new Pokemon(-130, 7, false, true)}, 500),
+				new Trainer("A", new Pokemon[]{new Pokemon(16, 4, false, true)}, 100),
+				new Trainer("B", new Pokemon[]{new Pokemon(13, 3, false, true)}, 100),
+				new Trainer("C", new Pokemon[]{new Pokemon(32, 4, false, true), new Pokemon(29, 4, false, true)}, 100),
+				new Trainer("D", new Pokemon[]{new Pokemon(22, 2, false, true), new Pokemon(22, 2, false, true), new Pokemon(22, 2, false, true)}, 100),
+				new Trainer("TN 1", new Pokemon[]{new Pokemon(22, 9, false, true)}, 100),
+				new Trainer("TN 2", new Pokemon[]{new Pokemon(22, 9, false, true)}, 100),
+				new Trainer("TN 3", new Pokemon[]{new Pokemon(29, 10, false, true)}, 100),
+				new Trainer("TN 4", new Pokemon[]{new Pokemon(59, 11, false, true)}, 100),
+				new Trainer("TN 5", new Pokemon[]{new Pokemon(41, 10, false, true)}, 100),
+				new Trainer("TN 6", new Pokemon[]{new Pokemon(73, 10, false, true)}, 100),
+				new Trainer("TN 7", new Pokemon[]{new Pokemon(90, 10, false, true)}, 100),
+				new Trainer("TN 8", new Pokemon[]{new Pokemon(52, 12, false, true)}, 100),
+				new Trainer("Rick 1", new Pokemon[]{new Pokemon(66, 11, false, true), new Pokemon(111, 12, false, true), new Pokemon(44, 13, false, true), new Pokemon(120, 10, false, true)}, 100),
+				new Trainer("1 Gym A", new Pokemon[]{new Pokemon(13, 7, false, true), new Pokemon(13, 9, false, true), new Pokemon(13, 11, false, true)}, 200),
+				new Trainer("1 Gym B", new Pokemon[]{new Pokemon(10, 11, false, true), new Pokemon(10, 11, false, true)}, 200),
+				new Trainer("1 Gym C", new Pokemon[]{new Pokemon(13, 12, false, true), new Pokemon(10, 14, false, true)}, 200),
+				new Trainer("1 Gym Leader 1", new Pokemon[]{new Pokemon(13, 12, false, true), new Pokemon(10, 15, false, true), new Pokemon(153, 14, false, true), new Pokemon(14, 16, false, true),}, 500),
 				new Trainer("E", new Pokemon[]{new Pokemon(-18, 8, false, true)}, 100),
 				new Trainer("F", new Pokemon[]{new Pokemon(-12, 9, false, true)}, 100),
-				new Trainer("Rival 1", new Pokemon[]{new Pokemon(-130, 7, false, true)}, 500),
 				new Trainer("G", new Pokemon[]{new Pokemon(-42, 7, false, true), new Pokemon(-42, 8, false, true)}, 100),
 				new Trainer("TT", new Pokemon[]{new Pokemon(-24, 10, false, true), new Pokemon(-24, 10, false, true), new Pokemon(-24, 10, false, true)}, 100),
 				new Trainer("UU", new Pokemon[]{new Pokemon(-24, 15, false, true)}, 100),
-				new Trainer("1 Gym A", new Pokemon[]{new Pokemon(-18, 5, false, true), new Pokemon(-18, 5, false, true)}, 200),
-				new Trainer("1 Gym B", new Pokemon[]{new Pokemon(-18, 12, false, true)}, 200),
-				new Trainer("1 Gym C", new Pokemon[]{new Pokemon(-18, 6, false, true), new Pokemon(-21, 4, false, true), new Pokemon(-18, 8, false, true)}, 200),
 				new Trainer("1 Gym D", new Pokemon[]{new Pokemon(-21, 7, false, true), new Pokemon(-21, 7, false, true), new Pokemon(-21, 9, false, true)}, 200),
-				new Trainer("1 Gym Leader 1", new Pokemon[]{new Pokemon(-18, 7, false, true), new Pokemon(-18, 13, false, true), new Pokemon(-21, 9, false, true)}, 500),
 				new Trainer("2 Gym A", new Pokemon[]{new Pokemon(-11, 16, false, true)}, 200),
 				new Trainer("2 Gym B", new Pokemon[]{new Pokemon(-10, 10, false, true), new Pokemon(-10, 10, false, true)}, 200),
 				new Trainer("2 Gym Leader 1", new Pokemon[]{new Pokemon(-10, 10, false, true), new Pokemon(-12, 10, false, true), new Pokemon(-11, 19, false, true)}, 500),

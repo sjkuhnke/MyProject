@@ -31,7 +31,7 @@ public class Field {
 		SPARKLY(5, false, true), 
 		REFLECT(5, false, false),
 		LIGHT_SCREEN(5, false, false),
-		AUORA_VEIL(5, false, false),
+		AURORA_VEIL(5, false, false),
 		TRICK_ROOM(5, false, false),
 		GRAVITY(5, false, false), 
 		TAILWIND(4, false, false),

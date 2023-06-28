@@ -63,8 +63,8 @@ public class PlayerCharacter extends Entity {
 	}
 	
 	public void setDefaultValues() {
-		worldX = gp.tileSize * 23;
-		worldY = gp.tileSize * 21;
+		worldX = gp.tileSize * 90;
+		worldY = gp.tileSize * 46;
 		speed = 4;
 		direction = "down";
 	}
@@ -131,7 +131,8 @@ public class PlayerCharacter extends Entity {
 				Random r = new Random();
 				int random = r.nextInt(150);
 				if (random < speed) {
-					gp.startWild();
+					String loc = "Route 1";
+					gp.startWild(loc);
 				}
 			}
 		}

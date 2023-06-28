@@ -3,6 +3,7 @@ package Swing;
 import javax.swing.border.EmptyBorder;
 
 import Entity.PlayerCharacter;
+import Overworld.GamePanel;
 
 import java.awt.*;
 import java.awt.event.ActionListener;
@@ -74,7 +75,7 @@ public class Battle extends JFrame {
 	
 	private BattleCloseListener battleCloseListener;
 
-	public Battle(PlayerCharacter playerCharacter, Trainer foeT, int trainerIndex) {
+	public Battle(PlayerCharacter playerCharacter, Trainer foeT, int trainerIndex, GamePanel gp) {
 		me = playerCharacter.p;
 		this.trainerIndex = trainerIndex;
 		int faintIndex = 0;
@@ -92,17 +93,25 @@ public class Battle extends JFrame {
 		
 	    // Initializing panel
 	    setResizable(false);
-	    setPreferredSize(new Dimension(768, 576));
-	    setBounds(100, 100, 648, 530);
-	    playerPanel = new JPanel();
-	    playerPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
-	    setContentPane(playerPanel);
-	    playerPanel.setLayout(null);
+        setPreferredSize(new Dimension(gp.screenWidth, gp.screenHeight));
+        setBounds(0, 0, gp.screenWidth, gp.screenHeight);
 
-	    // Set the location of the Box in the center of the screen
-	    setLocationRelativeTo(null);
-		// Initialize frame
-		initialize();
+        // Create a JLabel to hold the background image
+        this.setBackground(new Color(71, 158, 29));
+
+        playerPanel = new JPanel();
+        playerPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
+        playerPanel.setOpaque(false); // Make the panel transparent
+        playerPanel.setLayout(null);
+
+        // Set the content pane to the playerPanel
+        setContentPane(playerPanel);
+
+        // Set the location of the Box in the center of the screen
+        setLocationRelativeTo(null);
+
+        // Initialize frame
+        initialize();
 		updateFoe();
 		if (foeT != null) {
 			foeTrainer = foeT;
@@ -439,9 +448,9 @@ public class Battle extends JFrame {
 				if (!me.team[index].isFainted()) {
 					if (foe.trainerOwned()) {
 		        		if (foeTrainer != null) {
-		        			foe.move(me.getCurrent(),foe.bestMove(me.team[index]), me, field, foeTrainer.getTeam(), false);
+		        			foe.move(me.getCurrent(),foe.bestMove(me.team[index], field, false), me, field, foeTrainer.getTeam(), false);
 		        		} else {
-		        			foe.move(me.getCurrent(),foe.bestMove(me.team[index]), me, field, null, false);
+		        			foe.move(me.getCurrent(),foe.bestMove(me.team[index], field, false), me, field, null, false);
 		        		}
 		        	} else {
 		        		if (foeTrainer != null) {
@@ -525,7 +534,7 @@ public class Battle extends JFrame {
 			            JOptionPane.showMessageDialog(null, message, "Move Description", JOptionPane.INFORMATION_MESSAGE);
 			        } else {
 			        	if (foe.trainerOwned()) {
-			        		turn(me.getCurrent(), foe, me.getCurrent().moveset[index], foe.bestMove(me.getCurrent()));
+			        		turn(me.getCurrent(), foe, me.getCurrent().moveset[index], foe.bestMove(me.getCurrent(), field, false));
 			        	} else {
 			        		turn(me.getCurrent(), foe, me.getCurrent().moveset[index], foe.randomMove());
 			        	}
