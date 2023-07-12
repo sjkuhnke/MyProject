@@ -4,11 +4,14 @@ import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
+import javax.imageio.ImageIO;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -109,7 +112,6 @@ public class Pokemon implements Serializable {
 			setAbility(abilitySlot);
 		//}
 		
-		
 		expMax = level * 2;
 		exp = 0;
 		
@@ -132,7 +134,20 @@ public class Pokemon implements Serializable {
 		
 	}
 	
-
+	public BufferedImage getSprite() {
+		BufferedImage image = null;
+		
+		String imageName = id + "";
+		while (imageName.length() < 3) imageName = "0" + imageName;
+		
+		if (id > 61 || id < 1) throw new IllegalArgumentException(id + " is out of bounds!");
+		try {
+			image = ImageIO.read(getClass().getResourceAsStream("/sprites/" + imageName + ".png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return image;
+	}
 
 
 	public void setMoves() {
