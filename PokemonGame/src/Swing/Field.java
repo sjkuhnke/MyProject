@@ -73,21 +73,30 @@ public class Field {
 			this.effect = effect;
 			turns = effect.turns;
 		}
+		
+		@Override
+		public String toString() {
+			return effect.toString();
+		}
+
+		public String toLowerCaseString() {
+			return effect.toString().toLowerCase();
+		}
 	}
 	
 	public void setWeather(FieldEffect weather) {
 		if (weather.effect.isWeather) {
+			if (this.weather == null) System.out.println("The weather became " + weather.toString() + "!");
 			this.weather = weather;
 			this.weatherTurns = weather.turns;
-			System.out.println("The weather became " + weather.toString());
 		}
 	}
 	
 	public void setTerrain(FieldEffect terrain) {
 		if (terrain.effect.isTerrain) {
+			if (this.weather == null) System.out.println("The terrain became " + terrain.toString() + "!");
 			this.terrain = terrain;
 			this.terrainTurns = terrain.turns;
-			System.out.println("The terrain became " + weather.toString());
 		}
 	}
 	

@@ -94,7 +94,7 @@ public class Encounter {
 			encounters.add(new Encounter(22, 2, 3, 0.1));
 			encounters.add(new Encounter(26, 2, 4, 0.1));
 			encounters.add(new Encounter(29, 3, 3, 0.06));
-			encounters.add(new Encounter(10, 2, 3, 0.04));
+			encounters.add(new Encounter(10, 2, 3, 0.9));
 			encounters.add(new Encounter(13, 3, 4, 0.1));
 			encounters.add(new Encounter(16, 4, 4, 0.1));
 			encounters.add(new Encounter(32, 2, 3, 0.1));

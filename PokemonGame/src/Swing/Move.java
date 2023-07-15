@@ -120,7 +120,7 @@ public enum Move {
 	DRAGON_PULSE(85,100,0,0,1,0,PType.DRAGON,"A normal attack",false),
 	DRAGON_RAGE(0,100,0,0,1,0,PType.DRAGON,"Always does 40 HP damage",false),
 	DRAGON_RUSH(100,75,20,0,0,0,PType.DRAGON,"% chance of causing foe to flinch",true),
-	DRAGON_TAIL(60,90,0,0,2,-6,PType.DRAGON,"",true), // TODO
+	DRAGON_TAIL(60,90,0,0,0,-6,PType.DRAGON,"",true), // TODO
 	DRAIN_PUNCH(75,100,0,0,0,0,PType.FIGHTING,"",true),
 	DRAINING_KISS(50,100,0,0,1,0,PType.LIGHT,"",true),
 	DREAM_EATER(100,100,0,0,1,0,PType.PSYCHIC,"Only works if target is asleep. Heals 50% of damage dealt to foe",false),
