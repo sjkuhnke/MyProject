@@ -140,11 +140,14 @@ public class Pokemon implements Serializable {
 		String imageName = id + "";
 		while (imageName.length() < 3) imageName = "0" + imageName;
 		
-		if (id > 61 || id < 1) throw new IllegalArgumentException(id + " is out of bounds!");
 		try {
 			image = ImageIO.read(getClass().getResourceAsStream("/sprites/" + imageName + ".png"));
-		} catch (IOException e) {
-			e.printStackTrace();
+		} catch (Exception e) {
+			try {
+				image = ImageIO.read(getClass().getResourceAsStream("/sprites/" + 001 + ".png"));
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
 		}
 		return image;
 	}
