@@ -36,7 +36,7 @@ public class AssetSetter {
 		gp.npc[9] = NPCSetup(2, 27, 54, -1);
 		gp.npc[10] = NPCSetup(2, 20, 11, -1);
 		
-		gp.npc[11] = NPCSetup(6, 4, 12, 5);
+		gp.npc[11] = NPCSetup(6, 18, 48, 5);
 		gp.npc[12] = NPCSetup(5, 6, 11, 6);
 		gp.npc[13] = NPCSetup(6, 4, 10, 7);
 		gp.npc[14] = NPCSetup(5, 6, 9, 8);

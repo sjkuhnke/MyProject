@@ -130,20 +130,72 @@ public class CollisionChecker {
 	        Rectangle trainerRange = new Rectangle(target.worldX + target.solidArea.x, target.worldY + target.solidArea.y, target.solidArea.width, target.solidArea.height);
 
 	        switch (target.direction) {
-	            case "up":
-	                trainerRange.y -= visionRange;
-	                trainerRange.height += visionRange;
+	            case "up": {
+	                // Check for collision tiles within the vision range
+	                int range = 0;
+	                for (int row = trainerRange.y / gp.tileSize; row >= (trainerRange.y - visionRange) / gp.tileSize; row--) {
+	                    int tileNum = gp.tileM.mapTileNum[trainerRange.x / gp.tileSize][row];
+	                    if (gp.tileM.tile[tileNum].collision) {
+	                        break;
+	                    }
+	                    range++;
+	                }
+	                
+	                range *= gp.tileSize;
+	                trainerRange.y -= range;
+	                trainerRange.height += range;
+
 	                break;
-	            case "down":
-	                trainerRange.height += visionRange;
+	            }
+	            case "down": {
+	                // Check for collision tiles within the vision range
+	                int range = 0;
+	                for (int row = trainerRange.y / gp.tileSize; row <= (trainerRange.y + trainerRange.height + visionRange) / gp.tileSize; row++) {
+	                    int tileNum = gp.tileM.mapTileNum[trainerRange.x / gp.tileSize][row];
+	                    if (gp.tileM.tile[tileNum].collision) {
+	                        break;
+	                    }
+	                    range++;
+	                }
+	                
+	                range *= gp.tileSize;
+	                trainerRange.height += range;
+
 	                break;
-	            case "left":
-	                trainerRange.x -= visionRange;
-	                trainerRange.width += visionRange;
+	            }
+	            case "left": {
+	                // Check for collision tiles within the vision range
+	                int range = 0;
+	                for (int col = trainerRange.x / gp.tileSize; col >= (trainerRange.x - visionRange) / gp.tileSize; col--) {
+	                    int tileNum = gp.tileM.mapTileNum[col][trainerRange.y / gp.tileSize];
+	                    if (gp.tileM.tile[tileNum].collision) {
+	                        break;
+	                    }
+	                    range++;
+	                }
+	                
+	                range *= gp.tileSize;
+	                trainerRange.x -= range;
+	                trainerRange.width += range;
+
 	                break;
-	            case "right":
-	                trainerRange.width += visionRange;
+	            }
+	            case "right": {
+	                // Check for collision tiles within the vision range
+	                int range = 0;
+	                for (int col = trainerRange.x / gp.tileSize; col <= (trainerRange.x + trainerRange.width + visionRange) / gp.tileSize; col++) {
+	                    int tileNum = gp.tileM.mapTileNum[col][trainerRange.y / gp.tileSize];
+	                    if (gp.tileM.tile[tileNum].collision) {
+	                        break;
+	                    }
+	                    range++;
+	                }
+
+	                range *= gp.tileSize;
+	                trainerRange.width += range;
+	                
 	                break;
+	            }
 	        }
 
 	        if (entityRange.intersects(trainerRange)) {
@@ -152,6 +204,7 @@ public class CollisionChecker {
 	    }
 	    return result;
 	}
+
 
 
 
