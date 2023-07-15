@@ -42,6 +42,8 @@ public class PlayerCharacter extends Entity {
 	public final int screenY;
 	public Player p;
 	public boolean[] trainersBeat = new boolean[Main.trainers.length];
+	public boolean repel;
+	public int steps;
 	
 	public PlayerCharacter(GamePanel gp, KeyHandler keyH) {
 		super(gp);
@@ -126,14 +128,21 @@ public class PlayerCharacter extends Entity {
 					spriteNum = 1;
 				}
 				spriteCounter = 0;
+				steps++;
 			}
-			if (spriteCounter % 4 == 0 && inTallGrass) {
+			if (spriteCounter % 4 == 0 && inTallGrass && !repel) {
 				Random r = new Random();
 				int random = r.nextInt(150);
 				if (random < speed) {
 					String loc = "Route 1";
 					gp.startWild(loc);
 				}
+			}
+			if (steps == 200 && repel) {
+				keyH.pause();
+				JOptionPane.showMessageDialog(null, "Repel's effects wore off.");
+				keyH.resume();
+				repel = false;
 			}
 		}
 		if (keyH.dPressed) {
@@ -403,6 +412,20 @@ public class PlayerCharacter extends Entity {
 		        	    }
 
 		        	    JOptionPane.showMessageDialog(null, partyPanel, "Party", JOptionPane.PLAIN_MESSAGE);
+		        	}
+		        	
+		        	// REPEL
+		        	if (i.getItem().getID() == 0) {
+		        		if (!repel) {
+		        			repel = true;
+		        			steps = 0;
+		        			p.bag.remove(i.getItem());
+	        	        	SwingUtilities.getWindowAncestor(itemDesc).dispose();
+	        	        	SwingUtilities.getWindowAncestor(panel).dispose();
+	        	        	showBag();
+		        	    } else {
+		        	    	JOptionPane.showMessageDialog(null, "It won't have any effect.");
+		        	    }
 		        	}
 		        });
 		        itemDesc.add(description);

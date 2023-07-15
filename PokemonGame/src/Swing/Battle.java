@@ -607,8 +607,22 @@ public class Battle extends JFrame {
 		
 		Image scaledImage = originalImage.getScaledInstance(scaledWidth, scaledHeight, Image.SCALE_DEFAULT);
 		
+		if (p.trainerOwned) scaledImage = flipHorizontal(scaledImage);
+		
 		ImageIcon scaledIcon = new ImageIcon(scaledImage);
+		
 		return scaledIcon;
+	}
+
+	private Image flipHorizontal(Image image) {
+		BufferedImage bufferedImage = new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+	    Graphics2D graphics = bufferedImage.createGraphics();
+
+	    // Flip the image horizontally by drawing it with negative width
+	    graphics.drawImage(image, image.getWidth(null), 0, -image.getWidth(null), image.getHeight(null), null);
+	    graphics.dispose();
+
+	    return bufferedImage;
 	}
 
 	private void setMoveButtons() {
@@ -630,9 +644,13 @@ public class Battle extends JFrame {
 	private void updateField(Field field) {
 		if (field.weather != null) {
 			weather.setIcon(new ImageIcon(getIcon(field.weather)));
+		} else {
+			weather.setIcon(null);
 		}
 		if (field.terrain != null) {
 			terrain.setIcon(new ImageIcon(getIcon(field.terrain)));
+		} else {
+			terrain.setIcon(null);
 		}
 		repaint();
 		

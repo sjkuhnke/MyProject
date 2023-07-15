@@ -67,7 +67,7 @@ public class PBox extends JFrame {
 		});
 		playerPanel.add(nextButton);
 
-		JButton previousButton = new JButton("Previous");
+		JButton previousButton = new JButton("Prev");
 		previousButton.setBounds(10, 460, 80, 30);
 		previousButton.addActionListener(new ActionListener() {
 		    @Override

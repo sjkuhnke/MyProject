@@ -87,7 +87,6 @@ public enum Move {
 	CROSS_POISON(70,100,10,1,0,0,PType.POISON,"% chance to Poison foe, boosted Crit rate",true),
 	CRUNCH(80,100,30,0,0,0,PType.DARK,"% chance to lower foe's Defense by 1",true),
 	CURSE(0,100,0,0,2,0,PType.GHOST,"User loses half of its total HP. In exchance, foe takes 1/4 of its max HP at the end of every turn",false),
-	CUT(50,95,0,0,0,0,PType.NORMAL,"A normal attack",true),
 	DARK_PULSE(80,100,30,0,1,0,PType.DARK,"% chance of causing foe to flinch",false),
 	DARKEST_LARIAT(85,100,0,0,0,0,PType.DARK,"",true),
 	DAZZLING_GLEAM(80,100,0,0,1,0,PType.LIGHT,"",false),
@@ -410,7 +409,6 @@ public enum Move {
 	ROCK_BLAST(-1,90,0,0,0,0,PType.ROCK,"Hits 2-5 times",false),
 	ROCK_POLISH(0,1000,0,0,2,0,PType.ROCK,"Raises user's Speed by 2",false),
 	ROCK_SLIDE(75,90,30,0,0,0,PType.ROCK,"% of causing foe to flinch",false),
-	ROCK_SMASH(40,100,50,0,0,0,PType.FIGHTING,"% to lower foe's Defense by 1",true),
 	ROCK_THROW(50,90,0,0,0,0,PType.ROCK,"A normal attack",false),
 	ROCK_TOMB(60,80,100,0,0,0,PType.ROCK,"% to lower foe's Speed by 1",false),
 	ROCK_WRECKER(150,90,0,0,0,0,PType.ROCK,"User takes 1/3 of damage dealt as recoil",false),
@@ -512,7 +510,6 @@ public enum Move {
 	SUPERNOVA_EXPLOSION(200,100,0,0,1,0,PType.GALACTIC,"",false),
 	SUPERPOWER(120,100,100,0,0,0,PType.FIGHTING,"% of lowering user's Attack and Defense by 1",true),
 	SUPERSONIC(0,55,0,0,2,0,PType.NORMAL,"Confuses foe",false),
-	SURF(95,100,0,0,1,0,PType.WATER,"A normal attack",false),
 	SWAGGER(0,85,0,0,2,0,PType.NORMAL,"Confuses foe, but raises foe's Attack by 2",false),
 	//SWEEP_KICK(60,95,100,0,0,0,PType.FIGHTING,"% to lower foe's Attack by 1",false),
 	SWEET_KISS(0,75,0,0,2,0,PType.LIGHT,"",false),
@@ -577,7 +574,7 @@ public enum Move {
 	//WATER_JET(50,100,0,0,0,1,PType.WATER,"Always attacks first",false),
 	WATER_PULSE(60,100,30,0,1,0,PType.WATER,"% to Confuse foe",false),
 	WATERFALL(80,100,10,0,0,0,PType.WATER,"% of causing foe to flinch",true),
-	WEATHER_BALL(-1,100,0,0,1,0,PType.NORMAL,"",false), // TODO
+	WEATHER_BALL(-1,100,0,0,1,0,PType.NORMAL,"",false),
 	WHIP_SMASH(120,100,0,0,0,0,PType.NORMAL,"A normal attack",true),
 	WHIRLPOOL(35,85,100,0,1,0,PType.WATER,"% to spin foe for 2-5 turns. While foe is spun, it takes 1/16 HP in damage, and cannot switch",false),
 	WHIRLWIND(0,1000,0,0,2,-6,PType.WATER,"",false), // TODO
@@ -589,11 +586,25 @@ public enum Move {
 	//WOOD_FANG(50,100,50,0,0,0,PType.ROCK,"% to cause foe to flinch",false), // recoil
 	WRAP(15,90,100,0,0,0,PType.NORMAL,"% to spin foe for 2-5 turns. While foe is spun, it takes 1/16 HP in damage, and cannot switch",true),
 	//WRING_OUT(-1,100,0,0,0,0,PType.NORMAL,"Attack's power is greater the more HP the foe has",true),
-	X_SCIZZOR(80,100,0,1,0,0,PType.BUG,"Boosted Crit rate",true),
+	X_SCISSOR(80,100,0,1,0,0,PType.BUG,"Boosted Crit rate",true),
 	ZAP_CANNON(120,50,100,0,1,0,PType.ELECTRIC,"",false),
 	//ZAP(20,100,0,0,0,0,PType.ELECTRIC,"A normal attack",false),
 	ZEN_HEADBUTT(80,90,30,0,0,0,PType.PSYCHIC,"% of causing foe to flinch",true),
 	ZING_ZAP(80,100,30,0,2,0,PType.ELECTRIC,"",true),
+	
+	TERRAIN_PULSE(-1,100,0,0,1,0,PType.NORMAL,"",false), // TODO
+	FACADE(-1,100,0,0,1,0,PType.NORMAL,"",false), // TODO
+	SKILL_SWAP(0,100,0,0,1,0,PType.PSYCHIC,"",false), // TODO
+	SLEEP_TALK(-1,100,0,0,1,0,PType.NORMAL,"",false), // TODO
+	CAPTIVATE(-1,100,0,0,1,0,PType.NORMAL,"",false), // TODO
+	FLIP_TURN(-1,100,0,0,1,0,PType.NORMAL,"",false), // TODO
+	CUT(50,95,0,2,0,0,PType.NORMAL,"Extra-boosted crit rate",true),
+	ROCK_SMASH(40,100,50,0,0,0,PType.FIGHTING,"% to lower foe's Defense by 1",true),
+	VINE_CROSS(70,95,100,0,0,0,PType.WATER,"% chance to lower foe's Speed by 1",false), // TODO
+	SURF(95,100,0,0,1,0,PType.WATER,"A normal attack",false),
+	SLOW_FALL(75,90,100,0,1,0,PType.PSYCHIC,"Changes user's ability to LEVITATE",false), // TODO
+	ROCK_CLIMB(80,95,0,0,1,0,PType.ROCK,"A normal attack",false),
+	LAVA_SURF(95,100,0,0,1,0,PType.FIRE,"A normal attack",false),
 	
 	;
 	
