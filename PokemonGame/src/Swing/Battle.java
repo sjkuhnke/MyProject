@@ -810,7 +810,9 @@ public class Battle extends JFrame {
 					// Show the prompt with the specified text
 					me.money += foeTrainer.getMoney();
 		            JOptionPane.showMessageDialog(null, foeTrainer.toString() + " was defeated!\nWon $" + foeTrainer.getMoney() + "!");
-		            if (foeTrainer.getMoney() == 500 && me.badges < 8) me.badges++;
+		            if (foeTrainer.getMoney() == 500 && me.badges < 8) {
+		            	me.badges++;
+		            }
 
 		            // Close the current Battle JFrame
 		            dispose();
@@ -918,78 +920,6 @@ public class Battle extends JFrame {
 		}
 		me.clearBattled();
 		me.getCurrent().battled = true;
-	}
-	
-	public static int displayMoveOptions(Pokemon pokemon, Move move) {
-	    String[] moves = new String[4];
-	    JGradientButton[] buttons = new JGradientButton[4];
-	    JPanel panel = new JPanel();
-	    int[] choice = new int[1];
-	    choice[0] = -1;
-	    panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-	    JLabel label = new JLabel(pokemon.getName() + " wants to learn " + move.toString() + ".");
-	    JLabel label2 = new JLabel("Select a move to replace:");
-	    JGradientButton learnButton = new JGradientButton(move.toString());
-	    learnButton.setBackground(move.mtype.getColor());
-	    panel.add(label);
-	    panel.add(learnButton);
-	    panel.add(label2);
-	    for (int i = 0; i < 4; i++) {
-	        if (pokemon.moveset[i] != null) {
-	            moves[i] = pokemon.moveset[i].toString();
-	        } else {
-	            moves[i] = "";
-	        }
-	        buttons[i] = new JGradientButton(moves[i]);
-	        buttons[i].setBackground(pokemon.moveset[i].mtype.getColor());
-	        if (moves[i].equals("")) {
-	            buttons[i].setEnabled(false);
-	        }
-	        int index = i;
-	        buttons[i].addMouseListener(new MouseAdapter() {
-	        	@Override
-			    public void mouseClicked(MouseEvent e) {
-			    	if (SwingUtilities.isRightMouseButton(e)) {
-			            String message = "Move: " + pokemon.moveset[index].toString() + "\n";
-			            message += "Type: " + pokemon.moveset[index].mtype + "\n";
-			            message += "BP: " + pokemon.moveset[index].getbp() + "\n";
-			            message += "Accuracy: " + pokemon.moveset[index].accuracy + "\n";
-			            message += "Category: " + pokemon.moveset[index].getCategory() + "\n";
-			            message += "Description: " + pokemon.moveset[index].getDescription();
-			            JOptionPane.showMessageDialog(null, message, "Move Description", JOptionPane.INFORMATION_MESSAGE);
-			        } else {
-			        	choice[0] = index;
-		                JDialog dialog = (JDialog) SwingUtilities.getWindowAncestor((JButton) e.getSource());
-		                dialog.dispose();
-			        }
-			    }
-	        });
-	        panel.add(buttons[i]);
-	    }
-	    learnButton.addMouseListener(new MouseAdapter() {
-        	@Override
-		    public void mouseClicked(MouseEvent e) {
-		    	if (SwingUtilities.isRightMouseButton(e)) {
-		            String message = "Move: " + move.toString() + "\n";
-		            message += "Type: " + move.mtype + "\n";
-		            message += "BP: " + move.getbp() + "\n";
-		            message += "Accuracy: " + move.accuracy + "\n";
-		            message += "Category: " + move.getCategory() + "\n";
-		            message += "Description: " + move.getDescription();
-		            JOptionPane.showMessageDialog(null, message, "Move Description", JOptionPane.INFORMATION_MESSAGE);
-		        } else {
-		        	choice[0] = JOptionPane.CLOSED_OPTION;
-	                JDialog dialog = (JDialog) SwingUtilities.getWindowAncestor((JButton) e.getSource());
-	                dialog.dispose();
-		        }
-		    }
-        });
-
-	    JOptionPane optionPane = new JOptionPane(panel, JOptionPane.PLAIN_MESSAGE, JOptionPane.DEFAULT_OPTION, null, new Object[]{}, null);
-	    JDialog dialog = optionPane.createDialog("Learn New Move");
-	    dialog.setVisible(true);
-	    int result = choice[0];
-	    return result == JOptionPane.CLOSED_OPTION ? JOptionPane.CLOSED_OPTION : choice[0];
 	}
 
 	

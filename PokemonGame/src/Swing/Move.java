@@ -26,9 +26,9 @@ public enum Move {
 	//AUTO_SHOT(0,1000,0,0,2,0,PType.STEEL,"Causes all of user's \"Shooting\" moves to hit twice",false),
 	AURORA_BEAM(65,100,10,0,1,0,PType.ICE,"% chance to lower foe's Attack by 1",false),
 	AUTOMOTIZE(0,1000,0,0,2,0,PType.STEEL,"Raises user's Speed by 2",false),
-	BABY_DOLL_EYES(0,100,0,0,2,1,PType.LIGHT,"",false), //TODO
+	BABY_DOLL_EYES(0,100,0,0,2,1,PType.LIGHT,"",false),
 	//BAWL(0,100,0,0,2,0,PType.DARK,"Lowers foe's Attack by 2",false),
-	BEAT_UP(-1,100,0,0,0,0,PType.DARK,"% chance to cause foe to Bleed",false), //TODO
+	BEAT_UP(-1,100,0,0,0,0,PType.DARK,"Attacks once per healthy Pokemon on your team",false),
 	BEEFY_BASH(100,85,50,0,0,-1,PType.FIGHTING,"% chance to paralyze foe, moves last",true),
 	BELCH(120,100,0,0,1,0,PType.POISON,"Only works on the first turn out",false),
 	//BIG_BULLET(70,90,30,0,0,0,PType.STEEL,"% chance to Paralyze foe",false),
@@ -82,7 +82,7 @@ public enum Move {
 	CORE_ENFORCER(100,100,10,0,1,0,PType.GALACTIC,"",false),
 	COSMIC_POWER(0,1000,0,0,2,0,PType.GALACTIC,"Raises user's Def and Sp.Def by 1",false),
 	COTTON_GUARD(0,1000,0,0,2,0,PType.GRASS,"Raises user's Defense by 3",false),
-	COUNTER(-1,100,0,0,0,-5,PType.FIGHTING,"",false), // TODO
+	//COUNTER(-1,100,0,0,0,-5,PType.FIGHTING,"",false),
 	CROSS_CHOP(100,80,0,1,0,0,PType.FIGHTING,"",true),
 	CROSS_POISON(70,100,10,1,0,0,PType.POISON,"% chance to Poison foe, boosted Crit rate",true),
 	CRUNCH(80,100,30,0,0,0,PType.DARK,"% chance to lower foe's Defense by 1",true),
@@ -140,7 +140,7 @@ public enum Move {
 	ENERGY_BALL(90,100,10,0,1,0,PType.GRASS,"",false),
 	ENTRAINMENT(0,100,0,0,2,0,PType.NORMAL,"Changes foe's ability to the user's",false),
 	ERUPTION(-1,100,0,0,1,0,PType.FIRE,"Power is higher the more HP the user has",false),
-	EXPANDING_FORCE(-1,100,0,0,1,0,PType.PSYCHIC,"Power is doubled if the terrain is PSYCHIC",false), // TODO
+	EXPANDING_FORCE(-1,100,0,0,1,0,PType.PSYCHIC,"Power is stronger if the terrain is PSYCHIC",false),
 	EXPLOSION(250,100,0,0,0,0,PType.NORMAL,"User faints",false),
 	EXTRASENSORY(80,100,10,0,1,0,PType.PSYCHIC,"",false),
 	METRONOME(-1,1000,0,0,1,0,PType.MAGIC,"Selects a random move!",false),
@@ -149,7 +149,7 @@ public enum Move {
 	FAKE_TEARS(0,100,0,0,2,0,PType.DARK,"Lowers foe's Sp.Def by 2",false),
 	FAILED_SUCKER(0,100,0,0,0,0,PType.DARK,"If you're seeing this, something went horribly wrong",false),
 	FALSE_SURRENDER(80,1000,0,0,0,0,PType.DARK,"",true),
-	FATAL_BIND(70,85,100,0,0,0,PType.BUG,"Causes foe to faint in 3 turns",true), // TODO
+	FATAL_BIND(70,85,100,0,0,0,PType.BUG,"Causes foe to faint in 3 turns",true),
 	FEATHER_DANCE(0,100,0,0,2,0,PType.FLYING,"Lowers foe's Attack by 2",false),
 	FEINT(30,100,0,0,0,2,PType.NORMAL,"",false), // TODO
 	FEINT_ATTACK(60,1000,0,0,0,0,PType.DARK,"This attack always hits",true),
@@ -167,7 +167,7 @@ public enum Move {
 	FIRST_IMPRESSION(90,100,0,0,0,1,PType.BUG,"Always attacks first, fails after the first turn a user is out in battle",true),
 	FISSURE(0,30,0,0,0,0,PType.GROUND,"",false),
 	FLAIL(-1,100,0,0,0,0,PType.NORMAL,"Power is higher the lower HP the user has",true),
-	FLAME_BURST(110,100,100,0,1,0,PType.FIRE,"% to inflict burn, but user becomes Confused",false), // TODO
+	FLAME_BURST(70,100,0,0,1,0,PType.FIRE,"A normal attack",false),
 	FLAME_CHARGE(50,100,100,0,0,0,PType.FIRE,"",true),
 	FLAME_WHEEL(60,100,10,0,0,0,PType.FIRE,"% to Burn foe",true),
 	FLAMETHROWER(90,100,10,0,1,0,PType.FIRE,"% to Burn foe",false),
@@ -231,7 +231,7 @@ public enum Move {
 	HEAT_CRASH(-1,100,0,0,0,0,PType.FIRE,"",true), // TODO
 	HEAT_WAVE(95,90,10,0,1,0,PType.FIRE,"% to Burn foe",false),
 	HEAVY_SLAM(-1,100,0,0,0,0,PType.STEEL,"",true), // TODO
-	HEX(-1,100,0,0,1,0,PType.GHOST,"",false), // TODO
+	HEX(-1,100,0,0,1,0,PType.GHOST,"",false),
 	HI_JUMP_KICK(130,90,0,0,0,0,PType.FIGHTING,"If this attack misses, user takes 50% of its max HP",true),
 	HIDDEN_POWER(60,100,0,0,1,0,PType.NORMAL,"",false),
 	HONE_CLAWS(0,1000,0,0,2,0,PType.DARK,"Raises user's Attack and Accuracy by 1",false),
@@ -309,7 +309,7 @@ public enum Move {
 	MEAN_LOOK(0,100,0,0,2,0,PType.NORMAL,"",false),
 	MEGA_DRAIN(40,100,0,0,1,0,PType.GRASS,"Heals 50% of damage dealt",false),
 	MEGAHORN(120,85,0,0,0,0,PType.BUG,"",true),
-	MEMENTO(0,100,0,0,2,0,PType.DARK,"",false), // TODO
+	MEMENTO(0,100,0,0,2,0,PType.DARK,"",false),
 	METAL_CLAW(50,95,10,0,0,0,PType.STEEL,"",true),
 	//MEGA_KICK(70,100,60,0,0,0,PType.FIGHTING,"% to Paralyze foe",true),
 	//MEGA_PUNCH(70,100,60,0,0,0,PType.FIGHTING,"% to Paralyze foe",true),
@@ -556,7 +556,7 @@ public enum Move {
 	VACUUM_WAVE(40,100,0,0,1,1,PType.FIGHTING,"",false),
 	V_CREATE(180,95,100,0,0,0,PType.FIRE,"",true),
 	VENOM_DRENCH(0,100,0,0,2,0,PType.POISON,"",false),
-	VENOSHOCK(-1,100,0,0,1,0,PType.POISON,"",false), // TODO
+	VENOSHOCK(-1,100,0,0,1,0,PType.POISON,"",false),
 	VISE_GRIP(55,100,0,0,0,0,PType.NORMAL,"",true),
 	VINE_WHIP(45,100,0,0,0,0,PType.GRASS,"A normal attack",true),
 	VOLT_SWITCH(70,100,0,0,1,0,PType.ELECTRIC,"",false), // TODO
@@ -567,7 +567,7 @@ public enum Move {
 	WATER_FLICK(0,100,0,0,2,0,PType.WATER,"",false), // TODO
 	WATER_KICK(0,100,0,0,2,0,PType.WATER,"",true), // TODO
 	WATER_SMACK(0,100,0,0,2,0,PType.WATER,"",true), // TODO
-	WATER_SPOUT(-1,100,0,0,1,0,PType.WATER,"",false), // TODO
+	WATER_SPOUT(-1,100,0,0,1,0,PType.WATER,"",false),
 	WATER_SPORT(0,1000,0,0,2,0,PType.WATER,"",false), // TODO
 	WAVE_CRASH(120,100,0,0,0,0,PType.WATER,"",false),
 	WATER_GUN(40,100,0,0,1,0,PType.WATER,"A normal attack",false),
@@ -592,18 +592,18 @@ public enum Move {
 	ZEN_HEADBUTT(80,90,30,0,0,0,PType.PSYCHIC,"% of causing foe to flinch",true),
 	ZING_ZAP(80,100,30,0,2,0,PType.ELECTRIC,"",true),
 	
-	TERRAIN_PULSE(-1,100,0,0,1,0,PType.NORMAL,"",false), // TODO
-	FACADE(-1,100,0,0,1,0,PType.NORMAL,"",false), // TODO
-	SKILL_SWAP(0,100,0,0,1,0,PType.PSYCHIC,"",false), // TODO
+	TERRAIN_PULSE(-1,100,0,0,1,0,PType.NORMAL,"",false),
+	FACADE(-1,100,0,0,1,0,PType.NORMAL,"",false),
 	SLEEP_TALK(-1,100,0,0,1,0,PType.NORMAL,"",false), // TODO
 	CAPTIVATE(-1,100,0,0,1,0,PType.NORMAL,"",false), // TODO
+	BATON_PASS(-1,100,0,0,1,0,PType.NORMAL,"",false), // TODO
 	FLIP_TURN(-1,100,0,0,1,0,PType.NORMAL,"",false), // TODO
 	CUT(50,95,0,2,0,0,PType.NORMAL,"Extra-boosted crit rate",true),
 	ROCK_SMASH(40,100,50,0,0,0,PType.FIGHTING,"% to lower foe's Defense by 1",true),
-	VINE_CROSS(70,95,100,0,0,0,PType.WATER,"% chance to lower foe's Speed by 1",false), // TODO
+	VINE_CROSS(70,95,100,0,0,0,PType.WATER,"% chance to lower foe's Speed by 1",false),
 	SURF(95,100,0,0,1,0,PType.WATER,"A normal attack",false),
-	SLOW_FALL(75,90,100,0,1,0,PType.PSYCHIC,"Changes user's ability to LEVITATE",false), // TODO
-	ROCK_CLIMB(80,95,0,0,1,0,PType.ROCK,"A normal attack",false),
+	SLOW_FALL(75,90,100,0,1,0,PType.PSYCHIC,"% chance to change user's ability to LEVITATE",false),
+	ROCK_CLIMB(80,95,20,0,1,0,PType.ROCK,"% chance to confuse foe",false),
 	LAVA_SURF(95,100,0,0,1,0,PType.FIRE,"A normal attack",false),
 	
 	;

@@ -27,12 +27,12 @@ import javax.swing.SwingUtilities;
 import Overworld.GamePanel;
 import Overworld.KeyHandler;
 import Overworld.Main;
+import Swing.Bag.Entry;
 import Swing.Battle.JGradientButton;
 import Swing.Item;
 import Swing.Player;
 import Swing.Pokemon;
 import Swing.Status;
-import Swing.Bag.Entry;
 
 public class PlayerCharacter extends Entity {
 	
@@ -328,13 +328,27 @@ public class PlayerCharacter extends Entity {
 
 		ArrayList<Entry> bag = p.getBag().getItems();
 		for (Entry i : bag) {
-		    JButton item = new JButton();
+		    JButton item = new JGradientButton("");
 		    item.setText(i.getItem().toString() + " x " + i.getCount());
 
 		    item.addActionListener(e -> {
 		        JPanel itemDesc = new JPanel();
 		        itemDesc.setLayout(new BoxLayout(itemDesc, BoxLayout.Y_AXIS));
 		        JLabel description = new JLabel(i.getItem().toString());
+		        JGradientButton moveButton = null;
+		        if (i.getItem().getMove() != null) {
+		        	moveButton = new JGradientButton(i.getItem().getMove().toString());
+		        	moveButton.setBackground(i.getItem().getMove().mtype.getColor());
+	                moveButton.addActionListener(f -> {
+	                	String message = "Move: " + i.getItem().getMove().toString() + "\n";
+			            message += "Type: " + i.getItem().getMove().mtype + "\n";
+			            message += "BP: " + i.getItem().getMove().getbp() + "\n";
+			            message += "Accuracy: " + i.getItem().getMove().accuracy + "\n";
+			            message += "Category: " + i.getItem().getMove().getCategory() + "\n";
+			            message += "Description: " + i.getItem().getMove().getDescription();
+			            JOptionPane.showMessageDialog(null, message, "Move Description", JOptionPane.INFORMATION_MESSAGE);
+	                });
+		        }
 		        JLabel count = new JLabel("Count: " + i.getCount());
 
 		        JButton useButton = new JButton("Use");
@@ -427,14 +441,76 @@ public class PlayerCharacter extends Entity {
 		        	    	JOptionPane.showMessageDialog(null, "It won't have any effect.");
 		        	    }
 		        	}
+		        	
+		        	// TMS/HMS
+		        	if (i.getItem().getMove() != null) {
+		        		JPanel partyPanel = new JPanel();
+		        	    partyPanel.setLayout(new GridLayout(6, 1));
+		        	    
+		        	    for (int j = 0; j < 6; j++) {
+		        	    	JButton party = setUpPartyButton(j);
+		        	        final int index = j;
+		        	        
+		        	        boolean learnable = p.team[index] != null ? i.getItem().getLearned(p.team[index]) : false;
+		        	        boolean learned = p.team[index] != null ? p.team[index].contains(i.getItem().getMove()) : false;
+		        	        if (!learnable) {
+		        	        	party.setBackground(Color.RED.darker());
+		        	        } else if (learned) {
+		        	        	party.setBackground(Color.YELLOW);
+		        	        } else {
+		        	        	party.setBackground(Color.GREEN);
+		        	        }
+		        	        
+		        	        party.addActionListener(g -> {
+		        	        	if (!learnable) {
+		        	        		JOptionPane.showMessageDialog(null, "" + p.team[index].name + " can't learn " + i.getItem().getMove() + "!");
+		        	        	} else if (learned) {
+		        	        		JOptionPane.showMessageDialog(null, "" + p.team[index].name + " already knows " + i.getItem().getMove() + "!");
+		        	        	} else {
+		        	        		boolean learnedMove = false;
+		        		            for (int k = 0; k < 4; k++) {
+		        		                if (p.team[index].moveset[k] == null) {
+		        		                	p.team[index].moveset[k] = i.getItem().getMove();
+		        		                	JOptionPane.showMessageDialog(null, p.team[index].name + " learned " + i.getItem().getMove() + "!");
+		        		                    learnedMove = true;
+		        		                    break;
+		        		                }
+		        		            }
+		        		            if (!learnedMove) {
+		        		            	int choice = p.team[index].displayMoveOptions(i.getItem().getMove());
+			        	                if (choice == JOptionPane.CLOSED_OPTION) {
+			        	                	JOptionPane.showMessageDialog(null, p.team[index].name + " did not learn " + i.getItem().getMove() + ".");
+			        	                } else {
+			        	                	JOptionPane.showMessageDialog(null, p.team[index].name + " has learned " + i.getItem().getMove().toString() + " and forgot " + p.team[index].moveset[choice] + "!");
+			        	                	p.team[index].moveset[choice] = i.getItem().getMove();
+			        	                }
+		        		            }
+		        	        		SwingUtilities.getWindowAncestor(partyPanel).dispose();
+			        	        	SwingUtilities.getWindowAncestor(itemDesc).dispose();
+			        	        	SwingUtilities.getWindowAncestor(panel).dispose();
+			        	        	showBag();
+		        	        	}
+		        	        });
+		        	        
+		        	        JPanel memberPanel = new JPanel(new BorderLayout());
+		        	        memberPanel.add(party, BorderLayout.NORTH);
+		        	        partyPanel.add(memberPanel);
+		        	    }
+		        	    JOptionPane.showMessageDialog(null, partyPanel, "Teach " + i.getItem().getMove() + "?", JOptionPane.PLAIN_MESSAGE);
+		        	}
 		        });
 		        itemDesc.add(description);
-		        itemDesc.add(count);
+		        if (i.getItem().getMove() != null) {
+		        	itemDesc.add(moveButton);
+		        } else {
+		        	itemDesc.add(count);
+		        }
 		        itemDesc.add(useButton);
 
 		        JOptionPane.showMessageDialog(null, itemDesc, "Item details", JOptionPane.PLAIN_MESSAGE);
 		    });
-
+		    item.setBackground(new Color(202, 210, 255));
+		    if (i.getItem().getMove() != null) item.setBackground(i.getItem().getMove().mtype.getColor());
 		    panel.add(item);
 		}
 
