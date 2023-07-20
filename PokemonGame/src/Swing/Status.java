@@ -9,6 +9,7 @@ public enum Status {
 	POISONED("PSN", new Color(68, 2, 161), Color.WHITE),
 	HEALTHY("", new Color(255, 255, 255), Color.BLACK),
 	FROSTBITE("FRS", new Color(150, 217, 214), Color.BLACK),
+	TOXIC("TOX", new Color(68, 2, 161), Color.WHITE),
 	CONFUSED("CNF", new Color(32, 37, 61), Color.WHITE),
 	CURSED("CRS", new Color(30, 32, 41), Color.WHITE),
 	LEECHED("LCH", new Color(21, 143, 40), Color.BLACK),

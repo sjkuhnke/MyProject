@@ -90,7 +90,6 @@ public class Battle extends JFrame {
 		
 		foe = new Pokemon(10, 5, false, false);
 	    foe.currentHP = 0;
-	    foe.faint(false, me);
 	    
 	    field = new Field();
 		
@@ -129,13 +128,6 @@ public class Battle extends JFrame {
 		me.clearBattled();
 		me.getCurrent().clearVolatile();
 		me.getCurrent().battled = true;
-		
-		Pokemon fasterInit = me.getCurrent().getFaster(foe, field, 0, 0);
-		Pokemon slowerInit = fasterInit == me.getCurrent() ? foe : me.getCurrent();
-		fasterInit.swapIn(slowerInit, field);
-		slowerInit.swapIn(fasterInit, field);
-		
-		updateField(field);
 		
 		addButton = createJButton("ADD", new Font("Tahoma", Font.BOLD, 9), 645, 430, 75, 23);
 		catchButton = createJButton("CATCH", new Font("Tahoma", Font.BOLD, 11), 638, 340, 89, 23);
@@ -248,7 +240,7 @@ public class Battle extends JFrame {
 		        if (randomValue <= modifiedCatchRate) {
 		            me.catchPokemon(new Pokemon(foe.id, foe.getLevel(), true, false));
 		            foe.currentHP = 0;
-					foe.faint(false, me);
+					foe.faint(false, me, me.getCurrent());
 					displayParty();
 					updateFoe();
 					healButton.setVisible(true);
@@ -376,6 +368,13 @@ public class Battle extends JFrame {
 
 		}
 		displayParty();
+		
+		Pokemon fasterInit = me.getCurrent().getFaster(foe, field, 0, 0);
+		Pokemon slowerInit = fasterInit == me.getCurrent() ? foe : me.getCurrent();
+		fasterInit.swapIn(slowerInit, field);
+		slowerInit.swapIn(fasterInit, field);
+		
+		updateField(field);
 	}
 
 	private void initialize() {
