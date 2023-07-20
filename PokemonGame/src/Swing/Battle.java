@@ -291,7 +291,7 @@ public class Battle extends JFrame {
 			final int index = i + 1;
 			
 			party[i].addActionListener(e -> {
-				if (me.getCurrent().vStatuses.contains(Status.SPUN) || me.getCurrent().vStatuses.contains(Status.CHARGING) || me.getCurrent().vStatuses.contains(Status.RECHARGE) || me.getCurrent().vStatuses.contains(Status.LOCKED) || me.getCurrent().vStatuses.contains(Status.TRAPPED) || me.getCurrent().vStatuses.contains(Status.SEMI_INV)) {
+				if (me.getCurrent().vStatuses.contains(Status.SPUN) || me.getCurrent().vStatuses.contains(Status.CHARGING) || me.getCurrent().vStatuses.contains(Status.RECHARGE) || me.getCurrent().vStatuses.contains(Status.LOCKED) || me.getCurrent().vStatuses.contains(Status.TRAPPED) || me.getCurrent().vStatuses.contains(Status.SEMI_INV) || me.getCurrent().vStatuses.contains(Status.NO_SWITCH)) {
 	        		JOptionPane.showMessageDialog(null, "You are trapped and cannot switch!");
 	                return;
 				}

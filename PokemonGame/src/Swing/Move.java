@@ -321,7 +321,7 @@ public enum Move {
 	MIRROR_SHOT(65,85,30,0,1,0,PType.GALACTIC,"",false),
 	MIRROR_MOVE(0,1000,0,0,1,0,PType.FLYING,"Uses the move last used by the foe, fails if foe hasn't used a move yet",false),
 	MIST_BALL(70,100,50,0,1,0,PType.PSYCHIC,"",false),
-	MOLTEN_CONSUME(0,100,0,0,0,0,PType.FIRE,"",true), // TODO
+	MOLTEN_CONSUME(50,100,100,0,0,1,PType.FIRE,"% chance to Burn foe",true),
 	MOLTEN_LAIR(0,100,0,0,2,0,PType.FIRE,"",false), // TODO
 	MOLTEN_STEELSPIKE(100,100,30,0,1,0,PType.FIRE,"",false),
 	MOONBLAST(95,100,30,0,1,0,PType.LIGHT,"",false),
@@ -330,7 +330,7 @@ public enum Move {
 	MUD_BOMB(65,85,30,0,1,0,PType.GROUND,"% to lower foe's Accuracy by 1",false),
 	MUD_SHOT(55,95,100,0,1,0,PType.GROUND,"",false),
 	MUD_SLAP(20,100,100,0,1,0,PType.GROUND,"% to lower foe's Accuracy by 1",false),
-	MUD_SPORT(0,1000,0,0,2,0,PType.GROUND,"Does nothing",false),
+	MUD_SPORT(0,1000,0,0,2,0,PType.GROUND,"",false),
 	MUDDY_WATER(90,85,30,0,1,0,PType.WATER,"",false),
 	MYSTICAL_FIRE(75,100,100,0,1,0,PType.FIRE,"",false),
 	NASTY_PLOT(0,1000,0,0,2,0,PType.DARK,"",false),
@@ -341,7 +341,7 @@ public enum Move {
 	NIGHT_SHADE(0,100,0,0,1,0,PType.GHOST,"Deals damage equal to user's level",false),
 	NIGHT_SLASH(70,100,0,1,0,0,PType.DARK,"Boosted Crit rate",true),
 	NIGHTMARE(0,100,0,0,2,0,PType.GHOST,"Foe loses 1/4 of max HP each turn; wears off when foe wakes up",false),
-	NO_RETREAT(0,1000,0,0,2,0,PType.FIGHTING,"",false), // TODO
+	NO_RETREAT(0,1000,0,0,2,0,PType.FIGHTING,"",false),
 	NOBLE_ROAR(0,100,0,0,2,0,PType.NORMAL,"",false),
 	NUZZLE(20,100,100,0,0,0,PType.ELECTRIC,"",true),
 	OBSTRUCT(0,1000,0,0,2,4,PType.DARK,"",false), // TODO
@@ -560,7 +560,7 @@ public enum Move {
 	VISE_GRIP(55,100,0,0,0,0,PType.NORMAL,"",true),
 	VINE_WHIP(45,100,0,0,0,0,PType.GRASS,"A normal attack",true),
 	VOLT_SWITCH(70,100,0,0,1,0,PType.ELECTRIC,"",false), // TODO
-	//VITAL_THROW(60,1000,0,0,0,0,PType.FIGHTING,"This attack never misses",false),
+	VITAL_THROW(60,1000,0,0,0,-1,PType.FIGHTING,"This attack never misses, but goes last",false),
 	VOLT_TACKLE(120,100,10,0,0,0,PType.ELECTRIC,"% to Paralyze foe. User takes 1/3 of damage dealt as recoil",true),
 	WAKE_UP_SLAP(-1,100,0,0,0,0,PType.FIGHTING,"If foe is asleep, power is doubled, but the foe wakes up",true),
 	WATER_CLAP(0,100,0,0,2,0,PType.WATER,"",true), // TODO
@@ -568,7 +568,7 @@ public enum Move {
 	WATER_KICK(0,100,0,0,2,0,PType.WATER,"",true), // TODO
 	WATER_SMACK(0,100,0,0,2,0,PType.WATER,"",true), // TODO
 	WATER_SPOUT(-1,100,0,0,1,0,PType.WATER,"",false),
-	WATER_SPORT(0,1000,0,0,2,0,PType.WATER,"",false), // TODO
+	WATER_SPORT(0,1000,0,0,2,0,PType.WATER,"",false),
 	WAVE_CRASH(120,100,0,0,0,0,PType.WATER,"",false),
 	WATER_GUN(40,100,0,0,1,0,PType.WATER,"A normal attack",false),
 	//WATER_JET(50,100,0,0,0,1,PType.WATER,"Always attacks first",false),
@@ -594,8 +594,8 @@ public enum Move {
 	
 	TERRAIN_PULSE(-1,100,0,0,1,0,PType.NORMAL,"",false),
 	FACADE(-1,100,0,0,1,0,PType.NORMAL,"",false),
-	SLEEP_TALK(-1,100,0,0,1,0,PType.NORMAL,"",false), // TODO
-	CAPTIVATE(-1,100,0,0,1,0,PType.NORMAL,"",false), // TODO
+	SLEEP_TALK(-1,100,0,0,1,0,PType.NORMAL,"",false),
+	CAPTIVATE(-1,100,0,0,1,0,PType.NORMAL,"",false),
 	BATON_PASS(-1,100,0,0,1,0,PType.NORMAL,"",false), // TODO
 	FLIP_TURN(-1,100,0,0,1,0,PType.NORMAL,"",false), // TODO
 	CUT(50,95,0,2,0,0,PType.NORMAL,"Extra-boosted crit rate",true),

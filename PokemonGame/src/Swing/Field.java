@@ -40,6 +40,8 @@ public class Field {
 		TOXIC_SPIKES(-1, false, false),
 		STICKY_WEBS(-1, false, false),
 		SAFEGUARD(5, false, false),
+		WATER_SPORT(5, false, false),
+		MUD_SPORT(5, false, false),
 		;
 		
 		private Effect(int turns, boolean isWeather, boolean isTerrain) {
