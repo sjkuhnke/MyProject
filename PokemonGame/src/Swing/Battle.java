@@ -34,7 +34,7 @@ public class Battle extends JFrame {
 	private static final long serialVersionUID = -8943929896582623587L;
 	private JPanel playerPanel;
 	private JGradientButton[] moveButtons;
-	private static Pokemon foe;
+	private Pokemon foe;
 	private Trainer foeTrainer;
 	private JProgressBar healthBar;
 	private JProgressBar progressBar;
@@ -53,6 +53,8 @@ public class Battle extends JFrame {
 	public JLabel foeSprite;
 	public JLabel weather;
 	public JLabel terrain;
+	public JRadioButton[] foeParty;
+	private JPanel foePartyPanel;
 	
 	private JButton catchButton;
 	private JButton addButton; // debug
@@ -79,6 +81,7 @@ public class Battle extends JFrame {
 	private int trainerIndex;
 	
 	private BattleCloseListener battleCloseListener;
+	
 
 	public Battle(PlayerCharacter playerCharacter, Trainer foeT, int trainerIndex, GamePanel gp) {
 		me = playerCharacter.p;
@@ -114,7 +117,6 @@ public class Battle extends JFrame {
 
         // Initialize frame
         initialize(playerCharacter);
-		updateFoe();
 		if (foeT != null) {
 			foeTrainer = foeT;
 			if (me.trainersBeat.contains(foeTrainer.toString())) {
@@ -427,8 +429,6 @@ public class Battle extends JFrame {
 			            message += "Category: " + me.getCurrent().moveset[index].getCategory() + "\n";
 			            message += "Description: " + me.getCurrent().moveset[index].getDescription();
 			            JOptionPane.showMessageDialog(null, message, "Move Description", JOptionPane.INFORMATION_MESSAGE);
-			        } else if (me.getCurrent().vStatuses.contains(Status.SWITCHING)){
-			        	JOptionPane.showMessageDialog(null, "You must switch out!");
 			        } else {
 			        	if (foe.trainerOwned()) {
 			        		turn(me.getCurrent(), foe, me.getCurrent().moveset[index], foe.bestMove(me.getCurrent(), field, false), pl);
@@ -439,6 +439,8 @@ public class Battle extends JFrame {
 			    }
 			});
 		}
+		
+		foeParty = new JRadioButton[6];
 		
 		// Set current elements
 		updateCurrent();
@@ -697,6 +699,41 @@ public class Battle extends JFrame {
 			foeHealthBar.setForeground(new Color(255, 0, 0));
 		}
 		foeHealthBar.setBounds(543, 59, 146, 14);
+		
+		if (foePartyPanel != null) playerPanel.remove(foePartyPanel);
+		foePartyPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 5));
+		foePartyPanel.setBounds(525, 0, 200, 30);
+
+		for (int i = 0; i < 6; i++) {
+		    JRadioButton currentIcon = new JRadioButton(); // Create a new JRadioButton for each iteration
+		    currentIcon.setEnabled(false); // Make the JRadioButton unchangeable by the user
+		    currentIcon.setSelected(true);
+
+		    if (foeTrainer != null && i < foeTrainer.getTeam().length) {
+		        if (foeTrainer.getTeam()[i] == null) {
+		            currentIcon.setVisible(false);
+		            System.out.print("null ");
+		        } else {
+		            if (foeTrainer.getTeam()[i].isFainted()) {
+		                currentIcon.setBackground(Color.gray);
+		            } else {
+		                currentIcon.setBackground(Color.red);
+		            }
+		            if (foeTrainer.currentIndex == i) {
+		            	currentIcon.setBackground(Color.yellow);
+		            }
+
+		            foePartyPanel.add(currentIcon);
+		        }
+		    } else {
+		        currentIcon.setVisible(false);
+		    }
+		}
+
+		foePartyPanel.setVisible(true);
+		playerPanel.add(foePartyPanel);
+
+		
 		updateStatus();
 		playerPanel.repaint();
 		
@@ -812,6 +849,8 @@ public class Battle extends JFrame {
 				if (foeTrainer.hasNext()) {
 					foe = foeTrainer.next();
 					System.out.println("\n" + foeTrainer.toString() + " sends out " + foeTrainer.getCurrent().name + "!");
+					foe.swapIn(me.getCurrent(), field);
+					updateField(field);
 					updateFoe();
 					me.clearBattled();
 					me.getCurrent().battled = true;
@@ -843,52 +882,55 @@ public class Battle extends JFrame {
 	}
 
 	private Pokemon getSwap(PlayerCharacter pl, boolean baton) {
-	    JPanel partyPanel = new JPanel();
-	    partyPanel.setLayout(new GridLayout(6, 1));
+		if (me.hasValidMembers()) {
+			JPanel partyPanel = new JPanel();
+		    partyPanel.setLayout(new GridLayout(6, 1));
 
-	    for (int j = 0; j < 6; j++) {
-	        if (!me.team[j].isFainted() && !(me.team[j] == me.current)) {
-	            JButton party = pl.setUpPartyButton(j);
-	            final int index = j;
+		    for (int j = 0; j < 6; j++) {
+		        if (me.team[j] != null && !me.team[j].isFainted() && !(me.team[j] == me.current)) {
+		            JButton party = pl.setUpPartyButton(j);
+		            final int index = j;
 
-	            party.addActionListener(g -> {
-	                if (baton) me.team[index].statStages = me.getCurrent().statStages;
-	                me.swap(me.team[index], index);
-	                me.getCurrent().swapIn(foe, field);
-	                updateField(field);
-	                foe.vStatuses.remove(Status.TRAPPED);
-	                foe.vStatuses.remove(Status.SPUN);
-	                updateBars();
-	                SwingUtilities.getWindowAncestor(partyPanel).dispose();
-	            });
+		            party.addActionListener(g -> {
+		                if (baton) me.team[index].statStages = me.getCurrent().statStages;
+		                me.swap(me.team[index], index);
+		                me.getCurrent().swapIn(foe, field);
+		                updateField(field);
+		                foe.vStatuses.remove(Status.TRAPPED);
+		                foe.vStatuses.remove(Status.SPUN);
+		                updateBars();
+		                SwingUtilities.getWindowAncestor(partyPanel).dispose();
+		            });
 
-	            JPanel memberPanel = new JPanel(new BorderLayout());
-	            memberPanel.add(party, BorderLayout.NORTH);
-	            partyPanel.add(memberPanel);
-	        }
-	    }
+		            JPanel memberPanel = new JPanel(new BorderLayout());
+		            memberPanel.add(party, BorderLayout.NORTH);
+		            partyPanel.add(memberPanel);
+		        }
+		    }
 
-	    JPanel wrapperPanel = new JPanel(new BorderLayout());
-	    wrapperPanel.setBorder(new EmptyBorder(10, 10, 10, 10)); // Add the desired blank border
-	    wrapperPanel.add(partyPanel, BorderLayout.NORTH);
+		    JPanel wrapperPanel = new JPanel(new BorderLayout());
+		    wrapperPanel.setBorder(new EmptyBorder(10, 10, 10, 10)); // Add the desired blank border
+		    wrapperPanel.add(partyPanel, BorderLayout.NORTH);
 
-	    JDialog dialog = new JDialog((Frame) null, "Choose a party member to switch out to:", true);
-	    dialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
-	    dialog.setResizable(false);
-	    dialog.setUndecorated(true); // Remove title bar and close button
-	    dialog.addWindowListener(new WindowAdapter() {
-	        @Override
-	        public void windowClosing(WindowEvent e) {
-	            // Do nothing when the user tries to close the dialog
-	        }
-	    });
+		    JDialog dialog = new JDialog((Frame) null, "Choose a party member to switch out to:", true);
+		    dialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+		    dialog.setResizable(false);
+		    dialog.setUndecorated(true); // Remove title bar and close button
+		    dialog.addWindowListener(new WindowAdapter() {
+		        @Override
+		        public void windowClosing(WindowEvent e) {
+		            // Do nothing when the user tries to close the dialog
+		        }
+		    });
 
-	    dialog.add(wrapperPanel);
-	    dialog.pack();
-	    dialog.setLocationRelativeTo(null);
-	    dialog.setVisible(true);
+		    dialog.add(wrapperPanel);
+		    dialog.pack();
+		    dialog.setLocationRelativeTo(null);
+		    dialog.setVisible(true);
 
-	    return me.getCurrent();
+		}
+		return me.getCurrent();
+	    
 	}
 	
 	private void updateStatus() {

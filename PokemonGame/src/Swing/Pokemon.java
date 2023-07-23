@@ -36,7 +36,7 @@ public class Pokemon implements Serializable {
 	private static final long serialVersionUID = 7087373480262097882L;
 	
 	// id fields
-	protected int id;
+	public int id;
 	public String name;
 	
 	// stat fields
@@ -294,7 +294,7 @@ public class Pokemon implements Serializable {
 	}
 	
 
-	private void setType() {
+	public void setType() {
 		if (id == 1) {
 			this.type1 = PType.GRASS;
 			this.type2 = null;
@@ -1003,7 +1003,10 @@ public class Pokemon implements Serializable {
 		} else if (id == 236) {
 			this.type1 = PType.FIRE;
 			this.type2 = PType.GALACTIC;
-		} else if (id == -1) {
+		} else if (id == 237) {
+			this.type1 = PType.WATER;
+			this.type2 = PType.DRAGON;
+		}else if (id == -1) {
 			this.type1 = PType.GRASS;
 			this.type2 = null;
 		} else if (id == -2) {
@@ -1826,7 +1829,7 @@ public class Pokemon implements Serializable {
 		} return "";
 	}
 	
-	private void setAbility(int i) {
+	public void setAbility(int i) {
 		Ability[] abilities;
 		
 		if (id == 1) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
@@ -1901,8 +1904,8 @@ public class Pokemon implements Serializable {
 		} else if (id == 70) { abilities = new Ability[] {Ability.THICK_FAT, Ability.ICE_BODY};
 		} else if (id == 71) { abilities = new Ability[] {Ability.TORRENT, Ability.SLUSH_RUSH};
 		} else if (id == 72) { abilities = new Ability[] {Ability.TORRENT, Ability.SLUSH_RUSH};
-		} else if (id == 73) { abilities = new Ability[] {Ability.TECHNICIAN, Ability.REGENERATOR};
-		} else if (id == 74) { abilities = new Ability[] {Ability.TECHNICIAN, Ability.REGENERATOR};
+		} else if (id == 73) { abilities = new Ability[] {Ability.TECHNICIAN, Ability.INSOMNIA};
+		} else if (id == 74) { abilities = new Ability[] {Ability.TECHNICIAN, Ability.INSOMNIA};
 		} else if (id == 75) { abilities = new Ability[] {Ability.ANTICIPATION, Ability.NATURAL_CURE};
 		} else if (id == 76) { abilities = new Ability[] {Ability.ANTICIPATION, Ability.NATURAL_CURE};
 		} else if (id == 77) { abilities = new Ability[] {Ability.ANTICIPATION, Ability.NATURAL_CURE};
@@ -2065,7 +2068,7 @@ public class Pokemon implements Serializable {
 		} else if (id == 234) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
 		} else if (id == 235) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
 		} else if (id == 236) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 237) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
+		} else if (id == 237) { abilities = new Ability[] {Ability.ADAPTABILITY, Ability.ADAPTABILITY};
 		} else {
 			abilities = new Ability[] {Ability.SAND_VEIL, Ability.SNOW_CLOAK};
 		}
@@ -2144,7 +2147,9 @@ public class Pokemon implements Serializable {
 			result = new Pokemon(9, this);
 		} else if (id == 10 && level >= 16) {
 			result = new Pokemon(11, this);
-			
+		} else if (id == 11 && level >= 36) {
+			result = new Pokemon(id + 1, this);
+					
 		} else if (id == -1 && level >= 15) {
 			result = new Pokemon(-2, this);
 		} else if (id == -2 && level >= 35) {
@@ -2611,7 +2616,7 @@ public class Pokemon implements Serializable {
 		} else if (this.id == 234) { this.baseStats = new int[]{35,46,45,67,70,63};
 		} else if (this.id == 235) { this.baseStats = new int[]{35,46,45,67,70,63};
 		} else if (this.id == 236) { this.baseStats = new int[]{35,46,45,67,70,63};
-		} else if (this.id == 237) { this.baseStats = new int[]{35,46,45,67,70,63};
+		} else if (this.id == 237) { this.baseStats = new int[]{110,100,75,100,75,90};
 		
 		} else if (this.id == -1) {
 			this.baseStats[0] = 35;
@@ -3907,7 +3912,7 @@ public class Pokemon implements Serializable {
 			}
 		}
 		
-		if (foe.vStatuses.contains(Status.PROTECT) && (move.accuracy <= 100 || move.cat != 2)) {
+		if (foe.vStatuses.contains(Status.PROTECT) && (move.accuracy <= 100 || move.cat != 2) && move != Move.FEINT) {
 			System.out.println("\n" + this.name + " used " + move + "!");
 			System.out.println(foe.name + " protected itself!");
 			if (move.contact) {
@@ -3926,11 +3931,16 @@ public class Pokemon implements Serializable {
 			return;
 		}
 		
-		if (this.vStatuses.contains(Status.LOCKED) && this.lastMoveUsed == Move.OUTRAGE) move = Move.OUTRAGE;
-		if (this.vStatuses.contains(Status.LOCKED) && this.lastMoveUsed == Move.PETAL_DANCE) move = Move.PETAL_DANCE;
-		if (this.vStatuses.contains(Status.LOCKED) && this.lastMoveUsed == Move.THRASH) move = Move.THRASH;
-		if (this.vStatuses.contains(Status.LOCKED) && this.lastMoveUsed == Move.ROLLOUT) move = Move.ROLLOUT;
-		if (this.vStatuses.contains(Status.LOCKED) && this.lastMoveUsed == Move.ICE_BALL) move = Move.ICE_BALL;
+		if (this.vStatuses.contains(Status.LOCKED) && (lastMoveUsed == Move.OUTRAGE || lastMoveUsed == Move.PETAL_DANCE || lastMoveUsed == Move.THRASH ||
+				lastMoveUsed == Move.ROLLOUT || lastMoveUsed == Move.ICE_BALL)) {
+			move = lastMoveUsed;
+			bp = move.basePower;
+			acc = move.accuracy;
+			secChance = move.secondary;
+			moveType = move.mtype;
+			critChance = move.critChance;
+		}
+		
 		if (move == Move.OUTRAGE || move == Move.PETAL_DANCE || move == Move.THRASH) {
 			if (!this.vStatuses.contains(Status.LOCKED)) {
 				this.vStatuses.add(Status.LOCKED);
@@ -3945,6 +3955,16 @@ public class Pokemon implements Serializable {
 			}
 			this.rollCount++;
 		}
+		
+		if (id == 237) {
+			move = get150Move(move);
+			bp = move.basePower;
+			acc = move.accuracy;
+			secChance = move.secondary;
+			moveType = move.mtype;
+			critChance = move.critChance;
+		}
+		
 		if (move == Move.MIRROR_MOVE) {
 			System.out.print("\n" + this.name + " used Mirror Move!");
 			move = foe.lastMoveUsed;
@@ -3989,7 +4009,7 @@ public class Pokemon implements Serializable {
 			return;
 		}
 		
-		if ((move == Move.FIRST_IMPRESSION || move == Move.BELCH) && !this.impressive) {
+		if ((move == Move.FIRST_IMPRESSION || move == Move.BELCH || move == Move.UNSEEN_STRANGLE || move == Move.FAKE_OUT) && !this.impressive) {
 			System.out.print("\n" + this.name + " used " + move + "!");
 			fail();
 			return;
@@ -4018,7 +4038,8 @@ public class Pokemon implements Serializable {
 			accEv = accEv > 6 ? 6 : accEv;
 			accEv = accEv < -6 ? -6 : accEv;
 			double accuracy = acc * asAccModifier(accEv);
-			if ((field.equals(field.weather, Effect.SANDSTORM) && foe.ability == Ability.SAND_VEIL) || (field.equals(field.weather, Effect.SNOW) && foe.ability == Ability.SNOW_CLOAK)) accuracy *= 0.8;
+			if ((field.equals(field.weather, Effect.SANDSTORM) && foe.ability == Ability.SAND_VEIL) ||
+					(field.equals(field.weather, Effect.SNOW) && foe.ability == Ability.SNOW_CLOAK)) accuracy *= 0.8;
 			if (!hit(accuracy) || foe.vStatuses.contains(Status.SEMI_INV)) {
 				System.out.println("\n" + this.name + " used " + move + "!");
 				System.out.println(this.name + "'s attack missed!");
@@ -4040,351 +4061,388 @@ public class Pokemon implements Serializable {
 		if (move == Move.WEATHER_BALL) moveType = determineWBType(field);
 		if (move == Move.TERRAIN_PULSE) moveType = determineTPType(field);
 		
-		if (moveType == PType.FIRE && foe.ability == Ability.FLASH_FIRE) {
-			System.out.println("\n" + this.name + " used " + move + "!");
-			System.out.println("[" + foe.name + "'s Flash Fire]: " + foe.name + "'s Fire-Type move's are boosted!");
-			foe.vStatuses.add(Status.FLASH_FIRE);
-			endMove();
-			return;
-		}
-		
-		if ((moveType == PType.WATER && foe.ability == Ability.WATER_ABSORB) || (moveType == PType.ELECTRIC && foe.ability == Ability.VOLT_ABSORB) || (moveType == PType.BUG && foe.ability == Ability.INSECT_FEEDER)) {
-			System.out.println("\n" + this.name + " used " + move + "!");
-			if (foe.currentHP == foe.getStat(0)) {
-				System.out.println("[" + foe.name + "'s " + foe.ability.toString() + "]: " + "It doesn't effect " + foe.name + "...");
-				endMove();
-				return; // Check for immunity
-			} else {
-				System.out.println(foe.name + " restored HP!");
-				foe.currentHP += foe.getStat(0) / 4;
-				foe.verifyHP();
-				endMove();
-				return;
-			}
-		}
-		
-		if ((moveType == PType.ELECTRIC && (foe.ability == Ability.MOTOR_DRIVE || foe.ability == Ability.LIGHTNING_ROD)) || (moveType == PType.GRASS && foe.ability == Ability.SAP_SIPPER)) {
-			System.out.println("\n" + this.name + " used " + move + "!");
-			System.out.print("[" + foe.name + "'s " + foe.ability.toString() + "]: ");
-			if (foe.ability == Ability.MOTOR_DRIVE) stat(foe, 4, 1);
-			if (foe.ability == Ability.LIGHTNING_ROD) stat(foe, 2, 1);
-			if (foe.ability == Ability.SAP_SIPPER) stat(foe, 0, 1);
-			endMove();
-			return;
-		}
-		
-		if (moveType == PType.GROUND && !foe.isGrounded(field, foe)) {
-			System.out.println("\n" + this.name + " used " + move + "!");
-			if (foe.ability == Ability.LEVITATE) System.out.print("[" + foe.name + "'s Levitate]: ");
-			System.out.println("It doesn't effect " + foe.name + "...");
-			endMove();
-			return; // Check for immunity
-		}
-		
-		if (moveType != PType.GROUND && (move.cat != 2 || move == Move.THUNDER_WAVE)) {
-			if (getImmune(foe, moveType) || (moveType == PType.GHOST && foe.ability == Ability.FRIENDLY_GHOST)) {
-				System.out.println("\n" + this.name + " used " + move + "!");
-				if (foe.ability == Ability.FRIENDLY_GHOST) System.out.print("[" + foe.name + "'s Friendly Ghost]: ");
-				System.out.println("It doesn't effect " + foe.name + "...");
-				endMove();
-				return; // Check for immunity 
-			}
-		}
-		
-		if (foe.magCount > 0) foe.magCount--;
-		
+		int numHits = move.getNumHits(team);
 		System.out.println("\n" + this.name + " used " + move + "!");
-		
-		if (move == Move.DREAM_EATER && foe.status != Status.ASLEEP) {
-			System.out.println("It doesn't effect " + foe.name + "...");
-			endMove();
-			return;
-		}
-		if (move.cat == 2) {
-			statusEffect(foe, move, player, field, team);
-			this.impressive = false;
-			return;
-		}
-		
-		if (move.basePower < 0) {
-			bp = determineBasePower(foe, move, first, field, team);
-		}
-		
-		if (moveType == PType.FIRE && this.vStatuses.contains(Status.FLASH_FIRE)) bp *= 1.5;
-		if (this.ability == Ability.NORMALIZE) {
-			moveType = PType.NORMAL;
-			bp *= 1.2;
-		}
-		
-		if (this.ability == Ability.PROTEAN) {
-			if (this.type1 == moveType && this.type2 == null) {
-				
-			} else {
-				this.type1 = moveType;
-				this.type2 = null;
-				System.out.println(this.name + "'s type was updated to " + this.type1.toString() + "!");
-			}
-		}
-		
-		if (this.ability == Ability.SHEER_FORCE && move.cat != 2 && secChance > 0) {
-			secChance = 0;
-			bp *= 1.3;
-		}
-		
-		if (this.ability == Ability.TECHNICIAN && bp <= 60) {
-			bp *= 1.5;
-		}
-		
-		if (this.ability == Ability.TOUGH_CLAWS && move.contact) {
-			bp *= 1.3;
-		}
-		
-		if (this.ability == Ability.IRON_FIST && (move == Move.BULLET_PUNCH || move == Move.COMET_PUNCH || move == Move.DRAIN_PUNCH || move == Move.FOCUS_PUNCH
-				|| move == Move.FIRE_PUNCH || move == Move.ICE_PUNCH || move == Move.MACH_PUNCH || move == Move.POWER_UP_PUNCH || move == Move.SHADOW_PUNCH
-				|| move == Move.SKY_UPPERCUT || move == Move.THUNDER_PUNCH || move == Move.METEOR_MASH || move == Move.PLASMA_FISTS || move == Move.SUCKER_PUNCH)) {
-			bp *= 1.3;
-		}
-		
-		if (this.ability == Ability.STRONG_JAW && (move == Move.BITE || move == Move.CRUNCH || move == Move.FIRE_FANG || move == Move.HYPER_FANG
-				|| move == Move.ICE_FANG || move == Move.JAW_LOCK || move == Move.POISON_FANG || move == Move.PSYCHIC_FANGS || move == Move.THUNDER_FANG)) {
-			bp *= 1.5;
-		}
-		
-		if (moveType == PType.GRASS && this.ability == Ability.OVERGROW && this.currentHP <= this.getStat(0) / 3) {
-			bp *= 1.5;
-		} else if (moveType == PType.FIRE && this.ability == Ability.BLAZE && this.currentHP <= this.getStat(0) / 3) {
-			bp *= 1.5;
-		} else if (moveType == PType.WATER && this.ability == Ability.TORRENT && this.currentHP <= this.getStat(0) / 3) {
-			bp *= 1.5;
-		} else if (moveType == PType.BUG && this.ability == Ability.SWARM && this.currentHP <= this.getStat(0) / 3) {
-			bp *= 1.5;
-		}
-		
-		if (field.equals(field.weather, Effect.SUN)) {
-			if (move.mtype == PType.WATER) bp *= 0.5;
-			if (move.mtype == PType.FIRE) bp *= 1.5;
-		}
-		
-		if (field.equals(field.weather, Effect.RAIN)) {
-			if (move.mtype == PType.WATER) bp *= 1.5;
-			if (move.mtype == PType.FIRE) bp *= 0.5;
-			if (move == Move.SOLAR_BEAM || move == Move.SOLAR_BLADE) bp *= 0.5;
-		}
-		
-		if ((field.contains(field.fieldEffects, Effect.MUD_SPORT) && move.mtype == PType.ELECTRIC) || (field.contains(field.fieldEffects, Effect.WATER_SPORT) && move.mtype == PType.FIRE)) bp *= 0.33;
-		
-		if (field.equals(field.weather, Effect.SANDSTORM) && this.ability == Ability.SAND_FORCE && (move.mtype == PType.ROCK || move.mtype == PType.GROUND || move.mtype == PType.STEEL)) bp *= 1.3;
-		
-		if ((field.equals(field.weather, Effect.RAIN) || field.equals(field.weather, Effect.SNOW) || field.equals(field.weather, Effect.SANDSTORM)) && (move == Move.SOLAR_BEAM || move == Move.SOLAR_BLADE)) bp *= 0.5;
-		
-		if (foe.ability == Ability.SHIELD_DUST) secChance = 0;
-		
-		// Use either physical or special attack/defense
-		if (move.isPhysical()) {
-			attackStat = this.getStat(1);
-			defenseStat = foe.getStat(2);
-			if (foe.ability != Ability.UNAWARE) attackStat *= this.asModifier(0);
-			if (move != Move.DARKEST_LARIAT && move != Move.SACRED_SWORD && this.ability != Ability.UNAWARE) defenseStat *= foe.asModifier(1);
-			if (move == Move.BODY_PRESS) attackStat = this.getStat(2) * this.asModifier(1);
-			if (move == Move.FOUL_PLAY) attackStat = foe.getStat(1) * foe.asModifier(0);
-			if (this.status == Status.BURNED && this.ability != Ability.GUTS) attackStat /= 2;
-			if (this.ability == Ability.GUTS && this.status != Status.HEALTHY) attackStat *= 1.5;
-			if (this.ability == Ability.HUGE_POWER) attackStat *= 2;
-			if (field.equals(field.weather, Effect.SNOW) && (foe.type1 == PType.ICE || foe.type2 == PType.ICE)) defenseStat *= 1.5;
-		} else {
-			attackStat = this.getStat(3);
-			defenseStat = foe.getStat(4);
-			if (foe.ability != Ability.UNAWARE) attackStat *= this.asModifier(2);
-			if (this.ability != Ability.UNAWARE) defenseStat *= foe.asModifier(3);
-			if (move == Move.PSYSHOCK) defenseStat = foe.getStat(2) * foe.asModifier(1);
-			if (this.status == Status.FROSTBITE) attackStat /= 2;
-			if (this.ability == Ability.SOLAR_POWER && field.equals(field.weather, Effect.SUN)) attackStat *= 1.5;
-			if (field.equals(field.weather, Effect.SANDSTORM) && (foe.type1 == PType.ROCK || foe.type2 == PType.ROCK)) defenseStat *= 1.5;
-		}
-		
-		// Crit Check
-		if (this.vStatuses.contains(Status.FOCUS_ENERGY)) critChance += 2;
-		if (this.ability == Ability.SUPER_LUCK) critChance++;
-		if (critCheck(critChance)) {
-			System.out.println("A critical hit!");
-			if (move.isPhysical() && attackStat < this.getStat(1)) {
-				attackStat = this.getStat(1);
-				if (this.status == Status.BURNED) attackStat /= 2;
-			}
-			if (!move.isPhysical() && attackStat < this.getStat(3)) {
-				attackStat = this.getStat(3);
-				if (this.status == Status.FROSTBITE) attackStat /= 2;
-			}
-			if (move.isPhysical() && defenseStat > foe.getStat(2)) attackStat = foe.getStat(2);
-			if (!move.isPhysical() && defenseStat > foe.getStat(4)) attackStat = foe.getStat(4);
-			damage = calc(attackStat, defenseStat, bp, this.level);
-			damage *= 1.5;
-			if (this.ability == Ability.SNIPER) damage *= 1.5;
-			if (foe.ability == Ability.ANGER_POINT) {
-				System.out.print("[" + foe.name + "'s Anger Point]: ");
-				stat(foe, 0, 12); }
-		} else {
-			damage = calc(attackStat, defenseStat, bp, this.level);
-		}
-		
-		// Stab
-		if (moveType == this.type1 || moveType == this.type2 || this.ability == Ability.TYPE_MASTER) {
-			if (ability == Ability.ADAPTABILITY) {
-				damage *= 2;
-			} else {
-				damage *= 1.5;
-			}
-		}
-		
-		if (moveType == PType.STEEL && this.ability == Ability.STEELWORKER) damage *= 1.5;
-		
-		// Charged
-		if (moveType == PType.ELECTRIC && this.vStatuses.contains(Status.CHARGED)) {
-			damage *= 2;
-			this.vStatuses.remove(Status.CHARGED);
-		}
-		
-		if ((foe.ability == Ability.ICY_SCALES && !move.isPhysical()) || (foe.ability == Ability.MULTISCALE && foe.currentHP == foe.getStat(0))) damage /= 2;
-		
-		// Screens
-		if (this.trainerOwned) {
-			if (move.isPhysical() && field.contains(field.foeSide, Effect.REFLECT)) damage /= 2;
-			if (!move.isPhysical() && field.contains(field.foeSide, Effect.LIGHT_SCREEN)) damage /= 2;
-		} else {
-			if (move.isPhysical() && field.contains(field.playerSide, Effect.REFLECT)) damage /= 2;
-			if (!move.isPhysical() && field.contains(field.playerSide, Effect.LIGHT_SCREEN)) damage /= 2;
-		}
-		
-		double multiplier = 1;
-		// Check type effectiveness
-		PType[] resist = getResistances(moveType);
-		if (move == Move.FREEZE_DRY) {
-			ArrayList<PType> types = new ArrayList<>();
-			for (PType type : resist) {
-				types.add(type);
-			}
-			types.remove(PType.WATER);
-			resist = types.toArray(new PType[0]);
-		}
-		
-		for (PType type : resist) {
-			if (foe.type1 == type) multiplier /= 2;
-			if (foe.type2 == type) multiplier /= 2;
-		}
-		
-		if (foe.ability == Ability.FALSE_ILLUMINATION) {
-			PType[] lightResist = new PType[]{PType.GHOST, PType.GALACTIC, PType.LIGHT};
-			for (PType type : lightResist) {
-				if (moveType == type) multiplier /= 2;
-			}
-		}
-		
-		// Check type effectiveness
-		PType[] weak = getWeaknesses(moveType);
-		if (move == Move.FREEZE_DRY) {
-			PType[] temp = new PType[weak.length + 1];
-			for (int i = 0; i < weak.length; i++) {
-				temp[i] = weak[i];
-			}
-			temp[weak.length] = PType.WATER;
-			weak = temp;
-		}
-		for (PType type : weak) {
-			if (foe.type1 == type) multiplier *= 2;
-			if (foe.type2 == type) multiplier *= 2;
-		}
-		
-		if (foe.ability == Ability.WONDER_GUARD && multiplier <= 1) {
-			System.out.println("\n" + this.name + " used " + move + "!");
-			System.out.println("It doesn't effect " + foe.name + "...");
-			endMove();
-			return; // Check for immunity
-		}
-		
-		if (foe.ability == Ability.FLUFFY && move.mtype == PType.FIRE) multiplier *= 2;
-		
-		damage *= multiplier;
-		
-		if (foe.ability == Ability.UNERODIBLE && (moveType == PType.GRASS || moveType == PType.WATER || moveType == PType.GROUND)) damage /= 4;
-		if (foe.ability == Ability.THICK_FAT && (moveType == PType.FIRE || moveType == PType.ICE)) damage /= 2;
-		if (foe.ability == Ability.FLUFFY && move.contact) damage /= 2;
-		
-		if (foe.ability == Ability.PSYCHIC_AURA && move.cat == 1) damage *= 0.8;
-		if (foe.ability == Ability.GLACIER_AURA && move.cat == 0) damage *= 0.8;
-		if (foe.ability == Ability.GALACTIC_AURA && (move.mtype == PType.PSYCHIC || move.mtype == PType.ICE)) damage /= 2;
-		
-		if (multiplier > 1) {
-			System.out.println("It's super effective!");
-			if (foe.ability == Ability.SOLID_ROCK || foe.ability == Ability.FILTER) damage /= 2;
-		}
-		if (multiplier < 1) System.out.println("It's not very effective...");
-		
-		if (move == Move.NIGHT_SHADE || move == Move.SEISMIC_TOSS || move == Move.PSYWAVE) damage = this.level;
-		if (move == Move.ENDEAVOR) {
-			if (foe.currentHP > this.currentHP) {
-				damage = foe.currentHP - this.currentHP;
-			} else { fail(); } }
-		if (move == Move.SUPER_FANG) damage = foe.currentHP / 2;
-		if (move == Move.DRAGON_RAGE) damage = 40;
-		if (move == Move.HORN_DRILL || move == Move.SHEER_COLD || move == Move.GUILLOTINE || move == Move.FISSURE) {
-			if ((move == Move.SHEER_COLD && (foe.type1 == PType.ICE || foe.type2 == PType.ICE)) || foe.ability == Ability.STURDY) {
-				System.out.println("It doesn't effect " + foe.name + "...");
-				endMove();
-				return;
-			}
-			damage = foe.currentHP;
-			System.out.println("It's a one-hit KO!");
-		}
-		
-		if (move == Move.ABSORB || move == Move.DREAM_EATER || move == Move.GIGA_DRAIN || move == Move.MEGA_DRAIN || move == Move.LEECH_LIFE || move == Move.DRAIN_PUNCH || move == Move.DRAINING_KISS || move == Move.HORN_LEECH || move == Move.PARABOLIC_CHARGE) {
-			int healAmount;
-			if (damage >= foe.currentHP) {
-				healAmount = move == Move.DRAINING_KISS ? Math.max((int) Math.ceil(foe.currentHP / 1.333333333333), 1) : Math.max((int) Math.ceil(foe.currentHP / 2.0), 1);
-			} else {
-				healAmount = move == Move.DRAINING_KISS ? Math.max((int) Math.ceil(damage / 1.333333333333), 1) : Math.max((int) Math.ceil(damage / 2.0), 1);
+		for (int hit = 1; hit <= numHits; hit++) {
+			if (hit > 1) bp = move.basePower;
+			if (foe.isFainted() || this.isFainted()) {
+				System.out.println("Hit " + (hit - 1) + " times!");
+				break;
 			}
 			
-			this.currentHP += healAmount;
-			if (this.currentHP > this.getStat(0)) this.currentHP = this.getStat(0);
-			System.out.println(this.name + " sucked HP from " + foe.name + "!");
-		}
-		
-		damage = Math.max(damage, 1);
-		
-		if (this.ability == Ability.SERENE_GRACE) secChance *= 2;
-		
-		int recoil = 0;
-		if ((move == Move.BRAVE_BIRD || move == Move.FLARE_BLITZ || move == Move.HEAD_SMASH || move == Move.TAKE_DOWN || move == Move.VOLT_TACKLE || move == Move.ROCK_WRECKER || move == Move.GENESIS_SUPERNOVA || move == Move.LIGHT_OF_RUIN || move == Move.SUBMISSION || move == Move.WAVE_CRASH || move == Move.STEEL_BEAM) && (ability != Ability.ROCK_HEAD && ability != Ability.MAGIC_GUARD)) {
-			recoil = Math.max(Math.floorDiv(damage, 3), 1);
-			if (damage >= foe.currentHP) recoil = Math.max(Math.floorDiv(foe.currentHP, 3), 1);
-			if (move == Move.STEEL_BEAM) recoil = this.getStat(0) / 2;
-		}
-		
-		boolean fullHP = foe.currentHP == foe.getStat(0);
-		
-		// Damage foe
-		foe.currentHP -= damage;
-		double percent = damage * 100.0 / foe.getStat(0);
-		String formattedPercent = String.format("%.1f", percent);
-		System.out.println("(" + foe.name + " lost " + formattedPercent + "% of its HP.)");
-		if (foe.currentHP <= 0 && (move == Move.FALSE_SWIPE || foe.vStatuses.contains(Status.ENDURE) || (fullHP && foe.ability == Ability.STURDY))) foe.currentHP = 1;
-		if (foe.currentHP <= 0) { // Check for kill
-			foe.faint(true, player, this);
-			if (move == Move.FELL_STINGER) stat(this, 0, 3);
-			this.awardxp((int) Math.ceil(foe.level * foe.trainer), player);
-			if (this.vStatuses.contains(Status.BONDED)) {
-				System.out.println(foe.name + " took its attacker down with it!");
-				this.faint(true, player, foe);
+			if (moveType == PType.FIRE && foe.ability == Ability.FLASH_FIRE) {
+				System.out.println("[" + foe.name + "'s Flash Fire]: " + foe.name + "'s Fire-Type move's are boosted!");
+				foe.vStatuses.add(Status.FLASH_FIRE);
+				endMove();
+				return;
 			}
-			if (this.ability == Ability.MOXIE) {System.out.println("[" + this.name + "'s Moxie]: "); stat(this, 0, 1); }
-		}
-		if (recoil != 0) {
-			System.out.println(this.name + " was damaged by recoil!");
-			this.currentHP -= recoil;
-			if (this.currentHP <= 0) { // Check for kill
-				this.faint(true, player, foe);
-				foe.awardxp((int) Math.ceil(this.level * trainer), player);
+			
+			if ((moveType == PType.WATER && foe.ability == Ability.WATER_ABSORB) || (moveType == PType.ELECTRIC && foe.ability == Ability.VOLT_ABSORB) ||
+					(moveType == PType.BUG && foe.ability == Ability.INSECT_FEEDER)) {
+				if (foe.currentHP == foe.getStat(0)) {
+					System.out.println("[" + foe.name + "'s " + foe.ability.toString() + "]: " + "It doesn't effect " + foe.name + "...");
+					endMove();
+					return; // Check for immunity
+				} else {
+					System.out.println(foe.name + " restored HP!");
+					foe.currentHP += foe.getStat(0) / 4;
+					foe.verifyHP();
+					endMove();
+					return;
+				}
 			}
+			
+			if ((moveType == PType.ELECTRIC && (foe.ability == Ability.MOTOR_DRIVE || foe.ability == Ability.LIGHTNING_ROD)) ||
+					(moveType == PType.GRASS && foe.ability == Ability.SAP_SIPPER)) {
+				System.out.print("[" + foe.name + "'s " + foe.ability.toString() + "]: ");
+				if (foe.ability == Ability.MOTOR_DRIVE) stat(foe, 4, 1);
+				if (foe.ability == Ability.LIGHTNING_ROD) stat(foe, 2, 1);
+				if (foe.ability == Ability.SAP_SIPPER) stat(foe, 0, 1);
+				endMove();
+				return;
+			}
+			
+			if (moveType == PType.GROUND && !foe.isGrounded(field, foe)) {
+				if (foe.ability == Ability.LEVITATE) System.out.print("[" + foe.name + "'s Levitate]: ");
+				System.out.println("It doesn't effect " + foe.name + "...");
+				endMove();
+				return; // Check for immunity
+			}
+			
+			if (moveType != PType.GROUND && (move.cat != 2 || move == Move.THUNDER_WAVE)) {
+				if (getImmune(foe, moveType) || (moveType == PType.GHOST && foe.ability == Ability.FRIENDLY_GHOST)) {
+					if (foe.ability == Ability.FRIENDLY_GHOST) System.out.print("[" + foe.name + "'s Friendly Ghost]: ");
+					System.out.println("It doesn't effect " + foe.name + "...");
+					endMove();
+					return; // Check for immunity 
+				}
+			}
+			
+			if (foe.magCount > 0) foe.magCount--;
+			
+			
+			if (move == Move.DREAM_EATER && foe.status != Status.ASLEEP) {
+				System.out.println("It doesn't effect " + foe.name + "...");
+				endMove();
+				return;
+			}
+			if (move.cat == 2) {
+				statusEffect(foe, move, player, field, team);
+				this.impressive = false;
+				return;
+			}
+			
+			if (move.basePower < 0) {
+				bp = determineBasePower(foe, move, first, field, team);
+			}
+			
+			if (moveType == PType.FIRE && this.vStatuses.contains(Status.FLASH_FIRE)) bp *= 1.5;
+			if (this.ability == Ability.NORMALIZE) {
+				moveType = PType.NORMAL;
+				bp *= 1.2;
+			}
+			
+			if (this.ability == Ability.PROTEAN) {
+				if (this.type1 == moveType && this.type2 == null) {
+					
+				} else {
+					this.type1 = moveType;
+					this.type2 = null;
+					System.out.println(this.name + "'s type was updated to " + this.type1.toString() + "!");
+				}
+			}
+			
+			if (this.ability == Ability.SHEER_FORCE && move.cat != 2 && secChance > 0) {
+				secChance = 0;
+				bp *= 1.3;
+			}
+			
+			if (this.ability == Ability.TECHNICIAN && bp <= 60) {
+				bp *= 1.5;
+			}
+			
+			if (this.ability == Ability.TOUGH_CLAWS && move.contact) {
+				bp *= 1.3;
+			}
+			
+			if (this.ability == Ability.IRON_FIST && (move == Move.BULLET_PUNCH || move == Move.COMET_PUNCH || move == Move.DRAIN_PUNCH
+					|| move == Move.FIRE_PUNCH || move == Move.ICE_PUNCH || move == Move.MACH_PUNCH || move == Move.POWER_UP_PUNCH || move == Move.SHADOW_PUNCH
+					|| move == Move.SKY_UPPERCUT || move == Move.THUNDER_PUNCH || move == Move.METEOR_MASH || move == Move.PLASMA_FISTS || move == Move.SUCKER_PUNCH)) {
+				bp *= 1.3;
+			}
+			
+			if (this.ability == Ability.STRONG_JAW && (move == Move.BITE || move == Move.CRUNCH || move == Move.FIRE_FANG || move == Move.HYPER_FANG
+					|| move == Move.ICE_FANG || move == Move.JAW_LOCK || move == Move.POISON_FANG || move == Move.PSYCHIC_FANGS || move == Move.THUNDER_FANG)) {
+				bp *= 1.5;
+			}
+			
+			if (moveType == PType.GRASS && this.ability == Ability.OVERGROW && this.currentHP <= this.getStat(0) / 3) {
+				bp *= 1.5;
+			} else if (moveType == PType.FIRE && this.ability == Ability.BLAZE && this.currentHP <= this.getStat(0) / 3) {
+				bp *= 1.5;
+			} else if (moveType == PType.WATER && this.ability == Ability.TORRENT && this.currentHP <= this.getStat(0) / 3) {
+				bp *= 1.5;
+			} else if (moveType == PType.BUG && this.ability == Ability.SWARM && this.currentHP <= this.getStat(0) / 3) {
+				bp *= 1.5;
+			}
+			
+			if (field.equals(field.weather, Effect.SUN)) {
+				if (move.mtype == PType.WATER) bp *= 0.5;
+				if (move.mtype == PType.FIRE) bp *= 1.5;
+			}
+			
+			if (field.equals(field.weather, Effect.RAIN)) {
+				if (move.mtype == PType.WATER) bp *= 1.5;
+				if (move.mtype == PType.FIRE) bp *= 0.5;
+				if (move == Move.SOLAR_BEAM || move == Move.SOLAR_BLADE) bp *= 0.5;
+			}
+			
+			if ((field.contains(field.fieldEffects, Effect.MUD_SPORT) && move.mtype == PType.ELECTRIC) || (field.contains(field.fieldEffects, Effect.WATER_SPORT) && move.mtype == PType.FIRE)) bp *= 0.33;
+			
+			if (field.equals(field.weather, Effect.SANDSTORM) && this.ability == Ability.SAND_FORCE && (move.mtype == PType.ROCK || move.mtype == PType.GROUND || move.mtype == PType.STEEL)) bp *= 1.3;
+			
+			if ((field.equals(field.weather, Effect.RAIN) || field.equals(field.weather, Effect.SNOW) || field.equals(field.weather, Effect.SANDSTORM)) && (move == Move.SOLAR_BEAM || move == Move.SOLAR_BLADE)) bp *= 0.5;
+			
+			if (foe.ability == Ability.SHIELD_DUST) secChance = 0;
+			
+			// Use either physical or special attack/defense
+			if (move.isPhysical()) {
+				attackStat = this.getStat(1);
+				defenseStat = foe.getStat(2);
+				if (foe.ability != Ability.UNAWARE) attackStat *= this.asModifier(0);
+				if (move != Move.DARKEST_LARIAT && move != Move.SACRED_SWORD && this.ability != Ability.UNAWARE) defenseStat *= foe.asModifier(1);
+				if (move == Move.BODY_PRESS) attackStat = this.getStat(2) * this.asModifier(1);
+				if (move == Move.FOUL_PLAY) attackStat = foe.getStat(1) * foe.asModifier(0);
+				if (this.status == Status.BURNED && this.ability != Ability.GUTS && move != Move.FACADE) attackStat /= 2;
+				if (this.ability == Ability.GUTS && this.status != Status.HEALTHY) attackStat *= 1.5;
+				if (this.ability == Ability.HUGE_POWER) attackStat *= 2;
+				if (field.equals(field.weather, Effect.SNOW) && (foe.type1 == PType.ICE || foe.type2 == PType.ICE)) defenseStat *= 1.5;
+			} else {
+				attackStat = this.getStat(3);
+				defenseStat = foe.getStat(4);
+				if (foe.ability != Ability.UNAWARE) attackStat *= this.asModifier(2);
+				if (this.ability != Ability.UNAWARE) defenseStat *= foe.asModifier(3);
+				if (move == Move.PSYSHOCK) defenseStat = foe.getStat(2) * foe.asModifier(1);
+				if (this.status == Status.FROSTBITE) attackStat /= 2;
+				if (this.ability == Ability.SOLAR_POWER && field.equals(field.weather, Effect.SUN)) attackStat *= 1.5;
+				if (field.equals(field.weather, Effect.SANDSTORM) && (foe.type1 == PType.ROCK || foe.type2 == PType.ROCK)) defenseStat *= 1.5;
+			}
+			
+			// Crit Check
+			if (this.vStatuses.contains(Status.FOCUS_ENERGY)) critChance += 2;
+			if (this.ability == Ability.SUPER_LUCK) critChance++;
+			if (critCheck(critChance)) {
+				System.out.println("A critical hit!");
+				if (move.isPhysical() && attackStat < this.getStat(1)) {
+					attackStat = this.getStat(1);
+					if (this.status == Status.BURNED) attackStat /= 2;
+				}
+				if (!move.isPhysical() && attackStat < this.getStat(3)) {
+					attackStat = this.getStat(3);
+					if (this.status == Status.FROSTBITE) attackStat /= 2;
+				}
+				if (move.isPhysical() && defenseStat > foe.getStat(2)) defenseStat = foe.getStat(2);
+				if (!move.isPhysical() && defenseStat > foe.getStat(4)) defenseStat = foe.getStat(4);
+				damage = calc(attackStat, defenseStat, bp, this.level);
+				damage *= 1.5;
+				if (this.ability == Ability.SNIPER) damage *= 1.5;
+				if (foe.ability == Ability.ANGER_POINT) {
+					System.out.print("[" + foe.name + "'s Anger Point]: ");
+					stat(foe, 0, 12); }
+			} else {
+				damage = calc(attackStat, defenseStat, bp, this.level);
+			}
+			
+			// Stab
+			if (moveType == this.type1 || moveType == this.type2 || this.ability == Ability.TYPE_MASTER) {
+				if (ability == Ability.ADAPTABILITY) {
+					damage *= 2;
+				} else {
+					damage *= 1.5;
+				}
+			}
+			
+			if (moveType == PType.STEEL && this.ability == Ability.STEELWORKER) damage *= 1.5;
+			
+			// Charged
+			if (moveType == PType.ELECTRIC && this.vStatuses.contains(Status.CHARGED)) {
+				damage *= 2;
+				this.vStatuses.remove(Status.CHARGED);
+			}
+			
+			if ((foe.ability == Ability.ICY_SCALES && !move.isPhysical()) || (foe.ability == Ability.MULTISCALE && foe.currentHP == foe.getStat(0))) damage /= 2;
+			
+			// Screens
+			if (this.trainerOwned) {
+				if (move.isPhysical() && field.contains(field.foeSide, Effect.REFLECT)) damage /= 2;
+				if (!move.isPhysical() && field.contains(field.foeSide, Effect.LIGHT_SCREEN)) damage /= 2;
+			} else {
+				if (move.isPhysical() && field.contains(field.playerSide, Effect.REFLECT)) damage /= 2;
+				if (!move.isPhysical() && field.contains(field.playerSide, Effect.LIGHT_SCREEN)) damage /= 2;
+			}
+			
+			double multiplier = 1;
+			// Check type effectiveness
+			PType[] resist = getResistances(moveType);
+			if (move == Move.FREEZE_DRY) {
+				ArrayList<PType> types = new ArrayList<>();
+				for (PType type : resist) {
+					types.add(type);
+				}
+				types.remove(PType.WATER);
+				resist = types.toArray(new PType[0]);
+			}
+			
+			for (PType type : resist) {
+				if (foe.type1 == type) multiplier /= 2;
+				if (foe.type2 == type) multiplier /= 2;
+			}
+			
+			if (foe.ability == Ability.FALSE_ILLUMINATION) {
+				PType[] lightResist = new PType[]{PType.GHOST, PType.GALACTIC, PType.LIGHT};
+				for (PType type : lightResist) {
+					if (moveType == type) multiplier /= 2;
+				}
+			}
+			
+			// Check type effectiveness
+			PType[] weak = getWeaknesses(moveType);
+			if (move == Move.FREEZE_DRY) {
+				PType[] temp = new PType[weak.length + 1];
+				for (int i = 0; i < weak.length; i++) {
+					temp[i] = weak[i];
+				}
+				temp[weak.length] = PType.WATER;
+				weak = temp;
+			}
+			for (PType type : weak) {
+				if (foe.type1 == type) multiplier *= 2;
+				if (foe.type2 == type) multiplier *= 2;
+			}
+			
+			if (foe.ability == Ability.WONDER_GUARD && multiplier <= 1) {
+				System.out.println("\n" + this.name + " used " + move + "!");
+				System.out.println("It doesn't effect " + foe.name + "...");
+				endMove();
+				return; // Check for immunity
+			}
+			
+			if (foe.ability == Ability.FLUFFY && move.mtype == PType.FIRE) multiplier *= 2;
+			
+			damage *= multiplier;
+			
+			if (foe.ability == Ability.UNERODIBLE && (moveType == PType.GRASS || moveType == PType.WATER || moveType == PType.GROUND)) damage /= 4;
+			if (foe.ability == Ability.THICK_FAT && (moveType == PType.FIRE || moveType == PType.ICE)) damage /= 2;
+			if (foe.ability == Ability.FLUFFY && move.contact) damage /= 2;
+			
+			if (foe.ability == Ability.PSYCHIC_AURA && move.cat == 1) damage *= 0.8;
+			if (foe.ability == Ability.GLACIER_AURA && move.cat == 0) damage *= 0.8;
+			if (foe.ability == Ability.GALACTIC_AURA && (move.mtype == PType.PSYCHIC || move.mtype == PType.ICE)) damage /= 2;
+			
+			if (multiplier > 1) {
+				System.out.println("It's super effective!");
+				if (foe.ability == Ability.SOLID_ROCK || foe.ability == Ability.FILTER) damage /= 2;
+			}
+			if (multiplier < 1) System.out.println("It's not very effective...");
+			
+			if (move == Move.NIGHT_SHADE || move == Move.SEISMIC_TOSS || move == Move.PSYWAVE) damage = this.level;
+			if (move == Move.ENDEAVOR) {
+				if (foe.currentHP > this.currentHP) {
+					damage = foe.currentHP - this.currentHP;
+				} else { fail(); } }
+			if (move == Move.SUPER_FANG) damage = foe.currentHP / 2;
+			if (move == Move.DRAGON_RAGE) damage = 40;
+			if (move == Move.HORN_DRILL || move == Move.SHEER_COLD || move == Move.GUILLOTINE || move == Move.FISSURE) {
+				if ((move == Move.SHEER_COLD && (foe.type1 == PType.ICE || foe.type2 == PType.ICE)) || foe.ability == Ability.STURDY) {
+					System.out.println("It doesn't effect " + foe.name + "...");
+					endMove();
+					return;
+				}
+				damage = foe.currentHP;
+				System.out.println("It's a one-hit KO!");
+			}
+			
+			if (move == Move.ABSORB || move == Move.DREAM_EATER || move == Move.GIGA_DRAIN || move == Move.MEGA_DRAIN || move == Move.LEECH_LIFE || move == Move.DRAIN_PUNCH || move == Move.DRAINING_KISS || move == Move.HORN_LEECH || move == Move.PARABOLIC_CHARGE) {
+				int healAmount;
+				if (damage >= foe.currentHP) {
+					healAmount = move == Move.DRAINING_KISS ? Math.max((int) Math.ceil(foe.currentHP / 1.333333333333), 1) : Math.max((int) Math.ceil(foe.currentHP / 2.0), 1);
+				} else {
+					healAmount = move == Move.DRAINING_KISS ? Math.max((int) Math.ceil(damage / 1.333333333333), 1) : Math.max((int) Math.ceil(damage / 2.0), 1);
+				}
+				
+				this.currentHP += healAmount;
+				if (this.currentHP > this.getStat(0)) this.currentHP = this.getStat(0);
+				System.out.println(this.name + " sucked HP from " + foe.name + "!");
+			}
+			
+			damage = Math.max(damage, 1);
+			
+			if (this.ability == Ability.SERENE_GRACE) secChance *= 2;
+			
+			int recoil = 0;
+			if ((move == Move.BRAVE_BIRD || move == Move.FLARE_BLITZ || move == Move.HEAD_SMASH || move == Move.TAKE_DOWN || move == Move.VOLT_TACKLE ||
+					move == Move.ROCK_WRECKER || move == Move.GENESIS_SUPERNOVA || move == Move.LIGHT_OF_RUIN || move == Move.SUBMISSION || move == Move.WAVE_CRASH ||
+					move == Move.STEEL_BEAM) && (ability != Ability.ROCK_HEAD && ability != Ability.MAGIC_GUARD)) {
+				recoil = Math.max(Math.floorDiv(damage, 3), 1);
+				if (damage >= foe.currentHP) recoil = Math.max(Math.floorDiv(foe.currentHP, 3), 1);
+				if (move == Move.STEEL_BEAM) recoil = this.getStat(0) / 2;
+			}
+			
+			boolean fullHP = foe.currentHP == foe.getStat(0);
+			
+			// Damage foe
+			foe.currentHP -= damage;
+			double percent = damage * 100.0 / foe.getStat(0);
+			String formattedPercent = String.format("%.1f", percent);
+			System.out.println("(" + foe.name + " lost " + formattedPercent + "% of its HP.)");
+			if (foe.currentHP <= 0 && (move == Move.FALSE_SWIPE || foe.vStatuses.contains(Status.ENDURE) || (fullHP && foe.ability == Ability.STURDY))) foe.currentHP = 1;
+			if (foe.currentHP <= 0) { // Check for kill
+				foe.faint(true, player, this);
+				if (move == Move.FELL_STINGER) stat(this, 0, 3);
+				this.awardxp((int) Math.ceil(foe.level * foe.trainer), player);
+				if (this.vStatuses.contains(Status.BONDED)) {
+					System.out.println(foe.name + " took its attacker down with it!");
+					this.faint(true, player, foe);
+				}
+				if (this.ability == Ability.MOXIE) {System.out.println("[" + this.name + "'s Moxie]: "); stat(this, 0, 1); }
+			}
+			
+			if (recoil != 0) {
+				System.out.println(this.name + " was damaged by recoil!");
+				this.currentHP -= recoil;
+				if (this.currentHP <= 0) { // Check for kill
+					this.faint(true, player, foe);
+					foe.awardxp((int) Math.ceil(this.level * trainer), player);
+				}
+			}
+			
+			if (move.contact && checkSecondary(30)) {
+				if (foe.ability == Ability.FLAME_BODY) burn(false, this);
+				if (foe.ability == Ability.STATIC) paralyze(false, this);
+				if (foe.ability == Ability.POISON_POINT) poison(false, this);
+			}
+			
+			if (move.contact && (foe.ability == Ability.ROUGH_SKIN || foe.ability == Ability.IRON_BARBS)) {
+				this.currentHP -= Math.max(this.getStat(0) / 8, 1);
+				System.out.println(this.name + " was hurt!");
+				if (this.currentHP <= 0) { // Check for kill
+					this.faint(true, player, foe);
+					if (move == Move.FELL_STINGER) stat(this, 0, 3);
+					this.awardxp((int) Math.ceil(foe.level * foe.trainer), player);
+				}
+			}
+			
+			if ((moveType == PType.BUG || moveType == PType.GHOST || moveType == PType.DARK) && foe.ability == Ability.RATTLED && !foe.isFainted()) {
+				System.out.print("[" + foe.name + "'s " + foe.ability.toString() + "]: ");
+				stat(foe, 4, 1);
+			}
+			
+			if (moveType == PType.DARK && foe.ability == Ability.JUSTIFIED && !foe.isFainted()) {
+				System.out.print("[" + foe.name + "'s " + foe.ability.toString() + "]: ");
+				stat(foe, 0, 1);
+			}
+			
+			if (hit == numHits && hit > 1) System.out.println("Hit " + hit + " times!");
 		}
 		
 		if (!foe.isFainted() && checkSecondary(secChance)) {
@@ -4395,31 +4453,6 @@ public class Pokemon implements Serializable {
 			this.vStatuses.add(Status.SWITCHING);
 		}
 		
-		if (move.contact && checkSecondary(30)) {
-			if (foe.ability == Ability.FLAME_BODY) burn(false, this);
-			if (foe.ability == Ability.STATIC) paralyze(false, this);
-			if (foe.ability == Ability.POISON_POINT) poison(false, this);
-		}
-		
-		if (move.contact && (foe.ability == Ability.ROUGH_SKIN || foe.ability == Ability.IRON_BARBS)) {
-			this.currentHP -= Math.max(this.getStat(0) / 8, 1);
-			System.out.println(this.name + " was hurt!");
-			if (this.currentHP <= 0) { // Check for kill
-				this.faint(true, player, foe);
-				if (move == Move.FELL_STINGER) stat(this, 0, 3);
-				this.awardxp((int) Math.ceil(foe.level * foe.trainer), player);
-			}
-		}
-		
-		if ((moveType == PType.BUG || moveType == PType.GHOST || moveType == PType.DARK) && foe.ability == Ability.RATTLED && !foe.isFainted()) {
-			System.out.print("[" + foe.name + "'s " + foe.ability.toString() + "]: ");
-			stat(foe, 4, 1);
-		}
-		
-		if (moveType == PType.DARK && foe.ability == Ability.JUSTIFIED && !foe.isFainted()) {
-			System.out.print("[" + foe.name + "'s " + foe.ability.toString() + "]: ");
-			stat(foe, 0, 1);
-		}
 		
 		if (move == Move.SELF_DESTRUCT || move == Move.EXPLOSION || move == Move.SUPERNOVA_EXPLOSION) {
 			this.faint(true, player, foe);
@@ -4619,6 +4652,8 @@ public class Pokemon implements Serializable {
 		} else if (move == Move.EXTRASENSORY && first) {
 			foe.vStatuses.add(Status.FLINCHED);
 		} else if (move == Move.FAKE_OUT && first) {
+			foe.vStatuses.add(Status.FLINCHED);
+		} else if (move == Move.UNSEEN_STRANGLE && first) {
 			foe.vStatuses.add(Status.FLINCHED);
 		} else if (move == Move.FIERY_DANCE) {
 			stat(this, 2, 1);
@@ -5062,8 +5097,11 @@ public class Pokemon implements Serializable {
 		} else if (move == Move.TWINKLE_TACKLE) {
 			stat(foe, 0, -1);
 			stat(foe, 2, -1);
-		} else if (move == Move.TWINNEEDLE) {
+		} else if (move == Move.TWINEEDLE) {
 			foe.poison(false, this);
+		} else if (move == Move.SCALE_SHOT) {
+			stat(this, 1, -1);
+			stat(this, 4, 1);
 		} else if (move == Move.TWISTER && first) {
 			foe.vStatuses.add(Status.FLINCHED);
 		} else if (move == Move.VOLT_TACKLE) {
@@ -5076,6 +5114,12 @@ public class Pokemon implements Serializable {
 			stat(foe, 4, -1);
 		} else if (move == Move.WATER_PULSE) {
 			foe.confuse(false);
+		} else if (move == Move.WATER_CLAP) {
+			foe.paralyze(false, this);
+		} else if (move == Move.WATER_SMACK && first) {
+			foe.vStatuses.add(Status.FLINCHED);
+		} else if (move == Move.SUPERCHARGED_SPLASH) {
+			stat(this, 2, 1);
 		} else if (move == Move.WATERFALL && first) {
 			foe.vStatuses.add(Status.FLINCHED);
 //		} else if (move == Move.WOOD_FANG && first) {
@@ -5154,13 +5198,13 @@ public class Pokemon implements Serializable {
 			} else { fail = fail(); }
 		} else if (move == Move.AUTOMOTIZE) {
 			stat(this, 4, 2);
-//		} else if (move == Move.AUTO_SHOT) {
-//			if (!(this.vStatuses.contains(Status.AUTO))) {
-//				this.vStatuses.add(Status.AUTO);
-//				System.out.println(this.name + " upgraded its weapon!");
-//			} else {
-//				System.out.println("But it failed!");
-//			}
+		} else if (move == Move.LOAD_FIREARMS) { // TODO
+			if (!(this.vStatuses.contains(Status.AUTO))) {
+				this.vStatuses.add(Status.AUTO);
+				System.out.println(this.name + " upgraded its weapon!");
+			} else {
+				System.out.println("But it failed!");
+			}
 		} else if (move == Move.BABY_DOLL_EYES) {
 			stat(foe, 0, -1);
 		} else if (move == Move.BATON_PASS || move == Move.TELEPORT) {
@@ -5467,14 +5511,10 @@ public class Pokemon implements Serializable {
 			foe.perishCount = (foe.perishCount == 0) ? 3 : foe.perishCount;
 		} else if (move == Move.PLAY_NICE) {
 			stat(foe, 0, -1);
-//		} else if (move == Move.PHASE_SHIFT) {
-//			this.type1 = PType.MAGIC;
-//			if (foe.lastMoveUsed != null) {
-//				this.type2 = foe.lastMoveUsed.mtype;
-//				System.out.println(this.name + " became a " + type1.toString() + " / " + type2.toString() + " type!");
-//			} else {
-//				System.out.println(this.name + " became a " + type1.toString() + " type!");
-//			}
+		} else if (move == Move.SPARKLING_WATER) {
+			stat(this, 3, 1);
+		} else if (move == Move.WATER_FLICK) {
+			stat(foe, 0, -1);
 		} else if (move == Move.PSYCHIC_TERRAIN) {
 			field.setTerrain(field.new FieldEffect(Effect.PSYCHIC));
 		} else if (move == Move.POISON_GAS) {
@@ -5565,6 +5605,18 @@ public class Pokemon implements Serializable {
 			stat(foe, 4, -2);
 		} else if (move == Move.SCREECH) {
 			stat(foe, 1, -2);
+		} else if (move == Move.SEA_DRAGON) {
+			int oHP = this.getStat(0);
+			id = 237;
+			name = getName();
+			
+			setBaseStats();
+			getStats();
+			int nHP = this.getStat(0);
+			this.currentHP += nHP - oHP;
+			setType();
+			setAbility(abilitySlot);
+
 		} else if (move == Move.SLEEP_POWDER) {
 			foe.sleep(true);
 		} else if (move == Move.SHIFT_GEAR) {
@@ -7436,7 +7488,7 @@ public class Pokemon implements Serializable {
 			movebank[24] = new Node(Move.FURY_CUTTER);
 			movebank[29] = new Node(Move.SLASH);
 			movebank[32] = new Node(Move.QUIVER_DANCE);
-			movebank[35] = new Node(Move.TWINNEEDLE);
+			movebank[35] = new Node(Move.TWINEEDLE);
 			movebank[39] = new Node(Move.NIGHT_DAZE);
 			movebank[43] = new Node(Move.X_SCISSOR);
 			movebank[48] = new Node(Move.EXTREME_SPEED);
@@ -7627,6 +7679,47 @@ public class Pokemon implements Serializable {
 			movebank[19] = new Node(Move.METAL_SOUND);
 			break;
 			
+		case 150:
+			movebank = new Node[60];
+			movebank[0] = new Node(Move.SPLASH);
+			movebank[0].addToEnd(new Node(Move.SWEET_KISS));
+			movebank[0].addToEnd(new Node(Move.LOVELY_KISS));
+			movebank[4] = new Node(Move.DRAINING_KISS);
+			movebank[6] = new Node(Move.DOUBLE_SLAP);
+			movebank[11] = new Node(Move.WATER_GUN);
+			movebank[15] = new Node(Move.AQUA_RING);
+			movebank[19] = new Node(Move.FLASH);
+			movebank[24] = new Node(Move.AQUA_JET);
+			movebank[28] = new Node(Move.PSYBEAM);
+			movebank[31] = new Node(Move.SEA_DRAGON);
+			movebank[35] = new Node(Move.SPARKLING_WATER);
+			movebank[39] = new Node(Move.WATER_FLICK);
+			movebank[43] = new Node(Move.WATER_SMACK);
+			movebank[47] = new Node(Move.WATER_CLAP);
+			movebank[51] = new Node(Move.WATER_KICK);
+			movebank[55] = new Node(Move.SUPERCHARGED_SPLASH);
+			movebank[59] = new Node(Move.DEEP_SEA_BUBBLE);
+			break;
+		case 151:
+			movebank = new Node[25];
+			movebank[0] = new Node(Move.ABSORB);
+			movebank[0].next = new Node(Move.SUPERSONIC);
+			movebank[4] = new Node(Move.ASTONISH);
+			movebank[9] = new Node(Move.MEAN_LOOK);
+			movebank[14] = new Node(Move.POISON_FANG);
+			movebank[19] = new Node(Move.BITE);
+			movebank[24] = new Node(Move.WING_ATTACK);
+			break;
+		case 152:
+			movebank = new Node[25];
+			movebank[0] = new Node(Move.ABSORB);
+			movebank[0].next = new Node(Move.SUPERSONIC);
+			movebank[4] = new Node(Move.ASTONISH);
+			movebank[9] = new Node(Move.MEAN_LOOK);
+			movebank[14] = new Node(Move.POISON_FANG);
+			movebank[19] = new Node(Move.BITE);
+			movebank[24] = new Node(Move.WING_ATTACK);
+			break;
 		case 153:
 			movebank = new Node[25];
 			movebank[0] = new Node(Move.ABSORB);
@@ -10263,54 +10356,12 @@ public class Pokemon implements Serializable {
 			} else {
 				bp = 130;
 			}
-		} else if (move == Move.BEAT_UP) {
-			bp = 20;
-			if (team == null) {
-				team = new Pokemon[1];
-				team[0] = this;
-			}
-			for (Pokemon p : team) {
-				if (p != null) {
-					if (!p.fainted) bp += 20;
-					System.out.println(p.name + "'s attack!");
-				}
-			}
 		} else if (move == Move.COMET_CRASH) {
 			if (this.currentHP == this.getStat(0)) {
 				bp = 160;
 			} else {
 				bp = 80;
 			}
-		} else if (move == Move.COMET_PUNCH) {
-			int randomNum = (int) (Math.random() * 4) + 2;
-	        System.out.println("Hit " + randomNum + " times!");
-	        bp = 20 * randomNum;
-//		} else if (move == Move.DOUBLE_BLAST) {
-//	        System.out.println("Hit " + 2 + " times!");
-//	        bp = 80;
-		} else if (move == Move.DOUBLE_HIT) {
-	        System.out.println("Hit " + 2 + " times!");
-	        bp = 70;
-//		} else if (move == Move.DOUBLE_JET) {
-//			int randomNum = (int) (Math.random() * 4) + 2;
-//	        System.out.println("Hit " + randomNum + " times!");
-//	        bp = 20 * randomNum;
-		} else if (move == Move.DOUBLE_KICK) {
-	        System.out.println("Hit " + 2 + " times!");
-	        bp = 60;
-//		} else if (move == Move.DOUBLE_PUNCH) {
-//	        System.out.println("Hit " + 2 + " times!");
-//	        bp = 60;
-		} else if (move == Move.DOUBLE_SLAP) {
-			int randomNum = (int) (Math.random() * 4) + 2;
-	        System.out.println("Hit " + randomNum + " times!");
-	        bp = 15 * randomNum;
-//		} else if (move == Move.DOUBLE_SLICE) {
-//	        System.out.println("Hit " + 2 + " times!");
-//	        bp = 60;
-//		} else if (move == Move.DUAL_STAB) {
-//	        System.out.println("Hit " + 2 + " times!");
-//	        bp = 60;
 		} else if (move == Move.ELECTROBALL) {
 			double speedRatio = foe.getSpeed() * 1.0 / this.getSpeed();
 			if (speedRatio > 1) {
@@ -10340,7 +10391,7 @@ public class Pokemon implements Serializable {
 			} else {
 				bp = 140;
 			}
-		} else if (move == Move.FLAIL) {
+		} else if (move == Move.FLAIL || move == Move.REVERSAL) {
 			double hpRatio = this.currentHP / this.getStat(0);
 			if (hpRatio >= 0.6875) {
 				bp = 20;
@@ -10355,19 +10406,11 @@ public class Pokemon implements Serializable {
 			} else if (hpRatio < 0.0417) {
 				bp = 200;
 			}
-		} else if (move == Move.FURY_ATTACK) {
-			int randomNum = (int) (Math.random() * 4) + 2;
-	        System.out.println("Hit " + randomNum + " times!");
-	        bp = 15 * randomNum;
 		} else if (move == Move.FURY_CUTTER) {
 			if (this.lastMoveUsed == Move.FURY_CUTTER) {
 				this.moveMultiplier *= 2;
 			}
 			bp = Math.min(160, 20 * this.moveMultiplier);
-		} else if (move == Move.FURY_SWIPES) {
-			int randomNum = (int) (Math.random() * 4) + 2;
-	        System.out.println("Hit " + randomNum + " times!");
-	        bp = 15 * randomNum;
 		} else if (move == Move.GYRO_BALL) {
 			double speedRatio = foe.getSpeed() * 1.0 / this.getSpeed();
 			bp = (int) Math.min(150, (25 * speedRatio) + 1);
@@ -10418,28 +10461,8 @@ public class Pokemon implements Serializable {
 			} else {
 				bp = 120;
 			}
-		} else if (move == Move.ROCK_BLAST) {
-			int randomNum = (int) (Math.random() * 4) + 2;
-	        System.out.println("Hit " + randomNum + " times!");
-	        bp = 25 * randomNum;
 		} else if (move == Move.ROLLOUT) {
 			bp = (int) (30 * Math.pow(2, this.rollCount-1));
-//		} else if (move == Move.SPIKE_SHOT) {
-//			int randomNum = (int) (Math.random() * 4) + 2;
-//	        System.out.println("Hit " + randomNum + " times!");
-//	        bp = 20 * randomNum;
-//		} else if (move == Move.TIDAL_WAVE) {
-//			int wave = (int) (Math.random()*3 + 1);
-//			if (wave == 1) {
-//				bp = 90;
-//				System.out.println("Morning Tide!");
-//			} else if (wave == 2) {
-//				bp = 50;
-//				System.out.println("Day Tide!");
-//			} else if (wave == 3) {
-//				bp = 130;
-//				System.out.println("Evening Tide!");
-//			}
 		} else if (move == Move.WAKE_UP_SLAP) {
 			bp = 60;
 			if (foe.status == Status.ASLEEP) {
@@ -10461,11 +10484,6 @@ public class Pokemon implements Serializable {
 			
 		} else if (move == Move.TERRAIN_PULSE) {
 			bp = field.terrain != null ? 100 : 50;
-			
-//			} else if (move == Move.WRING_OUT) {
-//			double hpRatio = foe.currentHP * 1.0 / foe.getStat(0);
-//			hpRatio *= 120;
-//			bp = Math.max((int) hpRatio, 1);
 		}
 		
 		return bp;
@@ -10974,6 +10992,17 @@ public class Pokemon implements Serializable {
 	    dialog.setVisible(true);
 	    int result = choice[0];
 	    return result == JOptionPane.CLOSED_OPTION ? JOptionPane.CLOSED_OPTION : choice[0];
+	}
+	
+	private Move get150Move(Move move) {
+		if (move == Move.SPARKLING_WATER) return Move.SPARKLING_ARIA;
+		if (move == Move.WATER_FLICK) return Move.FLAMETHROWER;
+		if (move == Move.WATER_SMACK) return Move.DARKEST_LARIAT;
+		if (move == Move.WATER_CLAP) return Move.DRAGON_DARTS;
+		if (move == Move.WATER_KICK) return Move.HI_JUMP_KICK;
+		if (move == Move.SUPERCHARGED_SPLASH) return Move.THUNDER;
+		if (move == Move.DEEP_SEA_BUBBLE) return Move.DRACO_METEOR;
+		return move;
 	}
 
 

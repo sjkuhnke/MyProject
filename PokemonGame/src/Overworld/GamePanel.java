@@ -167,6 +167,16 @@ public class GamePanel extends JPanel implements Runnable, BattleCloseListener {
 		Pokemon[] teamTemp = Arrays.copyOf(player.p.team, 6);
 		for (int i = 0; i < 6; i++) {
 			if (teamTemp[i] != null) {
+				if (teamTemp[i].id == 237) {
+					teamTemp[i].id = 150;
+					teamTemp[i].name = teamTemp[i].getName();
+					
+					teamTemp[i].setBaseStats();
+					teamTemp[i].getStats();
+					teamTemp[i].setType();
+					teamTemp[i].setAbility(teamTemp[i].abilitySlot);
+					teamTemp[i].currentHP = teamTemp[i].currentHP > teamTemp[i].getStat(0) ? teamTemp[i].getStat(0) : teamTemp[i].currentHP;
+				}
 				player.p.team[teamTemp[i].slot] = teamTemp[i];
 				if (teamTemp[i].slot == 0) player.p.current = player.p.team[0];
 			}

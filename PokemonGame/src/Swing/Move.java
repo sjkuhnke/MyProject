@@ -28,7 +28,7 @@ public enum Move {
 	AUTOMOTIZE(0,1000,0,0,2,0,PType.STEEL,"Raises user's Speed by 2",false),
 	BABY_DOLL_EYES(0,100,0,0,2,1,PType.LIGHT,"",false),
 	//BAWL(0,100,0,0,2,0,PType.DARK,"Lowers foe's Attack by 2",false),
-	BEAT_UP(-1,100,0,0,0,0,PType.DARK,"Attacks once per healthy Pokemon on your team",false),
+	BEAT_UP(20,100,0,0,0,0,PType.DARK,"Attacks once per healthy Pokemon on your team",false),
 	BEEFY_BASH(100,85,50,0,0,-1,PType.FIGHTING,"% chance to paralyze foe, moves last",true),
 	BELCH(120,100,0,0,1,0,PType.POISON,"Only works on the first turn out",false),
 	//BIG_BULLET(70,90,30,0,0,0,PType.STEEL,"% chance to Paralyze foe",false),
@@ -66,7 +66,7 @@ public enum Move {
 	BURN_UP(130,100,100,0,0,0,PType.FIRE,"",false),
 	//BUZZ(0,100,0,0,2,0,PType.BUG,"Confuses foe",false),
 	CALM_MIND(0,1000,0,0,2,0,PType.MAGIC,"Raises user's Sp.Atk and Sp.Def by 1",false),
-	CHANNELING_BLOW(0,100,0,0,0,0,PType.FIGHTING,"",true), // TODO
+	CHANNELING_BLOW(65,100,0,0,3,0,PType.FIGHTING,"",true),
 	CHARGE(0,1000,0,0,2,0,PType.ELECTRIC,"User's next electric-type attack damage is doubled. Raises user's Sp.Def by 1",false),
 	CHARGE_BEAM(50,90,50,0,1,0,PType.ELECTRIC,"",false),
 	CHARM(0,100,0,0,2,0,PType.LIGHT,"Lowers foe's Attack by 2",false),
@@ -90,7 +90,7 @@ public enum Move {
 	DARK_PULSE(80,100,30,0,1,0,PType.DARK,"% chance of causing foe to flinch",false),
 	DARKEST_LARIAT(85,100,0,0,0,0,PType.DARK,"",true),
 	DAZZLING_GLEAM(80,100,0,0,1,0,PType.LIGHT,"",false),
-	DEEP_SEA_BUBBLE(0,100,0,0,2,0,PType.WATER,"",false), // TODO
+	DEEP_SEA_BUBBLE(100,100,0,0,1,0,PType.WATER,"A normal attack. Turns into Draco Meteor when used by Kissyfishy-D",false),
 	//DARK_VOID(0,80,0,0,2,0,PType.DARK,"Foe falls asleep",false),
 	DEFENSE_CURL(0,1000,0,0,2,0,PType.NORMAL,"Raises user's Defense by 1",false),
 	DEFOG(0,1000,0,0,2,0,PType.FLYING,"",false),
@@ -104,18 +104,18 @@ public enum Move {
 	DIVE(80,100,0,0,0,0,PType.WATER,"A normal attack",true),
 	//DOUBLE_BLAST(-1,60,30,0,1,0,PType.NORMAL,"% chance to Confuse foe",false),
 	//DOUBLE_EDGE(120,100,0,0,0,0,PType.NORMAL,"User takes 1/3 of damage inflicted",false),
-	DOUBLE_HIT(-1,90,0,0,0,0,PType.NORMAL,"Attacks twice",true),
+	DOUBLE_HIT(35,90,0,0,0,0,PType.NORMAL,"Attacks twice",true),
 	//DOUBLE_JET(-1,85,0,0,0,0,PType.WATER,"Attacks 2-5 times",false),
-	DOUBLE_KICK(-1,100,0,0,0,0,PType.FIGHTING,"Attacks twice",true),
+	DOUBLE_KICK(30,100,0,0,0,0,PType.FIGHTING,"Attacks twice",true),
 	//DOUBLE_PUNCH(-1,85,0,0,0,0,PType.FIGHTING,"Attacks twice",false),
-	DOUBLE_SLAP(-1,95,0,0,0,0,PType.NORMAL,"Attacks 2-5 times",true),
+	DOUBLE_SLAP(15,85,0,0,0,0,PType.NORMAL,"Attacks 2-5 times",true),
 	//DOUBLE_SLICE(-1,80,15,0,0,0,PType.STEEL,"% to cause foe to Bleed; attacks twice",false),
 	DOUBLE_TEAM(0,1000,0,0,2,0,PType.NORMAL,"Raises user's Evasion by 1",false),
 	DRACO_METEOR(140,100,100,0,1,0,PType.DRAGON,"% to lower user's Sp.Atk by 2",false),
 	DRAGON_BREATH(60,100,30,0,1,0,PType.DRAGON,"% chance to Paralyze foe",false),
 	DRAGON_CLAW(80,100,0,1,0,0,PType.DRAGON,"Boosted Crit rate",true),
 	DRAGON_DANCE(0,1000,0,0,2,0,PType.DRAGON,"Raises user's Attack and Speed by 1",false),
-	DRAGON_DARTS(-1,100,0,0,0,0,PType.DRAGON,"",false), // TODO
+	DRAGON_DARTS(50,100,0,0,0,0,PType.DRAGON,"",false),
 	DRAGON_PULSE(85,100,0,0,1,0,PType.DRAGON,"A normal attack",false),
 	DRAGON_RAGE(0,100,0,0,1,0,PType.DRAGON,"Always does 40 HP damage",false),
 	DRAGON_RUSH(100,75,20,0,0,0,PType.DRAGON,"% chance of causing foe to flinch",true),
@@ -126,7 +126,7 @@ public enum Move {
 	DRILL_PECK(80,100,0,1,0,0,PType.FLYING,"Boosted Crit rate",true),
 	DRILL_RUN(80,95,0,1,0,0,PType.GROUND,"Boosted Crit rate",true),
 	//DUAL_STAB(-1,80,15,0,0,0,PType.STEEL,"% chance to cause foe to Bleed; attacks twice",false),
-	DUAL_CHOP(40,90,0,0,0,0,PType.DRAGON,"",true), //TODO
+	DUAL_CHOP(40,90,0,0,0,0,PType.DRAGON,"",true),
 	EARTH_POWER(90,100,10,0,1,0,PType.GROUND,"% chance to lower foe's Sp.Def by 1",false),
 	EARTHQUAKE(100,100,0,0,0,0,PType.GROUND,"A normal attack",false),
 	ELECTRIC_TERRAIN(0,1000,0,0,2,0,PType.ELECTRIC,"Sets the terrain to ELECTRIC for 5 turns",false),
@@ -151,7 +151,7 @@ public enum Move {
 	FALSE_SURRENDER(80,1000,0,0,0,0,PType.DARK,"",true),
 	FATAL_BIND(70,85,100,0,0,0,PType.BUG,"Causes foe to faint in 3 turns",true),
 	FEATHER_DANCE(0,100,0,0,2,0,PType.FLYING,"Lowers foe's Attack by 2",false),
-	FEINT(30,100,0,0,0,2,PType.NORMAL,"",false), // TODO
+	FEINT(30,100,0,0,0,2,PType.NORMAL,"",false),
 	FEINT_ATTACK(60,1000,0,0,0,0,PType.DARK,"This attack always hits",true),
 	FALSE_SWIPE(40,100,0,0,0,0,PType.NORMAL,"Always leaves the foe with at least 1 HP",true),
 	FELL_STINGER(50,100,0,0,0,0,PType.BUG,"",true),
@@ -179,7 +179,6 @@ public enum Move {
 	FLY(90,100,0,0,0,0,PType.FLYING,"A normal attack",true),
 	FOCUS_BLAST(120,70,0,0,1,0,PType.FIGHTING,"",false),
 	FOCUS_ENERGY(0,1000,0,0,2,0,PType.NORMAL,"",false),
-	FOCUS_PUNCH(150,100,0,0,0,0,PType.FIGHTING,"",true), // TODO
 	FORCE_PALM(60,100,30,0,0,0,PType.FIGHTING,"",true),
 	FORESIGHT(0,1000,0,0,2,0,PType.MAGIC,"Indentifies foe, replacing their Ghost typing with Normal if they have it. It also raises user's Accuracy by 1 stage",false),
 	FORESTS_CURSE(0,100,0,0,2,0,PType.GRASS,"",false),
@@ -188,9 +187,9 @@ public enum Move {
 	FREEZING_GLARE(90,100,20,0,1,0,PType.PSYCHIC,"",false),
 	FRENZY_PLANT(150,90,0,0,1,0,PType.GRASS,"User must rest after using this move",false),
 	FRUSTERATION(102,100,0,0,0,0,PType.NORMAL,"A normal attack",true),
-	FURY_ATTACK(-1,85,0,0,0,0,PType.NORMAL,"Attacks 2-5 times",true),
+	FURY_ATTACK(15,85,0,0,0,0,PType.NORMAL,"Attacks 2-5 times",true),
 	FURY_CUTTER(-1,95,0,0,0,0,PType.BUG,"Power increases the more times this move is used in succession",true),
-	FURY_SWIPES(-1,80,0,0,0,0,PType.NORMAL,"Attacks 2-5 times",true),
+	FURY_SWIPES(18,80,0,0,0,0,PType.NORMAL,"Attacks 2-5 times",true),
 	FUSION_BOLT(100,100,0,0,0,0,PType.ELECTRIC,"",false),
 	FUSION_FLARE(100,100,0,0,1,0,PType.FIRE,"",false),
 	FUTURE_SIGHT(0,100,0,0,2,0,PType.PSYCHIC,"",false), // TODO
@@ -252,7 +251,7 @@ public enum Move {
 	ICE_SHARD(40,100,0,0,0,1,PType.ICE,"Always goes first",false),
 	ICE_SPINNER(80,100,100,0,0,0,PType.ICE,"",true),
 	ICICLE_CRASH(85,90,30,0,0,0,PType.ICE,"",false),
-	ICICLE_SPEAR(25,100,0,0,0,0,PType.ICE,"",false), // TODO
+	ICICLE_SPEAR(25,100,0,0,0,0,PType.ICE,"",false),
 	ICY_WIND(55,95,100,0,1,0,PType.ICE,"",false),
 	//IGNITE(0,75,0,0,2,0,PType.FIRE,"Burns foe",false),
 	IMPRISON(0,1000,0,0,2,0,PType.PSYCHIC,"",false), // TODO
@@ -349,14 +348,14 @@ public enum Move {
 	OUTRAGE(120,100,0,0,0,0,PType.DRAGON,"User is locked into this move for 2-3 turns, Confuses user when the effect is done",true),
 	OVERHEAT(140,90,100,0,1,0,PType.FIRE,"% to lower user's Sp.Atk by 2",false),
 	PARABOLIC_CHARGE(65,100,0,0,1,0,PType.ELECTRIC,"",false),
-	PAYBACK(-1,100,0,0,0,0,PType.DARK,"",true), // TODO
+	PAYBACK(-1,100,0,0,0,0,PType.DARK,"",true),
 	PECK(35,100,0,0,0,0,PType.FLYING,"A normal attack",true),
 	PERISH_SONG(0,1000,0,0,2,0,PType.GHOST,"All Pokemon hearing this song will faint in 3 turns",false),
 	PETAL_BLIZZARD(90,100,0,0,0,0,PType.GRASS,"",false),
 	PETAL_DANCE(120,100,0,0,1,0,PType.GRASS,"",true),
 	PHANTOM_FORCE(100,100,0,0,0,0,PType.GHOST,"",true),
 	PHOTON_GEYSER(130,90,100,0,1,0,PType.LIGHT,"",false),
-	PIN_MISSILE(25,95,0,0,0,0,PType.BUG,"",false), // TODO
+	PIN_MISSILE(25,95,0,0,0,0,PType.BUG,"",false),
 	PISTOL_POP(110,70,0,0,0,0,PType.STEEL,"",false),
 	PLASMA_FISTS(100,100,0,0,0,0,PType.ELECTRIC,"",true),
 	PLAY_NICE(0,100,0,0,2,0,PType.NORMAL,"",false),
@@ -370,7 +369,7 @@ public enum Move {
 	//POISON_POWDER(0,75,0,0,2,0,PType.POISON,"Poisons foe",false),
 	//POISON_PUNCH(75,100,10,0,0,0,PType.POISON,"% chance to Poison foe",false),
 	POISON_STING(15,100,30,0,0,0,PType.POISON,"% chance to Poison foe",false),
-	POP_POP(-1,100,0,0,0,0,PType.STEEL,"",false), // TODO
+	POP_POP(70,80,0,0,0,0,PType.STEEL,"",false),
 	//POISONOUS_WATER(95,85,30,0,1,0,PType.POISON,"% chance to Poison foe",false),
 	//POKE(10,100,0,0,0,0,PType.NORMAL,"A normal attack",false),
 	POUND(40,100,0,0,0,0,PType.NORMAL,"A normal attack",true),
@@ -403,10 +402,10 @@ public enum Move {
 	REST(0,1000,0,0,2,0,PType.PSYCHIC,"",false),
 	RETURN(-1,100,0,0,0,0,PType.NORMAL,"",true), // TODO
 	REVENGE(-1,100,0,0,0,0,PType.FIGHTING,"Power is doubled if user is slower than foe",true),
-	REVERSAL(-1,100,0,0,2,0,PType.FIGHTING,"",true), // TODO
+	REVERSAL(-1,100,0,0,2,0,PType.FIGHTING,"",true),
 	ROAR(0,1000,0,0,2,-6,PType.NORMAL,"",false), // TODO
 	//ROCK_BLADE(80,100,0,1,0,0,PType.ROCK,"Boosted Crit rate",false),
-	ROCK_BLAST(-1,90,0,0,0,0,PType.ROCK,"Hits 2-5 times",false),
+	ROCK_BLAST(25,90,0,0,0,0,PType.ROCK,"Hits 2-5 times",false),
 	ROCK_POLISH(0,1000,0,0,2,0,PType.ROCK,"Raises user's Speed by 2",false),
 	ROCK_SLIDE(75,90,30,0,0,0,PType.ROCK,"% of causing foe to flinch",false),
 	ROCK_THROW(50,90,0,0,0,0,PType.ROCK,"A normal attack",false),
@@ -425,7 +424,7 @@ public enum Move {
 	SAND_ATTACK(0,100,0,0,2,0,PType.GROUND,"Lowers foe's Accuracy by 1",false),
 	SANDSTORM(0,1000,0,0,2,0,PType.ROCK,"",false),
 	SCALD(80,100,30,0,2,0,PType.WATER,"",false),
-	SCALE_SHOT(25,90,0,0,2,0,PType.DRAGON,"",false), // TODO
+	SCALE_SHOT(25,90,100,0,2,0,PType.DRAGON,"",false),
 	SCARY_FACE(0,100,0,0,2,0,PType.NORMAL,"Lowers foe's Speed by 2",false),
 	SCORCHING_SANDS(70,100,30,0,1,0,PType.GROUND,"",false),
 	SCRATCH(40,100,0,0,0,0,PType.NORMAL,"A normal attack",true),
@@ -471,11 +470,11 @@ public enum Move {
 	SPARKLE_STRIKE(80,1000,0,0,0,0,PType.MAGIC,"",true),
 	SPARKLING_ARIA(90,100,100,0,1,0,PType.WATER,"",false),
 	SPARKLING_TERRAIN(0,1000,0,0,2,0,PType.MAGIC,"",false),
-	SPARKLING_WATER(0,100,0,0,2,0,PType.WATER,"",false), // TODO
+	SPARKLING_WATER(0,1000,0,0,2,0,PType.WATER,"Raises Sp.Def by 1. Turns into Sparkling Aria when used by Kissyfishy-D",false),
 	SPARKLY_SWIRL(70,100,10,0,1,0,PType.MAGIC,"",false),
 	SPECTRAL_THIEF(90,100,100,0,0,0,PType.GHOST,"",true),
 	SPEEDY_SHURIKEN(40,100,0,0,0,1,PType.STEEL,"",false),
-	SPIKE_CANNON(20,100,0,0,0,0,PType.NORMAL,"",false), // TODO
+	SPIKE_CANNON(20,100,0,0,0,0,PType.NORMAL,"",false),
 	//SPIKE_JAB(55,80,100,0,0,0,PType.POISON,"% to Poison foe",false),
 	//SPIKE_SHOT(-1,100,0,0,0,0,PType.POISON,"Attacks 2-5 times",false),
 	SPIKES(0,1000,0,0,2,0,PType.GROUND,"",false),
@@ -506,7 +505,7 @@ public enum Move {
 	SUNSTEEL_STRIKE(100,100,0,0,0,0,PType.STEEL,"",true),
 	//SUPER_CHARGE(90,50,100,0,0,0,PType.ELECTRIC,"% of causing foe to flinch, user takes 1/3 of damage dealt as recoil",false),
 	SUPER_FANG(0,100,0,0,0,0,PType.NORMAL,"Halves foe's remaining HP",true),
-	SUPERCHARGED_SPLASH(0,100,0,0,2,0,PType.WATER,"",false), // TODO
+	SUPERCHARGED_SPLASH(10,100,50,0,1,0,PType.WATER,"% chance to raise user's Sp.Atk by 1. Turns into Thunder when used by Kissyfishy-D",false),
 	SUPERNOVA_EXPLOSION(200,100,0,0,1,0,PType.GALACTIC,"",false),
 	SUPERPOWER(120,100,100,0,0,0,PType.FIGHTING,"% of lowering user's Attack and Defense by 1",true),
 	SUPERSONIC(0,55,0,0,2,0,PType.NORMAL,"Confuses foe",false),
@@ -521,7 +520,7 @@ public enum Move {
 	//SWORD_STAB(95,60,100,0,0,0,PType.STEEL,"% to cause foe to Bleed",false),
 	SWORDS_DANCE(0,1000,0,0,2,0,PType.NORMAL,"Raises user's Attack by 2",false),
 	SYNTHESIS(0,1000,0,0,2,0,PType.GRASS,"Restores 1/2 of user's max HP",false),
-	TACKLE(50,100,0,0,0,0,PType.NORMAL,"Really? You're looking what tackle does?",true),
+	TACKLE(50,100,0,0,0,0,PType.NORMAL,"A normal attack",true),
 	//TAIL_WHACK(90,85,0,0,0,0,PType.NORMAL,"A normal attack",false),
 	TAIL_GLOW(0,1000,0,0,2,0,PType.BUG,"",false),
 	TAIL_WHIP(0,100,0,0,2,0,PType.NORMAL,"Lowers foe's Defense by 1",false),
@@ -549,9 +548,9 @@ public enum Move {
 	TRI_ATTACK(80,100,20,0,1,0,PType.NORMAL,"",false),
 	TRICK_ROOM(0,1000,0,0,2,-7,PType.PSYCHIC,"",false),
 	TWINKLE_TACKLE(85,90,20,0,0,0,PType.MAGIC,"",true),
-	TWINNEEDLE(25,100,20,0,0,0,PType.BUG,"",false),
+	TWINEEDLE(25,100,30,0,0,0,PType.BUG,"",false),
 	TWISTER(40,100,10,0,1,0,PType.DRAGON,"% of causing foe to flinch",false),
-	UNSEEN_STRANGLE(0,100,0,0,2,0,PType.DARK,"",true), // TODO
+	UNSEEN_STRANGLE(60,100,100,0,0,0,PType.DARK,"",true),
 	U_TURN(70,100,0,0,0,0,PType.BUG,"",true),
 	VACUUM_WAVE(40,100,0,0,1,1,PType.FIGHTING,"",false),
 	V_CREATE(180,95,100,0,0,0,PType.FIRE,"",true),
@@ -563,10 +562,10 @@ public enum Move {
 	VITAL_THROW(60,1000,0,0,0,-1,PType.FIGHTING,"This attack never misses, but goes last",false),
 	VOLT_TACKLE(120,100,10,0,0,0,PType.ELECTRIC,"% to Paralyze foe. User takes 1/3 of damage dealt as recoil",true),
 	WAKE_UP_SLAP(-1,100,0,0,0,0,PType.FIGHTING,"If foe is asleep, power is doubled, but the foe wakes up",true),
-	WATER_CLAP(0,100,0,0,2,0,PType.WATER,"",true), // TODO
-	WATER_FLICK(0,100,0,0,2,0,PType.WATER,"",false), // TODO
-	WATER_KICK(0,100,0,0,2,0,PType.WATER,"",true), // TODO
-	WATER_SMACK(0,100,0,0,2,0,PType.WATER,"",true), // TODO
+	WATER_CLAP(20,100,20,0,0,0,PType.WATER,"% to Paralyze foe. Turns into Dragon Darts when used by Kissyfishy-D",true),
+	WATER_FLICK(0,100,0,0,2,0,PType.WATER,"Lowers foe's Attack by 1. Turns into Flamethrower when used by Kissyfishy-D",false),
+	WATER_KICK(75,100,0,0,0,0,PType.WATER,"A normal attack. Turns into Hi Jump Kick when used by Kissyfishy-D",true),
+	WATER_SMACK(40,95,30,0,0,0,PType.WATER,"% chance of causing foe to flinch. Turns into Darkest Lariat when used by Kissyfishy-D",true),
 	WATER_SPOUT(-1,100,0,0,1,0,PType.WATER,"",false),
 	WATER_SPORT(0,1000,0,0,2,0,PType.WATER,"",false),
 	WAVE_CRASH(120,100,0,0,0,0,PType.WATER,"",false),
@@ -679,6 +678,38 @@ public enum Move {
 	        sb.append(Character.toUpperCase(word.charAt(0))).append(word.substring(1)).append(" ");
 	    }
 	    return sb.toString().trim();
+	}
+	
+	public int getNumHits(Pokemon[] team) {
+		if (this == Move.DOUBLE_SLAP || this == Move.FURY_ATTACK ||this == Move.FURY_SWIPES || this == Move.ICICLE_SPEAR ||
+				this == Move.PIN_MISSILE || this == Move.ROCK_BLAST|| this == Move.SCALE_SHOT || this == Move.SPIKE_CANNON) {
+			int randomNum = (int) (Math.random() * 100) + 1; // Generate a random number between 1 and 100 (inclusive)
+	        if (randomNum <= 35) {
+	            return 2; // 2 hits with 35% probability
+	        } else if (randomNum <= 70) {
+	            return 3; // 3 hits with 35% probability
+	        } else if (randomNum <= 85) {
+	            return 4; // 4 hits with 15% probability
+	        } else {
+	            return 5; // 5 hits with 15% probability
+	        }
+		} else if (this == Move.DOUBLE_KICK || this == Move.DRAGON_DARTS || this == Move.DUAL_CHOP || this == Move.DOUBLE_HIT || this == Move.TWINEEDLE || this == Move.POP_POP) {
+			return 2;
+		} else if (this == Move.BEAT_UP) {
+			int result = 0;
+			if (team == null) {
+				result++;
+				team = new Pokemon[1];
+			}
+			for (Pokemon p : team) {
+				if (p != null) {
+					result++;
+				}
+			}
+			return result;
+		} else {
+			return 1;
+		}
 	}
 
 }

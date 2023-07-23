@@ -4,7 +4,7 @@ public class Trainer {
 	private String name;
 	private Pokemon[] team;
 	private int money;
-	private int currentIndex;
+	int currentIndex;
 	
 	public Trainer(String name, Pokemon[] team, int money) {
 		this.name = name;

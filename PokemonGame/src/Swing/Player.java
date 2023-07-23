@@ -161,4 +161,17 @@ public class Player implements Serializable{
 		return true;
 	}
 
+	public boolean hasValidMembers() {
+		boolean result = false;
+		for (int i = 0; i < 6; i++) {
+			if (this.team[i] != null) {
+				if (this.team[i] != current && !this.team[i].isFainted()) {
+					result = true;
+					break;
+				}
+			}
+		}
+		return result;
+	}
+
 }
