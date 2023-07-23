@@ -16,11 +16,13 @@ import java.util.Random;
 import javax.imageio.ImageIO;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 import javax.swing.SwingUtilities;
 
 import Swing.Battle.JGradientButton;
@@ -90,7 +92,7 @@ public class Pokemon implements Serializable {
 	public boolean success;
 	
 	// battle fields
-	private Move lastMoveUsed;
+	public Move lastMoveUsed;
 	private double trainer;
 	public int slot;
 	
@@ -1828,7 +1830,7 @@ public class Pokemon implements Serializable {
 		Ability[] abilities;
 		
 		if (id == 1) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
-		} else if (id == 2) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
+		} else if (id == 2) { abilities = new Ability[] {Ability.SAND_STREAM, Ability.ROUGH_SKIN};
 		} else if (id == 3) { abilities = new Ability[] {Ability.OVERGROW, Ability.ROUGH_SKIN};
 		} else if (id == 4) { abilities = new Ability[] {Ability.BLAZE, Ability.SOLAR_POWER};
 		} else if (id == 5) { abilities = new Ability[] {Ability.BLAZE, Ability.SOLAR_POWER};
@@ -3780,7 +3782,11 @@ public class Pokemon implements Serializable {
 		PType moveType = move.mtype;
 		int critChance = move.critChance;
 		
-		if (!this.vStatuses.contains(Status.CHARGING) && !this.vStatuses.contains(Status.SEMI_INV) && !this.vStatuses.contains(Status.LOCKED) && !this.vStatuses.contains(Status.ENCORED) && move != Move.MAGIC_REFLECT && move != Move.TAKE_OVER && move != Move.ABDUCT && move != Move.DESTINY_BOND) this.lastMoveUsed = move;
+		if (!this.vStatuses.contains(Status.CHARGING) && !this.vStatuses.contains(Status.SEMI_INV) && !this.vStatuses.contains(Status.LOCKED) &&
+				!this.vStatuses.contains(Status.ENCORED) && move != Move.MAGIC_REFLECT && move != Move.TAKE_OVER && move != Move.ABDUCT &&
+				move != Move.DESTINY_BOND && move != Move.DETECT && move != Move.PROTECT && move != Move.MOLTEN_LAIR && move != Move.OBSTRUCT &&
+				move != Move.SPIKY_SHIELD) this.lastMoveUsed = move;
+		
 		if (move == Move.FAILED_SUCKER) this.lastMoveUsed = Move.SUCKER_PUNCH;
 		if (this.vStatuses.contains(Status.ENCORED)) move = this.lastMoveUsed;
 		
@@ -3900,6 +3906,26 @@ public class Pokemon implements Serializable {
 				this.vStatuses.remove(Status.SEMI_INV);
 			}
 		}
+		
+		if (foe.vStatuses.contains(Status.PROTECT) && (move.accuracy <= 100 || move.cat != 2)) {
+			System.out.println("\n" + this.name + " used " + move + "!");
+			System.out.println(foe.name + " protected itself!");
+			if (move.contact) {
+				if (foe.lastMoveUsed == Move.OBSTRUCT) stat(this, 1, -2);
+				if (foe.lastMoveUsed == Move.MOLTEN_LAIR) burn(false, foe);
+				if (foe.lastMoveUsed == Move.SPIKY_SHIELD && this.ability != Ability.MAGIC_GUARD) {
+					this.currentHP -= Math.max(this.getStat(0) / 8, 1);
+					System.out.println(this.name + " was hurt!");
+					if (this.currentHP <= 0) { // Check for kill
+						this.faint(true, player, foe);
+						foe.awardxp((int) Math.ceil(this.level * this.trainer), player);
+					}
+				}
+			}
+			this.impressive = false;
+			return;
+		}
+		
 		if (this.vStatuses.contains(Status.LOCKED) && this.lastMoveUsed == Move.OUTRAGE) move = Move.OUTRAGE;
 		if (this.vStatuses.contains(Status.LOCKED) && this.lastMoveUsed == Move.PETAL_DANCE) move = Move.PETAL_DANCE;
 		if (this.vStatuses.contains(Status.LOCKED) && this.lastMoveUsed == Move.THRASH) move = Move.THRASH;
@@ -4076,7 +4102,7 @@ public class Pokemon implements Serializable {
 		}
 		if (move.cat == 2) {
 			statusEffect(foe, move, player, field, team);
-			endMove();
+			this.impressive = false;
 			return;
 		}
 		
@@ -4162,7 +4188,7 @@ public class Pokemon implements Serializable {
 			if (move == Move.BODY_PRESS) attackStat = this.getStat(2) * this.asModifier(1);
 			if (move == Move.FOUL_PLAY) attackStat = foe.getStat(1) * foe.asModifier(0);
 			if (this.status == Status.BURNED && this.ability != Ability.GUTS) attackStat /= 2;
-			if (this.status != Status.HEALTHY) attackStat *= 1.5;
+			if (this.ability == Ability.GUTS && this.status != Status.HEALTHY) attackStat *= 1.5;
 			if (this.ability == Ability.HUGE_POWER) attackStat *= 2;
 			if (field.equals(field.weather, Effect.SNOW) && (foe.type1 == PType.ICE || foe.type2 == PType.ICE)) defenseStat *= 1.5;
 		} else {
@@ -4365,10 +4391,14 @@ public class Pokemon implements Serializable {
 			secondaryEffect(foe, move, field, first);
 		}
 		
+		if (move == Move.VOLT_SWITCH || move == Move.FLIP_TURN || move == Move.U_TURN) {
+			this.vStatuses.add(Status.SWITCHING);
+		}
+		
 		if (move.contact && checkSecondary(30)) {
-			if (foe.ability == Ability.FLAME_BODY) foe.burn(false, this);
-			if (foe.ability == Ability.STATIC) foe.paralyze(false, this);
-			if (foe.ability == Ability.POISON_POINT) foe.poison(false, this);
+			if (foe.ability == Ability.FLAME_BODY) burn(false, this);
+			if (foe.ability == Ability.STATIC) paralyze(false, this);
+			if (foe.ability == Ability.POISON_POINT) poison(false, this);
 		}
 		
 		if (move.contact && (foe.ability == Ability.ROUGH_SKIN || foe.ability == Ability.IRON_BARBS)) {
@@ -4425,9 +4455,10 @@ public class Pokemon implements Serializable {
 		success = true;
 	}
 
-	private void fail() {
+	private boolean fail() {
 		System.out.println("But it failed!");
 		success = false;
+		return true;
 	}
 
 	public void awardxp(int amt, Player player) {
@@ -5070,11 +5101,12 @@ public class Pokemon implements Serializable {
 	}
 
 	private void statusEffect(Pokemon foe, Move move, Player player, Field field, Pokemon[] team) {
+		boolean fail = false;
 		if (move == Move.ABDUCT) {
 			if (this.lastMoveUsed != Move.ABDUCT) {
 				foe.vStatuses.add(Status.POSESSED);
 				System.out.println(this.name + " posessed " + foe.name + "!");
-			} else { fail(); }
+			} else { fail = fail(); }
 			this.impressive = false;
 			this.lastMoveUsed = move;
 		} else if (move == Move.ACID_ARMOR) {
@@ -5102,7 +5134,7 @@ public class Pokemon implements Serializable {
 			if (!(this.vStatuses.contains(Status.AQUA_RING))) {
 			    this.vStatuses.add(Status.AQUA_RING);
 			} else {
-			    fail();
+			    fail = fail();
 			}
 		} else if (move == Move.AURORA_VEIL) {
 			if (field.equals(field.weather, Effect.SNOW)) {
@@ -5110,16 +5142,16 @@ public class Pokemon implements Serializable {
 					if (!(field.contains(field.playerSide, Effect.AURORA_VEIL))) {
 						field.playerSide.add(field.new FieldEffect(Effect.AURORA_VEIL));
 					} else {
-						fail();
+						fail = fail();
 					}
 				} else {
 					if (!(field.contains(field.foeSide, Effect.AURORA_VEIL))) {
 						field.foeSide.add(field.new FieldEffect(Effect.AURORA_VEIL));
 					} else {
-						fail();
+						fail = fail();
 					}
 				}
-			} else { fail(); }
+			} else { fail = fail(); }
 		} else if (move == Move.AUTOMOTIZE) {
 			stat(this, 4, 2);
 //		} else if (move == Move.AUTO_SHOT) {
@@ -5131,8 +5163,8 @@ public class Pokemon implements Serializable {
 //			}
 		} else if (move == Move.BABY_DOLL_EYES) {
 			stat(foe, 0, -1);
-//		} else if (move == Move.BLACK_DUST) {
-//			stat(foe, 5, -2);
+		} else if (move == Move.BATON_PASS || move == Move.TELEPORT) {
+			this.vStatuses.add(Status.SWITCHING);
 		} else if (move == Move.BULK_UP) {
 			stat(this, 0, 1);
 			stat(this, 1, 1);
@@ -5167,10 +5199,16 @@ public class Pokemon implements Serializable {
 					foe.awardxp((int) Math.ceil(this.level * trainer), player);
 				}
 			} else {
-				fail();
+				fail = fail();
 			}
-//		} else if (move == Move.DARK_VOID) {
-//			foe.sleep(true);
+		} else if (move == Move.DETECT || move == Move.PROTECT || move == Move.MOLTEN_LAIR || move == Move.OBSTRUCT || move == Move.SPIKY_SHIELD) {
+			if ((lastMoveUsed == Move.DETECT || lastMoveUsed == Move.PROTECT || lastMoveUsed == Move.MOLTEN_LAIR || lastMoveUsed == Move.OBSTRUCT ||
+					lastMoveUsed == Move.SPIKY_SHIELD) && success) {
+				fail = fail();
+			} else {
+				this.vStatuses.add(Status.PROTECT);
+				this.lastMoveUsed = move;
+			}
 		} else if (move == Move.DEFENSE_CURL) {
 			stat(this, 1, 1);
 		} else if (move == Move.DEFOG) {
@@ -5189,7 +5227,7 @@ public class Pokemon implements Serializable {
 			if (this.lastMoveUsed != Move.DESTINY_BOND) {
 				foe.vStatuses.add(Status.BONDED);
 				System.out.println(this.name + " is ready to take its attacker down with it!");
-			} else { fail(); }
+			} else { fail = fail(); }
 			this.impressive = false;
 			this.lastMoveUsed = move;
 			
@@ -5207,13 +5245,13 @@ public class Pokemon implements Serializable {
 				foe.vStatuses.add(Status.ENCORED);
 				foe.encoreCount = 3;
 			} else {
-				fail();
+				fail = fail();
 			}
 		} else if (move == Move.ENDURE) {
 			if (!this.vStatuses.contains(Status.ENDURE)) {
 				this.vStatuses.add(Status.ENDURE);
 			} else {
-				fail();
+				fail = fail();
 			}
 		} else if (move == Move.FLASH) {
 			stat(foe, 5, -1);
@@ -5234,7 +5272,7 @@ public class Pokemon implements Serializable {
 				this.vStatuses.add(Status.FOCUS_ENERGY);
 				System.out.println(this.name + " is tightening its focus!");
 			} else {
-				fail();
+				fail = fail();
 			}
 		} else if (move == Move.FORESIGHT) {
 			if (foe.type1 == PType.GHOST) foe.type1 = PType.NORMAL;
@@ -5302,7 +5340,7 @@ public class Pokemon implements Serializable {
 			if (!(this.vStatuses.contains(Status.AQUA_RING))) {
 			    this.vStatuses.add(Status.AQUA_RING);
 			} else {
-			    fail();
+			    fail = fail();
 			}
 			this.vStatuses.add(Status.NO_SWITCH);
 		} else if (move == Move.IRON_DEFENSE) {
@@ -5324,7 +5362,7 @@ public class Pokemon implements Serializable {
 				foe.vStatuses.add(Status.LEECHED);
 				System.out.println(foe.name + " was seeded!");
 			} else {
-				fail();
+				fail = fail();
 			}
 		} else if (move == Move.LEER) {
 			stat(foe, 1, -1);
@@ -5333,13 +5371,13 @@ public class Pokemon implements Serializable {
 				if (!(field.contains(field.playerSide, Effect.LIGHT_SCREEN))) {
 					field.playerSide.add(field.new FieldEffect(Effect.LIGHT_SCREEN));
 				} else {
-					fail();
+					fail = fail();
 				}
 			} else {
 				if (!(field.contains(field.foeSide, Effect.LIGHT_SCREEN))) {
 					field.foeSide.add(field.new FieldEffect(Effect.LIGHT_SCREEN));
 				} else {
-					fail();
+					fail = fail();
 				}
 			}
 		} else if (move == Move.LOCK_ON) {
@@ -5357,7 +5395,7 @@ public class Pokemon implements Serializable {
 		} else if (move == Move.MAGIC_REFLECT) {
 			if (this.lastMoveUsed != Move.MAGIC_REFLECT) {
 				this.vStatuses.add(Status.REFLECT);
-			} else { fail(); }
+			} else { fail = fail(); }
 			this.impressive = false;
 			this.lastMoveUsed = move;
 		} else if (move == Move.MAGNET_RISE) {
@@ -5365,7 +5403,7 @@ public class Pokemon implements Serializable {
 				this.magCount = 5;
 				System.out.println(this.name + " floated with electromagnetism!");
 			} else {
-				fail();
+				fail = fail();
 			}
 		} else if (move == Move.MEAN_LOOK) {
 			foe.vStatuses.add(Status.LOCKED);
@@ -5410,14 +5448,14 @@ public class Pokemon implements Serializable {
 			    stat(this, 4, 1);
 			    System.out.println(this.name + " can no longer switch out!");
 			} else {
-			    fail();
+			    fail = fail();
 			}
 		} else if (move == Move.NIGHTMARE) {
 			if (foe.status == Status.ASLEEP && !foe.vStatuses.contains(Status.NIGHTMARE)) {
 				foe.vStatuses.add(Status.NIGHTMARE);
 				System.out.println(foe.name + " had a nightmare!");
 			} else {
-				fail();
+				fail = fail();
 			}
 		} else if (move == Move.ODOR_SLEUTH) {
 			if (foe.type1 == PType.GHOST) foe.type1 = PType.NORMAL;
@@ -5469,26 +5507,26 @@ public class Pokemon implements Serializable {
 				if (!(field.contains(field.playerSide, Effect.REFLECT))) {
 					field.playerSide.add(field.new FieldEffect(Effect.REFLECT));
 				} else {
-					fail();
+					fail = fail();
 				}
 			} else {
 				if (!(field.contains(field.foeSide, Effect.REFLECT))) {
 					field.foeSide.add(field.new FieldEffect(Effect.REFLECT));
 				} else {
-					fail();
+					fail = fail();
 				}
 			}
 		} else if (move == Move.REST) {
 			if (this.currentHP == this.getStat(0)) {
 				System.out.println(this.name + "'s HP is full!");
 			} else if (this.status == Status.ASLEEP) {
-				fail();
+				fail = fail();
 				return;
 			} else {
 				this.currentHP = this.getStat(0);
 				this.status = Status.HEALTHY;
 				if (this.ability == Ability.INSOMNIA) {
-					fail();
+					fail = fail();
 					return;
 				}
 				this.sleep(false);
@@ -5512,13 +5550,13 @@ public class Pokemon implements Serializable {
 				if (!(field.contains(field.playerSide, Effect.SAFEGUARD))) {
 					field.playerSide.add(field.new FieldEffect(Effect.SAFEGUARD));
 				} else {
-					fail();
+					fail = fail();
 				}
 			} else {
 				if (!(field.contains(field.foeSide, Effect.SAFEGUARD))) {
 					field.foeSide.add(field.new FieldEffect(Effect.SAFEGUARD));
 				} else {
-					fail();
+					fail = fail();
 				}
 			}
 		} else if (move == Move.SANDSTORM) {
@@ -5546,13 +5584,13 @@ public class Pokemon implements Serializable {
 				if (!(field.contains(field.playerSide, Effect.SPIKES))) {
 					field.playerSide.add(field.new FieldEffect(Effect.SPIKES));
 				} else {
-					fail();
+					fail = fail();
 				}
 			} else {
 				if (!(field.contains(field.foeSide, Effect.SPIKES))) {
 					field.foeSide.add(field.new FieldEffect(Effect.SPIKES));
 				} else {
-					fail();
+					fail = fail();
 				}
 			}
 		} else if (move == Move.SPLASH) {
@@ -5562,13 +5600,13 @@ public class Pokemon implements Serializable {
 				if (!(field.contains(field.playerSide, Effect.STEALTH_ROCKS))) {
 					field.playerSide.add(field.new FieldEffect(Effect.STEALTH_ROCKS));
 				} else {
-					fail();
+					fail = fail();
 				}
 			} else {
 				if (!(field.contains(field.foeSide, Effect.STEALTH_ROCKS))) {
 					field.foeSide.add(field.new FieldEffect(Effect.STEALTH_ROCKS));
 				} else {
-					fail();
+					fail = fail();
 				}
 			}
 		} else if (move == Move.STICKY_WEB) {
@@ -5576,13 +5614,13 @@ public class Pokemon implements Serializable {
 				if (!(field.contains(field.playerSide, Effect.STICKY_WEBS))) {
 					field.playerSide.add(field.new FieldEffect(Effect.STICKY_WEBS));
 				} else {
-					fail();
+					fail = fail();
 				}
 			} else {
 				if (!(field.contains(field.foeSide, Effect.STICKY_WEBS))) {
 					field.foeSide.add(field.new FieldEffect(Effect.STICKY_WEBS));
 				} else {
-					fail();
+					fail = fail();
 				}
 			}
 		} else if (move == Move.STOCKPILE) {
@@ -5615,14 +5653,14 @@ public class Pokemon implements Serializable {
 					field.playerSide.add(field.new FieldEffect(Effect.TAILWIND));
 					System.out.println("A strong wind blew behind your team!");
 				} else {
-					fail();
+					fail = fail();
 				}
 			} else {
 				if (!(field.contains(field.foeSide, Effect.TAILWIND))) {
 					field.foeSide.add(field.new FieldEffect(Effect.TAILWIND));
 					System.out.println("A strong wind blew behind the opposing team!");
 				} else {
-					fail();
+					fail = fail();
 				}
 			}
 		} else if (move == Move.TAIL_WHIP) {
@@ -5631,7 +5669,7 @@ public class Pokemon implements Serializable {
 			if (this.lastMoveUsed != Move.TAKE_OVER) {
 				foe.vStatuses.add(Status.POSESSED);
 				System.out.println(this.name + " posessed " + foe.name + "!");
-			} else { fail(); }
+			} else { fail = fail(); }
 			this.impressive = false;
 			this.lastMoveUsed = move;
 		} else if (move == Move.TEETER_DANCE) {
@@ -5650,13 +5688,13 @@ public class Pokemon implements Serializable {
 				if (!(field.contains(field.playerSide, Effect.TOXIC_SPIKES))) {
 					field.playerSide.add(field.new FieldEffect(Effect.TOXIC_SPIKES));
 				} else {
-					fail();
+					fail = fail();
 				}
 			} else {
 				if (!(field.contains(field.foeSide, Effect.TOXIC_SPIKES))) {
 					field.foeSide.add(field.new FieldEffect(Effect.TOXIC_SPIKES));
 				} else {
-					fail();
+					fail = fail();
 				}
 			}
 		} else if (move == Move.TRICK_ROOM) {
@@ -5679,6 +5717,7 @@ public class Pokemon implements Serializable {
 		} if (move == Move.ROCK_POLISH) {
 			stat(this, 4, 2);
 		}
+		success = !fail;
 		return;
 	}
 	
@@ -10583,9 +10622,19 @@ public class Pokemon implements Serializable {
 	public JPanel showSummary() {
 	    JPanel teamMemberPanel = new JPanel();
 	    teamMemberPanel.setLayout(new BoxLayout(teamMemberPanel, BoxLayout.Y_AXIS));
+	    
+	    JLabel spriteLabel = new JLabel();
+	    ImageIcon spriteIcon = new ImageIcon(this.getSprite());
+	    spriteLabel.setIcon(spriteIcon);
 
-	    JLabel nameLabel, hp, at, de, sa, sd, sp, abilityLabel, abilityDescLabel, natureLabel, hpLabel, statusLabel;
-	    nameLabel = hp = at = de = sa = sd = sp = abilityLabel = abilityDescLabel = natureLabel = hpLabel = statusLabel = new JLabel("N/A");
+	    JLabel nameLabel, abilityLabel, abilityDescLabel, natureLabel, hpLabel, statusLabel;
+	    nameLabel = abilityLabel = abilityDescLabel = natureLabel = hpLabel = statusLabel = new JLabel("N/A");
+	    JLabel[] stats = new JLabel[6];
+	    JLabel[] ivs = new JLabel[6];
+	    JProgressBar[] bars = new JProgressBar[6];
+	    JPanel labelPanel = new JPanel(new GridLayout(6, 2));
+	    JPanel barPanel = new JPanel(new GridLayout(6, 1));
+	    JPanel statsPanel = new JPanel(new GridLayout(1, 2));
 	    JGradientButton type1B, type2B;
 	    JPanel movesPanel = new JPanel(new GridLayout(2, 2));
 	    type1B = new JGradientButton("");
@@ -10602,22 +10651,60 @@ public class Pokemon implements Serializable {
 	            type2B.setText(this.type2.toString());
 	            type2B.setBackground(this.type2.getColor());
 	        }
-	        hp = new JLabel("HP: " + this.stats[0] + ", IV: " + this.getIVs()[0] + "  (" + this.getBaseStat(0) + ")");
-	        at = new JLabel("Atk: " + this.stats[1] + ", IV: " + this.getIVs()[1] + "  (" + this.getBaseStat(1) + ")");
-	        de = new JLabel("Def: " + this.stats[2] + ", IV: " + this.getIVs()[2] + "  (" + this.getBaseStat(2) + ")");
-	        sa = new JLabel("SpA: " + this.stats[3] + ", IV: " + this.getIVs()[3] + "  (" + this.getBaseStat(3) + ")");
-	        sd = new JLabel("SpD: " + this.stats[4] + ", IV: " + this.getIVs()[4] + "  (" + this.getBaseStat(4) + ")");
-	        sp = new JLabel("Spe: " + this.stats[5] + ", IV: " + this.getIVs()[5] + "  (" + this.getBaseStat(5) + ")");
-	        if (this.nature[0] == 1.1) at.setForeground(Color.red.darker().darker());
-	        if (this.nature[0] == 0.9) at.setForeground(Color.blue.darker().darker());
-	        if (this.nature[1] == 1.1) de.setForeground(Color.red.darker().darker());
-	        if (this.nature[1] == 0.9) de.setForeground(Color.blue.darker().darker());
-	        if (this.nature[2] == 1.1) sa.setForeground(Color.red.darker().darker());
-	        if (this.nature[2] == 0.9) sa.setForeground(Color.blue.darker().darker());
-	        if (this.nature[3] == 1.1) sd.setForeground(Color.red.darker().darker());
-	        if (this.nature[3] == 0.9) sd.setForeground(Color.blue.darker().darker());
-	        if (this.nature[4] == 1.1) sp.setForeground(Color.red.darker().darker());
-	        if (this.nature[4] == 0.9) sp.setForeground(Color.blue.darker().darker());
+	        
+	        for (int i = 0; i < 6; i++) {
+	        	String type;
+	        	switch (i) {
+	        	case 0:
+	        		type = "HP: ";
+	        		break;
+	        	case 1:
+	        		type = "Atk: ";
+	        		break;
+	        	case 2:
+	        		type = "Def: ";
+	        		break;
+	        	case 3:
+	        		type = "SpA: ";
+	        		break;
+	        	case 4:
+	        		type = "SpD: ";
+	        		break;
+	        	case 5:
+	        		type = "Spe: ";
+	        		break;
+        		default:
+        			type = "ERROR ";
+        			break;
+	        	}
+	        	stats[i] = new JLabel(type + this.stats[i]);
+	        	stats[i].setFont(new Font(stats[i].getFont().getName(), Font.BOLD, 14));
+	        	stats[i].setSize(50, stats[i].getHeight());
+	        	
+	        	if (i != 0) {
+	        		if (this.nature[i-1] == 1.1) stats[i].setForeground(Color.red.darker().darker());
+	    	        if (this.nature[i-1] == 0.9) stats[i].setForeground(Color.blue.darker().darker());
+	        	}
+	        	
+	        	statsPanel.add(stats[i]);
+	        	
+	        	ivs[i] = new JLabel("IV: " + this.getIVs()[i]);
+	        	
+	        	labelPanel.add(stats[i]);
+	        	labelPanel.add(ivs[i]);
+	        	
+	        	bars[i] = new JProgressBar();
+	        	bars[i].setMaximum(200);
+	        	bars[i].setValue(this.getBaseStat(i));
+	        	bars[i].setString(this.getBaseStat(i) + "");
+	        	bars[i].setUI(new CustomProgressBarUI(Color.BLACK));
+	        	bars[i].setStringPainted(true);
+	        	bars[i].setForeground(getColor(this.getBaseStat(i)));
+	        	
+	        	barPanel.add(bars[i]);
+	        	
+	        }
+	        
 	        abilityLabel = new JLabel("Ability: " + this.ability.toString());
 	        abilityDescLabel = new JLabel(this.ability.desc);
 	        abilityLabel.setFont(new Font(hpLabel.getFont().getName(), Font.BOLD, 14));
@@ -10654,6 +10741,10 @@ public class Pokemon implements Serializable {
 	    JPanel nameLabelPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 	    nameLabelPanel.add(nameLabel);
 	    teamMemberPanel.add(nameLabelPanel);
+	    
+	    JPanel spriteLabelPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+	    nameLabelPanel.add(spriteLabel);
+	    teamMemberPanel.add(spriteLabelPanel);
 
 	    JPanel hpLabelPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 	    hpLabelPanel.add(hpLabel);
@@ -10676,29 +10767,9 @@ public class Pokemon implements Serializable {
 	    natureLabelPanel.add(natureLabel);
 	    teamMemberPanel.add(natureLabelPanel);
 	    
-	    JPanel hpPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-	    hpPanel.add(hp);
-	    teamMemberPanel.add(hpPanel);
-	    
-	    JPanel atPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-	    atPanel.add(at);
-	    teamMemberPanel.add(atPanel);
-	    
-	    JPanel dePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-	    dePanel.add(de);
-	    teamMemberPanel.add(dePanel);
-	    
-	    JPanel saPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-	    saPanel.add(sa);
-	    teamMemberPanel.add(saPanel);
-	    
-	    JPanel sdPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-	    sdPanel.add(sd);
-	    teamMemberPanel.add(sdPanel);
-	    
-	    JPanel spPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-	    spPanel.add(sp);
-	    teamMemberPanel.add(spPanel);
+	    statsPanel.add(labelPanel);
+	    statsPanel.add(barPanel);
+	    teamMemberPanel.add(statsPanel);
 	    
 	    teamMemberPanel.add(movesPanel);
 	    
@@ -10711,6 +10782,25 @@ public class Pokemon implements Serializable {
 	    return teamMemberPanel;
 	}
 	
+	public static Color getColor(int value) {
+        if (value <= 50) {
+            return fadeBetweenColors(Color.RED, Color.YELLOW, value / 50.0f);
+        } else if (value <= 100) {
+            return fadeBetweenColors(Color.YELLOW, Color.GREEN, (value - 50) / 50.0f);
+        } else if (value <= 150) {
+            return fadeBetweenColors(Color.GREEN, new Color(0, 175, 255), (value - 100) / 50.0f);
+        } else {
+            return Color.BLUE;
+        }
+    }
+
+    private static Color fadeBetweenColors(Color startColor, Color endColor, float percentage) {
+        int r = (int) (startColor.getRed() + percentage * (endColor.getRed() - startColor.getRed()));
+        int g = (int) (startColor.getGreen() + percentage * (endColor.getGreen() - startColor.getGreen()));
+        int b = (int) (startColor.getBlue() + percentage * (endColor.getBlue() - startColor.getBlue()));
+        return new Color(r, g, b);
+    }
+
 	private PType determineHPType() {
 		int sum = 0;
 		for (int i = 0; i < 6; i++) {

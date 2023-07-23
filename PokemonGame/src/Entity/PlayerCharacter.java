@@ -527,7 +527,7 @@ public class PlayerCharacter extends Entity {
 
 	
 
-	private JButton setUpPartyButton(int j) {
+	public JButton setUpPartyButton(int j) {
 		JButton party = new JGradientButton("");
 		party.setText("");
         if (p.team[j] != null) {

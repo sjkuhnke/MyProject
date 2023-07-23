@@ -36,6 +36,7 @@ public enum Status {
 	FLASH_FIRE("AUT",Color.BLACK,Color.BLACK),
 	NO_SWITCH("AUT",Color.BLACK,Color.BLACK),
 	SMACK_DOWN("AUT",Color.BLACK,Color.BLACK),
+	SWITCHING("AUT",Color.BLACK,Color.BLACK),
 	;
 	
 	Status(String name, Color color, Color textColor) {

@@ -97,7 +97,7 @@ public enum Move {
 	DESOLATE_VOID(65,85,50,0,1,0,PType.GALACTIC,"",false),
 	DESTINY_BOND(0,1000,0,0,2,1,PType.GHOST,"Always goes first; can't be used twice in a row. If foe knocks out user the same turn, foe faints as well",false),
 	//DISAPPEAR(0,1000,50,0,2,0,PType.GHOST,"% chance to Confuse foe; raises user's Evasion by 2",false),
-	DETECT(0,1000,0,0,2,4,PType.FIGHTING,"",false), // TODO
+	DETECT(0,1000,0,0,2,4,PType.FIGHTING,"",false),
 	DIAMOND_STORM(100,95,50,0,0,0,PType.FIGHTING,"",false),
 	DIG(80,100,0,0,0,0,PType.GROUND,"",true),
 	DISCHARGE(80,100,30,0,1,0,PType.ELECTRIC,"% chance to Paralyze foe",false),
@@ -184,7 +184,7 @@ public enum Move {
 	FORESIGHT(0,1000,0,0,2,0,PType.MAGIC,"Indentifies foe, replacing their Ghost typing with Normal if they have it. It also raises user's Accuracy by 1 stage",false),
 	FORESTS_CURSE(0,100,0,0,2,0,PType.GRASS,"",false),
 	FOUL_PLAY(95,100,0,0,0,0,PType.DARK,"",true),
-	FREEZE_DRY(70,100,10,0,1,0,PType.ICE,"",false), // TODO
+	FREEZE_DRY(70,100,10,0,1,0,PType.ICE,"",false),
 	FREEZING_GLARE(90,100,20,0,1,0,PType.PSYCHIC,"",false),
 	FRENZY_PLANT(150,90,0,0,1,0,PType.GRASS,"User must rest after using this move",false),
 	FRUSTERATION(102,100,0,0,0,0,PType.NORMAL,"A normal attack",true),
@@ -266,7 +266,7 @@ public enum Move {
 	IRON_HEAD(80,100,30,0,0,0,PType.STEEL,"% of causing foe to flinch",true),
 	IRON_TAIL(100,75,30,0,0,0,PType.STEEL,"% of lowering foe's Defense by 1",true),
 	JAW_LOCK(80,100,100,0,0,0,PType.DARK,"",true),
-	KARATE_CHOP(50,100,0,1,0,1,PType.FIGHTING,"Boosted Crit rate",true),
+	KARATE_CHOP(50,100,0,1,0,0,PType.FIGHTING,"Boosted Crit rate",true),
 	LAVA_PLUME(80,100,30,0,1,0,PType.FIRE,"% to Burn foe",false),
 	//LEAF_BALL(75,95,0,0,1,0,PType.GRASS,"A normal attack",false),
 	LEAF_BLADE(90,100,0,1,0,0,PType.GRASS,"Boosted Crit rate",true),
@@ -322,8 +322,8 @@ public enum Move {
 	MIRROR_MOVE(0,1000,0,0,1,0,PType.FLYING,"Uses the move last used by the foe, fails if foe hasn't used a move yet",false),
 	MIST_BALL(70,100,50,0,1,0,PType.PSYCHIC,"",false),
 	MOLTEN_CONSUME(50,100,100,0,0,1,PType.FIRE,"% chance to Burn foe",true),
-	MOLTEN_LAIR(0,100,0,0,2,0,PType.FIRE,"",false), // TODO
-	MOLTEN_STEELSPIKE(100,100,30,0,1,0,PType.FIRE,"",false),
+	MOLTEN_LAIR(0,100,0,0,2,0,PType.FIRE,"",false),
+	MOLTEN_STEELSPIKE(100,90,30,0,1,0,PType.STEEL,"",false),
 	MOONBLAST(95,100,30,0,1,0,PType.LIGHT,"",false),
 	MOONLIGHT(0,1000,0,0,2,0,PType.LIGHT,"Restores 1/2 of user's max HP",false),
 	MORNING_SUN(0,1000,0,0,2,0,PType.LIGHT,"",false),
@@ -344,7 +344,7 @@ public enum Move {
 	NO_RETREAT(0,1000,0,0,2,0,PType.FIGHTING,"",false),
 	NOBLE_ROAR(0,100,0,0,2,0,PType.NORMAL,"",false),
 	NUZZLE(20,100,100,0,0,0,PType.ELECTRIC,"",true),
-	OBSTRUCT(0,1000,0,0,2,4,PType.DARK,"",false), // TODO
+	OBSTRUCT(0,1000,0,0,2,4,PType.DARK,"",false),
 	ODOR_SLEUTH(0,1000,0,0,2,0,PType.NORMAL,"Indentifies foe, replacing their Ghost typing with Normal if they have it. It also lowers foe's Evasion by 1",false),
 	OUTRAGE(120,100,0,0,0,0,PType.DRAGON,"User is locked into this move for 2-3 turns, Confuses user when the effect is done",true),
 	OVERHEAT(140,90,100,0,1,0,PType.FIRE,"% to lower user's Sp.Atk by 2",false),
@@ -379,7 +379,7 @@ public enum Move {
 	POWER_WHIP(120,85,0,0,0,0,PType.GRASS,"",true),
 	POWER_UP_PUNCH(40,100,100,0,0,0,PType.FIGHTING,"",true),
 	PRISMATIC_LASER(100,100,0,0,1,0,PType.LIGHT,"",false),
-	PROTECT(0,1000,0,0,2,4,PType.NORMAL,"",false), // TODO
+	PROTECT(0,1000,0,0,2,4,PType.NORMAL,"",false),
 	PSYBEAM(65,100,10,0,1,0,PType.PSYCHIC,"",false),
 	PSYCHIC(90,100,10,0,1,0,PType.PSYCHIC,"",false),
 	PSYCHIC_FANGS(85,100,100,0,0,0,PType.PSYCHIC,"",true), // TODO
@@ -480,7 +480,7 @@ public enum Move {
 	//SPIKE_SHOT(-1,100,0,0,0,0,PType.POISON,"Attacks 2-5 times",false),
 	SPIKES(0,1000,0,0,2,0,PType.GROUND,"",false),
 	//SPIKE_SLAM(65,90,0,0,0,0,PType.NORMAL,"A normal attack",false),
-	SPIKY_SHIELD(0,1000,0,0,2,4,PType.GRASS,"",false), // TODO
+	SPIKY_SHIELD(0,1000,0,0,2,4,PType.GRASS,"",false),
 	SPIRIT_BREAK(75,100,100,0,2,0,PType.LIGHT,"",true),
 	SPLASH(0,1000,0,0,2,0,PType.NORMAL,"",false),
 	STAR_STORM(110,85,0,0,1,0,PType.GALACTIC,"A normal attack",false),
@@ -530,7 +530,7 @@ public enum Move {
 	TAKE_OVER(0,100,0,0,2,0,PType.GHOST,"Foe's next attack is used on itself. Can be used once every other turn",false),
 	TAUNT(0,100,0,0,2,0,PType.DARK,"",false), // TODO
 	TEETER_DANCE(0,100,0,0,2,0,PType.NORMAL,"",false),
-	TELEPORT(0,1000,0,0,2,-6,PType.PSYCHIC,"",false), // TODO
+	TELEPORT(0,1000,0,0,2,-6,PType.PSYCHIC,"",false),
 	THRASH(120,100,0,0,0,0,PType.NORMAL,"",true),
 	THROAT_CHOP(80,100,100,0,0,0,PType.DARK,"",true), // TODO
 	THUNDER(120,70,30,0,1,0,PType.ELECTRIC,"% of Paralyzing foe",false),
@@ -552,14 +552,14 @@ public enum Move {
 	TWINNEEDLE(25,100,20,0,0,0,PType.BUG,"",false),
 	TWISTER(40,100,10,0,1,0,PType.DRAGON,"% of causing foe to flinch",false),
 	UNSEEN_STRANGLE(0,100,0,0,2,0,PType.DARK,"",true), // TODO
-	U_TURN(70,100,0,0,0,0,PType.BUG,"",true), // TODO
+	U_TURN(70,100,0,0,0,0,PType.BUG,"",true),
 	VACUUM_WAVE(40,100,0,0,1,1,PType.FIGHTING,"",false),
 	V_CREATE(180,95,100,0,0,0,PType.FIRE,"",true),
 	VENOM_DRENCH(0,100,0,0,2,0,PType.POISON,"",false),
 	VENOSHOCK(-1,100,0,0,1,0,PType.POISON,"",false),
 	VISE_GRIP(55,100,0,0,0,0,PType.NORMAL,"",true),
 	VINE_WHIP(45,100,0,0,0,0,PType.GRASS,"A normal attack",true),
-	VOLT_SWITCH(70,100,0,0,1,0,PType.ELECTRIC,"",false), // TODO
+	VOLT_SWITCH(70,100,0,0,1,0,PType.ELECTRIC,"",false),
 	VITAL_THROW(60,1000,0,0,0,-1,PType.FIGHTING,"This attack never misses, but goes last",false),
 	VOLT_TACKLE(120,100,10,0,0,0,PType.ELECTRIC,"% to Paralyze foe. User takes 1/3 of damage dealt as recoil",true),
 	WAKE_UP_SLAP(-1,100,0,0,0,0,PType.FIGHTING,"If foe is asleep, power is doubled, but the foe wakes up",true),
@@ -593,11 +593,11 @@ public enum Move {
 	ZING_ZAP(80,100,30,0,2,0,PType.ELECTRIC,"",true),
 	
 	TERRAIN_PULSE(-1,100,0,0,1,0,PType.NORMAL,"",false),
-	FACADE(-1,100,0,0,1,0,PType.NORMAL,"",false),
+	FACADE(-1,100,0,0,1,0,PType.NORMAL,"",true),
 	SLEEP_TALK(-1,100,0,0,1,0,PType.NORMAL,"",false),
 	CAPTIVATE(-1,100,0,0,1,0,PType.NORMAL,"",false),
-	BATON_PASS(-1,100,0,0,1,0,PType.NORMAL,"",false), // TODO
-	FLIP_TURN(-1,100,0,0,1,0,PType.NORMAL,"",false), // TODO
+	BATON_PASS(-1,100,0,0,2,0,PType.NORMAL,"",false),
+	FLIP_TURN(60,100,0,0,1,0,PType.WATER,"",true),
 	CUT(50,95,0,2,0,0,PType.NORMAL,"Extra-boosted crit rate",true),
 	ROCK_SMASH(40,100,50,0,0,0,PType.FIGHTING,"% to lower foe's Defense by 1",true),
 	VINE_CROSS(70,95,100,0,0,0,PType.WATER,"% chance to lower foe's Speed by 1",false),

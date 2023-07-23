@@ -15,6 +15,8 @@ import java.awt.event.ActionEvent;
 //import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -111,7 +113,7 @@ public class Battle extends JFrame {
         setLocationRelativeTo(null);
 
         // Initialize frame
-        initialize();
+        initialize(playerCharacter);
 		updateFoe();
 		if (foeT != null) {
 			foeTrainer = foeT;
@@ -295,6 +297,8 @@ public class Battle extends JFrame {
 	        		JOptionPane.showMessageDialog(null, "You are trapped and cannot switch!");
 	                return;
 				}
+				boolean swapping = me.getCurrent().vStatuses.contains(Status.SWITCHING);
+				
 				me.swap(me.team[index], index);
 				me.getCurrent().swapIn(foe, field);
 				updateField(field);
@@ -309,7 +313,7 @@ public class Battle extends JFrame {
 	            } else {
 	            	healthBar.setForeground(new Color(255, 0, 0));
 	            }
-				if (!me.team[index].isFainted()) {
+				if (!me.team[index].isFainted() && !swapping) {
 					if (foe.trainerOwned()) {
 		        		if (foeTrainer != null) {
 		        			foe.move(me.getCurrent(),foe.bestMove(me.team[index], field, false), me, field, foeTrainer.getTeam(), false);
@@ -377,7 +381,7 @@ public class Battle extends JFrame {
 		updateField(field);
 	}
 
-	private void initialize() {
+	private void initialize(PlayerCharacter pl) {
 		// Initializing current elements
 		currentText = new JLabel("");
 		
@@ -423,11 +427,13 @@ public class Battle extends JFrame {
 			            message += "Category: " + me.getCurrent().moveset[index].getCategory() + "\n";
 			            message += "Description: " + me.getCurrent().moveset[index].getDescription();
 			            JOptionPane.showMessageDialog(null, message, "Move Description", JOptionPane.INFORMATION_MESSAGE);
+			        } else if (me.getCurrent().vStatuses.contains(Status.SWITCHING)){
+			        	JOptionPane.showMessageDialog(null, "You must switch out!");
 			        } else {
 			        	if (foe.trainerOwned()) {
-			        		turn(me.getCurrent(), foe, me.getCurrent().moveset[index], foe.bestMove(me.getCurrent(), field, false));
+			        		turn(me.getCurrent(), foe, me.getCurrent().moveset[index], foe.bestMove(me.getCurrent(), field, false), pl);
 			        	} else {
-			        		turn(me.getCurrent(), foe, me.getCurrent().moveset[index], foe.randomMove());
+			        		turn(me.getCurrent(), foe, me.getCurrent().moveset[index], foe.randomMove(), pl);
 			        	}
 			        }
 			    }
@@ -767,7 +773,7 @@ public class Battle extends JFrame {
 		
 	}
 
-	public void turn(Pokemon p1, Pokemon p2, Move m1, Move m2) {
+	public void turn(Pokemon p1, Pokemon p2, Move m1, Move m2, PlayerCharacter pl) {
 		if (p1.isFainted() || p2.isFainted()) return;
 
 		int m1P, m2P;
@@ -785,12 +791,17 @@ public class Battle extends JFrame {
 		
 		if (faster == p1) {
 			faster.move(slower, m1, me, field, me.getTeam(), true);
+			// Check for swap
+			if (faster.vStatuses.contains(Status.SWITCHING)) faster = getSwap(pl, faster.lastMoveUsed == Move.BATON_PASS);
+			
 	        if (foeTrainer != null) slower.move(faster, m2, me, field, foeTrainer.getTeam(), false);
 	        else slower.move(faster, m2, me, field, null, false);
 		} else {
 			if (foeTrainer != null) { faster.move(slower, m2, me, field, foeTrainer.getTeam(), true); }
 			else { faster.move(slower, m2, me, field, null, true); }
 	        slower.move(faster, m1, me, field, me.getTeam(), false);
+	        // Check for swap
+	        if (slower.vStatuses.contains(Status.SWITCHING)) slower = getSwap(pl, slower.lastMoveUsed == Move.BATON_PASS);
 		}
         faster.endOfTurn(slower, me, field);
 		slower.endOfTurn(faster, me, field);
@@ -831,6 +842,55 @@ public class Battle extends JFrame {
 		
 	}
 
+	private Pokemon getSwap(PlayerCharacter pl, boolean baton) {
+	    JPanel partyPanel = new JPanel();
+	    partyPanel.setLayout(new GridLayout(6, 1));
+
+	    for (int j = 0; j < 6; j++) {
+	        if (!me.team[j].isFainted() && !(me.team[j] == me.current)) {
+	            JButton party = pl.setUpPartyButton(j);
+	            final int index = j;
+
+	            party.addActionListener(g -> {
+	                if (baton) me.team[index].statStages = me.getCurrent().statStages;
+	                me.swap(me.team[index], index);
+	                me.getCurrent().swapIn(foe, field);
+	                updateField(field);
+	                foe.vStatuses.remove(Status.TRAPPED);
+	                foe.vStatuses.remove(Status.SPUN);
+	                updateBars();
+	                SwingUtilities.getWindowAncestor(partyPanel).dispose();
+	            });
+
+	            JPanel memberPanel = new JPanel(new BorderLayout());
+	            memberPanel.add(party, BorderLayout.NORTH);
+	            partyPanel.add(memberPanel);
+	        }
+	    }
+
+	    JPanel wrapperPanel = new JPanel(new BorderLayout());
+	    wrapperPanel.setBorder(new EmptyBorder(10, 10, 10, 10)); // Add the desired blank border
+	    wrapperPanel.add(partyPanel, BorderLayout.NORTH);
+
+	    JDialog dialog = new JDialog((Frame) null, "Choose a party member to switch out to:", true);
+	    dialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+	    dialog.setResizable(false);
+	    dialog.setUndecorated(true); // Remove title bar and close button
+	    dialog.addWindowListener(new WindowAdapter() {
+	        @Override
+	        public void windowClosing(WindowEvent e) {
+	            // Do nothing when the user tries to close the dialog
+	        }
+	    });
+
+	    dialog.add(wrapperPanel);
+	    dialog.pack();
+	    dialog.setLocationRelativeTo(null);
+	    dialog.setVisible(true);
+
+	    return me.getCurrent();
+	}
+	
 	private void updateStatus() {
 		userStatus.setText(me.getCurrent().status.getName());
 		userStatus.setBackground(me.getCurrent().status.getColor());
