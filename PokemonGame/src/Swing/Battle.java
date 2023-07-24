@@ -302,7 +302,7 @@ public class Battle extends JFrame {
 				boolean swapping = me.getCurrent().vStatuses.contains(Status.SWITCHING);
 				
 				me.swap(me.team[index], index);
-				me.getCurrent().swapIn(foe, field);
+				me.getCurrent().swapIn(foe, field, me);
 				updateField(field);
 				foe.vStatuses.remove(Status.TRAPPED);
 				foe.vStatuses.remove(Status.SPUN);
@@ -338,7 +338,7 @@ public class Battle extends JFrame {
 						if (foeTrainer.hasNext()) {
 							foe = foeTrainer.next();
 							System.out.println("\n" + foeTrainer.toString() + " sends out " + foeTrainer.getCurrent().name + "!");
-							foe.swapIn(me.getCurrent(), field);
+							foe.swapIn(me.getCurrent(), field, me);
 							updateField(field);
 							updateFoe();
 							me.clearBattled();
@@ -377,8 +377,8 @@ public class Battle extends JFrame {
 		
 		Pokemon fasterInit = me.getCurrent().getFaster(foe, field, 0, 0);
 		Pokemon slowerInit = fasterInit == me.getCurrent() ? foe : me.getCurrent();
-		fasterInit.swapIn(slowerInit, field);
-		slowerInit.swapIn(fasterInit, field);
+		fasterInit.swapIn(slowerInit, field, me);
+		slowerInit.swapIn(fasterInit, field, me);
 		
 		updateField(field);
 	}
@@ -849,7 +849,7 @@ public class Battle extends JFrame {
 				if (foeTrainer.hasNext()) {
 					foe = foeTrainer.next();
 					System.out.println("\n" + foeTrainer.toString() + " sends out " + foeTrainer.getCurrent().name + "!");
-					foe.swapIn(me.getCurrent(), field);
+					foe.swapIn(me.getCurrent(), field, me);
 					updateField(field);
 					updateFoe();
 					me.clearBattled();
@@ -894,7 +894,7 @@ public class Battle extends JFrame {
 		            party.addActionListener(g -> {
 		                if (baton) me.team[index].statStages = me.getCurrent().statStages;
 		                me.swap(me.team[index], index);
-		                me.getCurrent().swapIn(foe, field);
+		                me.getCurrent().swapIn(foe, field, me);
 		                updateField(field);
 		                foe.vStatuses.remove(Status.TRAPPED);
 		                foe.vStatuses.remove(Status.SPUN);

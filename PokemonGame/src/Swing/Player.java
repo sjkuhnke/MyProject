@@ -22,6 +22,7 @@ public class Player implements Serializable{
 	public Bag bag;
 	public int badges;
 	public int starter;
+	public int[] pokedex = new int[237];
 	
 	public Player() {
 		team = new Pokemon[6];
@@ -172,6 +173,33 @@ public class Player implements Serializable{
 			}
 		}
 		return result;
+	}
+
+	public int caught(int j) {
+		if (pokedex[j] == 2) return 2;
+		
+		for (Pokemon p : team) {
+			if (p != null) {
+				if (p.id == j) return 2;
+			}
+		}
+		for (Pokemon p : box1) {
+			if (p != null) {
+				if (p.id == j) return 2;
+			}
+		}
+		for (Pokemon p : box2) {
+			if (p != null) {
+				if (p.id == j) return 2;
+			}
+		}
+		for (Pokemon p : box3) {
+			if (p != null) {
+				if (p.id == j) return 2;
+			}
+		}
+		
+		return 0;
 	}
 
 }

@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -171,6 +172,8 @@ public class PlayerCharacter extends Entity {
 		JPanel menu = new JPanel();
 	    menu.setLayout(new GridLayout(6, 1));
 	    
+	    JButton dex = new JGradientButton("Pokedex");
+	    dex.setBackground(new Color(128, 0, 128).darker());
 	    JButton party = new JGradientButton("Party");
 	    party.setBackground(Color.red.darker());
 	    JButton bag = new JGradientButton("Bag");
@@ -180,6 +183,9 @@ public class PlayerCharacter extends Entity {
 	    JButton player = new JGradientButton("Player");
 	    player.setBackground(Color.yellow.darker());
 	    
+	    dex.addActionListener(e -> {
+	    	showDex();
+	    });
 	    party.addActionListener(e -> {
 	    	showParty();
 	    });
@@ -203,6 +209,7 @@ public class PlayerCharacter extends Entity {
 	    	
 	    	JOptionPane.showMessageDialog(null, playerInfo, "Player Info", JOptionPane.PLAIN_MESSAGE);
 	    });
+	    menu.add(dex);
 	    menu.add(party);
 	    menu.add(bag);
 	    menu.add(save);
@@ -525,7 +532,46 @@ public class PlayerCharacter extends Entity {
 		keyH.resume();
 	}
 
-	
+	private void showDex() {
+	    JPanel dexPanel = new JPanel();
+	    dexPanel.setLayout(new GridLayout(60, 6));
+
+	    for (int j = 1; j < 237; j++) {
+	    	final int id = j;
+	    	JButton mon = new JGradientButton("");
+	    	
+	    	p.pokedex[j] = p.caught(j) == 2 ? 2 : p.pokedex[j];
+	        
+	        if (p.pokedex[j] == 0) {
+	        	mon.setText("???");
+	        } else if (p.pokedex[j] == 1) {
+		        ImageIcon sprite = new ImageIcon(p.getCurrent().getSprite(j));
+		        mon.setIcon(sprite);
+		        mon.setBackground(Color.yellow);
+	        } else {
+		        ImageIcon sprite = new ImageIcon(p.getCurrent().getSprite(j));
+		        mon.setIcon(sprite);
+		        mon.setBackground(Color.green);
+	        }
+	        
+	        mon.addActionListener(e -> {
+	            JPanel teamMemberPanel = p.getCurrent().getDexSummary(id, p.pokedex[id]);
+	            JOptionPane.showMessageDialog(null, teamMemberPanel, "Pokemon details", JOptionPane.PLAIN_MESSAGE);
+	        });
+
+	        dexPanel.add(mon);
+	    }
+
+	    JScrollPane dexScrollPane = new JScrollPane(dexPanel);
+	    dexScrollPane.setPreferredSize(new Dimension(600, 600)); // Set the preferred size of the scroll pane
+	    
+	    // Set the vertical and horizontal unit increments to control the scrolling speed
+	    dexScrollPane.getVerticalScrollBar().setUnitIncrement(12); // Adjust the value as needed
+
+	    JOptionPane.showMessageDialog(null, dexScrollPane, "Pokedex", JOptionPane.PLAIN_MESSAGE);
+	    keyH.resume();
+	}
+
 
 	public JButton setUpPartyButton(int j) {
 		JButton party = new JGradientButton("");
