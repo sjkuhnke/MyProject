@@ -83,6 +83,7 @@ public class PlayerCharacter extends Entity {
 	}
 	
 	public void update() {
+		gp.ticks++;
 		if (keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed) {
 			spriteCounter++;
 			if (keyH.upPressed) {
@@ -155,6 +156,15 @@ public class PlayerCharacter extends Entity {
 		} else {
 			speed = 4;
 		}
+		if (gp.ticks > 3) {
+			gp.ticks = 0;
+		}
+		for (int i = 0; i < gp.npc.length; i++) {
+			if (gp.cChecker.checkTrainer(this, gp.npc[i]) && gp.npc[i].direction == "down" && gp.ticks == 0) gp.startBattle(gp.npc[i].trainer);
+			if (gp.cChecker.checkTrainer(this, gp.npc[i]) && gp.npc[i].direction == "up" && gp.ticks == 1) gp.startBattle(gp.npc[i].trainer);
+			if (gp.cChecker.checkTrainer(this, gp.npc[i]) && gp.npc[i].direction == "left" && gp.ticks == 2) gp.startBattle(gp.npc[i].trainer);
+			if (gp.cChecker.checkTrainer(this, gp.npc[i]) && gp.npc[i].direction == "right" && gp.ticks == 3) gp.startBattle(gp.npc[i].trainer);
+		}
 		if (keyH.wPressed) {
 			int npcIndex = gp.cChecker.checkEntity(this, gp.npc);
 			if (npcIndex != 999 && gp.npc[npcIndex] instanceof NPC_Nurse) interactNurse();
@@ -162,9 +172,6 @@ public class PlayerCharacter extends Entity {
 			if (npcIndex != 999 && gp.npc[npcIndex] instanceof NPC_Trainer) gp.startBattle(gp.npc[npcIndex].trainer);
 			if (npcIndex != 999 && gp.npc[npcIndex] instanceof NPC_GymLeader) gp.startBattle(gp.npc[npcIndex].trainer);
 			if (npcIndex != 999 && gp.npc[npcIndex] instanceof NPC_PC) gp.openBox();
-		}
-		for (int i = 0; i < gp.npc.length; i++) {
-			if (gp.cChecker.checkTrainer(this, gp.npc[i])) gp.startBattle(gp.npc[i].trainer);
 		}
 	}
 	
@@ -566,7 +573,7 @@ public class PlayerCharacter extends Entity {
 	    dexScrollPane.setPreferredSize(new Dimension(600, 600)); // Set the preferred size of the scroll pane
 	    
 	    // Set the vertical and horizontal unit increments to control the scrolling speed
-	    dexScrollPane.getVerticalScrollBar().setUnitIncrement(12); // Adjust the value as needed
+	    dexScrollPane.getVerticalScrollBar().setUnitIncrement(16); // Adjust the value as needed
 
 	    JOptionPane.showMessageDialog(null, dexScrollPane, "Pokedex", JOptionPane.PLAIN_MESSAGE);
 	    keyH.resume();

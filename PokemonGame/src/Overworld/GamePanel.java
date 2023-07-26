@@ -52,6 +52,7 @@ public class GamePanel extends JPanel implements Runnable, BattleCloseListener {
 	
 	int FPS = 60;
 	private volatile boolean inBattle;
+	public int ticks;
 	
 	public GamePanel() {
 		this.setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -77,8 +78,6 @@ public class GamePanel extends JPanel implements Runnable, BattleCloseListener {
 				update();
 				
 				repaint();
-				
-				//System.out.println(player.worldX / tileSize + "," + player.worldY / tileSize);
 				
 				try {
 					double remainingTime = nextDrawTime - System.nanoTime();

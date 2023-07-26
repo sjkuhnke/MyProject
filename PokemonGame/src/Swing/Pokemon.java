@@ -2018,7 +2018,7 @@ public class Pokemon implements Serializable {
 		} else if (id == 144) { abilities = new Ability[] {Ability.SWIFT_SWIM, Ability.SNIPER};
 		} else if (id == 145) { abilities = new Ability[] {Ability.SWIFT_SWIM, Ability.MAGIC_GUARD};
 		} else if (id == 146) { abilities = new Ability[] {Ability.TOUGH_CLAWS, Ability.SNIPER};
-		} else if (id == 147) { abilities = new Ability[] {Ability.TOUGH_CLAWS, Ability.MAGIC_GUARD};
+		} else if (id == 147) { abilities = new Ability[] {Ability.TOUGH_CLAWS, Ability.SNIPER};
 		} else if (id == 148) { abilities = new Ability[] {Ability.FALSE_ILLUMINATION, Ability.PRANKSTER};
 		} else if (id == 149) { abilities = new Ability[] {Ability.FALSE_ILLUMINATION, Ability.PRANKSTER};
 		} else if (id == 150) { abilities = new Ability[] {Ability.WATER_VEIL, Ability.REGENERATOR};
@@ -8598,7 +8598,7 @@ public class Pokemon implements Serializable {
 			movebank[27] = new Node(Move.LIQUIDATION);
 			movebank[31] = new Node(Move.ICE_FANG);
 			movebank[31].next = new Node(Move.FIRE_FANG);
-			movebank[21].next.next = new Node(Move.THUNDER_FANG);
+			movebank[31].next.next = new Node(Move.THUNDER_FANG);
 			movebank[39] = new Node(Move.PSYCHIC_FANGS);
 			break;
 		case 142:
@@ -10917,6 +10917,7 @@ public class Pokemon implements Serializable {
 
 		    // Set preferred size of the JScrollPane to make it scrollable
 		    movesScrollPane.setPreferredSize(new Dimension(100, 200));
+		    movesScrollPane.getVerticalScrollBar().setUnitIncrement(12); // Adjust the value as needed
 
 		    dexPanel.add(movesScrollPane);
 	    }
