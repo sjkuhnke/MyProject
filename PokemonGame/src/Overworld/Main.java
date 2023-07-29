@@ -55,9 +55,9 @@ public class Main {
 	        gamePanel.player.p.bag.add(new Item(22), 999);
 	    }
 		
-		if (gamePanel.player.p.starter == 0) trainers[0] = new Trainer("Scott 1", new Pokemon[]{new Pokemon(7, 5, false, true)}, 500);
-		else if (gamePanel.player.p.starter == 1) trainers[0] = new Trainer("Scott 1", new Pokemon[]{new Pokemon(1, 5, false, true)}, 500);
-		else if (gamePanel.player.p.starter == 2) trainers[0] = new Trainer("Scott 1", new Pokemon[]{new Pokemon(4, 5, false, true)}, 500);
+		if (gamePanel.player.p.starter == 0) trainers[0] = new Trainer("Scott 1", new Pokemon[]{new Pokemon(7, 5, false, true)}, 400);
+		else if (gamePanel.player.p.starter == 1) trainers[0] = new Trainer("Scott 1", new Pokemon[]{new Pokemon(1, 5, false, true)}, 400);
+		else if (gamePanel.player.p.starter == 2) trainers[0] = new Trainer("Scott 1", new Pokemon[]{new Pokemon(4, 5, false, true)}, 400);
 		
 		window.add(gamePanel);
 		
@@ -84,7 +84,7 @@ public class Main {
 	
 	private static void setTrainers() {
 		trainers = new Trainer[]{
-				new Trainer("Scott 1", new Pokemon[]{new Pokemon(1, 7, false, true)}, 500),
+				new Trainer("Scott 1", new Pokemon[]{new Pokemon(1, 7, false, true)}, 400),
 				new Trainer("A", new Pokemon[]{new Pokemon(16, 4, false, true)}, 100),
 				new Trainer("B", new Pokemon[]{new Pokemon(13, 3, false, true)}, 100),
 				new Trainer("C", new Pokemon[]{new Pokemon(32, 4, false, true), new Pokemon(29, 4, false, true)}, 100),
@@ -97,7 +97,7 @@ public class Main {
 				new Trainer("TN 6", new Pokemon[]{new Pokemon(73, 10, false, true)}, 100),
 				new Trainer("TN 7", new Pokemon[]{new Pokemon(90, 10, false, true)}, 100),
 				new Trainer("TN 8", new Pokemon[]{new Pokemon(52, 12, false, true)}, 100),
-				new Trainer("Rick 1", new Pokemon[]{new Pokemon(66, 11, false, true), new Pokemon(111, 12, false, true), new Pokemon(44, 13, false, true), new Pokemon(120, 10, false, true)}, 100),
+				new Trainer("Rick 1", new Pokemon[]{new Pokemon(66, 11, false, true), new Pokemon(111, 12, false, true), new Pokemon(44, 13, false, true), new Pokemon(120, 10, false, true)}, 400),
 				new Trainer("1 Gym A", new Pokemon[]{new Pokemon(13, 7, false, true), new Pokemon(13, 9, false, true), new Pokemon(13, 11, false, true)}, 200),
 				new Trainer("1 Gym B", new Pokemon[]{new Pokemon(10, 11, false, true), new Pokemon(10, 11, false, true)}, 200),
 				new Trainer("1 Gym C", new Pokemon[]{new Pokemon(13, 12, false, true), new Pokemon(10, 14, false, true)}, 200),

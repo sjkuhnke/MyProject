@@ -51,8 +51,27 @@ public class EventHandler {
 		canTouchEvent = true;
 		
 		if (canTouchEvent) {
+			// Bananaville Town PC
 			if (hit(0,35,44,"any")) teleport(1, 31, 45);
 			if (hit(1,31,46,"any")) teleport(0, 35, 45);
+			
+			// Bananaville Town Shop
+			if (hit(0,27,53,"any")) teleport(2, 31, 45);
+			if (hit(2,31,46,"any")) teleport(0, 27, 54);
+			
+			// Route 23 <-> Poppy Grove gate
+			if (hit(0,20,10,"any")) teleport(3, 31, 45);
+			if (hit(3,31,46,"any")) teleport(0, 20, 11);
+			if (hit(3,31,33,"any")) teleport(4, 74, 84);
+			if (hit(4,74,85,"any")) teleport(3, 31, 34);
+			
+			// Poppy Grove PC
+			if (hit(4,69,71,"any")) teleport(5, 31, 45);
+			if (hit(5,31,46,"any")) teleport(4, 69, 72);
+			
+			// Poppy Grove Shop
+			if (hit(4,64,71,"any")) teleport(6, 31, 45);
+			if (hit(6,31,46,"any")) teleport(4, 64, 72);
 		}
 	}
 	

@@ -136,8 +136,7 @@ public class PlayerCharacter extends Entity {
 				Random r = new Random();
 				int random = r.nextInt(150);
 				if (random < speed) {
-					String loc = "Route 1";
-					gp.startWild(loc);
+					gp.startWild(gp.currentMap, worldX / gp.tileSize, worldY / gp.tileSize);
 				}
 			}
 			if (steps == 200 && repel) {
@@ -161,7 +160,7 @@ public class PlayerCharacter extends Entity {
 		if (gp.ticks > 3) {
 			gp.ticks = 0;
 		}
-		for (int i = 0; i < gp.npc.length; i++) {
+		for (int i = 0; i < gp.npc[1].length; i++) {
 			if (gp.cChecker.checkTrainer(this, gp.npc[gp.currentMap][i]) && gp.npc[gp.currentMap][i].direction == "down" && gp.ticks == 0) gp.startBattle(gp.npc[gp.currentMap][i].trainer);
 			if (gp.cChecker.checkTrainer(this, gp.npc[gp.currentMap][i]) && gp.npc[gp.currentMap][i].direction == "up" && gp.ticks == 1) gp.startBattle(gp.npc[gp.currentMap][i].trainer);
 			if (gp.cChecker.checkTrainer(this, gp.npc[gp.currentMap][i]) && gp.npc[gp.currentMap][i].direction == "left" && gp.ticks == 2) gp.startBattle(gp.npc[gp.currentMap][i].trainer);

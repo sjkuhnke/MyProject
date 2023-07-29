@@ -30,13 +30,11 @@ public class AssetSetter {
 		
 		gp.npc[mapNum][4] = NPCSetup(5, 21, 31, 4);
 		
-		gp.npc[mapNum][9] = NPCSetup(2, 27, 54, -1);
-		gp.npc[mapNum][10] = NPCSetup(2, 20, 11, -1);
 		
-		gp.npc[mapNum][11] = NPCSetup(6, 4, 11, 5);
-		gp.npc[mapNum][12] = NPCSetup(5, 6, 11, 6);
-		gp.npc[mapNum][13] = NPCSetup(6, 4, 10, 7);
-		gp.npc[mapNum][14] = NPCSetup(5, 6, 9, 8);
+		gp.npc[mapNum][11] = NPCSetup(6, 72, 73, 5);
+		gp.npc[mapNum][12] = NPCSetup(3, 74, 67, 6);
+		gp.npc[mapNum][13] = NPCSetup(5, 78, 73, 7);
+		gp.npc[mapNum][14] = NPCSetup(4, 74, 76, 8);
 		gp.npc[mapNum][15] = NPCSetup(6, 4, 8, 9);
 		gp.npc[mapNum][16] = NPCSetup(5, 6, 7, 10);
 		gp.npc[mapNum][17] = NPCSetup(6, 4, 6, 11);
@@ -48,11 +46,18 @@ public class AssetSetter {
 		gp.npc[mapNum][22] = NPCSetup(6, 38, 5, 16);
 		gp.npc[mapNum][23] = NPCSetup(8, 39, 2, 17);
 		
-		mapNum = 1;
-		gp.npc[mapNum][5] = NPCSetup(1, 31, 37, -1);
-		gp.npc[mapNum][6] = NPCSetup(0, 35, 36, -1);
-		//gp.npc[mapNum][7] = NPCSetup(1, 21, 11, -1);
-		//gp.npc[mapNum][8] = NPCSetup(0, 22, 11, -1);
+		// Nurses/PCs
+		gp.npc[1][5] = NPCSetup(1, 31, 37, -1);
+		gp.npc[1][6] = NPCSetup(0, 35, 36, -1);
+		gp.npc[5][7] = NPCSetup(1, 31, 37, -1);
+		gp.npc[5][8] = NPCSetup(0, 35, 36, -1);
+		
+		// Clerks
+		gp.npc[2][9] = NPCSetup(2, 27, 39, -1);
+		gp.npc[6][10] = NPCSetup(2, 27, 39, -1);
+		
+		mapNum = 7;
+		
 	}
 	
 	private Entity NPCSetup(int type, int x, int y, int team) {

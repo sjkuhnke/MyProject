@@ -3,6 +3,7 @@ package Overworld;
 import java.awt.Rectangle;
 
 import Entity.Entity;
+import Entity.NPC_Clerk;
 import Entity.NPC_Nurse;
 import Entity.NPC_Trainer;
 import tile.GrassTile;
@@ -96,9 +97,11 @@ public class CollisionChecker {
 	    for (int i = 0; i < target[1].length; i++) {
 	        if (target[gp.currentMap][i] != null) {
 	            Rectangle entityRange = new Rectangle(entity.worldX + entity.solidArea.x, entity.worldY + entity.solidArea.y, entity.solidArea.width, entity.solidArea.height);
+	            int targetX = target[gp.currentMap][i].worldX;
+	            if (target[gp.currentMap][i] instanceof NPC_Clerk) targetX += gp.tileSize;
 	            int targetY = target[gp.currentMap][i].worldY;
 	            if (target[gp.currentMap][i] instanceof NPC_Nurse) targetY += gp.tileSize;
-	            Rectangle targetRange = new Rectangle(target[gp.currentMap][i].worldX + target[gp.currentMap][i].solidArea.x, targetY + target[gp.currentMap][i].solidArea.y, target[gp.currentMap][i].solidArea.width, target[gp.currentMap][i].solidArea.height);
+	            Rectangle targetRange = new Rectangle(targetX + target[gp.currentMap][i].solidArea.x, targetY + target[gp.currentMap][i].solidArea.y, target[gp.currentMap][i].solidArea.width, target[gp.currentMap][i].solidArea.height);
 
 	            switch (entity.direction) {
 	                case "up":

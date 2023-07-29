@@ -5559,8 +5559,8 @@ public class Pokemon implements Serializable {
 			field.setTerrain(field.new FieldEffect(Effect.PSYCHIC));
 		} else if (move == Move.POISON_GAS) {
 			foe.poison(true, this);
-//		} else if (move == Move.POISON_POWDER) {
-//			foe.poison(true);
+		} else if (move == Move.STUN_SPORE) {
+			foe.paralyze(true, this);
 		} else if (move == Move.QUIVER_DANCE) {
 			stat(this, 2, 1);
 			stat(this, 3, 1);

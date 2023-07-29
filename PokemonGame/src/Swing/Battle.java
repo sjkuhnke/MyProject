@@ -83,7 +83,7 @@ public class Battle extends JFrame {
 	private BattleCloseListener battleCloseListener;
 	
 
-	public Battle(PlayerCharacter playerCharacter, Trainer foeT, int trainerIndex, GamePanel gp) {
+	public Battle(PlayerCharacter playerCharacter, Trainer foeT, int trainerIndex, GamePanel gp, int area, int x, int y) {
 		me = playerCharacter.p;
 		this.trainerIndex = trainerIndex;
 		int faintIndex = 0;
@@ -126,7 +126,7 @@ public class Battle extends JFrame {
 			foe = foeTrainer.getTeam()[0];
 			JOptionPane.showMessageDialog(null, "\nYou are challenged by " + foeTrainer.toString() + "!\n" + foeTrainer.toString() + " sends out " + foeTrainer.getCurrent().name + "!");
 		} else {
-			foe = encounterPokemon("Route 1");
+			foe = encounterPokemon(area, x, y);
 		}
 		updateFoe();
 		me.clearBattled();
@@ -556,11 +556,11 @@ public class Battle extends JFrame {
 	}
 
 
-	public Pokemon encounterPokemon(String routeName) {
+	public Pokemon encounterPokemon(int area, int x, int y) {
 	    // Create an ArrayList of PokemonEncounter objects for the route
 		//String selectedEncounterType = encounterType.getSelection().getActionCommand();
 		//String selectedTime = time.getSelection().getActionCommand();
-	    ArrayList<Encounter> encounters = Encounter.getEncounters(routeName, "Standard", "D");
+	    ArrayList<Encounter> encounters = Encounter.getEncounters(area, x, y, "Standard", "D");
 
 	    // Calculate the total encounter chance for the route
 	    double totalChance = 0.0;
