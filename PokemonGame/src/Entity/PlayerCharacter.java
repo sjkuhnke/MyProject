@@ -146,6 +146,8 @@ public class PlayerCharacter extends Entity {
 				keyH.resume();
 				repel = false;
 			}
+			
+			gp.eHandler.checkEvent();
 		}
 		if (keyH.dPressed) {
 			keyH.pause();
@@ -160,18 +162,18 @@ public class PlayerCharacter extends Entity {
 			gp.ticks = 0;
 		}
 		for (int i = 0; i < gp.npc.length; i++) {
-			if (gp.cChecker.checkTrainer(this, gp.npc[i]) && gp.npc[i].direction == "down" && gp.ticks == 0) gp.startBattle(gp.npc[i].trainer);
-			if (gp.cChecker.checkTrainer(this, gp.npc[i]) && gp.npc[i].direction == "up" && gp.ticks == 1) gp.startBattle(gp.npc[i].trainer);
-			if (gp.cChecker.checkTrainer(this, gp.npc[i]) && gp.npc[i].direction == "left" && gp.ticks == 2) gp.startBattle(gp.npc[i].trainer);
-			if (gp.cChecker.checkTrainer(this, gp.npc[i]) && gp.npc[i].direction == "right" && gp.ticks == 3) gp.startBattle(gp.npc[i].trainer);
+			if (gp.cChecker.checkTrainer(this, gp.npc[gp.currentMap][i]) && gp.npc[gp.currentMap][i].direction == "down" && gp.ticks == 0) gp.startBattle(gp.npc[gp.currentMap][i].trainer);
+			if (gp.cChecker.checkTrainer(this, gp.npc[gp.currentMap][i]) && gp.npc[gp.currentMap][i].direction == "up" && gp.ticks == 1) gp.startBattle(gp.npc[gp.currentMap][i].trainer);
+			if (gp.cChecker.checkTrainer(this, gp.npc[gp.currentMap][i]) && gp.npc[gp.currentMap][i].direction == "left" && gp.ticks == 2) gp.startBattle(gp.npc[gp.currentMap][i].trainer);
+			if (gp.cChecker.checkTrainer(this, gp.npc[gp.currentMap][i]) && gp.npc[gp.currentMap][i].direction == "right" && gp.ticks == 3) gp.startBattle(gp.npc[gp.currentMap][i].trainer);
 		}
 		if (keyH.wPressed) {
 			int npcIndex = gp.cChecker.checkEntity(this, gp.npc);
-			if (npcIndex != 999 && gp.npc[npcIndex] instanceof NPC_Nurse) interactNurse();
-			if (npcIndex != 999 && gp.npc[npcIndex] instanceof NPC_Clerk) interactClerk();
-			if (npcIndex != 999 && gp.npc[npcIndex] instanceof NPC_Trainer) gp.startBattle(gp.npc[npcIndex].trainer);
-			if (npcIndex != 999 && gp.npc[npcIndex] instanceof NPC_GymLeader) gp.startBattle(gp.npc[npcIndex].trainer);
-			if (npcIndex != 999 && gp.npc[npcIndex] instanceof NPC_PC) gp.openBox();
+			if (npcIndex != 999 && gp.npc[gp.currentMap][npcIndex] instanceof NPC_Nurse) interactNurse();
+			if (npcIndex != 999 && gp.npc[gp.currentMap][npcIndex] instanceof NPC_Clerk) interactClerk();
+			if (npcIndex != 999 && gp.npc[gp.currentMap][npcIndex] instanceof NPC_Trainer) gp.startBattle(gp.npc[gp.currentMap][npcIndex].trainer);
+			if (npcIndex != 999 && gp.npc[gp.currentMap][npcIndex] instanceof NPC_GymLeader) gp.startBattle(gp.npc[gp.currentMap][npcIndex].trainer);
+			if (npcIndex != 999 && gp.npc[gp.currentMap][npcIndex] instanceof NPC_PC) gp.openBox();
 		}
 	}
 	
@@ -238,6 +240,7 @@ public class PlayerCharacter extends Entity {
 	    	try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("player.dat"))) {
             	gp.player.p.setPosX(gp.player.worldX);
             	gp.player.p.setPosY(gp.player.worldY);
+            	gp.player.p.currentMap = gp.currentMap;
                 oos.writeObject(gp.player.p);
                 oos.close();
                 JOptionPane.showMessageDialog(null, "Game saved sucessfully!");

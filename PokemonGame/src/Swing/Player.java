@@ -23,6 +23,7 @@ public class Player implements Serializable{
 	public int badges;
 	public int starter;
 	public int[] pokedex = new int[237];
+	public int currentMap;
 	
 	public Player() {
 		team = new Pokemon[6];

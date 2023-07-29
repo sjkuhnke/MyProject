@@ -99,13 +99,16 @@ public class PBox extends JFrame {
 
 	    for (int i = 0; i < cBox.length; i++) {
 	        boxButtons[i].setText("");
+	        boxButtons[i].setIcon(null);
 	        if (cBox[i] != null) {
-	            boxButtons[i].setText(cBox[i].name);
+	        	ImageIcon icon = new ImageIcon(cBox[i].getSprite());
+	            boxButtons[i].setIcon(icon);
 	            boxButtons[i].setHorizontalAlignment(SwingConstants.CENTER);
 	            boxButtons[i].setFont(new Font("Tahoma", Font.BOLD, 9));
 	            boxButtons[i].setBackground(cBox[i].type1.getColor());
 	        } else {
 	            boxButtons[i].setText("");
+	            boxButtons[i].setIcon(null);
 	            boxButtons[i].setBackground(null);
 	        }
 	        setActionListener(boxButtons[i], cBox, i);
@@ -276,6 +279,7 @@ public class PBox extends JFrame {
                         // code to release the box member
                         box[index] = null;
                         boxButtons[index].setText("");
+                        boxButtons[index].setIcon(null);
                         boxButtons[index].setBackground(null);
                         boxMemberPanel.setVisible(false);
                         SwingUtilities.getWindowAncestor(boxMemberPanel).dispose();

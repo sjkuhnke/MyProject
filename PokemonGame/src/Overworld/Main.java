@@ -36,6 +36,7 @@ public class Main {
 	        }
 	        gamePanel.player.worldX = gamePanel.player.p.getPosX();
 	        gamePanel.player.worldY = gamePanel.player.p.getPosY();
+	        gamePanel.currentMap = gamePanel.player.p.currentMap;
 	        ois.close();
 	    } catch (IOException | ClassNotFoundException e) {
 	        // If there's an error reading the file, create a new Player object

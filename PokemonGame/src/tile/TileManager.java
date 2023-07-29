@@ -13,15 +13,16 @@ import Overworld.GamePanel;
 public class TileManager {
 	GamePanel gp;
 	public Tile[] tile;
-	public int mapTileNum[][];
+	public int mapTileNum[][][];
 	
 	public TileManager(GamePanel gp) {
 		this.gp = gp;
 		tile = new Tile[500];
-		mapTileNum = new int[gp.maxWorldCol][gp.maxWorldRow];
+		mapTileNum = new int[gp.maxMap][gp.maxWorldCol][gp.maxWorldRow];
 		
 		getTileImage();
-		loadMap("/maps/map01.txt");
+		loadMap("/maps/map00.txt", 0);
+		loadMap("/maps/pc01.txt", 1);
 	}
 	
 	public void getTileImage() {
@@ -107,13 +108,17 @@ public class TileManager {
 		setup(91, true);
 		setup(92, false); // door
 		setup(93, true);
-//		setup(94, true);
-//		setup(95, true);
-//		setup(96, true);
-//		setup(97, true);
-//		setup(98, true);
-//		setup(99, true);
-//		setup(100, true);
+		setup(94, false);
+		setup(95, true);
+		setup(96, true);
+		setup(97, true);
+		setup(98, true);
+		setup(99, true);
+		setup(100, true);
+		setup(101, true);
+		setup(102, true);
+		setup(103, true);
+		setup(104, true);
 		try {
 			tile[7] = new GrassTile();
 			tile[7].image = ImageIO.read(getClass().getResourceAsStream("/tiles/007.png"));
@@ -199,7 +204,7 @@ public class TileManager {
 		
 	}
 	
-	public void loadMap(String filePath) {
+	public void loadMap(String filePath, int map) {
 		try {
 			InputStream is = getClass().getResourceAsStream(filePath);
 			BufferedReader br = new BufferedReader(new InputStreamReader(is));
@@ -216,7 +221,7 @@ public class TileManager {
 					
 					int num = Integer.parseInt(numbers[col]);
 					
-					mapTileNum[col][row] = num;
+					mapTileNum[map][col][row] = num;
 					col++;
 				}
 				if (col == gp.maxWorldCol) {
@@ -237,7 +242,7 @@ public class TileManager {
 		
 		while(worldCol < gp.maxWorldCol && worldRow < gp.maxWorldRow) {
 			
-			int tileNum = mapTileNum[worldCol][worldRow];
+			int tileNum = mapTileNum[gp.currentMap][worldCol][worldRow];
 			
 			int worldX = worldCol * gp.tileSize;
 			int worldY = worldRow * gp.tileSize;

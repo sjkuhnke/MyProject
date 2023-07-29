@@ -3,6 +3,7 @@ package Overworld;
 import java.awt.Rectangle;
 
 import Entity.Entity;
+import Entity.NPC_Nurse;
 import Entity.NPC_Trainer;
 import tile.GrassTile;
 
@@ -27,8 +28,8 @@ public class CollisionChecker {
 		
 		int tileNum1, tileNum2;
 		
-		tileNum1 = gp.tileM.mapTileNum[entityLeftCol][entityTopRow];
-	    tileNum2 = gp.tileM.mapTileNum[entityRightCol][entityTopRow];
+		tileNum1 = gp.tileM.mapTileNum[gp.currentMap][entityLeftCol][entityTopRow];
+	    tileNum2 = gp.tileM.mapTileNum[gp.currentMap][entityRightCol][entityTopRow];
 	    if (gp.tileM.tile[tileNum1] instanceof GrassTile || gp.tileM.tile[tileNum2] instanceof GrassTile) {
 	        entity.inTallGrass = true;
 	    } else {
@@ -38,8 +39,8 @@ public class CollisionChecker {
 		switch(entity.direction) {
 		case "up":
 			entityTopRow = (entityTopWorldY - entity.speed)/gp.tileSize;
-			tileNum1 = gp.tileM.mapTileNum[entityLeftCol][entityTopRow];
-			tileNum2 = gp.tileM.mapTileNum[entityRightCol][entityTopRow];
+			tileNum1 = gp.tileM.mapTileNum[gp.currentMap][entityLeftCol][entityTopRow];
+			tileNum2 = gp.tileM.mapTileNum[gp.currentMap][entityRightCol][entityTopRow];
 			if (gp.tileM.tile[tileNum1].collision && 
 					(gp.tileM.tile[tileNum1].collisionDirection.equals("all") || !entity.direction.equals(gp.tileM.tile[tileNum1].collisionDirection))) {
                 entity.collisionOn = true;
@@ -50,8 +51,8 @@ public class CollisionChecker {
             break;
 		case "down":
 	        entityBottomRow = (entityBottomWorldY + entity.speed) / gp.tileSize;
-	        tileNum1 = gp.tileM.mapTileNum[entityLeftCol][entityBottomRow];
-	        tileNum2 = gp.tileM.mapTileNum[entityRightCol][entityBottomRow];
+	        tileNum1 = gp.tileM.mapTileNum[gp.currentMap][entityLeftCol][entityBottomRow];
+	        tileNum2 = gp.tileM.mapTileNum[gp.currentMap][entityRightCol][entityBottomRow];
 	        if (gp.tileM.tile[tileNum1].collision &&
 	            (gp.tileM.tile[tileNum1].collisionDirection.equals("all") || !entity.direction.equals(gp.tileM.tile[tileNum1].collisionDirection))) {
 	            entity.collisionOn = true;
@@ -63,8 +64,8 @@ public class CollisionChecker {
 
 	    case "left":
 	        entityLeftCol = (entityLeftWorldX - entity.speed) / gp.tileSize;
-	        tileNum1 = gp.tileM.mapTileNum[entityLeftCol][entityTopRow];
-	        tileNum2 = gp.tileM.mapTileNum[entityLeftCol][entityBottomRow];
+	        tileNum1 = gp.tileM.mapTileNum[gp.currentMap][entityLeftCol][entityTopRow];
+	        tileNum2 = gp.tileM.mapTileNum[gp.currentMap][entityLeftCol][entityBottomRow];
 	        if (gp.tileM.tile[tileNum1].collision &&
 	            (gp.tileM.tile[tileNum1].collisionDirection.equals("all") || !entity.direction.equals(gp.tileM.tile[tileNum1].collisionDirection))) {
 	            entity.collisionOn = true;
@@ -76,8 +77,8 @@ public class CollisionChecker {
 
 	    case "right":
 	        entityRightCol = (entityRightWorldX + entity.speed) / gp.tileSize;
-	        tileNum1 = gp.tileM.mapTileNum[entityRightCol][entityTopRow];
-	        tileNum2 = gp.tileM.mapTileNum[entityRightCol][entityBottomRow];
+	        tileNum1 = gp.tileM.mapTileNum[gp.currentMap][entityRightCol][entityTopRow];
+	        tileNum2 = gp.tileM.mapTileNum[gp.currentMap][entityRightCol][entityBottomRow];
 	        if (gp.tileM.tile[tileNum1].collision &&
 	            (gp.tileM.tile[tileNum1].collisionDirection.equals("all") || !entity.direction.equals(gp.tileM.tile[tileNum1].collisionDirection))) {
 	            entity.collisionOn = true;
@@ -89,13 +90,15 @@ public class CollisionChecker {
 		}
 	}
 	
-	public int checkEntity(Entity entity, Entity[] target) {
+	public int checkEntity(Entity entity, Entity[][] target) {
 	    int index = 999;
 
-	    for (int i = 0; i < target.length; i++) {
-	        if (target[i] != null) {
+	    for (int i = 0; i < target[1].length; i++) {
+	        if (target[gp.currentMap][i] != null) {
 	            Rectangle entityRange = new Rectangle(entity.worldX + entity.solidArea.x, entity.worldY + entity.solidArea.y, entity.solidArea.width, entity.solidArea.height);
-	            Rectangle targetRange = new Rectangle(target[i].worldX + target[i].solidArea.x, target[i].worldY + target[i].solidArea.y, target[i].solidArea.width, target[i].solidArea.height);
+	            int targetY = target[gp.currentMap][i].worldY;
+	            if (target[gp.currentMap][i] instanceof NPC_Nurse) targetY += gp.tileSize;
+	            Rectangle targetRange = new Rectangle(target[gp.currentMap][i].worldX + target[gp.currentMap][i].solidArea.x, targetY + target[gp.currentMap][i].solidArea.y, target[gp.currentMap][i].solidArea.width, target[gp.currentMap][i].solidArea.height);
 
 	            switch (entity.direction) {
 	                case "up":
@@ -134,7 +137,7 @@ public class CollisionChecker {
 	                // Check for collision tiles within the vision range
 	                int range = 0;
 	                for (int row = trainerRange.y / gp.tileSize; row >= (trainerRange.y - visionRange) / gp.tileSize; row--) {
-	                    int tileNum = gp.tileM.mapTileNum[trainerRange.x / gp.tileSize][row];
+	                    int tileNum = gp.tileM.mapTileNum[gp.currentMap][trainerRange.x / gp.tileSize][row];
 	                    if (gp.tileM.tile[tileNum].collision) {
 	                        break;
 	                    }
@@ -151,7 +154,7 @@ public class CollisionChecker {
 	                // Check for collision tiles within the vision range
 	                int range = 0;
 	                for (int row = trainerRange.y / gp.tileSize; row <= (trainerRange.y + trainerRange.height + visionRange) / gp.tileSize; row++) {
-	                    int tileNum = gp.tileM.mapTileNum[trainerRange.x / gp.tileSize][row];
+	                    int tileNum = gp.tileM.mapTileNum[gp.currentMap][trainerRange.x / gp.tileSize][row];
 	                    if (gp.tileM.tile[tileNum].collision) {
 	                        break;
 	                    }
@@ -167,7 +170,7 @@ public class CollisionChecker {
 	                // Check for collision tiles within the vision range
 	                int range = 0;
 	                for (int col = trainerRange.x / gp.tileSize; col >= (trainerRange.x - visionRange) / gp.tileSize; col--) {
-	                    int tileNum = gp.tileM.mapTileNum[col][trainerRange.y / gp.tileSize];
+	                    int tileNum = gp.tileM.mapTileNum[gp.currentMap][col][trainerRange.y / gp.tileSize];
 	                    if (gp.tileM.tile[tileNum].collision) {
 	                        break;
 	                    }
@@ -184,7 +187,7 @@ public class CollisionChecker {
 	                // Check for collision tiles within the vision range
 	                int range = 0;
 	                for (int col = trainerRange.x / gp.tileSize; col <= (trainerRange.x + trainerRange.width + visionRange) / gp.tileSize; col++) {
-	                    int tileNum = gp.tileM.mapTileNum[col][trainerRange.y / gp.tileSize];
+	                    int tileNum = gp.tileM.mapTileNum[gp.currentMap][col][trainerRange.y / gp.tileSize];
 	                    if (gp.tileM.tile[tileNum].collision) {
 	                        break;
 	                    }

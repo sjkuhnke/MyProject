@@ -38,21 +38,25 @@ public class GamePanel extends JPanel implements Runnable, BattleCloseListener {
 	
 	public final int maxWorldCol = 100;
 	public final int maxWorldRow = 100;
+	public final int maxMap = 10;
+	public int currentMap = 0;
 	public final int worldWidth = tileSize * maxWorldCol;
 	public final int worldHeight = tileSize * maxWorldRow;
 	
 	KeyHandler keyH = new KeyHandler();
 	public AssetSetter aSetter = new AssetSetter(this);
+	public EventHandler eHandler = new EventHandler(this);
 	Thread gameThread;
 	public CollisionChecker cChecker = new CollisionChecker(this);
 	public PlayerCharacter player = new PlayerCharacter(this,keyH);
-	public Entity npc[] = new Entity[24];
+	public Entity npc[][] = new Entity[maxMap][24];
 	
 	TileManager tileM = new TileManager(this);
 	
 	int FPS = 60;
 	private volatile boolean inBattle;
 	public int ticks;
+
 	
 	public GamePanel() {
 		this.setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -107,8 +111,10 @@ public class GamePanel extends JPanel implements Runnable, BattleCloseListener {
 		Graphics2D g2 = (Graphics2D)g;
 		tileM.draw(g2);
 		
-		for (int i = 0; i < npc.length; i++) {
-			if (npc[i] != null) npc[i].draw(g2);
+		for (int i = 0; i < npc[1].length; i++) {
+			if (npc[currentMap][i] != null) {
+				npc[currentMap][i].draw(g2);
+			}
 		}
 		
 		player.draw(g2);
