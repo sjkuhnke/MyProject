@@ -152,7 +152,7 @@ public class PBox extends JFrame {
                         JButton partyButton = new JGradientButton("EMPTY");
                         partyButton.setVisible(false);
                         if (me.team[j] != null) {
-                            partyButton.setText(me.team[j].getName() + "  lv " + me.team[j].getLevel());
+                            partyButton.setText(me.team[j].nickname + "  lv " + me.team[j].getLevel());
                             if (me.team[j].isFainted()) {
                                 partyButton.setBackground(Color.RED);
                             } else if (me.team[j].status != Status.HEALTHY) {
@@ -218,7 +218,7 @@ public class PBox extends JFrame {
                     }
                     for (int l = 0; l < box[index].moveset.length; l++) {
                     	if (move == box[index].moveset[l]) {
-                    		JOptionPane.showMessageDialog(null, box[index].name + " already knows " + move.toString() + "!");
+                    		JOptionPane.showMessageDialog(null, box[index].nickname + " already knows " + move.toString() + "!");
                             return;
                     	}
                     }
@@ -364,7 +364,7 @@ public class PBox extends JFrame {
 	    int[] choice = new int[1];
 	    choice[0] = -1;
 	    panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-	    JLabel label = new JLabel(pokemon.getName() + " wants to learn " + move.toString() + ".");
+	    JLabel label = new JLabel(pokemon.nickname + " wants to learn " + move.toString() + ".");
 	    JLabel label2 = new JLabel("Select a move to replace:");
 	    JGradientButton learnButton = new JGradientButton(move.toString());
 	    learnButton.setBackground(move.mtype.getColor());
@@ -432,7 +432,7 @@ public class PBox extends JFrame {
 	
 	public static boolean displayEvolution(Pokemon pokemon) {
 		int option = JOptionPane.showOptionDialog(null,
-				pokemon.name + " is evolving!\nDo you want to evolve your " + pokemon.name + "?",
+				pokemon.nickname + " is evolving!\nDo you want to evolve your " + pokemon.nickname + "?",
 	            "Evolution",
 	            JOptionPane.YES_NO_OPTION,
 	            JOptionPane.QUESTION_MESSAGE,
@@ -445,7 +445,7 @@ public class PBox extends JFrame {
 	    int[] choice = new int[1];
 	    choice[0] = -1;
 	    panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-	    JLabel label = new JLabel(pokemon.getName() + " is evolving.");
+	    JLabel label = new JLabel(pokemon.nickname + " is evolving.");
 	    JLabel label2 = new JLabel("Select which evolution:");
 	    panel.add(label);
 	    panel.add(label2);

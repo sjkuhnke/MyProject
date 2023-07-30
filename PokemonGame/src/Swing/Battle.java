@@ -58,7 +58,8 @@ public class Battle extends JFrame {
 	
 	private JButton catchButton;
 	private JButton addButton; // debug
-	private JButton healButton;
+	//private JButton healButton;
+	private JButton runButton;
 	private JLabel userStatus;
 	private JLabel foeStatus;
 	
@@ -119,10 +120,6 @@ public class Battle extends JFrame {
         initialize(playerCharacter);
 		if (foeT != null) {
 			foeTrainer = foeT;
-			if (me.trainersBeat.contains(foeTrainer.toString())) {
-				JOptionPane.showMessageDialog(null, foeTrainer.toString() + " already beaten!");
-	            return;
-			}
 			foe = foeTrainer.getTeam()[0];
 			JOptionPane.showMessageDialog(null, "\nYou are challenged by " + foeTrainer.toString() + "!\n" + foeTrainer.toString() + " sends out " + foeTrainer.getCurrent().name + "!");
 		} else {
@@ -135,7 +132,8 @@ public class Battle extends JFrame {
 		
 		addButton = createJButton("ADD", new Font("Tahoma", Font.BOLD, 9), 645, 430, 75, 23);
 		catchButton = createJButton("CATCH", new Font("Tahoma", Font.BOLD, 11), 638, 340, 89, 23);
-		healButton = createJButton("HEAL", new Font("Tahoma", Font.BOLD, 9), 645, 460, 75, 23);
+//		healButton = createJButton("HEAL", new Font("Tahoma", Font.BOLD, 9), 645, 460, 75, 23);
+		runButton = createJButton("RUN", new Font("Tahoma", Font.BOLD, 9), 645, 460, 75, 23);
 		infoButton = createJButton("INFO", new Font("Tahoma", Font.BOLD, 9), 645, 490, 75, 23);
 		exitButton = createJButton("EXIT", new Font("Tahoma", Font.BOLD, 9), 645, 400, 75, 23);
 		
@@ -187,18 +185,18 @@ public class Battle extends JFrame {
 		        double catchRate = 0;
 		        double statusBonus = 1;
 		        
-		        if (foe.id == 103 || foe.id == 104 || foe.id == 105 || foe.id == 91 || foe.id == 133 || foe.id == 134 ||foe.id == 135 || foe.id == 136 || foe.id == 137 ||foe.id == 138 || foe.id == 139 || foe.id == 140) statusBonus = 0.25; // if legendary
+		        //if (foe.id == 103 || foe.id == 104 || foe.id == 105 || foe.id == 91 || foe.id == 133 || foe.id == 134 ||foe.id == 135 || foe.id == 136 || foe.id == 137 ||foe.id == 138 || foe.id == 139 || foe.id == 140) statusBonus = 0.25; // if legendary
 		        
 		        if (pokeballButton.isSelected()) {
 		        	if (me.bag.count[1] <= 0) {
 		        		JOptionPane.showMessageDialog(null, "No balls remaining!");
                         return;
 		        	}
-		            catchRate = 1.0 / 12.0;
+		            catchRate = 1.0 / 6.0;
 		            if (foe.currentHP <= (foe.getStat(0) / 4)) {
-		                catchRate = 0.25;
+		                catchRate = 0.5;
 		            } else if (foe.currentHP <= (foe.getStat(0) / 2)) {
-		                catchRate = 1.0 / 8.0;
+		                catchRate = 1.0 / 4.0;
 		            }
 		            if (foe.status != Status.HEALTHY) {
 		                statusBonus *= 2.0;
@@ -210,11 +208,11 @@ public class Battle extends JFrame {
 		        		JOptionPane.showMessageDialog(null, "No balls remaining!");
                         return;
 		        	}
-		            catchRate = 1.0 / 10.0;
+		            catchRate = 1.0 / 5.0;
 		            if (foe.currentHP <= (foe.getStat(0) / 4)) {
-		                catchRate = 0.5;
+		                catchRate = 0.75;
 		            } else if (foe.currentHP <= (foe.getStat(0) / 2)) {
-		                catchRate = 1.0 / 6.0;
+		                catchRate = 1.0 / 3.0;
 		            }
 		            if (foe.status != Status.HEALTHY) {
 		                statusBonus *= 2.0;
@@ -226,11 +224,11 @@ public class Battle extends JFrame {
 		        		JOptionPane.showMessageDialog(null, "No balls remaining!");
                         return;
 		        	}
-		            catchRate = 1.0 / 6.0;
+		            catchRate = 1.0 / 3.0;
 		            if (foe.currentHP <= (foe.getStat(0) / 4)) {
 		                catchRate = 1.0;
 		            } else if (foe.currentHP <= (foe.getStat(0) / 2)) {
-		                catchRate = 1.0 / 3.0;
+		                catchRate = 2.0 / 3.0;
 		            }
 		            if (foe.status != Status.HEALTHY) {
 		                statusBonus *= 2.0;
@@ -242,12 +240,13 @@ public class Battle extends JFrame {
 		        double randomValue = rand.nextDouble();
 		        double modifiedCatchRate = catchRate * statusBonus;
 		        if (randomValue <= modifiedCatchRate) {
-		            me.catchPokemon(new Pokemon(foe.id, foe.getLevel(), true, false));
-		            foe.currentHP = 0;
-					foe.faint(false, me, me.getCurrent());
+		            //me.catchPokemon(new Pokemon(foe.id, foe.getLevel(), true, false));
+		        	foe.trainerOwned = true;
+		        	me.catchPokemon(foe);
 					displayParty();
 					updateFoe();
-					healButton.setVisible(true);
+					JOptionPane.showMessageDialog(null, "You caught " + foe.name + "!");
+					dispose();
 		        } else {
 		            System.out.println("Oh no! " + foe.name + " broke free!");
 		            if (foeTrainer != null) {
@@ -268,18 +267,52 @@ public class Battle extends JFrame {
 		    }
 		});
 		
-		healButton.addActionListener(e -> {
-			System.out.println();
-			for (Pokemon member : me.team) {
-				if (member != null) member.heal();
+//		healButton.addActionListener(e -> {
+//			System.out.println();
+//			for (Pokemon member : me.team) {
+//				if (member != null) member.heal();
+//			}
+//			updateCurrent();
+//			updateBars();
+//			displayParty();
+//			updateStatus();
+//			playerPanel.repaint();
+//			System.out.println();
+//			System.out.println("------------------------------");
+//        });
+		
+		runButton.addActionListener(e -> {
+			if (!me.getCurrent().isFainted() && !foe.isFainted()) {
+				if (foe.trainerOwned()) {
+					JOptionPane.showMessageDialog(null, "What are you doing?!\nYou can't run from a trainer battle!");
+					return;
+	        	} else {
+	        		Pokemon faster = me.getCurrent().getFaster(foe, field, 0, 0);
+					double chance = faster == me.getCurrent() ? 1 : 0.5;
+					
+					if (chance >= Math.random()) {
+						JOptionPane.showMessageDialog(null, "Got away safely!");
+						dispose();
+						return;
+					}
+					
+					System.out.println("\nCouldn't escape!");
+	        		foe.move(me.getCurrent(),foe.randomMove(), me, field, null, false);
+	        	}
+				foe.endOfTurn(me.getCurrent(), me, field);
+				me.getCurrent().endOfTurn(foe, me, field);
+				field.endOfTurn();
+			}
+			if (foe.isFainted()) {
+				JOptionPane.showMessageDialog(null, foe.name + " was defeated!");
+				dispose();
 			}
 			updateCurrent();
 			updateBars();
 			displayParty();
 			updateStatus();
-			playerPanel.repaint();
 			System.out.println();
-			System.out.println("------------------------------");
+		    System.out.println("------------------------------");
         });
 		
 		infoButton.addActionListener(e -> {
@@ -345,14 +378,19 @@ public class Battle extends JFrame {
 							me.getCurrent().battled = true;
 							
 						} else {
-							System.out.println("\n" + foeTrainer.toString() + " was defeated!");
-							me.trainersBeat.add(foeTrainer.toString());
+							// Show the prompt with the specified text
 							me.money += foeTrainer.getMoney();
-							System.out.println("Won $" + foeTrainer.getMoney() + "!");
-							healButton.setVisible(true);
+				            JOptionPane.showMessageDialog(null, foeTrainer.toString() + " was defeated!\nWon $" + foeTrainer.getMoney() + "!");
+				            if (foeTrainer.getMoney() == 500 && me.badges < 8) {
+				            	me.badges++;
+				            }
+
+				            // Close the current Battle JFrame
+				            dispose();
 						}
 					} else {
-						healButton.setVisible(true);
+						JOptionPane.showMessageDialog(null, foe.name + " was defeated!");
+						dispose();
 					}
 				}
 				updateCurrent();
@@ -528,7 +566,7 @@ public class Battle extends JFrame {
 		playerPanel.add(maxHPLabel);
 		
 		foeText = new JLabel("");
-		foeText.setText(foe.getName() + "  lv " + foe.getLevel());
+		foeText.setText(foe.nickname + "  lv " + foe.getLevel());
 		foeHealthBar = new JProgressBar(0, 100);
 		
 		playerPanel.add(foeText);
@@ -593,7 +631,7 @@ public class Battle extends JFrame {
 	}
 
 	private void updateCurrent() {
-		currentText.setText(me.getCurrent().name + "  lv " + me.getCurrent().getLevel()); 
+		currentText.setText(me.getCurrent().nickname + "  lv " + me.getCurrent().getLevel()); 
 		currentText.setHorizontalAlignment(SwingConstants.CENTER);
 		currentText.setBounds(193, 179, 164, 20);
 		currentText.setFont(new Font("Tahoma", Font.PLAIN, 16));
@@ -679,7 +717,7 @@ public class Battle extends JFrame {
 
 	private void updateFoe() {
 		// Foe text
-		foeText.setText(foe.getName() + "  lv " + foe.getLevel());
+		foeText.setText(foe.nickname + "  lv " + foe.getLevel());
 		foeText.setBounds(543, 37, 164, 20);
 		foeText.setHorizontalAlignment(SwingConstants.CENTER);
 		foeText.setFont(new Font("Tahoma", Font.PLAIN, 16));
@@ -779,7 +817,7 @@ public class Battle extends JFrame {
 		for (int i = 0; i < 5; i++) {
 			party[i].setText("");
 			if (me.team[i + 1] != null && !me.team[i + 1].isFainted()) {
-				party[i].setText(me.team[i + 1].getName() + "  lv " + me.team[i + 1].getLevel());
+				party[i].setText(me.team[i + 1].nickname + "  lv " + me.team[i + 1].getLevel());
 				party[i].setHorizontalAlignment(SwingConstants.CENTER);
 				party[i].setFont(new Font("Tahoma", Font.PLAIN, 11));
 				party[i].setBounds(10, 21 + (i % 5) * 54, 124, 30);
@@ -1026,7 +1064,7 @@ public class Battle extends JFrame {
 	
 	public static boolean displayEvolution(Pokemon pokemon) {
 		int option = JOptionPane.showOptionDialog(null,
-				pokemon.name + " is evolving!\nDo you want to evolve your " + pokemon.name + "?",
+				pokemon.nickname + " is evolving!\nDo you want to evolve your " + pokemon.nickname + "?",
 	            "Evolution",
 	            JOptionPane.YES_NO_OPTION,
 	            JOptionPane.QUESTION_MESSAGE,

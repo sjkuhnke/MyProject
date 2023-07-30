@@ -1,17 +1,22 @@
 package Overworld;
+import java.awt.GridLayout;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 
+import javax.swing.ImageIcon;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
-import Swing.Item;
 import Swing.Player;
 import Swing.Pokemon;
 import Swing.Trainer;
+import Swing.Battle.JGradientButton;
 
 public class Main {
 	public static Trainer[] trainers;
@@ -41,23 +46,68 @@ public class Main {
 	    } catch (IOException | ClassNotFoundException e) {
 	        // If there's an error reading the file, create a new Player object
 	        gamePanel.player.p = new Player();
+
 	        String[] options = {"Twigle", "Lagma", "Lizish"};
-	        int choice = JOptionPane.showOptionDialog(null, "Choose your starter Pokemon", "Starter Pokemon", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+	        JPanel optionPanel = new JPanel(new GridLayout(1, options.length));
+
+	        int index = 0;
+	        for (int i = 1; i < 8; i += 3) {
+	            Pokemon dummy = new Pokemon(i, 1, false, false);
+	            JGradientButton optionButton = new JGradientButton(options[index]);
+	            ImageIcon spriteIcon = new ImageIcon(dummy.getSprite(i));
+	            optionButton.setIcon(spriteIcon);
+	            optionButton.setBackground(dummy.type1.getColor());
+
+	            // Add an ActionListener to the button to handle user selection
+	            int finalChoice = index + 1; // To make the variable effectively final
+	            optionButton.addActionListener(f -> {
+	                // Record the selected choice and close the JOptionPane
+	                gamePanel.player.p.starter = finalChoice;
+	                JComponent component = (JComponent) f.getSource();
+	                SwingUtilities.getWindowAncestor(component).dispose();
+	            });
+
+	            optionPanel.add(optionButton);
+	            index++;
+	        }
+
+	        // Show the JOptionPane with the custom option panel
+	        JOptionPane.showOptionDialog(
+	            null, 
+	            optionPanel, 
+	            "Choose your starter Pokemon", 
+	            JOptionPane.DEFAULT_OPTION, 
+	            JOptionPane.QUESTION_MESSAGE, 
+	            null, 
+	            null, 
+	            null
+	        );
+
 	        // Add the chosen starter to the player's team
-	        if (choice == 0) {
+	        if (gamePanel.player.p.starter == 0) gamePanel.player.p.starter = (int)(Math.random() * options.length);
+	        if (gamePanel.player.p.starter == 1) {
 	            gamePanel.player.p.catchPokemon(new Pokemon(1, 5, true, false));
-	        } else if (choice == 1) {
+	        } else if (gamePanel.player.p.starter == 2) {
 	            gamePanel.player.p.catchPokemon(new Pokemon(4, 5, true, false));
-	        } else if (choice == 2) {
+	        } else if (gamePanel.player.p.starter == 3) {
 	            gamePanel.player.p.catchPokemon(new Pokemon(7, 5, true, false));
 	        }
-	        gamePanel.player.p.starter = choice;
-	        gamePanel.player.p.bag.add(new Item(22), 999);
+	        
+	        //gamePanel.player.p.bag.add(new Item(22), 999);
 	    }
 		
-		if (gamePanel.player.p.starter == 0) trainers[0] = new Trainer("Scott 1", new Pokemon[]{new Pokemon(7, 5, false, true)}, 400);
-		else if (gamePanel.player.p.starter == 1) trainers[0] = new Trainer("Scott 1", new Pokemon[]{new Pokemon(1, 5, false, true)}, 400);
-		else if (gamePanel.player.p.starter == 2) trainers[0] = new Trainer("Scott 1", new Pokemon[]{new Pokemon(4, 5, false, true)}, 400);
+		if (gamePanel.player.p.starter == 1) {
+			trainers[0] = new Trainer("Scott 1", new Pokemon[]{new Pokemon(7, 5, false, true)}, 400);
+			trainers[34] = new Trainer("Fred 1", new Pokemon[]{new Pokemon(5, 18, false, true), new Pokemon(78, 15, false, true)}, 400);
+		}
+		else if (gamePanel.player.p.starter == 2) {
+			trainers[0] = new Trainer("Scott 1", new Pokemon[]{new Pokemon(1, 5, false, true)}, 400);
+			trainers[34] = new Trainer("Fred 1", new Pokemon[]{new Pokemon(8, 18, false, true), new Pokemon(78, 15, false, true)}, 400);
+		}
+		else if (gamePanel.player.p.starter == 3) {
+			trainers[0] = new Trainer("Scott 1", new Pokemon[]{new Pokemon(4, 5, false, true)}, 400);
+			trainers[34] = new Trainer("Fred 1", new Pokemon[]{new Pokemon(2, 18, false, true), new Pokemon(78, 15, false, true)}, 400);
+		}
 		
 		window.add(gamePanel);
 		
@@ -79,7 +129,8 @@ public class Main {
                 }
             }
         });
-
+		
+		gamePanel.eHandler.p = gamePanel.player.p;
 	}
 	
 	private static void setTrainers() {
@@ -89,25 +140,36 @@ public class Main {
 				new Trainer("B", new Pokemon[]{new Pokemon(13, 3, false, true)}, 100),
 				new Trainer("C", new Pokemon[]{new Pokemon(32, 4, false, true), new Pokemon(29, 4, false, true)}, 100),
 				new Trainer("D", new Pokemon[]{new Pokemon(22, 2, false, true), new Pokemon(22, 2, false, true), new Pokemon(22, 2, false, true)}, 100),
-				new Trainer("TN 1", new Pokemon[]{new Pokemon(22, 9, false, true)}, 100),
+				new Trainer("TN 1", new Pokemon[]{new Pokemon(22, 9, false, true)}, 100), // 5
 				new Trainer("TN 2", new Pokemon[]{new Pokemon(22, 9, false, true)}, 100),
 				new Trainer("TN 3", new Pokemon[]{new Pokemon(29, 10, false, true)}, 100),
 				new Trainer("TN 4", new Pokemon[]{new Pokemon(59, 11, false, true)}, 100),
 				new Trainer("TN 5", new Pokemon[]{new Pokemon(41, 10, false, true)}, 100),
-				new Trainer("TN 6", new Pokemon[]{new Pokemon(73, 10, false, true)}, 100),
+				new Trainer("TN 6", new Pokemon[]{new Pokemon(73, 10, false, true)}, 100), // 10
 				new Trainer("TN 7", new Pokemon[]{new Pokemon(90, 10, false, true)}, 100),
 				new Trainer("TN 8", new Pokemon[]{new Pokemon(52, 12, false, true)}, 100),
 				new Trainer("Rick 1", new Pokemon[]{new Pokemon(66, 11, false, true), new Pokemon(111, 12, false, true), new Pokemon(44, 13, false, true), new Pokemon(120, 10, false, true)}, 400),
 				new Trainer("1 Gym A", new Pokemon[]{new Pokemon(13, 7, false, true), new Pokemon(13, 9, false, true), new Pokemon(13, 11, false, true)}, 200),
-				new Trainer("1 Gym B", new Pokemon[]{new Pokemon(10, 11, false, true), new Pokemon(10, 11, false, true)}, 200),
+				new Trainer("1 Gym B", new Pokemon[]{new Pokemon(10, 11, false, true), new Pokemon(10, 11, false, true)}, 200), // 15
 				new Trainer("1 Gym C", new Pokemon[]{new Pokemon(13, 12, false, true), new Pokemon(10, 14, false, true)}, 200),
 				new Trainer("1 Gym Leader 1", new Pokemon[]{new Pokemon(13, 12, false, true), new Pokemon(10, 15, false, true), new Pokemon(153, 14, false, true), new Pokemon(14, 16, false, true),}, 500),
-//				new Trainer("E", new Pokemon[]{new Pokemon(-18, 8, false, true)}, 100),
-//				new Trainer("F", new Pokemon[]{new Pokemon(-12, 9, false, true)}, 100),
-//				new Trainer("G", new Pokemon[]{new Pokemon(-42, 7, false, true), new Pokemon(-42, 8, false, true)}, 100),
-//				new Trainer("TT", new Pokemon[]{new Pokemon(-24, 10, false, true), new Pokemon(-24, 10, false, true), new Pokemon(-24, 10, false, true)}, 100),
-//				new Trainer("UU", new Pokemon[]{new Pokemon(-24, 15, false, true)}, 100),
-//				new Trainer("1 Gym D", new Pokemon[]{new Pokemon(-21, 7, false, true), new Pokemon(-21, 7, false, true), new Pokemon(-21, 9, false, true)}, 200),
+				new Trainer("E", new Pokemon[]{new Pokemon(19, 13, false, true)}, 100),
+				new Trainer("F", new Pokemon[]{new Pokemon(32, 12, false, true), new Pokemon(32, 11, false, true)}, 100),
+				new Trainer("G", new Pokemon[]{new Pokemon(13, 15, false, true)}, 100), // 20
+				new Trainer("H", new Pokemon[]{new Pokemon(26, 15, false, true)}, 100),
+				new Trainer("I", new Pokemon[]{new Pokemon(47, 13, false, true), new Pokemon(55, 14, false, true)}, 100),
+				new Trainer("J", new Pokemon[]{new Pokemon(85, 14, false, true), new Pokemon(10, 14, false, true)}, 100),
+				new Trainer("K", new Pokemon[]{new Pokemon(38, 18, false, true)}, 100),
+				new Trainer("L", new Pokemon[]{new Pokemon(19, 18, false, true)}, 100), // 25
+				new Trainer("M", new Pokemon[]{new Pokemon(141, 18, false, true)}, 100),
+				new Trainer("N", new Pokemon[]{new Pokemon(42, 18, false, true)}, 100),
+				new Trainer("O1", new Pokemon[]{new Pokemon(137, 19, false, true)}, 100),
+				new Trainer("O2", new Pokemon[]{new Pokemon(137, 19, false, true)}, 100),
+				new Trainer("P", new Pokemon[]{new Pokemon(26, 18, false, true)}, 100), // 30
+				new Trainer("Q", new Pokemon[]{new Pokemon(90, 17, false, true), new Pokemon(82, 19, false, true)}, 100),
+				new Trainer("R", new Pokemon[]{new Pokemon(64, 19, false, true)}, 100),
+				new Trainer("S", new Pokemon[]{new Pokemon(137, 16, false, true), new Pokemon(137, 16, false, true), new Pokemon(137, 16, false, true), new Pokemon(71, 19, false, true)}, 100),
+				new Trainer("Fred 1", new Pokemon[]{new Pokemon(1, 7, false, true)}, 400),
 //				new Trainer("2 Gym A", new Pokemon[]{new Pokemon(-11, 16, false, true)}, 200),
 //				new Trainer("2 Gym B", new Pokemon[]{new Pokemon(-10, 10, false, true), new Pokemon(-10, 10, false, true)}, 200),
 //				new Trainer("2 Gym Leader 1", new Pokemon[]{new Pokemon(-10, 10, false, true), new Pokemon(-12, 10, false, true), new Pokemon(-11, 19, false, true)}, 500),

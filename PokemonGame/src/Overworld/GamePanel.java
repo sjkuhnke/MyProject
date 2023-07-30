@@ -38,7 +38,7 @@ public class GamePanel extends JPanel implements Runnable, BattleCloseListener {
 	
 	public final int maxWorldCol = 100;
 	public final int maxWorldRow = 100;
-	public final int maxMap = 10;
+	public final int maxMap = 20;
 	public int currentMap = 0;
 	public final int worldWidth = tileSize * maxWorldCol;
 	public final int worldHeight = tileSize * maxWorldRow;
@@ -49,7 +49,7 @@ public class GamePanel extends JPanel implements Runnable, BattleCloseListener {
 	Thread gameThread;
 	public CollisionChecker cChecker = new CollisionChecker(this);
 	public PlayerCharacter player = new PlayerCharacter(this,keyH);
-	public Entity npc[][] = new Entity[maxMap][24];
+	public Entity npc[][] = new Entity[maxMap][90];
 	
 	TileManager tileM = new TileManager(this);
 	
@@ -125,7 +125,7 @@ public class GamePanel extends JPanel implements Runnable, BattleCloseListener {
 	public void startBattle(int trainer) {
 	    // Create the Battle instance and set the window listener to save on close
 		if (trainer == -1) return;
-		if (player.trainersBeat[trainer]) return;
+		if (player.p.trainersBeat[trainer]) return;
 		inBattle = true;
 		keyH.pause();
 		setSlots();
@@ -167,7 +167,7 @@ public class GamePanel extends JPanel implements Runnable, BattleCloseListener {
 	@Override
 	public void onBattleClosed(int trainer) {
 		inBattle = false;
-		if (trainer > -1) player.trainersBeat[trainer] = true;
+		if (trainer > -1) player.p.trainersBeat[trainer] = true;
 		Pokemon[] teamTemp = Arrays.copyOf(player.p.team, 6);
 		for (int i = 0; i < 6; i++) {
 			if (teamTemp[i] != null) {
@@ -177,12 +177,14 @@ public class GamePanel extends JPanel implements Runnable, BattleCloseListener {
 					
 					teamTemp[i].setBaseStats();
 					teamTemp[i].getStats();
+					teamTemp[i].weight = teamTemp[i].setWeight();
 					teamTemp[i].setType();
 					teamTemp[i].setAbility(teamTemp[i].abilitySlot);
 					teamTemp[i].currentHP = teamTemp[i].currentHP > teamTemp[i].getStat(0) ? teamTemp[i].getStat(0) : teamTemp[i].currentHP;
 				}
 				player.p.team[teamTemp[i].slot] = teamTemp[i];
 				if (teamTemp[i].slot == 0) player.p.current = player.p.team[0];
+				teamTemp[i].setType();
 			}
 		}
 		keyH.resume();
@@ -190,7 +192,6 @@ public class GamePanel extends JPanel implements Runnable, BattleCloseListener {
 
 	public void setupGame() {
 		aSetter.setNPC();
-		
 	}
 	
 	public void setSlots() {

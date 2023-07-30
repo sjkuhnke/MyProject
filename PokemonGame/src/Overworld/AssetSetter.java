@@ -10,9 +10,11 @@ import Entity.NPC_Trainer;
 public class AssetSetter {
 
 	GamePanel gp;
+	int index;
 	
 	public AssetSetter(GamePanel gp) {
 		this.gp = gp;
+		index = 0;
 	}
 	
 	public void setObject() {}
@@ -20,43 +22,68 @@ public class AssetSetter {
 	public void setNPC() {
 		int mapNum = 0;
 		
-		gp.npc[mapNum][0] = NPCSetup(4, 72, 48, 0);
+		gp.npc[mapNum][index] = NPCSetup(4, 72, 48, 0);
 		
-		gp.npc[mapNum][1] = NPCSetup(5, 18, 18, 1);
+		gp.npc[mapNum][index] = NPCSetup(5, 18, 18, 1);
 		
-		gp.npc[mapNum][2] = NPCSetup(6, 23, 19, 2);
+		gp.npc[mapNum][index] = NPCSetup(6, 23, 19, 2);
 		
-		gp.npc[mapNum][3] = NPCSetup(6, 23, 27, 3);
+		gp.npc[mapNum][index] = NPCSetup(6, 23, 27, 3);
 		
-		gp.npc[mapNum][4] = NPCSetup(5, 21, 31, 4);
+		gp.npc[mapNum][index] = NPCSetup(5, 21, 31, 4);
 		
-		
-		gp.npc[mapNum][11] = NPCSetup(6, 72, 73, 5);
-		gp.npc[mapNum][12] = NPCSetup(3, 74, 67, 6);
-		gp.npc[mapNum][13] = NPCSetup(5, 78, 73, 7);
-		gp.npc[mapNum][14] = NPCSetup(4, 74, 76, 8);
-		gp.npc[mapNum][15] = NPCSetup(6, 4, 8, 9);
-		gp.npc[mapNum][16] = NPCSetup(5, 6, 7, 10);
-		gp.npc[mapNum][17] = NPCSetup(6, 4, 6, 11);
-		gp.npc[mapNum][18] = NPCSetup(5, 6, 5, 12);
-		gp.npc[mapNum][19] = NPCSetup(8, 5, 3, 13);
-		
-		gp.npc[mapNum][20] = NPCSetup(6, 38, 7, 14);
-		gp.npc[mapNum][21] = NPCSetup(5, 40, 6, 15);
-		gp.npc[mapNum][22] = NPCSetup(6, 38, 5, 16);
-		gp.npc[mapNum][23] = NPCSetup(8, 39, 2, 17);
 		
 		// Nurses/PCs
-		gp.npc[1][5] = NPCSetup(1, 31, 37, -1);
-		gp.npc[1][6] = NPCSetup(0, 35, 36, -1);
-		gp.npc[5][7] = NPCSetup(1, 31, 37, -1);
-		gp.npc[5][8] = NPCSetup(0, 35, 36, -1);
+		gp.npc[1][index] = NPCSetup(1, 31, 37, -1);
+		gp.npc[1][index] = NPCSetup(0, 35, 36, -1);
+		gp.npc[5][index] = NPCSetup(1, 31, 37, -1);
+		gp.npc[5][index] = NPCSetup(0, 35, 36, -1);
 		
 		// Clerks
-		gp.npc[2][9] = NPCSetup(2, 27, 39, -1);
-		gp.npc[6][10] = NPCSetup(2, 27, 39, -1);
+		gp.npc[2][index] = NPCSetup(2, 27, 39, -1);
+		gp.npc[6][index] = NPCSetup(2, 27, 39, -1);
+		
+		mapNum = 4;
+		gp.npc[mapNum][index] = NPCSetup(4, 32, 62, 18);
+		gp.npc[mapNum][index] = NPCSetup(4, 23, 65, 19);
+		gp.npc[mapNum][index] = NPCSetup(4, 32, 68, 20);
+		gp.npc[mapNum][index] = NPCSetup(4, 34, 75, 21);
+		gp.npc[mapNum][index] = NPCSetup(4, 45, 75, 22);
+		gp.npc[mapNum][index] = NPCSetup(4, 16, 70, 23);
 		
 		mapNum = 7;
+		gp.npc[mapNum][index] = NPCSetup(6, 30, 42, 5);
+		gp.npc[mapNum][index] = NPCSetup(5, 33, 42, 6);
+		gp.npc[mapNum][index] = NPCSetup(3, 36, 39, 7);
+		gp.npc[mapNum][index] = NPCSetup(4, 36, 42, 8);
+		
+		mapNum = 8;
+		gp.npc[mapNum][index] = NPCSetup(5, 30, 39, 9);
+		gp.npc[mapNum][index] = NPCSetup(4, 28, 41, 10);
+		gp.npc[mapNum][index] = NPCSetup(3, 32, 39, 11);
+		gp.npc[mapNum][index] = NPCSetup(4, 32, 45, 12);
+		gp.npc[mapNum][index] = NPCSetup(8, 35, 41, 13);
+		
+		mapNum = 9;
+		gp.npc[mapNum][index] = NPCSetup(5, 34, 42, 14);
+		gp.npc[mapNum][index] = NPCSetup(6, 27, 39, 15);
+		gp.npc[mapNum][index] = NPCSetup(5, 42, 34, 16);
+		gp.npc[mapNum][index] = NPCSetup(8, 38, 28, 17);
+		
+		mapNum = 11;
+		gp.npc[mapNum][index] = NPCSetup(4, 69, 65, 24);
+		gp.npc[mapNum][index] = NPCSetup(4, 50, 72, 25);
+		gp.npc[mapNum][index] = NPCSetup(4, 59, 74, 26);
+		gp.npc[mapNum][index] = NPCSetup(4, 76, 68, 27);
+		gp.npc[mapNum][index] = NPCSetup(3, 53, 59, 28);
+		gp.npc[mapNum][index] = NPCSetup(4, 53, 65, 29);
+		gp.npc[mapNum][index] = NPCSetup(4, 76, 59, 30);
+		
+		gp.npc[mapNum][index] = NPCSetup(4, 43, 73, 34);
+		
+		gp.npc[mapNum][index] = NPCSetup(5, 40, 78, 31);
+		gp.npc[mapNum][index] = NPCSetup(5, 36, 79, 32);
+		gp.npc[mapNum][index] = NPCSetup(4, 34, 89, 33);
 		
 	}
 	
@@ -90,6 +117,8 @@ public class AssetSetter {
 		
 		result.worldX = gp.tileSize*x;
 		result.worldY = gp.tileSize*y;
+		
+		index++;
 		
 		return result;
 	}

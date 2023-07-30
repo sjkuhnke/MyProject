@@ -27,9 +27,9 @@ import javax.swing.SwingUtilities;
 
 import Overworld.GamePanel;
 import Overworld.KeyHandler;
-import Overworld.Main;
 import Swing.Bag.Entry;
 import Swing.Battle.JGradientButton;
+import Swing.Battle;
 import Swing.Item;
 import Swing.Player;
 import Swing.Pokemon;
@@ -42,7 +42,6 @@ public class PlayerCharacter extends Entity {
 	public final int screenX;
 	public final int screenY;
 	public Player p;
-	public boolean[] trainersBeat = new boolean[Main.trainers.length];
 	public boolean repel;
 	public int steps;
 	
@@ -395,7 +394,85 @@ public class PlayerCharacter extends Entity {
 		        	        		}
 			        	        	p.team[index].verifyHP();
 			        	        	p.bag.remove(i.getItem());
-			        	        	JOptionPane.showMessageDialog(null, p.team[index].name + " was healed by " + difference + " HP");
+			        	        	JOptionPane.showMessageDialog(null, p.team[index].nickname + " was healed by " + difference + " HP");
+			        	        	SwingUtilities.getWindowAncestor(partyPanel).dispose();
+			        	        	SwingUtilities.getWindowAncestor(itemDesc).dispose();
+			        	        	SwingUtilities.getWindowAncestor(panel).dispose();
+			        	        	showBag();
+		        	        	}
+		        	        });
+		        	        
+		        	        JPanel memberPanel = new JPanel(new BorderLayout());
+		        	        memberPanel.add(party, BorderLayout.NORTH);
+		        	        memberPanel.add(partyHP, BorderLayout.SOUTH);
+		        	        partyPanel.add(memberPanel);
+		        	    }
+
+		        	    JOptionPane.showMessageDialog(null, partyPanel, "Party", JOptionPane.PLAIN_MESSAGE);
+		        	}
+		        	
+		        	// STATUS HEALERS
+		        	if (i.getItem().getID() > 8 && i.getItem().getID() < 16) {
+		        		JPanel partyPanel = new JPanel();
+		        	    partyPanel.setLayout(new GridLayout(6, 1));
+		        	    
+		        	    Status target = i.getItem().getStatus();
+
+		        	    for (int j = 0; j < 6; j++) {
+		        	    	JButton party = setUpPartyButton(j);
+		        	    	if (p.team[j] != null && p.team[j].status == Status.HEALTHY) party.setBackground(Color.green);
+		        	    	if (p.team[j] != null && p.team[j].status != Status.HEALTHY) party.setBackground(p.team[j].status.getColor());
+		        	    	if (p.team[j] != null && p.team[j].isFainted()) party.setBackground(Color.red);
+		        	    	JProgressBar partyHP = setupHPBar(j);
+		        	        final int index = j;
+		        	        final Status finalTarget = target == null && p.team[index] != null && p.team[index].status != Status.HEALTHY ? p.team[index].status : target;
+
+		        	        party.addActionListener(g -> {
+		        	        	if (p.team[index].status != finalTarget || p.team[index].isFainted()) {
+		        	        		JOptionPane.showMessageDialog(null, "It won't have any effect.");
+		        	        	} else {
+		        	        		Status temp = p.team[index].status;
+		        	        		p.team[index].status = Status.HEALTHY;
+			        	        	p.bag.remove(i.getItem());
+			        	        	JOptionPane.showMessageDialog(null, p.team[index].nickname + " was cured of its " + temp.getName());
+			        	        	SwingUtilities.getWindowAncestor(partyPanel).dispose();
+			        	        	SwingUtilities.getWindowAncestor(itemDesc).dispose();
+			        	        	SwingUtilities.getWindowAncestor(panel).dispose();
+			        	        	showBag();
+		        	        	}
+		        	        });
+		        	        
+		        	        JPanel memberPanel = new JPanel(new BorderLayout());
+		        	        memberPanel.add(party, BorderLayout.NORTH);
+		        	        memberPanel.add(partyHP, BorderLayout.SOUTH);
+		        	        partyPanel.add(memberPanel);
+		        	    }
+
+		        	    JOptionPane.showMessageDialog(null, partyPanel, "Party", JOptionPane.PLAIN_MESSAGE);
+		        	}
+		        	
+		        	// REVIVES
+		        	if (i.getItem().getID() == 16 || i.getItem().getID() == 17) {
+		        		JPanel partyPanel = new JPanel();
+		        	    partyPanel.setLayout(new GridLayout(6, 1));
+
+		        	    for (int j = 0; j < 6; j++) {
+		        	    	JButton party = setUpPartyButton(j);
+		        	    	JProgressBar partyHP = setupHPBar(j);
+		        	        final int index = j;
+
+		        	        party.addActionListener(g -> {
+		        	        	if (!p.team[index].isFainted()) {
+		        	        		JOptionPane.showMessageDialog(null, "It won't have any effect.");
+		        	        	} else {
+		        	        		p.team[index].fainted = false;
+		        	        		if (i.getItem().getID() == 16) {
+		        	        			p.team[index].currentHP = p.team[index].getStat(0) / 2;
+		        	        		} else {
+		        	        			p.team[index].currentHP = p.team[index].getStat(0);
+		        	        		}
+			        	        	p.bag.remove(i.getItem());
+			        	        	JOptionPane.showMessageDialog(null, p.team[index].nickname + " was revived!");
 			        	        	SwingUtilities.getWindowAncestor(partyPanel).dispose();
 			        	        	SwingUtilities.getWindowAncestor(itemDesc).dispose();
 			        	        	SwingUtilities.getWindowAncestor(panel).dispose();
@@ -413,7 +490,7 @@ public class PlayerCharacter extends Entity {
 		        	}
 		        	
 		        	// RARE CANDY
-		        	if (i.getItem().getID() == 22) {
+		        	if (i.getItem().getID() == 18) {
 		        		JPanel partyPanel = new JPanel();
 		        	    partyPanel.setLayout(new GridLayout(6, 1));
 
@@ -444,6 +521,93 @@ public class PlayerCharacter extends Entity {
 		        	    JOptionPane.showMessageDialog(null, partyPanel, "Party", JOptionPane.PLAIN_MESSAGE);
 		        	}
 		        	
+		        	// EUPHORIAN GEM
+		        	if (i.getItem().getID() == 19) {
+		        		JPanel partyPanel = new JPanel();
+		        	    partyPanel.setLayout(new GridLayout(6, 1));
+
+		        	    for (int j = 0; j < 6; j++) {
+		        	    	JButton party = setUpPartyButton(j);
+		        	    	JProgressBar partyHP = setupHPBar(j);
+		        	        final int index = j;
+		        	        
+		        	        party.addActionListener(g -> {
+		        	        	if (p.team[index].happiness >= 255) {
+		        	        		JOptionPane.showMessageDialog(null, "It won't have any effect.");
+		        	        	} else {
+		        	        		p.team[index].happiness = p.team[index].happiness + 50 >= 255 ? 255 : p.team[index].happiness + 50;
+		        	        		JOptionPane.showMessageDialog(null, p.team[index].nickname + " looked happier!");
+		        	        		p.bag.remove(i.getItem());
+		        	        		SwingUtilities.getWindowAncestor(partyPanel).dispose();
+			        	        	SwingUtilities.getWindowAncestor(itemDesc).dispose();
+			        	        	SwingUtilities.getWindowAncestor(panel).dispose();
+			        	        	showBag();
+		        	        	}
+		        	        });
+		        	        
+		        	        JPanel memberPanel = new JPanel(new BorderLayout());
+		        	        memberPanel.add(party, BorderLayout.NORTH);
+		        	        memberPanel.add(partyHP, BorderLayout.SOUTH);
+		        	        partyPanel.add(memberPanel);
+		        	    }
+
+		        	    JOptionPane.showMessageDialog(null, partyPanel, "Party", JOptionPane.PLAIN_MESSAGE);
+		        	}
+		        	
+		        	// EVOLUTION ITEMS
+		        	if (i.getItem().getID() >= 20 && i.getItem().getID() < 27) {
+		        		JPanel partyPanel = new JPanel();
+		        	    partyPanel.setLayout(new GridLayout(6, 1));
+		        	    
+		        	    for (int j = 0; j < 6; j++) {
+		        	    	if (p.team[j] != null) {
+		        	    		JButton party = setUpPartyButton(j);
+			        	    	JProgressBar partyHP = setupHPBar(j);
+			        	        final int index = j;
+			        	        final boolean eligible = i.getItem().getEligible(p.team[j].id);
+			        	        if (eligible) {
+			        	        	party.setBackground(Color.GREEN);
+			        	        } else {
+			        	        	party.setBackground(Color.RED);
+			        	        }
+
+			        	        party.addActionListener(g -> {
+			        	        	if (!eligible) {
+			        	        		JOptionPane.showMessageDialog(null, "It won't have any effect.");
+			        	        	} else {
+			        	        		boolean shouldEvolve = Battle.displayEvolution(p.team[index]);
+			        	    			if (shouldEvolve) {
+			        	    				Pokemon result = new Pokemon(p.team[index].getEvolved(i.getItem().getID()), p.team[index]);
+			        	    		        int hpDif = p.team[index].getStat(0) - p.team[index].currentHP;
+			        	    		        result.currentHP -= hpDif;
+			        	    		        result.moveMultiplier = p.team[index].moveMultiplier;
+			        	    		        JOptionPane.showMessageDialog(null, p.team[index].nickname + " evolved into " + result.name + "!");
+			        	    		        result.exp = p.team[index].exp;
+			        	    		        p.team[index] = result;
+			        	    		        if (index == 0) p.current = result;
+			        	                    result.checkMove();
+			        	                    p.pokedex[result.id] = 2;
+			        	    		        p.bag.remove(i.getItem());
+			        	    			} else {
+			        	    				JOptionPane.showMessageDialog(null, p.team[index].nickname + " did not evolve.");
+			        	    			}
+				        	        	SwingUtilities.getWindowAncestor(partyPanel).dispose();
+				        	        	SwingUtilities.getWindowAncestor(itemDesc).dispose();
+				        	        	SwingUtilities.getWindowAncestor(panel).dispose();
+				        	        	showBag();
+			        	        	}
+			        	        });
+			        	        
+			        	        JPanel memberPanel = new JPanel(new BorderLayout());
+			        	        memberPanel.add(party, BorderLayout.NORTH);
+			        	        memberPanel.add(partyHP, BorderLayout.SOUTH);
+			        	        partyPanel.add(memberPanel);
+		        	    	}
+		        	    }
+
+		        	    JOptionPane.showMessageDialog(null, partyPanel, "Party", JOptionPane.PLAIN_MESSAGE);
+		        	}
+		        	
 		        	// REPEL
 		        	if (i.getItem().getID() == 0) {
 		        		if (!repel) {
@@ -468,7 +632,7 @@ public class PlayerCharacter extends Entity {
 		        	        final int index = j;
 		        	        
 		        	        boolean learnable = p.team[index] != null ? i.getItem().getLearned(p.team[index]) : false;
-		        	        boolean learned = p.team[index] != null ? p.team[index].contains(i.getItem().getMove()) : false;
+		        	        boolean learned = p.team[index] != null ? p.team[index].knowsMove(i.getItem().getMove()) : false;
 		        	        if (!learnable) {
 		        	        	party.setBackground(Color.RED.darker());
 		        	        } else if (learned) {
@@ -479,15 +643,15 @@ public class PlayerCharacter extends Entity {
 		        	        
 		        	        party.addActionListener(g -> {
 		        	        	if (!learnable) {
-		        	        		JOptionPane.showMessageDialog(null, "" + p.team[index].name + " can't learn " + i.getItem().getMove() + "!");
+		        	        		JOptionPane.showMessageDialog(null, "" + p.team[index].nickname + " can't learn " + i.getItem().getMove() + "!");
 		        	        	} else if (learned) {
-		        	        		JOptionPane.showMessageDialog(null, "" + p.team[index].name + " already knows " + i.getItem().getMove() + "!");
+		        	        		JOptionPane.showMessageDialog(null, "" + p.team[index].nickname + " already knows " + i.getItem().getMove() + "!");
 		        	        	} else {
 		        	        		boolean learnedMove = false;
 		        		            for (int k = 0; k < 4; k++) {
 		        		                if (p.team[index].moveset[k] == null) {
 		        		                	p.team[index].moveset[k] = i.getItem().getMove();
-		        		                	JOptionPane.showMessageDialog(null, p.team[index].name + " learned " + i.getItem().getMove() + "!");
+		        		                	JOptionPane.showMessageDialog(null, p.team[index].nickname + " learned " + i.getItem().getMove() + "!");
 		        		                    learnedMove = true;
 		        		                    break;
 		        		                }
@@ -495,9 +659,9 @@ public class PlayerCharacter extends Entity {
 		        		            if (!learnedMove) {
 		        		            	int choice = p.team[index].displayMoveOptions(i.getItem().getMove());
 			        	                if (choice == JOptionPane.CLOSED_OPTION) {
-			        	                	JOptionPane.showMessageDialog(null, p.team[index].name + " did not learn " + i.getItem().getMove() + ".");
+			        	                	JOptionPane.showMessageDialog(null, p.team[index].nickname + " did not learn " + i.getItem().getMove() + ".");
 			        	                } else {
-			        	                	JOptionPane.showMessageDialog(null, p.team[index].name + " has learned " + i.getItem().getMove().toString() + " and forgot " + p.team[index].moveset[choice] + "!");
+			        	                	JOptionPane.showMessageDialog(null, p.team[index].nickname + " has learned " + i.getItem().getMove().toString() + " and forgot " + p.team[index].moveset[choice] + "!");
 			        	                	p.team[index].moveset[choice] = i.getItem().getMove();
 			        	                }
 		        		            }
@@ -548,8 +712,6 @@ public class PlayerCharacter extends Entity {
 	    for (int j = 1; j < 237; j++) {
 	    	final int id = j;
 	    	JButton mon = new JGradientButton("");
-	    	
-	    	p.pokedex[j] = p.caught(j) == 2 ? 2 : p.pokedex[j];
 	        
 	        if (p.pokedex[j] == 0) {
 	        	mon.setText("???");
@@ -592,7 +754,7 @@ public class PlayerCharacter extends Entity {
             } else {
             	party.setBackground(p.team[j].type1.getColor());
             }
-            party.setText(p.team[j].getName() + "  lv " + p.team[j].getLevel());
+            party.setText(p.team[j].nickname + "  lv " + p.team[j].getLevel());
             party.setHorizontalAlignment(SwingConstants.CENTER);
             party.setFont(new Font("Tahoma", Font.PLAIN, 11));
             party.setVisible(true);

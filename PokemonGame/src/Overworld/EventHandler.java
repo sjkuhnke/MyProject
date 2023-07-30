@@ -1,9 +1,12 @@
 package Overworld;
 
+import Swing.Player;
+
 public class EventHandler {
 
 	
 	GamePanel gp;
+	Player p;
 	EventRect eventRect[][][];
 	
 	int previousEventX, previousEventY;
@@ -72,6 +75,22 @@ public class EventHandler {
 			// Poppy Grove Shop
 			if (hit(4,64,71,"any")) teleport(6, 31, 45);
 			if (hit(6,31,46,"any")) teleport(4, 64, 72);
+			
+			// Poppy Grove Warehouse
+			if (hit(4,66,79,"any")) teleport(7, 31, 45);
+			if (hit(7,31,46,"any")) teleport(4, 66, 80);
+			if (hit(7,40,39,"any")) teleport(8, 28, 39);
+			if (hit(8,27,39,"any")) teleport(7, 39, 39);
+			
+			// Poppy Grove Gym
+			if (hit(4,81,61,"any")) teleport(9, 31, 45);
+			if (hit(9,31,46,"any")) teleport(4, 81, 62);
+			
+			// Route 24 pt. 1 gate
+			if (hit(4,7,68,"any")) teleport(10, 36, 40);
+			if (hit(10,37,40,"any")) teleport(4, 8, 68);
+			if (hit(10,22,40,"any")) teleport(11, 91, 61);
+			if (hit(11,92,61,"any")) teleport(10, 23, 40);
 		}
 	}
 	
@@ -105,5 +124,6 @@ public class EventHandler {
 		gp.currentMap = map;
 		gp.player.worldX = gp.tileSize * col;
 		gp.player.worldY = gp.tileSize * row;
+		p.currentMap = map;
 	}
 }

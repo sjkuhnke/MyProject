@@ -38,10 +38,10 @@ public class Item implements Serializable {
 	}
 	
 	private int setCost() {
-		if (id == 0) return 50;
-		else if (id == 1) return 25;
-		else if (id == 2) return 50;
-		else if (id == 3) return 100;
+		if (id == 0) return 25;
+		else if (id == 1) return 10;
+		else if (id == 2) return 25;
+		else if (id == 3) return 50;
 		else if (id == 4) return 50;
 		else if (id == 5) return 150;
 		else if (id == 6) return 300;
@@ -122,11 +122,15 @@ public class Item implements Serializable {
 		else if (id == 15) return "Rage Candy Bar";
 		else if (id == 16) return "Revive";
 		else if (id == 17) return "Max Revive";
-		else if (id == 18) return "Leaf Stone";
-		else if (id == 19) return "Dusk Stone";
-		else if (id == 20) return "Dawn Stone";
-		else if (id == 21) return "Ice Stone";
-		else if (id == 22) return "Rare Candy";
+		else if (id == 18) return "Rare Candy";
+		else if (id == 19) return "Euphorian Gem";
+		else if (id == 20) return "Leaf Stone";
+		else if (id == 21) return "Dusk Stone";
+		else if (id == 22) return "Dawn Stone";
+		else if (id == 23) return "Ice Stone";
+		else if (id == 24) return "Valiant Gem";
+		else if (id == 25) return "Petticoat Gem";
+		else if (id == 26) return "Ability Capsule";
 		else if (id == 93) return "HM01";
 		else if (id == 94) return "HM02";
 		else if (id == 95) return "HM03";
@@ -245,10 +249,6 @@ public class Item implements Serializable {
 		int index1 = p.id;
 		int index2 = this.id - 101;
 		boolean[][] tm = new boolean[][] {
-			
-			
-			
-			
 			
 			
 			
@@ -876,6 +876,47 @@ public class Item implements Serializable {
 			result = null;
 			break;
 		}
+		return result;
+	}
+
+	public Status getStatus() {
+		if (id == 9) return Status.POISONED;
+		else if (id == 10) return Status.ASLEEP;
+		else if (id == 11) return Status.BURNED;
+		else if (id == 12) return Status.PARALYZED;
+		else if (id == 13) return Status.FROSTBITE;
+		else if (id == 14) return null;
+		else if (id == 15) return null;
+		else return Status.AUTO;
+		
+	}
+
+	public boolean getEligible(int pid) {
+		int[] check;
+		boolean result = false;
+		if (id == 20) {
+			check = new int[] {27, 45, 118};
+		} else if (id == 21) {
+			check = new int[] {141, 160, 215, 220};
+		} else if (id == 22) {
+			check = new int[] {30, 175, 177};
+		} else if (id == 23) {
+			check = new int[] {62, 64, 193};
+		} else if (id == 24) {
+			check = new int[] {38, 86, 108};
+		} else if (id == 25) {
+			check = new int[] {38, 108};
+		} else {
+			check = new int[] {};
+		}
+		
+		for (int i = 0; i < check.length; i++) {
+			if (pid == check[i]) {
+				result = true;
+				break;
+			}
+		}
+		
 		return result;
 	}
 }

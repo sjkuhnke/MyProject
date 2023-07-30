@@ -1,10 +1,11 @@
 package Swing;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Arrays;
 
 import javax.swing.JOptionPane;
+
+import Overworld.Main;
 
 public class Player implements Serializable{
 	/**
@@ -16,7 +17,6 @@ public class Player implements Serializable{
 	public int money;
 	public Pokemon current;
 	private int numBattled;
-	public ArrayList<String> trainersBeat;
 	private int posX;
 	private int posY;
 	public Bag bag;
@@ -24,6 +24,7 @@ public class Player implements Serializable{
 	public int starter;
 	public int[] pokedex = new int[237];
 	public int currentMap;
+	public boolean[] trainersBeat = new boolean[Main.trainers.length];
 	
 	public Player() {
 		team = new Pokemon[6];
@@ -32,7 +33,6 @@ public class Player implements Serializable{
 		box3 = new Pokemon[30];
 		money = 0;
 		current = null;
-		trainersBeat = new ArrayList<String>();
 		bag = new Bag();
 		posX = 90;
 		posY = 46;
@@ -45,6 +45,9 @@ public class Player implements Serializable{
 	public void catchPokemon(Pokemon p) {
 	    if (p.isFainted()) return;
 	    boolean hasNull = false;
+	    p.nickname = JOptionPane.showInputDialog(null, "Would you like to nickname " + p.name + "?");
+	    if (p.nickname == null) p.nickname = p.name;
+	    pokedex[p.id] = 2;
 	    for (int i = 0; i < team.length; i++) {
 	        if (team[i] == null) {
 	            hasNull = true;
@@ -56,7 +59,7 @@ public class Player implements Serializable{
 	            if (team[i] == null) {
 	                team[i] = p;
 	                p.slot = i;
-	                System.out.println("Caught " + p.name + ", added to party!");
+	                System.out.println("Caught " + p.nickname + ", added to party!");
 	                current = team[0];
 	                break;
 	            }
@@ -73,17 +76,17 @@ public class Player implements Serializable{
 	            }
 	            if (index >= 0) {
 	                boxes[i][index] = p;
-	                System.out.println("Caught " + p.name + ", sent to box " + (i+1) + "!");
+	                System.out.println("Caught " + p.nickname + ", sent to box " + (i+1) + "!");
 	                return;  // Exit the method after catching the Pokémon
 	            }
 	        }
-	        System.out.println("Cannot catch " + p.name + ", all boxes are full");
+	        System.out.println("Cannot catch " + p.nickname + ", all boxes are full");
 	    }
 	}
 
 
 	public void swap(Pokemon pokemon, int index) {
-		System.out.println("\n" + current.name + ", come back!");
+		System.out.println("\n" + current.nickname + ", come back!");
 		Pokemon lead = current;
 		lead.clearVolatile();
 		this.current = pokemon;
@@ -93,7 +96,7 @@ public class Player implements Serializable{
 			numBattled++;
 			this.current.battled = true;
 		}
-		System.out.println("Go " + current.name + "!");
+		System.out.println("Go " + current.nickname + "!");
 		
 	}
 	
@@ -141,7 +144,7 @@ public class Player implements Serializable{
     	pokemon.exp += expAmt;
     	while (pokemon.exp >= pokemon.expMax) {
             // Pokemon has leveled up, check for evolution
-            Pokemon evolved = pokemon.levelUp();
+            Pokemon evolved = pokemon.levelUp(this);
             if (evolved != null) {
                 // Update the player's team with the evolved Pokemon
             	int index = Arrays.asList(this.getTeam()).indexOf(pokemon);
@@ -152,7 +155,7 @@ public class Player implements Serializable{
             }
         }
     	pokemon.fainted = false;
-    	JOptionPane.showMessageDialog(null, pokemon.name + " was elevated to " + pokemon.getLevel());
+    	JOptionPane.showMessageDialog(null, pokemon.nickname + " was elevated to " + pokemon.getLevel());
 		
 	}
 	
@@ -174,33 +177,6 @@ public class Player implements Serializable{
 			}
 		}
 		return result;
-	}
-
-	public int caught(int j) {
-		if (pokedex[j] == 2) return 2;
-		
-		for (Pokemon p : team) {
-			if (p != null) {
-				if (p.id == j) return 2;
-			}
-		}
-		for (Pokemon p : box1) {
-			if (p != null) {
-				if (p.id == j) return 2;
-			}
-		}
-		for (Pokemon p : box2) {
-			if (p != null) {
-				if (p.id == j) return 2;
-			}
-		}
-		for (Pokemon p : box3) {
-			if (p != null) {
-				if (p.id == j) return 2;
-			}
-		}
-		
-		return 0;
 	}
 
 }
