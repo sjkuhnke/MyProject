@@ -870,7 +870,7 @@ public class Item implements Serializable {
 			result = Move.FLIP_TURN;
 			break;
 		case 199:
-			result = Move.SCORCHING_SANDS;
+			result = Move.RETURN;
 			break;
 		default:
 			result = null;

@@ -126,7 +126,7 @@ public enum Move {
 	DRILL_PECK(80,100,0,1,0,0,PType.FLYING,"Boosted Crit rate",true),
 	DRILL_RUN(80,95,0,1,0,0,PType.GROUND,"Boosted Crit rate",true),
 	DUAL_CHOP(40,90,0,0,0,0,PType.DRAGON,"",true),
-	DYNAMIC_PUNCH(-1,80,15,0,0,0,PType.STEEL,"% chance to cause foe to Bleed; attacks twice",false), // TODO
+	DYNAMIC_PUNCH(100,50,100,0,0,0,PType.FIGHTING,"% chance to confuse foe",false),
 	EARTH_POWER(90,100,10,0,1,0,PType.GROUND,"% chance to lower foe's Sp.Def by 1",false),
 	EARTHQUAKE(100,100,0,0,0,0,PType.GROUND,"A normal attack",false),
 	ELECTRIC_TERRAIN(0,1000,0,0,2,0,PType.ELECTRIC,"Sets the terrain to ELECTRIC for 5 turns",false),
@@ -186,7 +186,7 @@ public enum Move {
 	FREEZE_DRY(70,100,10,0,1,0,PType.ICE,"",false),
 	FREEZING_GLARE(90,100,20,0,1,0,PType.PSYCHIC,"",false),
 	FRENZY_PLANT(150,90,0,0,1,0,PType.GRASS,"User must rest after using this move",false),
-	FRUSTERATION(102,100,0,0,0,0,PType.NORMAL,"A normal attack",true),
+	FRUSTRATION(-1,100,0,0,0,0,PType.NORMAL,"A normal attack",true),
 	FURY_ATTACK(15,85,0,0,0,0,PType.NORMAL,"Attacks 2-5 times",true),
 	FURY_CUTTER(-1,95,0,0,0,0,PType.BUG,"Power increases the more times this move is used in succession",true),
 	FURY_SWIPES(18,80,0,0,0,0,PType.NORMAL,"Attacks 2-5 times",true),
@@ -207,7 +207,7 @@ public enum Move {
 	GLITTERING_SWORD(95,100,20,0,0,0,PType.LIGHT,"",true),
 	GLITTERING_TORNADO(55,100,30,0,1,0,PType.LIGHT,"",false),
 	GLITZY_GLOW(80,100,30,0,1,0,PType.LIGHT,"",false),
-	GRASS_KNOT(80,100,0,0,1,0,PType.GRASS,"A normal attack",true), // TODO
+	GRASS_KNOT(-1,100,0,0,1,0,PType.GRASS,"A normal attack",true),
 	GRASS_WHISTLE(0,55,0,0,2,0,PType.GRASS,"",false),
 	GRASSY_TERRAIN(0,1000,0,0,2,0,PType.GRASS,"Sets the terrain to GRASSY for 5 turns",false),
 	//GRASS_PUNCH(80,100,0,0,0,0,PType.GRASS,"A normal attack",false),
@@ -227,9 +227,9 @@ public enum Move {
 	HEADBUTT(70,100,30,0,0,0,PType.NORMAL,"% chance of causing foe to flinch",true),
 	HEAL_PULSE(0,1000,0,0,2,0,PType.PSYCHIC,"Heals foe by 50% HP",false),
 	HEALING_WISH(0,1000,0,0,2,0,PType.PSYCHIC,"",false), // TODO
-	HEAT_CRASH(-1,100,0,0,0,0,PType.FIRE,"",true), // TODO
+	HEAT_CRASH(-1,100,0,0,0,0,PType.FIRE,"",true),
 	HEAT_WAVE(95,90,10,0,1,0,PType.FIRE,"% to Burn foe",false),
-	HEAVY_SLAM(-1,100,0,0,0,0,PType.STEEL,"",true), // TODO
+	HEAVY_SLAM(-1,100,0,0,0,0,PType.STEEL,"",true),
 	HEX(-1,100,0,0,1,0,PType.GHOST,"",false),
 	HI_JUMP_KICK(130,90,0,0,0,0,PType.FIGHTING,"If this attack misses, user takes 50% of its max HP",true),
 	HIDDEN_POWER(60,100,0,0,1,0,PType.NORMAL,"",false),
@@ -289,7 +289,7 @@ public enum Move {
 	LOAD_FIREARMS(0,100,0,0,2,0,PType.STEEL,"",false), // TODO
 	LOCK_ON(0,1000,0,0,2,0,PType.NORMAL,"Raises user's Accuracy by 6",false),
 	LOVELY_KISS(0,75,0,0,2,0,PType.NORMAL,"",false),
-	LOW_KICK(60,100,100,0,0,0,PType.FIGHTING,"% to lower foe's Speed by 1",true), //TODO
+	LOW_KICK(-1,100,0,0,0,0,PType.FIGHTING,"Damage is based on how heavy foe is",true),
 	LOW_SWEEP(65,100,100,0,0,0,PType.FIGHTING,"",true),
 	LUNAR_DANCE(0,1000,0,0,2,0,PType.PSYCHIC,"",false), // TODO
 	LUSTER_PURGE(70,100,50,0,1,0,PType.LIGHT,"",false),
@@ -387,7 +387,7 @@ public enum Move {
 	PSYSHOCK(80,100,0,0,1,0,PType.PSYCHIC,"",false),
 	PSYWAVE(0,100,0,0,2,0,PType.PSYCHIC,"",false),
 	//PUNCH(40,90,0,0,0,0,PType.FIGHTING,"A normal attack",false),
-	PURSUIT(40,100,0,0,0,0,PType.DARK,"A normal attack",true), //TODO
+	PURSUIT(40,100,0,0,0,0,PType.DARK,"A normal attack",true),
 	QUICK_ATTACK(40,100,0,0,0,1,PType.NORMAL,"Always attacks first",true),
 	QUIVER_DANCE(0,1000,0,0,2,0,PType.BUG,"",false),
 	RAGE(-1,100,0,0,0,0,PType.NORMAL,"Power increases the more times this move is used in succession",true),
@@ -429,7 +429,7 @@ public enum Move {
 	SCORCHING_SANDS(70,100,30,0,1,0,PType.GROUND,"",false),
 	SCRATCH(40,100,0,0,0,0,PType.NORMAL,"A normal attack",true),
 	SCREECH(0,85,0,0,2,0,PType.NORMAL,"Lowers foe's Defense by 2",false),
-	SEA_DRAGON(0,1000,0,0,2,0,PType.MAGIC,"",false), // TODO
+	SEA_DRAGON(0,1000,0,0,2,0,PType.MAGIC,"",false),
 	SEISMIC_TOSS(0,100,0,0,0,0,PType.FIGHTING,"Damage dealt is equal to the user's level",true),
 	SELF_DESTRUCT(200,100,0,0,0,0,PType.NORMAL,"User faints",false),
 	SHADOW_BALL(80,100,30,0,1,0,PType.GHOST,"% to lower foe's Sp.Def by 1",false),
@@ -603,7 +603,8 @@ public enum Move {
 	SURF(95,100,0,0,1,0,PType.WATER,"A normal attack",false),
 	SLOW_FALL(75,90,100,0,1,0,PType.PSYCHIC,"% chance to change user's ability to LEVITATE",false),
 	ROCK_CLIMB(80,95,20,0,1,0,PType.ROCK,"% chance to confuse foe",false),
-	LAVA_SURF(95,100,0,0,1,0,PType.FIRE,"A normal attack",false),
+	LAVA_SURF(95,100,0,0,1,0,PType.FIRE,"A normal attack",false), 
+	BOOSTED_PURSUIT(80,100,0,0,0,0,PType.DARK,"If you're seeing this something went wrong",true),
 	
 	;
 	

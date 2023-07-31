@@ -10,8 +10,9 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
-import java.awt.event.ActionEvent;
 //import java.awt.event.FocusAdapter;
+//import java.awt.event.FocusEvent;
+import java.awt.event.ActionEvent;
 //import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -57,7 +58,7 @@ public class Battle extends JFrame {
 	private JPanel foePartyPanel;
 	
 	private JButton catchButton;
-	private JButton addButton; // debug
+//	private JButton addButton; // debug
 	//private JButton healButton;
 	private JButton runButton;
 	private JLabel userStatus;
@@ -66,6 +67,9 @@ public class Battle extends JFrame {
 	private JRadioButton pokeballButton;
 	private JRadioButton greatballButton;
 	private JRadioButton ultraballButton;
+	private JLabel pokeballLabel;
+	private JLabel greatballLabel;
+	private JLabel ultraballLabel;
 	private JProgressBar[] partyHP;
 //	private ButtonGroup time;
 //	private JRadioButton morning;
@@ -78,7 +82,7 @@ public class Battle extends JFrame {
 	//private JComboBox<Trainer> trainerSelect;
 	//private Trainer[] trainers;
 	private JButton infoButton;
-	private JButton exitButton;
+//	private JButton exitButton; // debug
 	private int trainerIndex;
 	
 	private BattleCloseListener battleCloseListener;
@@ -117,29 +121,29 @@ public class Battle extends JFrame {
         setLocationRelativeTo(null);
 
         // Initialize frame
-        initialize(playerCharacter);
+        initialize(playerCharacter, gp);
 		if (foeT != null) {
 			foeTrainer = foeT;
 			foe = foeTrainer.getTeam()[0];
 			JOptionPane.showMessageDialog(null, "\nYou are challenged by " + foeTrainer.toString() + "!\n" + foeTrainer.toString() + " sends out " + foeTrainer.getCurrent().name + "!");
 		} else {
-			foe = encounterPokemon(area, x, y);
+			foe = encounterPokemon(area, x, y, me.random);
 		}
 		updateFoe();
 		me.clearBattled();
 		me.getCurrent().clearVolatile();
 		me.getCurrent().battled = true;
 		
-		addButton = createJButton("ADD", new Font("Tahoma", Font.BOLD, 9), 645, 430, 75, 23);
+//		addButton = createJButton("ADD", new Font("Tahoma", Font.BOLD, 9), 645, 430, 75, 23);
 		catchButton = createJButton("CATCH", new Font("Tahoma", Font.BOLD, 11), 638, 340, 89, 23);
 //		healButton = createJButton("HEAL", new Font("Tahoma", Font.BOLD, 9), 645, 460, 75, 23);
 		runButton = createJButton("RUN", new Font("Tahoma", Font.BOLD, 9), 645, 460, 75, 23);
 		infoButton = createJButton("INFO", new Font("Tahoma", Font.BOLD, 9), 645, 490, 75, 23);
-		exitButton = createJButton("EXIT", new Font("Tahoma", Font.BOLD, 9), 645, 400, 75, 23);
+//		exitButton = createJButton("EXIT", new Font("Tahoma", Font.BOLD, 9), 645, 400, 75, 23);
 		
-		exitButton.addActionListener(e -> {
-			dispose();
-		});
+//		exitButton.addActionListener(e -> {
+//			dispose();
+//		});
 		
 //		encounterButton.addActionListener(new ActionListener() {
 //		    public void actionPerformed(ActionEvent e) {
@@ -167,16 +171,16 @@ public class Battle extends JFrame {
 		scrollPane.setBounds(10, 340, 610, 190);
 		playerPanel.add(scrollPane);
 		
-		addButton.addActionListener(e -> {
-			if (!foe.isFainted()) {
-				me.catchPokemon(new Pokemon(foe.id, foe.getLevel(), true, false));
-				displayParty();
-				updateFoe();
-			}
-        });
+//		addButton.addActionListener(e -> {
+//			if (!foe.isFainted()) {
+//				me.catchPokemon(new Pokemon(foe.id, foe.getLevel(), true, false));
+//				displayParty();
+//				updateFoe();
+//			}
+//        });
 		
 		catchButton.addActionListener(e -> {
-		    if (!foe.isFainted()) {
+		    if (!foe.isFainted() && !me.getCurrent().isFainted()) {
 		    	if (foe.trainerOwned()) {
 		    		JOptionPane.showMessageDialog(null, "Cannot catch trainer's Pokemon!");
                     return;
@@ -261,6 +265,9 @@ public class Battle extends JFrame {
 					updateCurrent();
 					updateStatus();
 					displayParty();
+					if (me.wiped()) {
+						wipe(playerCharacter, gp);
+					}
 		        }
 		        System.out.println();
 			    System.out.println("------------------------------");
@@ -307,6 +314,12 @@ public class Battle extends JFrame {
 				JOptionPane.showMessageDialog(null, foe.name + " was defeated!");
 				dispose();
 			}
+			if (me.getCurrent().isFainted()) {
+				if (me.wiped()) {
+					wipe(playerCharacter, gp);
+				}
+				return;
+			}
 			updateCurrent();
 			updateBars();
 			displayParty();
@@ -334,6 +347,30 @@ public class Battle extends JFrame {
 				}
 				boolean swapping = me.getCurrent().vStatuses.contains(Status.SWITCHING);
 				
+				Move move = foe.trainerOwned() ? foe.bestMove(me.current, field, false) : foe.randomMove();
+				if (move == Move.PURSUIT && !me.getCurrent().isFainted()) {
+					move = Move.BOOSTED_PURSUIT;
+					if (foeTrainer != null) {
+	        			foe.move(me.getCurrent(), move, me, field, foeTrainer.getTeam(), false);
+	        		} else {
+	        			foe.move(me.getCurrent(), move, me, field, null, false);
+		        	}
+				}
+				if (move == Move.BOOSTED_PURSUIT && me.getCurrent().isFainted()) {
+					foe.endOfTurn(me.getCurrent(), me, field);
+					field.endOfTurn();
+					updateCurrent();
+					updateBars();
+					displayParty();
+					updateStatus();
+					System.out.println();
+				    System.out.println("------------------------------");
+				    if (me.wiped()) {
+						wipe(playerCharacter, gp);
+					}
+					return;
+				}
+				
 				me.swap(me.team[index], index);
 				me.getCurrent().swapIn(foe, field, me);
 				updateField(field);
@@ -348,20 +385,17 @@ public class Battle extends JFrame {
 	            } else {
 	            	healthBar.setForeground(new Color(255, 0, 0));
 	            }
-				if (!me.team[index].isFainted() && !swapping) {
-					if (foe.trainerOwned()) {
-		        		if (foeTrainer != null) {
-		        			foe.move(me.getCurrent(),foe.bestMove(me.team[index], field, false), me, field, foeTrainer.getTeam(), false);
-		        		} else {
-		        			foe.move(me.getCurrent(),foe.bestMove(me.team[index], field, false), me, field, null, false);
-		        		}
-		        	} else {
-		        		if (foeTrainer != null) {
-		        			foe.move(me.getCurrent(),foe.randomMove(), me, field, foeTrainer.getTeam(), false);
-		        		} else {
-		        			foe.move(me.getCurrent(),foe.randomMove(), me, field, null, false);
-		        		}
+				if (!me.team[index].isFainted() && !swapping && move != Move.BOOSTED_PURSUIT) {
+	        		if (foeTrainer != null) {
+	        			foe.move(me.getCurrent(), move, me, field, foeTrainer.getTeam(), false);
+	        		} else {
+	        			foe.move(me.getCurrent(), move, me, field, null, false);
 		        	}
+					foe.endOfTurn(me.getCurrent(), me, field);
+					me.getCurrent().endOfTurn(foe, me, field);
+					field.endOfTurn();
+				}
+				if (move == Move.BOOSTED_PURSUIT) {
 					foe.endOfTurn(me.getCurrent(), me, field);
 					me.getCurrent().endOfTurn(foe, me, field);
 					field.endOfTurn();
@@ -399,6 +433,9 @@ public class Battle extends JFrame {
 				updateStatus();
 				System.out.println();
 			    System.out.println("------------------------------");
+			    if (me.wiped()) {
+					wipe(playerCharacter, gp);
+				}
 	        });
 			party[i].addMouseListener(new MouseAdapter() {
 			    @Override
@@ -421,7 +458,7 @@ public class Battle extends JFrame {
 		updateField(field);
 	}
 
-	private void initialize(PlayerCharacter pl) {
+	private void initialize(PlayerCharacter pl, GamePanel gp) {
 		// Initializing current elements
 		currentText = new JLabel("");
 		
@@ -469,9 +506,9 @@ public class Battle extends JFrame {
 			            JOptionPane.showMessageDialog(null, message, "Move Description", JOptionPane.INFORMATION_MESSAGE);
 			        } else {
 			        	if (foe.trainerOwned()) {
-			        		turn(me.getCurrent(), foe, me.getCurrent().moveset[index], foe.bestMove(me.getCurrent(), field, false), pl);
+			        		turn(me.getCurrent(), foe, me.getCurrent().moveset[index], foe.bestMove(me.getCurrent(), field, false), pl, gp);
 			        	} else {
-			        		turn(me.getCurrent(), foe, me.getCurrent().moveset[index], foe.randomMove(), pl);
+			        		turn(me.getCurrent(), foe, me.getCurrent().moveset[index], foe.randomMove(), pl, gp);
 			        	}
 			        }
 			    }
@@ -531,6 +568,24 @@ public class Battle extends JFrame {
 		ballType.add(pokeballButton);
 		ballType.add(greatballButton);
 		ballType.add(ultraballButton);
+		
+		pokeballLabel = new JLabel("");
+		pokeballLabel.setBounds(640, 385, 30, 30);
+		pokeballLabel.setForeground(Color.red.brighter());
+		pokeballLabel.setText(pl.p.bag.count[1] + "");
+		playerPanel.add(pokeballLabel);
+		
+		greatballLabel = new JLabel("");
+		greatballLabel.setBounds(675, 385, 30, 30);
+		greatballLabel.setForeground(Color.blue.darker());
+		greatballLabel.setText(pl.p.bag.count[2] + "");
+		playerPanel.add(greatballLabel);
+		
+		ultraballLabel = new JLabel("");
+		ultraballLabel.setBounds(710, 385, 30, 30);
+		ultraballLabel.setForeground(Color.yellow.darker());
+		ultraballLabel.setText(pl.p.bag.count[3] + "");
+		playerPanel.add(ultraballLabel);
 		
 		healthBar = new JProgressBar(0, me.getCurrent().getStat(0));
 		healthBar.setBackground(UIManager.getColor("Button.darkShadow"));
@@ -594,11 +649,11 @@ public class Battle extends JFrame {
 	}
 
 
-	public Pokemon encounterPokemon(int area, int x, int y) {
+	public Pokemon encounterPokemon(int area, int x, int y, boolean random) {
 	    // Create an ArrayList of PokemonEncounter objects for the route
 		//String selectedEncounterType = encounterType.getSelection().getActionCommand();
 		//String selectedTime = time.getSelection().getActionCommand();
-	    ArrayList<Encounter> encounters = Encounter.getEncounters(area, x, y, "Standard", "D");
+	    ArrayList<Encounter> encounters = Encounter.getEncounters(area, x, y, "Standard", "D", random);
 
 	    // Calculate the total encounter chance for the route
 	    double totalChance = 0.0;
@@ -848,7 +903,7 @@ public class Battle extends JFrame {
 		
 	}
 
-	public void turn(Pokemon p1, Pokemon p2, Move m1, Move m2, PlayerCharacter pl) {
+	public void turn(Pokemon p1, Pokemon p2, Move m1, Move m2, PlayerCharacter pl, GamePanel gp) {
 		if (p1.isFainted() || p2.isFainted()) return;
 
 		int m1P, m2P;
@@ -916,7 +971,9 @@ public class Battle extends JFrame {
 		System.out.println();
 	    System.out.println("------------------------------");
 	    updateField(field);
-		
+	    if (me.wiped()) {
+			wipe(pl, gp);
+		}
 	}
 
 	private Pokemon getSwap(PlayerCharacter pl, boolean baton) {
@@ -1048,13 +1105,13 @@ public class Battle extends JFrame {
 	private void fightMon() {
 		try {
 			if (Integer.parseInt(idInput.getText()) >= -144 && Integer.parseInt(idInput.getText()) <= 237) {
-				foe = new Pokemon(Integer.parseInt(idInput.getText()), Integer.parseInt(levelInput.getText()), false, true);
+				foe = new Pokemon(Integer.parseInt(idInput.getText()), Integer.parseInt(levelInput.getText()), false, false);
 			} else {
-				foe = new Pokemon(-10, 5, false, true);
+				foe = new Pokemon(10, 5, false, false);
 			}
 			updateFoe();
 		} catch (NumberFormatException e1) {
-			foe = new Pokemon(-10, 5, false, true);
+			foe = new Pokemon(10, 5, false, false);
 			updateFoe();
 		}
 		me.clearBattled();
@@ -1103,6 +1160,22 @@ public class Battle extends JFrame {
 	    dialog.setVisible(true);
 	    int result = choice[0];
 	    return result == JOptionPane.CLOSED_OPTION ? JOptionPane.CLOSED_OPTION : choice[0];
+	}
+	
+	private void wipe(PlayerCharacter p, GamePanel gp) {
+		p.p.money -= 500;
+		p.p.money = p.p.money < 0 ? 0 : p.p.money;
+		JOptionPane.showMessageDialog(null, "You have no more Pokemon that can fight!\nYou lost $500!");
+		p.worldX = gp.tileSize * 90;
+		p.worldY = gp.tileSize * 46;
+		gp.currentMap = 0;
+		for (Pokemon pokemon : p.p.team) {
+			if (pokemon != null) {
+				pokemon.heal();
+			}
+		}
+		dispose();
+		
 	}
 	
 //	private Trainer[] getUnbeatenTrainers() {

@@ -25,6 +25,8 @@ public class Player implements Serializable{
 	public int[] pokedex = new int[237];
 	public int currentMap;
 	public boolean[] trainersBeat = new boolean[Main.trainers.length];
+	public boolean random = false;
+	public boolean ghost = false;
 	
 	public Player() {
 		team = new Pokemon[6];
@@ -46,7 +48,7 @@ public class Player implements Serializable{
 	    if (p.isFainted()) return;
 	    boolean hasNull = false;
 	    p.nickname = JOptionPane.showInputDialog(null, "Would you like to nickname " + p.name + "?");
-	    if (p.nickname == null) p.nickname = p.name;
+	    if (p.nickname == null || p.nickname.isBlank()) p.nickname = p.name;
 	    pokedex[p.id] = 2;
 	    for (int i = 0; i < team.length; i++) {
 	        if (team[i] == null) {
@@ -174,6 +176,17 @@ public class Player implements Serializable{
 					result = true;
 					break;
 				}
+			}
+		}
+		return result;
+	}
+	
+	public boolean wiped() {
+		boolean result = true;
+		for (int i = 0; i < 6; i++) {
+			if (this.team[i] != null && !this.team[i].isFainted()) {
+				result = false;
+				break;
 			}
 		}
 		return result;

@@ -124,6 +124,7 @@ public class EventHandler {
 		gp.currentMap = map;
 		gp.player.worldX = gp.tileSize * col;
 		gp.player.worldY = gp.tileSize * row;
+		gp.player.worldY -= gp.tileSize / 4;
 		p.currentMap = map;
 	}
 }

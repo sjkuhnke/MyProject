@@ -159,7 +159,7 @@ public class Pokemon implements Serializable {
 			image = ImageIO.read(getClass().getResourceAsStream("/sprites/" + imageName + ".png"));
 		} catch (Exception e) {
 			try {
-				image = ImageIO.read(getClass().getResourceAsStream("/sprites/" + 001 + ".png"));
+				image = ImageIO.read(getClass().getResourceAsStream("/sprites/001.png"));
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
@@ -4303,7 +4303,8 @@ public class Pokemon implements Serializable {
 			
 			if (this.ability == Ability.IRON_FIST && (move == Move.BULLET_PUNCH || move == Move.COMET_PUNCH || move == Move.DRAIN_PUNCH
 					|| move == Move.FIRE_PUNCH || move == Move.ICE_PUNCH || move == Move.MACH_PUNCH || move == Move.POWER_UP_PUNCH || move == Move.SHADOW_PUNCH
-					|| move == Move.SKY_UPPERCUT || move == Move.THUNDER_PUNCH || move == Move.METEOR_MASH || move == Move.PLASMA_FISTS || move == Move.SUCKER_PUNCH)) {
+					|| move == Move.SKY_UPPERCUT || move == Move.THUNDER_PUNCH || move == Move.METEOR_MASH || move == Move.PLASMA_FISTS || move == Move.SUCKER_PUNCH
+					|| move == Move.DYNAMIC_PUNCH)) {
 				bp *= 1.3;
 			}
 			
@@ -4774,11 +4775,8 @@ public class Pokemon implements Serializable {
 			foe.vStatuses.add(Status.FLINCHED);
 		} else if (move == Move.DRAGON_BREATH) {
 			foe.paralyze(false, this);
-//		} else if (move == Move.DUAL_STAB) {
-//			if (foe.status == Status.HEALTHY) {
-//				foe.status = Status.FROSTBITE;
-//				System.out.println(foe.nickname + " is bleeding!");
-//			}
+		} else if (move == Move.DYNAMIC_PUNCH) {
+			foe.confuse(false);
 		} else if (move == Move.EARTH_POWER) {
 			stat(foe, 3, -1);
 		} else if (move == Move.EMBER) {
@@ -5021,7 +5019,7 @@ public class Pokemon implements Serializable {
 		} else if (move == Move.MOLTEN_CONSUME) {
 			foe.burn(false, this);
 		} else if (move == Move.MOONBLAST) {
-			stat(this, 2, -1);
+			stat(foe, 2, -1);
 		} else if (move == Move.MUD_BOMB) {
 			stat(foe, 5, -1);
 		} else if (move == Move.MUD_SHOT) {
@@ -5334,7 +5332,7 @@ public class Pokemon implements Serializable {
 			} else { fail = fail(); }
 		} else if (move == Move.AUTOMOTIZE) {
 			stat(this, 4, 2);
-		} else if (move == Move.LOAD_FIREARMS) { // TODO
+		} else if (move == Move.LOAD_FIREARMS) {
 			if (!(this.vStatuses.contains(Status.AUTO))) {
 				this.vStatuses.add(Status.AUTO);
 				System.out.println(this.nickname + " upgraded its weapon!");
@@ -7023,7 +7021,7 @@ public class Pokemon implements Serializable {
 			movebank[0].addToEnd(new Node(Move.FLAME_CHARGE));
 			movebank[14] = new Node(Move.STOMP);
 			movebank[15] = new Node(Move.HEADBUTT);
-			movebank[17] = new Node(Move.FRUSTERATION);
+			movebank[17] = new Node(Move.FRUSTRATION);
 			movebank[24] = new Node(Move.RETURN);
 			movebank[28] = new Node(Move.TAKE_DOWN);
 			movebank[31] = new Node(Move.COTTON_GUARD);
@@ -10633,9 +10631,36 @@ public class Pokemon implements Serializable {
 				this.moveMultiplier *= 2;
 			}
 			bp = Math.min(160, 20 * this.moveMultiplier);
+		} else if (move == Move.GRASS_KNOT || move == Move.LOW_KICK) {
+			if (foe.weight < 21.9) {
+				bp = 20;
+			} else if (foe.weight >= 21.9 && foe.weight < 55.1) {
+				bp = 40;
+			} else if (foe.weight >= 55.1 && foe.weight < 110.2) {
+				bp = 60;
+			} else if (foe.weight >= 110.2 && foe.weight < 220.4) {
+				bp = 80;
+			} else if (foe.weight >= 220.4 && foe.weight < 440.9) {
+				bp = 100;
+			} else if (foe.weight >= 440.9) {
+				bp = 120;
+			}
 		} else if (move == Move.GYRO_BALL) {
 			double speedRatio = foe.getSpeed() * 1.0 / this.getSpeed();
 			bp = (int) Math.min(150, (25 * speedRatio) + 1);
+		} else if (move == Move.HEAT_CRASH || move == Move.HEAVY_SLAM) {
+			double weightRatio = foe.weight / this.weight;
+			if (weightRatio > 0.5) {
+				bp = 40;
+			} else if (weightRatio >= 0.3335 && weightRatio <= 0.5) {
+				bp = 60;
+			} else if (weightRatio >= 0.2501 && weightRatio <= 0.3334) {
+				bp = 80;
+			} else if (weightRatio >= 0.2001 && weightRatio <= 0.25) {
+				bp = 100;
+			} else if (weightRatio <= 0.2) {
+				bp = 120;
+			}
 		} else if (move == Move.HEX) {
 			if (foe.status == Status.HEALTHY) {
 				bp = 65;
@@ -10677,6 +10702,10 @@ public class Pokemon implements Serializable {
 			} else {
 				bp = 80;
 			}
+		} else if (move == Move.RETURN || move == Move.FRUSTRATION) {
+			int f = this.happiness;
+			if (move == Move.FRUSTRATION) f = 255 - f;
+			bp = Math.max(f * 5 / 2, 1);
 		} else if (move == Move.REVENGE) {
 			if (this.getSpeed() > foe.getSpeed()) {
 				bp = 60;

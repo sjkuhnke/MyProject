@@ -22,6 +22,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
+import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
@@ -31,8 +32,10 @@ import Swing.Bag.Entry;
 import Swing.Battle.JGradientButton;
 import Swing.Battle;
 import Swing.Item;
+import Swing.Move;
 import Swing.Player;
 import Swing.Pokemon;
+import Swing.Pokemon.Node;
 import Swing.Status;
 
 public class PlayerCharacter extends Entity {
@@ -100,7 +103,7 @@ public class PlayerCharacter extends Entity {
 			}
 			
 			collisionOn = false;
-			gp.cChecker.checkTile(this);
+			if (!p.ghost) gp.cChecker.checkTile(this);
 			
 			gp.cChecker.checkEntity(this, gp.npc);
 			
@@ -211,8 +214,56 @@ public class PlayerCharacter extends Entity {
 	    	JLabel badgesLabel = new JLabel();
 	    	badgesLabel.setText(p.badges + " Badges");
 	    	
+	    	JTextField cheats = new JTextField();
+	    	cheats.addActionListener(f -> {
+	    		String code = cheats.getText();
+	    		
+	    		if (code.equals("RAR3")) {
+	    			p.bag.bag[18] = new Item(18);
+	    			p.bag.count[18] = 999;
+	    			SwingUtilities.getWindowAncestor(cheats).dispose();
+	    		} else if (code.equals("M1X3R")) {
+	    			p.random = !p.random;
+	    			String onoff = p.random ? "on!" : "off.";
+	    			JOptionPane.showMessageDialog(null, "Randomizer mode was turned " + onoff);
+	    			SwingUtilities.getWindowAncestor(cheats).dispose();
+	    		} else if (code.equals("BALLZ")) {
+	    			for (int i = 1; i < 4; i++) {
+	    				p.bag.bag[i] = new Item(i);
+		    			p.bag.count[i] = 25;
+	    			}
+	    			SwingUtilities.getWindowAncestor(cheats).dispose();
+	    		} else if (code.equals("GASTLY")) {
+	    			p.ghost = !p.ghost;
+	    			String onoff = p.ghost ? "on!" : "off.";
+	    			JOptionPane.showMessageDialog(null, "Walk-through-walls mode was turned " + onoff);
+	    			SwingUtilities.getWindowAncestor(cheats).dispose();
+	    		} else if (code.equals("R")) {
+	    			for (Pokemon p : p.team) {
+	    				if (p != null) {
+	    					for (int i = 0; i < p.movebank.length; i++) {
+	    						Node current = p.movebank[i];
+	    						while (current != null) {
+	    							Move[] options = Move.values();
+	    							Random random = new Random();
+	    							int index = random.nextInt(options.length);
+	    							current.data = options[index];
+	    							current = current.next;
+	    							
+	    						}
+	    					}
+	    				}
+	    			}
+	    			SwingUtilities.getWindowAncestor(cheats).dispose();
+	    		} else if (code.equals("KANY3")) {
+	    			p.money = 1000000;
+	    			SwingUtilities.getWindowAncestor(cheats).dispose();
+	    		}
+	    	});
+	    	
 	    	playerInfo.add(moneyLabel);
 	    	playerInfo.add(badgesLabel);
+	    	playerInfo.add(cheats);
 	    	
 	    	JOptionPane.showMessageDialog(null, playerInfo, "Player Info", JOptionPane.PLAIN_MESSAGE);
 	    });
