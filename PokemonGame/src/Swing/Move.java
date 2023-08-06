@@ -130,7 +130,7 @@ public enum Move {
 	EARTH_POWER(90,100,10,0,1,0,PType.GROUND,"% chance to lower foe's Sp.Def by 1",false),
 	EARTHQUAKE(100,100,0,0,0,0,PType.GROUND,"A normal attack",false),
 	ELECTRIC_TERRAIN(0,1000,0,0,2,0,PType.ELECTRIC,"Sets the terrain to ELECTRIC for 5 turns",false),
-	ELECTROBALL(-1,100,0,0,1,0,PType.ELECTRIC,"Power is higher the faster the user is than the target",false),
+	ELECTRO_BALL(-1,100,0,0,1,0,PType.ELECTRIC,"Power is higher the faster the user is than the target",false),
 	//ELECTROEXPLOSION(300,100,0,0,1,0,PType.ELECTRIC,"User faints. Bypasses Ground's immunity to Electric",false),
 	ELEMENTAL_SPARKLE(45,90,0,0,1,0,PType.MAGIC,"",false),
 	EMBER(40,100,10,0,1,0,PType.FIRE,"% chance to Burn foe",false),
