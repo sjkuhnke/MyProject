@@ -5,11 +5,29 @@ public class Trainer {
 	private Pokemon[] team;
 	private int money;
 	int currentIndex;
+	Item item;
+	int flagIndex;
 	
 	public Trainer(String name, Pokemon[] team, int money) {
 		this.name = name;
 		this.team = team;
 		this.money = money;
+		currentIndex = 0;
+	}
+	
+	public Trainer(String name, Pokemon[] team, int money, Item item) {
+		this.name = name;
+		this.team = team;
+		this.money = money;
+		this.item = item;
+		currentIndex = 0;
+	}
+	
+	public Trainer(String name, Pokemon[] team, int money, int index) {
+		this.name = name;
+		this.team = team;
+		this.money = money;
+		this.flagIndex = index;
 		currentIndex = 0;
 	}
 	
@@ -22,6 +40,8 @@ public class Trainer {
 		}
 	}
 	
+	
+
 	public Pokemon[] getTeam() {
 		return team;
 	}

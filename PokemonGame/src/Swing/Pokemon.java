@@ -324,6 +324,16 @@ public class Pokemon implements Serializable {
 	public void setType() {
 		setType(this.id);
 	}
+	
+	public PType[] getType(int id) {
+		PType[] result = new PType[2];
+		Pokemon temp = new Pokemon(id, 1, false, false);
+		
+		result[0] = temp.type1;
+		result[1] = temp.type2;
+		
+		return result;
+	}
 
 	public void setType(int id) {
 		if (id == 1) {
@@ -4262,7 +4272,7 @@ public class Pokemon implements Serializable {
 				return;
 			}
 			
-			if (this.ability == Ability.PROTEAN) {
+			if (this.ability == Ability.PROTEAN && this.type1 == getType(this.id)[0] && this.type2 == getType(this.id)[1]) {
 				if (this.type1 == moveType && this.type2 == null) {
 					
 				} else {
@@ -4528,11 +4538,16 @@ public class Pokemon implements Serializable {
 			boolean fullHP = foe.currentHP == foe.getStat(0);
 			
 			// Damage foe
+			int dividend = Math.min(damage, foe.currentHP);
 			foe.currentHP -= damage;
-			double percent = damage * 100.0 / foe.getStat(0);
+			double percent = dividend * 100.0 / foe.getStat(0);
 			String formattedPercent = String.format("%.1f", percent);
 			System.out.println("(" + foe.nickname + " lost " + formattedPercent + "% of its HP.)");
-			if (foe.currentHP <= 0 && (move == Move.FALSE_SWIPE || foe.vStatuses.contains(Status.ENDURE) || (fullHP && foe.ability == Ability.STURDY))) foe.currentHP = 1;
+			if (foe.currentHP <= 0 && (move == Move.FALSE_SWIPE || foe.vStatuses.contains(Status.ENDURE) || (fullHP && foe.ability == Ability.STURDY))) {
+				foe.currentHP = 1;
+				if (foe.ability == Ability.STURDY) System.out.print("[" + foe.name + "'s Sturdy]: ");
+				if (move != Move.FALSE_SWIPE) System.out.println(foe.name + " endured the hit!");
+			}
 			if (foe.currentHP <= 0) { // Check for kill
 				foe.faint(true, player, this);
 				if (move == Move.FELL_STINGER) stat(this, 0, 3);

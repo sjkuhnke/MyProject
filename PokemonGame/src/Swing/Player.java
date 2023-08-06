@@ -25,6 +25,7 @@ public class Player implements Serializable{
 	public int[] pokedex = new int[237];
 	public int currentMap;
 	public boolean[] trainersBeat = new boolean[Main.trainers.length];
+	public boolean[] flags = new boolean[10];
 	public boolean random = false;
 	public boolean ghost = false;
 	
@@ -55,6 +56,7 @@ public class Player implements Serializable{
 	    	if (p.nickname == null || p.nickname.isBlank()) p.nickname = p.name;
 	    }
 	    pokedex[p.id] = 2;
+	    p.clearVolatile();
 	    for (int i = 0; i < team.length; i++) {
 	        if (team[i] == null) {
 	            hasNull = true;

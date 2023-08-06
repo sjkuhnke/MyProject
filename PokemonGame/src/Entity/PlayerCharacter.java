@@ -172,6 +172,7 @@ public class PlayerCharacter extends Entity {
 			int npcIndex = gp.cChecker.checkEntity(this, gp.npc);
 			if (npcIndex != 999 && gp.npc[gp.currentMap][npcIndex] instanceof NPC_Nurse) interactNurse();
 			if (npcIndex != 999 && gp.npc[gp.currentMap][npcIndex] instanceof NPC_Clerk) interactClerk();
+			if (npcIndex != 999 && gp.npc[gp.currentMap][npcIndex] instanceof NPC_Block) interactBlock((NPC_Block) gp.npc[gp.currentMap][npcIndex]);
 			if (npcIndex != 999 && gp.npc[gp.currentMap][npcIndex] instanceof NPC_Trainer) gp.startBattle(gp.npc[gp.currentMap][npcIndex].trainer);
 			if (npcIndex != 999 && gp.npc[gp.currentMap][npcIndex] instanceof NPC_GymLeader) gp.startBattle(gp.npc[gp.currentMap][npcIndex].trainer);
 			if (npcIndex != 999 && gp.npc[gp.currentMap][npcIndex] instanceof NPC_PC) gp.openBox();
@@ -353,6 +354,14 @@ public class PlayerCharacter extends Entity {
 	    }
 		JOptionPane.showMessageDialog(null, shopPanel, "Money: $" + p.money, JOptionPane.PLAIN_MESSAGE);
 		keyH.resume();
+	}
+	
+	private void interactBlock(NPC_Block npc) {
+		if (keyH.wPressed) {
+			keyH.pause();
+			JOptionPane.showMessageDialog(null, npc.message);
+		    keyH.resume();
+		}
 	}
 
 	private void showParty() {

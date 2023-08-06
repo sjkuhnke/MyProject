@@ -1,6 +1,7 @@
 package Overworld;
 
 import Entity.Entity;
+import Entity.NPC_Block;
 import Entity.NPC_Clerk;
 import Entity.NPC_GymLeader;
 import Entity.NPC_Nurse;
@@ -20,9 +21,14 @@ public class AssetSetter {
 	public void setObject() {}
 	
 	public void setNPC() {
+		boolean[] flags = gp.player.p.flags;
 		int mapNum = 0;
 		
-		gp.npc[mapNum][index] = NPCSetup(4, 72, 48, 0);
+		if (flags[0]) {
+			gp.npc[mapNum][index] = NPCSetup(4, 72, 48, 0);
+		} else {
+			gp.npc[mapNum][index++] = null;
+		}
 		
 		gp.npc[mapNum][index] = NPCSetup(5, 18, 18, 1);
 		
@@ -43,13 +49,19 @@ public class AssetSetter {
 		gp.npc[2][index] = NPCSetup(2, 27, 39, -1);
 		gp.npc[6][index] = NPCSetup(2, 27, 39, -1);
 		
+		if (!flags[1]) {
+			gp.npc[3][index] = NPCSetup(31, 40, "I saw a boy named Scott near New\nMinnow town saying he was looking\nfor a young man that looked like you.\nMaybe you should check it out?");
+		} else {
+			gp.npc[mapNum][index++] = null;
+		}
+		
 		mapNum = 4;
 		gp.npc[mapNum][index] = NPCSetup(4, 32, 62, 18);
-		gp.npc[mapNum][index] = NPCSetup(4, 23, 65, 19);
-		gp.npc[mapNum][index] = NPCSetup(4, 32, 68, 20);
-		gp.npc[mapNum][index] = NPCSetup(4, 34, 75, 21);
-		gp.npc[mapNum][index] = NPCSetup(4, 45, 75, 22);
-		gp.npc[mapNum][index] = NPCSetup(4, 16, 70, 23);
+		gp.npc[mapNum][index] = NPCSetup(4, 23, 65, 19); // make way lower levels
+		gp.npc[mapNum][index] = NPCSetup(4, 32, 68, 20); // make way lower levels
+		gp.npc[mapNum][index] = NPCSetup(4, 34, 76, 21); // make way lower levels
+		gp.npc[mapNum][index] = NPCSetup(4, 45, 75, 22); // make way lower levels
+		gp.npc[mapNum][index] = NPCSetup(4, 15, 70, 23);
 		
 		mapNum = 7;
 		gp.npc[mapNum][index] = NPCSetup(6, 30, 42, 5);
@@ -87,6 +99,14 @@ public class AssetSetter {
 		
 	}
 	
+	public void updateNPC() {
+		boolean[] flags = gp.player.p.flags;
+		if (!flags[0] || flags[1]) gp.npc[0][0] = null;
+		if (flags[1]) gp.npc[3][11] = null;
+	}
+	
+	
+
 	private Entity NPCSetup(int type, int x, int y, int team) {
 		Entity result = null;
 		switch (type) {
@@ -114,6 +134,17 @@ public class AssetSetter {
 		case 8:
 			result = new NPC_GymLeader(gp, "down", team);
 		}
+		
+		result.worldX = gp.tileSize*x;
+		result.worldY = gp.tileSize*y;
+		
+		index++;
+		
+		return result;
+	}
+	
+	private Entity NPCSetup(int x, int y, String message) {
+		Entity result = new NPC_Block(gp, message);
 		
 		result.worldX = gp.tileSize*x;
 		result.worldY = gp.tileSize*y;

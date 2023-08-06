@@ -63,7 +63,10 @@ public class EventHandler {
 			if (hit(2,31,46,"any")) teleport(0, 27, 54);
 			
 			// Route 23 <-> Poppy Grove gate
-			if (hit(0,20,10,"any")) teleport(3, 31, 45);
+			if (hit(0,20,10,"any")) {
+				teleport(3, 31, 45);
+				gp.player.p.flags[0] = true;
+			}
 			if (hit(3,31,46,"any")) teleport(0, 20, 11);
 			if (hit(3,31,33,"any")) teleport(4, 74, 84);
 			if (hit(4,74,85,"any")) teleport(3, 31, 34);
@@ -126,5 +129,7 @@ public class EventHandler {
 		gp.player.worldY = gp.tileSize * row;
 		gp.player.worldY -= gp.tileSize / 4;
 		p.currentMap = map;
+		
+		gp.aSetter.updateNPC();
 	}
 }
