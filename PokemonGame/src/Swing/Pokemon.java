@@ -147,6 +147,8 @@ public class Pokemon implements Serializable {
 			ivs = new int[] {31, 31, 31, 31, 31, 31};
 		}
 		
+		happiness = 70;
+		
 	}
 	
 	public BufferedImage getSprite() {
@@ -301,6 +303,7 @@ public class Pokemon implements Serializable {
 		getStats();
 		setType();
 		setAbility(pokemon.abilitySlot);
+		this.weight = setWeight();
 		
 		expMax = level * 2;
 		exp = 0;
@@ -315,6 +318,8 @@ public class Pokemon implements Serializable {
 		trainerOwned = true;
 		impressive = true;
 		trainer = 1;
+		
+		happiness = pokemon.happiness;
 	}
 	
 	public boolean isFainted() {
@@ -2146,6 +2151,7 @@ public class Pokemon implements Serializable {
 		int oHP = this.getStat(0);
 		this.exp -= this.expMax;
 		++level;
+		awardHappiness(5);
 		System.out.println(this.nickname + " leveled Up!");
 		checkMove();
 		Pokemon result = this.checkEvo(player);
@@ -4685,6 +4691,12 @@ public class Pokemon implements Serializable {
 	}
 
 
+
+	public void awardHappiness(int i) {
+		this.happiness += i;
+		this.happiness = this.happiness > 255 ? 255 : this.happiness;
+		System.out.println(this.nickname + " gained " + i + " friendship!");
+	}
 
 	private void secondaryEffect(Pokemon foe, Move move, Field field, boolean first) {
 		if (move == Move.ACID) {
@@ -10228,6 +10240,7 @@ public class Pokemon implements Serializable {
 		this.currentHP = 0;
 		this.fainted = true;
 		this.battled = false;
+		awardHappiness(-3);
 		this.vStatuses.remove(Status.LOCKED);
 		this.vStatuses.remove(Status.SPUN);
 		this.vStatuses.remove(Status.RECHARGE);
@@ -10572,7 +10585,7 @@ public class Pokemon implements Serializable {
 	public void sleep(boolean announce) {
 		if (this.status == Status.HEALTHY) {
 			if (this.ability == Ability.INSOMNIA) {
-				if (announce) System.out.print("[" + this.nickname + "'s Insomnia]: It doesn't effect " + this.nickname); 
+				if (announce) System.out.println("[" + this.nickname + "'s Insomnia]: It doesn't effect " + this.nickname + "..."); 
 				return;
 			}
 			this.status = Status.ASLEEP;
@@ -11431,6 +11444,7 @@ public class Pokemon implements Serializable {
 			if (shuddered) System.out.println("[" + this.nickname + "'s Anticipation]: " + this.nickname + " shuddered!");
 		}
 		if (me.pokedex[this.id] < 1) me.pokedex[this.id] = 1;
+		System.out.println(this.happiness);
 		
 	}
 	

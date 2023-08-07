@@ -582,6 +582,9 @@ public class Battle extends JFrame {
 				            JOptionPane.showMessageDialog(null, foeTrainer.toString() + " was defeated!\nWon $" + foeTrainer.getMoney() + "!");
 				            if (foeTrainer.getMoney() == 500 && me.badges < 8) {
 				            	me.badges++;
+				            	for (Pokemon p : me.team) {
+				            		if (p != null) p.awardHappiness(5);
+				            	}
 				            }
 				            if (foeTrainer.item != null) {
 				            	me.bag.add(foeTrainer.item);
@@ -998,6 +1001,9 @@ public class Battle extends JFrame {
 					String message = foeTrainer.toString() + " was defeated!\nWon $" + foeTrainer.getMoney() + "!";
 		            if (foeTrainer.getMoney() == 500 && me.badges < 8) {
 		            	me.badges++;
+		            	for (Pokemon p : me.team) {
+		            		if (p != null) p.awardHappiness(5);
+		            	}
 		            }
 		            if (foeTrainer.item != null) {
 		            	me.bag.add(foeTrainer.item);

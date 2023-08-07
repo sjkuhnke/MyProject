@@ -46,7 +46,6 @@ public class PlayerCharacter extends Entity {
 	public final int screenY;
 	public Player p;
 	public boolean repel;
-	public int steps;
 	
 	public PlayerCharacter(GamePanel gp, KeyHandler keyH) {
 		super(gp);
@@ -132,7 +131,7 @@ public class PlayerCharacter extends Entity {
 					spriteNum = 1;
 				}
 				spriteCounter = 0;
-				steps++;
+				p.steps++;
 			}
 			if (spriteCounter % 4 == 0 && inTallGrass && !repel) {
 				Random r = new Random();
@@ -141,11 +140,17 @@ public class PlayerCharacter extends Entity {
 					gp.startWild(gp.currentMap, worldX / gp.tileSize, worldY / gp.tileSize);
 				}
 			}
-			if (steps == 200 && repel) {
+			if (p.steps == 202 && repel) {
 				keyH.pause();
 				JOptionPane.showMessageDialog(null, "Repel's effects wore off.");
 				keyH.resume();
 				repel = false;
+			}
+			if (p.steps % 129 == 0) {
+				for (Pokemon p : p.team) {
+            		if (p != null) p.awardHappiness(1);
+            	}
+				p.steps++;
 			}
 			
 			gp.eHandler.checkEvent();
@@ -672,7 +677,7 @@ public class PlayerCharacter extends Entity {
 		        	if (i.getItem().getID() == 0) {
 		        		if (!repel) {
 		        			repel = true;
-		        			steps = 0;
+		        			p.steps = 1;
 		        			p.bag.remove(i.getItem());
 	        	        	SwingUtilities.getWindowAncestor(itemDesc).dispose();
 	        	        	SwingUtilities.getWindowAncestor(panel).dispose();

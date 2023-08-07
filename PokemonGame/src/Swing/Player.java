@@ -28,6 +28,7 @@ public class Player implements Serializable{
 	public boolean[] flags = new boolean[10];
 	public boolean random = false;
 	public boolean ghost = false;
+	public int steps;
 	
 	public Player() {
 		team = new Pokemon[6];
