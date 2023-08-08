@@ -22,7 +22,7 @@ public class Player implements Serializable{
 	public Bag bag;
 	public int badges;
 	public int starter;
-	public int[] pokedex = new int[237];
+	public int[] pokedex = new int[239];
 	public int currentMap;
 	public boolean[] trainersBeat = new boolean[Main.trainers.length];
 	public boolean[] flags = new boolean[10];

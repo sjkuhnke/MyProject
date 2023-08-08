@@ -103,6 +103,7 @@ public class AssetSetter {
 		boolean[] flags = gp.player.p.flags;
 		if (!flags[0] || flags[1]) gp.npc[0][0] = null;
 		if (flags[1]) gp.npc[3][11] = null;
+		if (flags[0]) gp.npc[0][0] = NPCSetup(4, 72, 48, 0);
 	}
 	
 	

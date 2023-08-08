@@ -409,7 +409,7 @@ public enum Move {
 	ROCK_POLISH(0,1000,0,0,2,0,PType.ROCK,"Raises user's Speed by 2",false),
 	ROCK_SLIDE(75,90,30,0,0,0,PType.ROCK,"% of causing foe to flinch",false),
 	ROCK_THROW(50,90,0,0,0,0,PType.ROCK,"A normal attack",false),
-	ROCK_TOMB(60,80,100,0,0,0,PType.ROCK,"% to lower foe's Speed by 1",false),
+	ROCK_TOMB(60,95,100,0,0,0,PType.ROCK,"% to lower foe's Speed by 1",false),
 	ROCK_WRECKER(150,90,0,0,0,0,PType.ROCK,"User takes 1/3 of damage dealt as recoil",false),
 	ROCKFALL_FRENZY(0,100,0,0,2,0,PType.ROCK,"",false), // TODO
 	//ROCKET(120,75,50,0,0,0,PType.STEEL,"% to Paralyze foe",false),

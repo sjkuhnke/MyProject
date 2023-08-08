@@ -168,6 +168,7 @@ public class GamePanel extends JPanel implements Runnable, BattleCloseListener {
 	@Override
 	public void onBattleClosed(int trainer) {
 		inBattle = false;
+		keyH.resume();
 		if (trainer > -1 && !player.p.wiped()) player.p.trainersBeat[trainer] = true;
 		Pokemon[] teamTemp = Arrays.copyOf(player.p.team, 6);
 		for (int i = 0; i < 6; i++) {
@@ -188,7 +189,6 @@ public class GamePanel extends JPanel implements Runnable, BattleCloseListener {
 				teamTemp[i].setType();
 			}
 		}
-		keyH.resume();
 	}
 
 	public void setupGame() {

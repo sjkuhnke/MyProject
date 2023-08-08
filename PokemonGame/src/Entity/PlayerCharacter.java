@@ -264,6 +264,9 @@ public class PlayerCharacter extends Entity {
 	    		} else if (code.equals("KANY3")) {
 	    			p.money = 1000000;
 	    			SwingUtilities.getWindowAncestor(cheats).dispose();
+	    		} else if (code.equals("Ben")) {
+	    			p.catchPokemon(new Pokemon(238, 5, true, false));
+	    			SwingUtilities.getWindowAncestor(cheats).dispose();
 	    		}
 	    	});
 	    	

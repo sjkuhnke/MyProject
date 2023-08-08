@@ -305,6 +305,8 @@ public class Pokemon implements Serializable {
 		setAbility(pokemon.abilitySlot);
 		this.weight = setWeight();
 		
+		this.slot = pokemon.slot;
+		
 		expMax = level * 2;
 		exp = 0;
 		
@@ -1052,6 +1054,9 @@ public class Pokemon implements Serializable {
 		} else if (id == 237) {
 			this.type1 = PType.WATER;
 			this.type2 = PType.DRAGON;
+		} else if (id == 238) {
+			this.type1 = PType.DARK;
+			this.type2 = PType.FIGHTING;
 		}else if (id == -1) {
 			this.type1 = PType.GRASS;
 			this.type2 = null;
@@ -1742,6 +1747,7 @@ public class Pokemon implements Serializable {
 		} else if (id == 235) { return "Dragowrath";
 		} else if (id == 236) { return "Solaroxyous";
 		} else if (id == 237) { return "Kissyfishy-D";
+		} else if (id == 238) { return "Scraggy";
 		
 		
 		} else if (id == -1) { return "Leafer";
@@ -2131,6 +2137,7 @@ public class Pokemon implements Serializable {
 		} else if (id == 235) { abilities = new Ability[] {Ability.GALACTIC_AURA, Ability.GALACTIC_AURA};
 		} else if (id == 236) { abilities = new Ability[] {Ability.DROUGHT, Ability.DROUGHT};
 		} else if (id == 237) { abilities = new Ability[] {Ability.ADAPTABILITY, Ability.ADAPTABILITY};
+		} else if (id == 238) { abilities = new Ability[] {Ability.MOXIE, Ability.INTIMIDATE};
 		} else {
 			abilities = new Ability[] {Ability.SAND_VEIL, Ability.SNOW_CLOAK};
 		}
@@ -2768,6 +2775,7 @@ public class Pokemon implements Serializable {
 		} else if (this.id == 235) { this.baseStats = new int[]{90,95,105,200,110,100};
 		} else if (this.id == 236) { this.baseStats = new int[]{190,75,120,90,120,75};
 		} else if (this.id == 237) { this.baseStats = new int[]{110,100,75,100,75,90};
+		} else if (this.id == 238) { this.baseStats = new int[]{65,164,130,1,130,110};
 		
 		} else if (this.id == -1) {
 			this.baseStats[0] = 35;
@@ -4544,9 +4552,9 @@ public class Pokemon implements Serializable {
 			boolean fullHP = foe.currentHP == foe.getStat(0);
 			
 			// Damage foe
-			int dividend = Math.min(damage, foe.currentHP);
+			//int dividend = Math.min(damage, foe.currentHP);
 			foe.currentHP -= damage;
-			double percent = dividend * 100.0 / foe.getStat(0);
+			double percent = damage * 100.0 / foe.getStat(0); // change damage to dividend
 			String formattedPercent = String.format("%.1f", percent);
 			System.out.println("(" + foe.nickname + " lost " + formattedPercent + "% of its HP.)");
 			if (foe.currentHP <= 0 && (move == Move.FALSE_SWIPE || foe.vStatuses.contains(Status.ENDURE) || (fullHP && foe.ability == Ability.STURDY))) {
@@ -4575,9 +4583,18 @@ public class Pokemon implements Serializable {
 			}
 			
 			if (move.contact && checkSecondary(30)) {
-				if (foe.ability == Ability.FLAME_BODY) burn(false, this);
-				if (foe.ability == Ability.STATIC) paralyze(false, this);
-				if (foe.ability == Ability.POISON_POINT) poison(false, this);
+				if (foe.ability == Ability.FLAME_BODY) {
+					System.out.print("[" + foe.nickname + "'s Flame Body]: ");
+					burn(false, this);
+				}
+				if (foe.ability == Ability.STATIC) {
+					System.out.print("[" + foe.nickname + "'s Static]: ");
+					paralyze(false, this);
+				}
+				if (foe.ability == Ability.POISON_POINT) {
+					System.out.print("[" + foe.nickname + "'s Poison Point]: ");
+					poison(false, this);
+				}
 			}
 			
 			if (move.contact && (foe.ability == Ability.ROUGH_SKIN || foe.ability == Ability.IRON_BARBS)) {
@@ -4695,7 +4712,6 @@ public class Pokemon implements Serializable {
 	public void awardHappiness(int i) {
 		this.happiness += i;
 		this.happiness = this.happiness > 255 ? 255 : this.happiness;
-		System.out.println(this.nickname + " gained " + i + " friendship!");
 	}
 
 	private void secondaryEffect(Pokemon foe, Move move, Field field, boolean first) {
@@ -10212,6 +10228,25 @@ public class Pokemon implements Serializable {
 			movebank[22] = new Node(Move.HEADBUTT);
 			movebank[25] = new Node(Move.THUNDER_WAVE);
 			break;
+		case 238:
+			movebank = new Node[55];
+			movebank[0] = new Node(Move.LEER);
+			movebank[0].next = new Node(Move.LOW_KICK);
+			movebank[3] = new Node(Move.PAYBACK);
+			movebank[7] = new Node(Move.HEADBUTT);
+			movebank[11] = new Node(Move.SAND_ATTACK);
+			movebank[15] = new Node(Move.FACADE);
+			movebank[19] = new Node(Move.PROTECT);
+			movebank[23] = new Node(Move.BEAT_UP);
+			movebank[27] = new Node(Move.SCARY_FACE);
+			movebank[31] = new Node(Move.BRICK_BREAK);
+			movebank[35] = new Node(Move.SWAGGER);
+			movebank[39] = new Node(Move.CRUNCH);
+			movebank[43] = new Node(Move.HI_JUMP_KICK);
+			movebank[47] = new Node(Move.SWORDS_DANCE);
+			movebank[51] = new Node(Move.HEAD_SMASH);
+			movebank[54] = new Node(Move.CLOSE_COMBAT);
+			break;
 		}
 		
 	}
@@ -11444,7 +11479,6 @@ public class Pokemon implements Serializable {
 			if (shuddered) System.out.println("[" + this.nickname + "'s Anticipation]: " + this.nickname + " shuddered!");
 		}
 		if (me.pokedex[this.id] < 1) me.pokedex[this.id] = 1;
-		System.out.println(this.happiness);
 		
 	}
 	
@@ -11804,6 +11838,7 @@ public class Pokemon implements Serializable {
 		} else if (id == 235) { return 956.4;
 		} else if (id == 236) { return 999.9;
 		} else if (id == 237) { return 895.4;
+		} else if (id == 238) { return 26.0;
 		} else {
 			return 0;
 		}

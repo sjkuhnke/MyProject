@@ -84,7 +84,7 @@ public class Main {
 	        );
 
 	        // Add the chosen starter to the player's team
-	        if (gamePanel.player.p.starter == 0) gamePanel.player.p.starter = (int)(Math.random() * options.length);
+	        if (gamePanel.player.p.starter <= 0) gamePanel.player.p.starter = (int)(Math.random() * options.length) + 1;
 	        if (gamePanel.player.p.starter == 1) {
 	            gamePanel.player.p.catchPokemon(new Pokemon(1, 5, true, false));
 	        } else if (gamePanel.player.p.starter == 2) {
@@ -126,15 +126,15 @@ public class Main {
 	
 	private static void modifyTrainers(GamePanel gp) {
 		if (gp.player.p.starter == 1) {
-			trainers[0] = new Trainer("Scott 1", new Pokemon[]{new Pokemon(7, 5, false, true)}, 400, 1);
+			trainers[0] = new Trainer("Scott 1", new Pokemon[]{new Pokemon(7, 7, false, true)}, 400, 1);
 			trainers[34] = new Trainer("Fred 1", new Pokemon[]{new Pokemon(5, 18, false, true), new Pokemon(78, 15, false, true)}, 400);
 		}
 		else if (gp.player.p.starter == 2) {
-			trainers[0] = new Trainer("Scott 1", new Pokemon[]{new Pokemon(1, 5, false, true)}, 400, 1);
+			trainers[0] = new Trainer("Scott 1", new Pokemon[]{new Pokemon(1, 7, false, true)}, 400, 1);
 			trainers[34] = new Trainer("Fred 1", new Pokemon[]{new Pokemon(8, 18, false, true), new Pokemon(78, 15, false, true)}, 400);
 		}
 		else if (gp.player.p.starter == 3) {
-			trainers[0] = new Trainer("Scott 1", new Pokemon[]{new Pokemon(4, 5, false, true)}, 400, 1);
+			trainers[0] = new Trainer("Scott 1", new Pokemon[]{new Pokemon(4, 7, false, true)}, 400, 1);
 			trainers[34] = new Trainer("Fred 1", new Pokemon[]{new Pokemon(2, 18, false, true), new Pokemon(78, 15, false, true)}, 400);
 		}
 		
@@ -145,7 +145,7 @@ public class Main {
 
 	private static void setTrainers() {
 		trainers = new Trainer[]{
-				new Trainer("Scott 1", new Pokemon[]{new Pokemon(1, 7, false, true)}, 400),
+				new Trainer("Scott 1", new Pokemon[]{new Pokemon(1, 100, false, true)}, 400),
 				new Trainer("A", new Pokemon[]{new Pokemon(16, 4, false, true)}, 100),
 				new Trainer("B", new Pokemon[]{new Pokemon(13, 3, false, true)}, 100),
 				new Trainer("C", new Pokemon[]{new Pokemon(32, 4, false, true), new Pokemon(29, 4, false, true)}, 100),

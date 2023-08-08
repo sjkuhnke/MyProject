@@ -1237,6 +1237,9 @@ public class Battle extends JFrame {
 				pokemon.heal();
 			}
 		}
+		for (Pokemon pokemon : foeTrainer.getTeam()) {
+			pokemon.heal();
+		}
 		
 	}
 	
