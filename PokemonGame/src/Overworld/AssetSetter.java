@@ -18,7 +18,9 @@ public class AssetSetter {
 		index = 0;
 	}
 	
-	public void setObject() {}
+	public void setObject() {
+		
+	}
 	
 	public void setNPC() {
 		boolean[] flags = gp.player.p.flags;

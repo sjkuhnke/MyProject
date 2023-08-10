@@ -6,7 +6,7 @@ import Entity.Entity;
 import Entity.NPC_Clerk;
 import Entity.NPC_Nurse;
 import Entity.NPC_Trainer;
-import tile.GrassTile;
+import Tile.GrassTile;
 
 public class CollisionChecker {
 	

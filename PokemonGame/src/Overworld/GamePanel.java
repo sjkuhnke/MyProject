@@ -13,7 +13,7 @@ import javax.swing.JPanel;
 
 import Entity.Entity;
 import Entity.PlayerCharacter;
-import tile.TileManager;
+import Tile.TileManager;
 import Swing.Battle;
 import Swing.Battle.BattleCloseListener;
 import Swing.PBox;
@@ -50,8 +50,9 @@ public class GamePanel extends JPanel implements Runnable, BattleCloseListener {
 	public CollisionChecker cChecker = new CollisionChecker(this);
 	public PlayerCharacter player = new PlayerCharacter(this,keyH);
 	public Entity npc[][] = new Entity[maxMap][90];
+	public Object obj[][] = new Object[maxMap][10];
 	
-	TileManager tileM = new TileManager(this);
+	public TileManager tileM = new TileManager(this);
 	
 	int FPS = 60;
 	private volatile boolean inBattle;
@@ -193,6 +194,7 @@ public class GamePanel extends JPanel implements Runnable, BattleCloseListener {
 
 	public void setupGame() {
 		aSetter.setNPC();
+		aSetter.setObject();
 	}
 	
 	public void setSlots() {
